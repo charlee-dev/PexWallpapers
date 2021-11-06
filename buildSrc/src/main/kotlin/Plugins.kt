@@ -11,6 +11,4 @@ object Plugins {
     const val SERIALIZATION = "plugin.serialization"
     const val DAGGER_HILT = "dagger.hilt.android.plugin"
     const val SQL_DELIGHT = "com.squareup.sqldelight"
-
-    const val COMMON_ANDROID_LIBRARY = "commons.common-android-library"
 }

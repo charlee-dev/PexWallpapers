@@ -3,7 +3,7 @@ import kotlin.reflect.full.memberProperties
 object Modules {
 
     const val app = ":app"
-    const val core = ":data"
+    const val data = ":data"
     const val domain = ":domain"
     const val base = ":base"
     const val testShared = ":test-shared"

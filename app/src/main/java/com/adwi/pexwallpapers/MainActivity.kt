@@ -3,6 +3,7 @@ package com.adwi.pexwallpapers
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.adwi.data.Utils
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +24,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Column() {
+                        Greeting("Android")
+                        Text(text = Utils.baseUrl)
+                        Text(text = Utils.apiKey)
+                    }
                 }
             }
         }

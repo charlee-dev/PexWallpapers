@@ -7,7 +7,7 @@ object Versions {
     // Core
     const val kotlin = "1.5.31"
     const val appCompat = "1.3.0"
-    const val core = "1.6.0"
+    const val core = "1.7.0"
     const val material = "1.4.0"
 
     // Coroutines
@@ -17,7 +17,7 @@ object Versions {
     const val lifecycle = "2.4.0"
 
     // Compose
-    const val compose = "1.1.0-beta01"
+    const val compose = "1.1.0-beta02"
     const val material3 = "1.0.0-alpha01"
     const val navigation = "2.4.0-beta02"
     const val activityCompose = "1.3.1"

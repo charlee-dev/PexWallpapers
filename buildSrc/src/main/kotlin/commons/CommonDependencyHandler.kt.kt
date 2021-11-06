@@ -2,6 +2,7 @@ package commons
 
 import Modules
 import dependencies.TestDependencies
+import dependencies.Dependencies
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
@@ -24,6 +25,52 @@ fun DependencyHandler.addTestDependencies() {
     testImplementation(TestDependencies.jupiter)
     testImplementation(TestDependencies.jupiterEngine)
     testImplementation(TestDependencies.mockk)
+}
+
+fun DependencyHandler.addCoreDependencies() {
+    implementation(Dependencies.appcompat)
+    implementation(Dependencies.coreKtx)
+    implementation(Dependencies.material)
+}
+
+fun DependencyHandler.addDefaultComposeDependencies() {
+    implementation(Dependencies.composeCompiler)
+    implementation(Dependencies.composeActivity)
+    implementation(Dependencies.composeUiUtil)
+    implementation(Dependencies.composeMaterial3)
+    implementation(Dependencies.composePreview)
+    implementation(Dependencies.lifecycleRuntime)
+}
+
+fun DependencyHandler.addComposeDependencies() {
+    implementation(Dependencies.composeUi)
+    implementation(Dependencies.composeMaterialIcons)
+    implementation(Dependencies.composeTooling)
+    implementation(Dependencies.composeFoundation)
+    implementation(Dependencies.composeFoundationLayout)
+    implementation(Dependencies.composeAnimation)
+    implementation(Dependencies.composeRuntime)
+    implementation(Dependencies.composeNavigation)
+    implementation(Dependencies.composeWork)
+    implementation(Dependencies.composePaging)
+}
+
+fun DependencyHandler.addNetworkDependencies() {
+    implementation(Dependencies.ktorCore)
+    implementation(Dependencies.ktorClientSerialization)
+    implementation(Dependencies.ktorAndroid)
+    implementation(Dependencies.ktorLogging)
+    implementation(Dependencies.serialization)
+}
+
+fun DependencyHandler.addPersistenceDependencies() {
+    implementation(Dependencies.sqlDelightRuntime)
+    implementation(Dependencies.sqlDelightAndroidDriver)
+}
+
+fun DependencyHandler.addHiltDependenciesBasic() {
+    implementation(Dependencies.hiltCore)
+    kapt(Dependencies.hiltCompiler)
 }
 
 /*

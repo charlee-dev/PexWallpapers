@@ -1,19 +1,29 @@
+import commons.addCoreDependencies
+import commons.addDefaultComposeDependencies
+import commons.addHiltDependenciesBasic
+import commons.kapt
+import dependencies.Dependencies
+
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.ANDROID_APPLICATION)
+    kotlin(Plugins.KOTLIN_ANDROID)
+    kotlin(Plugins.KOTLIN_KAPT)
+    id(Plugins.DAGGER_HILT)
+//    id("kotlin-kapt")
+//    id("dagger.hilt.android.plugin")
 }
 
 android {
-    compileSdk = 31
+    compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        applicationId = "com.adwi.pexwallpapers"
-        minSdk = 26
-        targetSdk = 31
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = AndroidConfig.id
+        minSdk = AndroidConfig.minSdk
+        targetSdk = AndroidConfig.targetSdk
+        versionCode = AndroidConfig.versionCode
+        versionName = AndroidConfig.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -39,7 +49,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+        kotlinCompilerExtensionVersion = Versions.compose
     }
     packagingOptions {
         resources {
@@ -50,16 +60,22 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha01")
-    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
+    api(project(Modules.data))
+
+    addCoreDependencies()
+    addDefaultComposeDependencies()
+    addHiltDependenciesBasic()
+
+//    implementation("androidx.core:core-ktx:1.7.0")
+//    implementation("androidx.compose.ui:ui:${Versions.compose}")
+//    implementation("androidx.compose.material3:material3:1.0.0-alpha01")
+//    implementation("androidx.compose.ui:ui-tooling-preview:${Versions.compose}")
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+//    implementation("androidx.activity:activity-compose:1.4.0")
+//    testImplementation("junit:junit:4.13.2")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
+//    debugImplementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.compose}")
 }

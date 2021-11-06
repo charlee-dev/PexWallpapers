@@ -3,9 +3,9 @@ package dependencies
 object Dependencies {
     // Gradle
     const val buildTools = "com.android.tools.build:gradle:${Versions.gradleBuildTool}"
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
     // Core
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
     const val coreKtx = "androidx.core:core-ktx:${Versions.core}"
     const val material = "com.google.android.material:material:${Versions.material}"
@@ -25,6 +25,7 @@ object Dependencies {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
 
     // Compose
+    const val composeCompiler = "androidx.compose.compiler:compiler:${Versions.compose}"
     const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
     const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
     const val composeMaterialIcons =
@@ -45,9 +46,9 @@ object Dependencies {
 
     // Network
     const val ktorCore = "io.ktor:ktor-client-core:${Versions.ktor}"
-    const val KtorClientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
-    const val KtorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
-    const val KtorLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
+    const val ktorClientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
+    const val ktorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
+    const val ktorLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
     const val serialization =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
     const val ktorClientMock = "io.ktor:ktor-client-mock:${Versions.ktor}"
