@@ -1,5 +1,6 @@
 import commons.addComposeDependencies
 import commons.addCoreDependencies
+import dependencies.Dependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -58,4 +59,6 @@ dependencies {
 
     addCoreDependencies()
     addComposeDependencies()
+
+    implementation(Dependencies.timber)
 }

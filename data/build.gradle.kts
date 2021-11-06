@@ -8,6 +8,7 @@ plugins {
     id(Plugins.SQL_DELIGHT)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 android {
