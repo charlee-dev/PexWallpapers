@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11">
+    <bytecodeTargetLevel target="1.7">
+      <module name="PexWallpapers.app" target="11" />
+      <module name="PexWallpapers.base" target="11" />
+      <module name="PexWallpapers.buildSrc" target="11" />
+      <module name="PexWallpapers.buildSrc.main" target="11" />
+      <module name="PexWallpapers.buildSrc.test" target="11" />
+      <module name="PexWallpapers.data" target="11" />
       <module name="PexWallpapers.feature-home" target="11" />
       <module name="PexWallpapers.feature_home" target="11" />
+      <module name="PexWallpapers.test-shared" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

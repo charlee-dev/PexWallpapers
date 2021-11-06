@@ -1,6 +1,6 @@
 package com.adwi.data.network.service
 
-import com.adwi.data.database.model.Wallpaper
+import com.adwi.domain.Wallpaper
 
 interface PexService {
 

@@ -1,10 +1,7 @@
 package com.adwi.data
 
 import android.util.Log
-import com.adwi.data.network.service.PexService
 import com.adwi.data.network.service.PexServiceImpl
-import com.adwi.data.repository.Repository
-import com.adwi.data.repository.RepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,9 +46,4 @@ object DataModule {
     fun providePexService(
         httpClient: HttpClient
     ) = PexServiceImpl(httpClient)
-
-    @Singleton
-    @Provides
-    fun provideWallpaperRepository(service: PexService): Repository =
-        RepositoryImpl(service)
 }

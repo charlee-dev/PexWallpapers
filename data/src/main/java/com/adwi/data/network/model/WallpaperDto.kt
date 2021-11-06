@@ -1,7 +1,7 @@
 package com.adwi.data.network.model
 
 import com.adwi.base.util.Constants
-import com.adwi.data.database.model.Wallpaper
+import com.adwi.domain.Wallpaper
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -31,28 +31,18 @@ data class WallpaperDto(
     )
 }
 
-fun WallpaperDto.toEntity(
+fun WallpaperDto.toDomainModel(
     categoryName: String = Constants.DEFAULT_CATEGORY
 ) = Wallpaper(
     id = this.id,
     photographer = this.photographer,
-    color = this.color,
-    imageUrl = this.src.portrait,
     height = heights.random(),
-    width = this.width,
     url = this.pexUrl,
-    photographerUrl = this.photographerUrl,
     isFavorite = false,
     categoryName = categoryName,
-    src = Wallpaper.Src(
-        original = this.src.original,
-        large2x = this.src.large2x,
-        large = this.src.large,
-        medium = this.src.medium,
-        landscape = this.src.landscape,
-        portrait = this.src.portrait,
-        tiny = this.src.tiny
-    )
+    imageUrlPortrait = this.src.portrait,
+    imageUrlLandscape = this.src.landscape,
+    imageUrlTiny = this.src.tiny
 )
 
 private val heights = listOf(830, 1220, 975, 513, 600, 790)
