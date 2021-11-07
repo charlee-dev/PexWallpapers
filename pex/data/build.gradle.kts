@@ -34,8 +34,8 @@ dependencies {
 }
 
 sqldelight {
-    database("HeroDatabase") {
-        packageName = "com.codingwithmitch.hero_datasource.cache"
+    database("WallpaperDb") {
+        packageName = "com.adwi.data.cache"
         sourceFolders = listOf("sqldelight")
     }
 }
