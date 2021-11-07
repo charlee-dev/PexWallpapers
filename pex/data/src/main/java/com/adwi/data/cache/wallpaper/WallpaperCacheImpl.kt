@@ -5,8 +5,6 @@ import com.adwi.data.cache.WallpaperDb
 import com.adwi.data.cache.WallpaperDbQueries
 import com.adwi.data.cache.wallpaper.model.toDomain
 import com.adwi.domain.Wallpaper
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class WallpaperCacheImpl(
     private val wallpaperDb: WallpaperDb
@@ -14,9 +12,10 @@ class WallpaperCacheImpl(
 
     private var queries: WallpaperDbQueries = wallpaperDb.wallpaperDbQueries
 
-    override fun getAllWallpapers(): Flow<List<Wallpaper>> = flow {
+    override suspend fun getAllWallpapers(): List<Wallpaper> =
         queries.getAllWallpapers().executeAsList()
-    }
+            .map { it.toDomain() }
+
 
     override suspend fun insertWallpaper(wallpaper: Wallpaper) {
         return wallpaper.run {
@@ -59,8 +58,23 @@ class WallpaperCacheImpl(
         }
     }
 
-    override suspend fun getAllCurated(): Flow<List<Wallpaper>> = flow {
-        queries.getAllCurated().executeAsList()
+    override suspend fun getAllCurated(): List<Wallpaper> {
+        return queries.getAllCurated().executeAsList().map {
+            it.run {
+                Wallpaper(
+                    id,
+                    height,
+                    url,
+                    photographer,
+                    categoryName,
+                    isFavorite,
+                    updatedAt,
+                    imageUrlPortrait,
+                    imageUrlLandscape,
+                    imageUrlTiny
+                )
+            }
+        }
     }
 
     override suspend fun deleteAllCuratedWallpapers() {

@@ -1,14 +1,16 @@
 package com.adwi.data.cache.wallpaper
 
+import com.adwi.base.util.Constants
 import com.adwi.data.cache.CuratedEntity
+import com.adwi.data.cache.WallpaperDb
 import com.adwi.domain.Wallpaper
-import kotlinx.coroutines.flow.Flow
+import com.squareup.sqldelight.db.SqlDriver
 
 interface WallpaperCache {
 
     // Wallpaper
 
-    fun getAllWallpapers(): Flow<List<Wallpaper>>
+    suspend fun getAllWallpapers(): List<Wallpaper>
 
     suspend fun insertWallpaper(wallpaper: Wallpaper)
 
@@ -24,7 +26,17 @@ interface WallpaperCache {
 
     suspend fun insertCurated(curatedEntity: CuratedEntity)
 
-    suspend fun getAllCurated(): Flow<List<Wallpaper>>
+    suspend fun getAllCurated(): List<Wallpaper>
 
     suspend fun deleteAllCuratedWallpapers()
+
+    companion object Factory {
+        fun build(sqlDriver: SqlDriver): WallpaperCache {
+            return WallpaperCacheImpl(WallpaperDb(sqlDriver))
+        }
+
+        val schema: SqlDriver.Schema = WallpaperDb.Schema
+
+        val dbName: String = Constants.WALLPAPER_DATABASE
+    }
 }

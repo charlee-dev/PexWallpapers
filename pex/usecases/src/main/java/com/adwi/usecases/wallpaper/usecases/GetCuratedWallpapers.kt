@@ -4,6 +4,8 @@ import com.adwi.core.domain.DataState
 import com.adwi.core.domain.ProgressBarState
 import com.adwi.core.domain.UIComponent
 import com.adwi.core.util.Logger
+import com.adwi.data.cache.wallpaper.WallpaperCache
+import com.adwi.data.cache.wallpaper.model.toCuratedEntity
 import com.adwi.data.network.service.PexService
 import com.adwi.domain.Wallpaper
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 class GetCuratedWallpapers(
     private val service: PexService,
+    private val cache: WallpaperCache,
     private val logger: Logger,
     // TODO(add caching)
 ) {
@@ -33,9 +36,14 @@ class GetCuratedWallpapers(
                 listOf()
             }
 
-            // TODO(caching)
+            wallpapers.forEach {
+                cache.insertCurated(it.toCuratedEntity())
+                cache.insertWallpaper(it)
+            }
 
-            emit(DataState.Data(wallpapers))
+            val cachedCurated = cache.getAllWallpapers()
+
+            emit(DataState.Data(cachedCurated))
         } catch (e: Exception) {
             e.printStackTrace()
             logger.log(e.message.toString())
