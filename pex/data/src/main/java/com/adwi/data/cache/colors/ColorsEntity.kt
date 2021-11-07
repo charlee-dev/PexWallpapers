@@ -1,4 +1,4 @@
-package com.adwi.data.cache.model
+package com.adwi.data.cache.colors
 
 import com.adwi.data.cache.ColorsEntity
 import com.adwi.data.network.model.WallpaperDto

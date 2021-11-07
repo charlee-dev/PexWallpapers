@@ -1,4 +1,4 @@
-package com.adwi.data.cache.model
+package com.adwi.data.cache.wallpaper.model
 
 import com.adwi.data.cache.WallpaperEntity
 import com.adwi.domain.Wallpaper

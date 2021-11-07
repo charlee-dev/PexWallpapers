@@ -42,7 +42,7 @@ object Dependencies {
     const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
     const val composeActivity = "androidx.activity:activity-compose:${Versions.activityCompose}"
     const val composeWork = "androidx.work:work-runtime-ktx:${Versions.work}"
-    const val composePaging = "androidx.paging:paging-compose:${Versions.paging}"
+    const val composePaging = "androidx.paging:paging-compose:${Versions.pagingCompose}"
 
     // Network
     const val ktorCore = "io.ktor:ktor-client-core:${Versions.ktor}"
@@ -69,6 +69,7 @@ object Dependencies {
     const val hiltWorkCompiler = "androidx.hilt:hilt-compiler:${Versions.hiltWork}"
 
     // Helpers
+    const val paging = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val lottie = "com.airbnb.android:lottie-compose:${Versions.lottie}"
     const val shimmer = "com.valentinilk.shimmer:compose-shimmer:${Versions.shimmer}"

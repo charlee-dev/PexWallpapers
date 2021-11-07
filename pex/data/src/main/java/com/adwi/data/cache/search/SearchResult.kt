@@ -1,4 +1,4 @@
-package com.adwi.data.cache.model
+package com.adwi.data.cache.search
 
 import com.adwi.data.cache.SearchResult
 import com.adwi.data.network.model.WallpaperDto

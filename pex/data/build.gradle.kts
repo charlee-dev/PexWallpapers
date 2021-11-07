@@ -29,6 +29,8 @@ dependencies {
     addHiltDependenciesBasic()
     addTestDependencies()
 
+    implementation(Dependencies.paging)
+    implementation(Dependencies.composePaging)
     implementation(Dependencies.coroutinesCore)
     implementation(Dependencies.sqlDelightRuntime)
 }

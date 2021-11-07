@@ -22,7 +22,7 @@ object Versions {
     const val navigation = "2.4.0-beta02"
     const val activityCompose = "1.3.1"
     const val work = "2.7.0"
-    const val paging = "1.0.0-alpha14"
+    const val pagingCompose = "1.0.0-alpha14"
 
     // Network
     const val ktor = "1.6.5"
@@ -37,6 +37,7 @@ object Versions {
     const val hiltWork = "1.0.0"
 
     // Helpers
+    const val paging = "3.0.1"
     const val accompanistCoil = "0.15.0"
     const val timber = "4.7.1"
     const val lottie = "4.1.0"

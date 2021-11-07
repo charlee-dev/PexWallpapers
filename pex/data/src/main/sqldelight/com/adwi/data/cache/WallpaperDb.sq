@@ -13,7 +13,7 @@ CREATE TABLE wallpaperEntity (
 	imageUrlTiny	TEXT NOT NULL
 );
 
-selectAllWallpapers:
+getAllWallpapers:
 SELECT * FROM wallpaperEntity;
 
 insertWallpaper:
@@ -81,7 +81,7 @@ CREATE TABLE searchResult (
        queryPosition INTEGER AS Int NOT NULL
 );
 
-insertSearchResults:
+insertSearchResult:
 INSERT OR REPLACE INTO searchResult (
 searchQuery,
 wallpaperId,
@@ -187,17 +187,17 @@ UPDATE settingsEntity SET autoLock = :enabled;
 
 -- SearchQueryRemoteKey Dao
 
-CREATE TABLE searchqueryremotekeys (
+CREATE TABLE searchQueryRemoteKeys (
        searchQuery TEXT NOT NULL PRIMARY KEY,
        nextPage INTEGER AS Int NOT NULL
 );
 
 insertRemoteKey:
 INSERT OR REPLACE
-INTO searchqueryremotekeys (
+INTO searchQueryRemoteKeys (
 searchQuery,
 nextPage
 ) VALUES (?,?);
 
 getRemoteKey:
-SELECT * FROM searchqueryremotekeys WHERE searchQuery = :searchQuery;
+SELECT * FROM searchQueryRemoteKeys WHERE searchQuery = :searchQuery;
