@@ -1,9 +1,9 @@
 package com.adwi.domain
 
 data class Wallpaper(
-    val id: Int = 0,
-    var height: Int? = null,
-    val url: String? = null,
+    val id: Long = 0L,
+    var height: Int = 0,
+    val url: String = "",
     val photographer: String = "",
     val categoryName: String = "",
     var isFavorite: Boolean = false,

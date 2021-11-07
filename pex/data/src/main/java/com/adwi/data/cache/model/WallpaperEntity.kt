@@ -1,20 +1,7 @@
-package com.adwi.data.database.model
+package com.adwi.data.cache.model
 
+import com.adwi.data.cache.WallpaperEntity
 import com.adwi.domain.Wallpaper
-
-data class WallpaperEntity(
-    val id: Int = 0,
-    var height: Int? = null,
-    val url: String? = null,
-    val photographer: String = "",
-    val photographerUrl: String? = null,
-    val categoryName: String = "",
-    var isFavorite: Boolean = false,
-    val updatedAt: Long = System.currentTimeMillis(),
-    val imageUrlPortrait: String = "",
-    val imageUrlLandscape: String = "",
-    val imageUrlTiny: String = ""
-)
 
 fun Wallpaper.toEntity() =
     WallpaperEntity(
@@ -30,7 +17,7 @@ fun Wallpaper.toEntity() =
         imageUrlTiny = imageUrlTiny
     )
 
-fun WallpaperEntity.toEntity() =
+fun WallpaperEntity.toDomain() =
     Wallpaper(
         id = id,
         height = height,

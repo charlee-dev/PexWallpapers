@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WallpaperDto(
     val id: Int,
-    val width: Int?,
-    val height: Int?,
+    val width: Int,
+    val height: Int,
     @SerialName("url")
-    val pexUrl: String?,
+    val pexUrl: String,
     val photographer: String,
     @SerialName("photographer_url")
     val photographerUrl: String?,
@@ -33,7 +33,7 @@ data class WallpaperDto(
 fun WallpaperDto.toDomainModel(
     categoryName: String
 ) = Wallpaper(
-    id = this.id,
+    id = this.id.toLong(),
     photographer = this.photographer,
     height = heights.random(),
     url = this.pexUrl,
