@@ -29,7 +29,7 @@ object Versions {
     const val serialization = "1.3.0"
 
     // Persistence
-    const val sqlDelight = "1.5.1"
+    const val sqlDelight = "1.5.2"
 
     // Hilt
     const val hilt = "2.38.1"

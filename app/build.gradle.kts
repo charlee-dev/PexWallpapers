@@ -56,7 +56,9 @@ android {
 
 dependencies {
 
-    api(project(Modules.USECASES))
+    implementation(project(Modules.DOMAIN))
+    implementation(project(Modules.CORE))
+    implementation(project(Modules.USECASES))
 
     addCoreDependencies()
     addDefaultComposeDependencies()

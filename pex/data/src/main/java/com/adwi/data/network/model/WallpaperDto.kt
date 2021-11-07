@@ -1,6 +1,5 @@
 package com.adwi.data.network.model
 
-import com.adwi.base.util.Constants
 import com.adwi.domain.Wallpaper
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -32,7 +31,7 @@ data class WallpaperDto(
 }
 
 fun WallpaperDto.toDomainModel(
-    categoryName: String = Constants.DEFAULT_CATEGORY
+    categoryName: String
 ) = Wallpaper(
     id = this.id,
     photographer = this.photographer,

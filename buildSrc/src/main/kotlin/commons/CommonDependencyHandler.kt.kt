@@ -30,13 +30,14 @@ fun DependencyHandler.addTestDependencies() {
 fun DependencyHandler.addCoreDependencies() {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.coreKtx)
-    implementation(Dependencies.material)
+//    implementation(Dependencies.material)
 }
 
 fun DependencyHandler.addDefaultComposeDependencies() {
     implementation(Dependencies.composeCompiler)
     implementation(Dependencies.composeActivity)
     implementation(Dependencies.composeUiUtil)
+    implementation(Dependencies.composeMaterial)
     implementation(Dependencies.composeMaterial3)
     implementation(Dependencies.composePreview)
     implementation(Dependencies.lifecycleRuntime)

@@ -1,1 +1,1 @@
-com.adwi.interactors
+com.adwi.usecases

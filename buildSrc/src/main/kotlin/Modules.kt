@@ -6,8 +6,8 @@ import kotlin.reflect.full.memberProperties
 object Modules {
 
     const val APP = ":app"
+    const val CORE = ":core"
     const val TEST_SHARED = ":test-shared"
-    const val BASE = ":base"
 
     const val PEX = ":pex"
     const val DATA = ":pex:data"
@@ -15,6 +15,7 @@ object Modules {
     const val USECASES = ":pex:usecases"
 
     const val FEATURES = ":features"
+    const val BASE = ":features:base"
     const val HOME = ":features:home"
     const val SEARCH = ":features:search"
     const val FAVORITES = ":features:favorites"

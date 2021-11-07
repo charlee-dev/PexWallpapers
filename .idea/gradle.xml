@@ -12,9 +12,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/base" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/base" />
             <option value="$PROJECT_DIR$/pex" />
             <option value="$PROJECT_DIR$/pex/data" />
             <option value="$PROJECT_DIR$/pex/domain" />
