@@ -14,8 +14,11 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
             <option value="$PROJECT_DIR$/buildSrc" />
-            <option value="$PROJECT_DIR$/data" />
-            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/pex" />
+            <option value="$PROJECT_DIR$/pex/data" />
+            <option value="$PROJECT_DIR$/pex/domain" />
+            <option value="$PROJECT_DIR$/pex/usecases" />
             <option value="$PROJECT_DIR$/test-shared" />
           </set>
         </option>

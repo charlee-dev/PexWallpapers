@@ -1,14 +1,11 @@
-import commons.*
+import commons.addHiltDependenciesBasic
 import dependencies.Dependencies
-import org.gradle.kotlin.dsl.implementation
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
-    kotlin(Plugins.SERIALIZATION) version Versions.kotlin
     id(Plugins.DAGGER_HILT)
-    id(Plugins.SQL_DELIGHT)
 }
 
 android {
@@ -24,13 +21,8 @@ android {
 
 dependencies {
 
-    api(project(Modules.base))
-    api(project(Modules.domain))
-
-    addNetworkDependencies()
-    addPersistenceDependencies()
+    implementation(project(Modules.data))
     addHiltDependenciesBasic()
-    addTestDependencies()
 
     implementation(Dependencies.coroutinesCore)
 }

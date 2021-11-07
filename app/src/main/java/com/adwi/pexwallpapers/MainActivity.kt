@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.adwi.base.util.Constants
+import com.adwi.interactors.baseUrl
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,8 +26,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column() {
                         Greeting("Android")
-                        Text(text = Constants.BASE_URL)
-                        Text(text = Constants.API_KEY)
+                        Text(text = baseUrl)
                     }
                 }
             }

@@ -7,8 +7,6 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
-//    id("kotlin-kapt")
-//    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -58,7 +56,7 @@ android {
 
 dependencies {
 
-    api(project(Modules.data))
+    api(project(Modules.usecases))
 
     addCoreDependencies()
     addDefaultComposeDependencies()

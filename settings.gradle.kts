@@ -19,7 +19,12 @@ rootProject.name = "PexWallpapers"
 include(
     ":app",
     ":base",
-    ":domain",
-    ":data",
-    ":test-shared"
+    ":test-shared",
+
+    ":pex",
+    ":pex:domain",
+    ":pex:data",
+    ":pex:usecases",
+
+    ":features",
 )
