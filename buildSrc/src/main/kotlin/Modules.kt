@@ -5,20 +5,20 @@ import kotlin.reflect.full.memberProperties
 @Suppress("unused")
 object Modules {
 
-    const val app = ":app"
-    const val testShared = ":test-shared"
-    const val base = ":base"
+    const val APP = ":app"
+    const val TEST_SHARED = ":test-shared"
+    const val BASE = ":base"
 
-    const val pex = ":pex"
-    const val data = ":pex:data"
-    const val domain = ":pex:domain"
-    const val usecases = ":pex:usecases"
+    const val PEX = ":pex"
+    const val DATA = ":pex:data"
+    const val DOMAIN = ":pex:domain"
+    const val USECASES = ":pex:usecases"
 
-    const val features = ":features"
-    const val home = ":features:home"
-    const val search = ":features:search"
-    const val favorites = ":features:favorites"
-    const val settings = ":features:settings"
+    const val FEATURES = ":features"
+    const val HOME = ":features:home"
+    const val SEARCH = ":features:search"
+    const val FAVORITES = ":features:favorites"
+    const val SETTINGS = ":features:settings"
 
     // False positive" function can be private"
     // See: https://youtrack.jetbrains.com/issue/KT-33610

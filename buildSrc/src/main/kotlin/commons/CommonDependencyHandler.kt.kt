@@ -1,8 +1,8 @@
 package commons
 
 import Modules
-import dependencies.TestDependencies
 import dependencies.Dependencies
+import dependencies.TestDependencies
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.project
@@ -13,7 +13,7 @@ Credit: https://github.com/igorwojda/android-showcase/blob/master/buildSrc/src/m
 Define common dependencies, so they can be easily updated across another modules
  */
 fun DependencyHandler.addTestDependencies() {
-    testImplementation(project(Modules.testShared))
+    testImplementation(project(Modules.TEST_SHARED))
 
     testImplementation(TestDependencies.test_core)
     testImplementation(TestDependencies.arch_core)

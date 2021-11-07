@@ -21,7 +21,7 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.data))
+    implementation(project(Modules.DATA))
     addHiltDependenciesBasic()
 
     implementation(Dependencies.coroutinesCore)

@@ -26,8 +26,8 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.base))
-    implementation(project(Modules.domain))
+    implementation(project(Modules.BASE))
+    implementation(project(Modules.DOMAIN))
 
     addNetworkDependencies()
     addPersistenceDependencies()

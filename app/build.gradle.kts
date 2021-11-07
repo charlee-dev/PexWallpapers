@@ -56,7 +56,7 @@ android {
 
 dependencies {
 
-    api(project(Modules.usecases))
+    api(project(Modules.USECASES))
 
     addCoreDependencies()
     addDefaultComposeDependencies()
