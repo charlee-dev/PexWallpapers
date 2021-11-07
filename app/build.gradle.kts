@@ -1,6 +1,7 @@
 import commons.addCoreDependencies
 import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
+import dependencies.Dependencies
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -63,4 +64,6 @@ dependencies {
     addCoreDependencies()
     addDefaultComposeDependencies()
     addHiltDependenciesBasic()
+
+    implementation(Dependencies.sqlDelightAndroidDriver)
 }
