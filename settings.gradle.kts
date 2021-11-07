@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":features:home")
+
+
 
 pluginManagement {
     repositories {

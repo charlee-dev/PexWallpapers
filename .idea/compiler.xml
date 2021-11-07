@@ -12,6 +12,7 @@
       <module name="PexWallpapers.feature-home" target="11" />
       <module name="PexWallpapers.feature_home" target="11" />
       <module name="PexWallpapers.features.base" target="11" />
+      <module name="PexWallpapers.features.home" target="11" />
       <module name="PexWallpapers.pex.data" target="11" />
       <module name="PexWallpapers.pex.usecases" target="11" />
       <module name="PexWallpapers.test-shared" target="11" />

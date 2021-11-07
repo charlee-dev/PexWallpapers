@@ -43,7 +43,8 @@ fun DependencyHandler.addDefaultComposeDependencies() {
     implementation(Dependencies.lifecycleRuntime)
 }
 
-fun DependencyHandler.addComposeDependencies() {
+fun DependencyHandler.addAllComposeDependencies() {
+    addDefaultComposeDependencies()
     implementation(Dependencies.composeUi)
     implementation(Dependencies.composeMaterialIcons)
     implementation(Dependencies.composeTooling)
