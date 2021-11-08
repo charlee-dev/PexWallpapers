@@ -11,6 +11,7 @@ buildscript {
         classpath(Build.jUnit5)
         classpath(Build.hilt)
         classpath(Build.sqlDelight)
+        classpath(Build.serialization)
     }
 }
 

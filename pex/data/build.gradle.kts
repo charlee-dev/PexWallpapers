@@ -7,6 +7,7 @@ plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
+    kotlin(Plugins.SERIALIZATION)
     id(Plugins.DAGGER_HILT)
     id(Plugins.SQL_DELIGHT)
 }
