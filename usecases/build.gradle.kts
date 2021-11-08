@@ -21,7 +21,6 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.DOMAIN))
     implementation(project(Modules.CORE))
     implementation(project(Modules.DATA))
     addHiltDependenciesBasic()

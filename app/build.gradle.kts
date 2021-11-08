@@ -1,5 +1,3 @@
-import commons.addCoreDependencies
-import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
 import dependencies.Dependencies
 
@@ -57,17 +55,10 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
     implementation(project(Modules.BASE))
-    implementation(project(Modules.COMPOSABLES))
-    implementation(project(Modules.USECASES))
-
+    implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.HOME))
 
-
-
-    addCoreDependencies()
-    addDefaultComposeDependencies()
     addHiltDependenciesBasic()
 
     implementation(Dependencies.sqlDelightAndroidDriver)

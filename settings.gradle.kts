@@ -22,7 +22,7 @@ include(
     ":core",
     ":base",
     ":domain",
-    ":composables",
+    ":components",
     ":test-shared",
 
     ":data",

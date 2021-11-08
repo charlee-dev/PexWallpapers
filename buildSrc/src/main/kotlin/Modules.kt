@@ -6,7 +6,7 @@ object Modules {
     const val APP = ":app"
     const val CORE = ":core"
     const val BASE = ":base"
-    const val COMPOSABLES = ":composables"
+    const val COMPONENTS = ":components"
     const val DOMAIN = ":domain"
     const val TEST_SHARED = ":test-shared"
 

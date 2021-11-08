@@ -1,3 +1,5 @@
+import dependencies.Dependencies
+
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
@@ -13,4 +15,6 @@ android {
 
 dependencies {
     api(project(Modules.DOMAIN))
+
+    api(Dependencies.timber)
 }
