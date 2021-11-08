@@ -39,6 +39,7 @@ class GetCuratedWallpapers(
             wallpapers.forEach {
                 cache.insertCurated(it.toCuratedEntity())
                 cache.insertWallpaper(it)
+                logger.log(it.photographer)
             }
 
             val cachedCurated = cache.getAllWallpapers()
