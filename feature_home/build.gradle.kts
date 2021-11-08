@@ -1,10 +1,10 @@
 import commons.addCoreDependencies
 import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
-import dependencies.Dependencies
+import commons.addTestDependencies
 
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
+    id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
@@ -14,16 +14,10 @@ android {
     compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        applicationId = AndroidConfig.id
         minSdk = AndroidConfig.minSdk
         targetSdk = AndroidConfig.targetSdk
-        versionCode = AndroidConfig.versionCode
-        versionName = AndroidConfig.versionName
 
         testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -36,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -58,17 +52,11 @@ android {
 dependencies {
 
     implementation(project(Modules.CORE))
-    implementation(project(Modules.BASE))
-    implementation(project(Modules.COMPOSABLES))
     implementation(project(Modules.USECASES))
-
-    implementation(project(Modules.HOME))
-
-
 
     addCoreDependencies()
     addDefaultComposeDependencies()
     addHiltDependenciesBasic()
+    addTestDependencies()
 
-    implementation(Dependencies.sqlDelightAndroidDriver)
 }

@@ -5,6 +5,12 @@
       <map>
         <entry key="../../../../layout/compose-model-1636204919367.xml" value="0.5684121621621622" />
         <entry key="../../../../layout/compose-model-1636205051807.xml" value="0.5684121621621622" />
+        <entry key="../../../../layout/compose-model-1636325004855.xml" value="0.8766937669376694" />
+        <entry key="../../../../layout/compose-model-1636385816618.xml" value="0.45734797297297297" />
+        <entry key="core/src/main/res/drawable/ic_image.xml" value="0.3695" />
+        <entry key="core/src/main/res/drawable/ic_phone.xml" value="0.3695" />
+        <entry key="core/src/main/res/drawable/ic_share.xml" value="0.3695" />
+        <entry key="features/home/src/main/res/drawable/ic_share.xml" value="0.1515" />
       </map>
     </option>
   </component>

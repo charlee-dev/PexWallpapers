@@ -1,12 +1,12 @@
 package com.adwi.usecases
 
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+//import dagger.Module
+//import dagger.hilt.InstallIn
+//import dagger.hilt.components.SingletonComponent
 
-@Module
-@InstallIn(SingletonComponent::class)
-object UseCasesModule {
+//@Module
+//@InstallIn(SingletonComponent::class)
+//object UseCasesModule {
 
 //    @Singleton
 //    @Provides
@@ -24,4 +24,4 @@ object UseCasesModule {
 //        service: PexService,
 //        logger: Logger
 //    ) = GetCuratedWallpapers(service, logger)
-}
+//}

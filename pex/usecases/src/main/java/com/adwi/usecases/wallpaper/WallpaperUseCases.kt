@@ -24,5 +24,9 @@ data class WallpaperUseCases(
                 ),
             )
         }
+
+        val schema: SqlDriver.Schema = WallpaperCache.schema
+
+        val dbName: String = WallpaperCache.dbName
     }
 }

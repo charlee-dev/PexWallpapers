@@ -12,4 +12,5 @@ android {
 }
 
 dependencies {
+    api(project(Modules.DOMAIN))
 }
