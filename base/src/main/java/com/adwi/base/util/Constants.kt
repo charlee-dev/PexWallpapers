@@ -1,7 +1,28 @@
 package com.adwi.base.util
 
+import com.adwi.base.BuildConfig
+
 
 object Constants {
+
+    // PexService
+
+    const val BASE_URL = BuildConfig.PEX_BASE_URL
+    const val API_KEY = BuildConfig.PEX_API_ACCESS_KEY
+
+    const val CURATED_URL = "v1/curated"
+    const val SEARCH_URL = "v1/search"
+
+    const val PARAM_PAGE = "page"
+    const val PARAM_PER_PAGE = "per_page"
+
+    const val CURATED_PER_PAGE_VALUE = 20
+    const val SEARCH_PAGE_SIZE = 20
+    const val COLORS_PAGE_SIZE = 4
+    const val DAILY_PAGE_SIZE = 31
+
+    const val DEFAULT_PAGE_NUMBER = 1
+    const val DEFAULT_CATEGORY = "Curated"
 
     // Pager
     const val PAGING_SIZE = 20
