@@ -6,8 +6,10 @@ import com.adwi.data.cache.WallpaperDbQueries
 import com.adwi.data.cache.wallpaper.model.toDomain
 import com.adwi.domain.Wallpaper
 
+private const val TAG = "WallpaperCacheImpl"
+
 class WallpaperCacheImpl(
-    private val wallpaperDb: WallpaperDb
+    wallpaperDb: WallpaperDb
 ) : WallpaperCache {
 
     private var queries: WallpaperDbQueries = wallpaperDb.wallpaperDbQueries
