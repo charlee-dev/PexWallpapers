@@ -1,4 +1,4 @@
-package com.adwi.camposables
+package com.adwi.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.camposables.PexCoilImage
 import com.adwi.core.domain.ProgressBarState
 import com.adwi.core.domain.WallpaperListState
 import com.valentinilk.shimmer.shimmer

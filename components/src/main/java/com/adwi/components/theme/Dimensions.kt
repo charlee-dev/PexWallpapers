@@ -1,4 +1,4 @@
-package com.adwi.camposables
+package com.adwi.components.theme
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape

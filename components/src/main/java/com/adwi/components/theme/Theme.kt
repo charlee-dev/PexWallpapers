@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.ui.theme
+package com.adwi.components.theme
 
 import android.app.Activity
 import android.os.Build

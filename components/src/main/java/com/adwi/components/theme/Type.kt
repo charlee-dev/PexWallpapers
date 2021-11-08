@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.ui.theme
+package com.adwi.components.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
