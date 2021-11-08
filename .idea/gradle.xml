@@ -16,12 +16,11 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/composables" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature_home" />
-            <option value="$PROJECT_DIR$/pex" />
-            <option value="$PROJECT_DIR$/pex/data" />
-            <option value="$PROJECT_DIR$/pex/usecases" />
             <option value="$PROJECT_DIR$/test-shared" />
+            <option value="$PROJECT_DIR$/usecases" />
           </set>
         </option>
       </GradleProjectSettings>

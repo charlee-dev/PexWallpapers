@@ -10,9 +10,8 @@ object Modules {
     const val DOMAIN = ":domain"
     const val TEST_SHARED = ":test-shared"
 
-    const val PEX = ":pex"
-    const val DATA = ":pex:data"
-    const val USECASES = ":pex:usecases"
+    const val DATA = ":data"
+    const val USECASES = ":usecases"
 
     const val HOME = ":feature_home"
 //    const val SEARCH = ":feature_search"

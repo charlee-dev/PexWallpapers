@@ -25,9 +25,8 @@ include(
     ":composables",
     ":test-shared",
 
-    ":pex",
-    ":pex:data",
-    ":pex:usecases",
+    ":data",
+    ":usecases",
 
     ":feature_home",
 //    ":feature_search",
