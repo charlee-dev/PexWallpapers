@@ -1,28 +1,20 @@
 package com.adwi.data.network.service
 
-import com.adwi.base.BuildConfig
+import com.adwi.base.util.Constants.API_KEY
+import com.adwi.base.util.Constants.BASE_URL
+import com.adwi.base.util.Constants.CURATED_PER_PAGE_VALUE
+import com.adwi.base.util.Constants.CURATED_URL
+import com.adwi.base.util.Constants.DEFAULT_CATEGORY
+import com.adwi.base.util.Constants.DEFAULT_PAGE_NUMBER
+import com.adwi.base.util.Constants.PARAM_PAGE
+import com.adwi.base.util.Constants.PARAM_PER_PAGE
 import com.adwi.data.network.model.WallpaperResponse
 import com.adwi.data.network.model.toDomainModel
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-const val BASE_URL = BuildConfig.PEX_BASE_URL
-const val API_KEY = BuildConfig.PEX_API_ACCESS_KEY
 
-const val CURATED_URL = "v1/curated"
-const val SEARCH_URL = "v1/search"
-
-const val PARAM_PAGE = "page"
-const val PARAM_PER_PAGE = "per_page"
-
-const val CURATED_PER_PAGE_VALUE = 20
-const val SEARCH_PAGE_SIZE = 20
-const val COLORS_PAGE_SIZE = 4
-const val DAILY_PAGE_SIZE = 31
-
-const val DEFAULT_PAGE_NUMBER = 1
-const val DEFAULT_CATEGORY = "Curated"
 
 class PexServiceImpl(
     private val httpClient: HttpClient
