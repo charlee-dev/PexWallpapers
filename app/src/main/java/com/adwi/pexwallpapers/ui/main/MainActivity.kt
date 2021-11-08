@@ -29,9 +29,7 @@ class MainActivity : BaseActivity() {
 
     override val viewModel: MainViewModel by viewModels()
 
-    override fun init() {
-        TODO("Not yet implemented")
-    }
+    override fun init() {}
 
     override fun setContent() {
         setContent {

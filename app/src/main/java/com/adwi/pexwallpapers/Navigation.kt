@@ -99,8 +99,8 @@ fun NavGraphBuilder.addHomeGraph(
 
         HomeScreen(
             viewModel = viewModel,
-//            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
-//            onCategoryClick = onCategoryClick
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
+            onCategoryClick = onCategoryClick
         )
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->

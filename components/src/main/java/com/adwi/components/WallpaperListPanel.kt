@@ -7,13 +7,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -90,19 +87,6 @@ fun WallpaperListPanel(
     }
 }
 
-@Composable
-fun CategoryTitle(
-    modifier: Modifier = Modifier,
-    name: String
-) {
-    Text(
-        text = name,
-        style = MaterialTheme.typography.h3
-            .merge(TextStyle(color = MaterialTheme.colors.onBackground)),
-        modifier = modifier.padding(vertical = paddingValues / 2)
-    )
-}
-
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
@@ -129,27 +113,5 @@ private fun WallpaperItem(
                 modifier = Modifier.fillMaxSize()
             )
         }
-    }
-}
-
-@ExperimentalMaterialApi
-
-@Preview(showBackground = true)
-@Composable
-fun CategoryTitlePreview() {
-    MaterialTheme {
-        CategoryTitle(
-            name = "Colors"
-        )
-    }
-}
-
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@Preview(showBackground = true)
-@Composable
-fun CategoryItemPreview() {
-    MaterialTheme {
-        WallpaperItem()
     }
 }
