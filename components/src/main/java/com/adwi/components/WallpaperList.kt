@@ -1,4 +1,4 @@
-package com.adwi.camposables
+package com.adwi.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

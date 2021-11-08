@@ -30,31 +30,40 @@ fun DependencyHandler.addTestDependencies() {
 fun DependencyHandler.addCoreDependencies() {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.coreKtx)
-//    implementation(Dependencies.material)
 }
 
 fun DependencyHandler.addDefaultComposeDependencies() {
-    implementation(Dependencies.composeCompiler)
-    implementation(Dependencies.composeActivity)
-    implementation(Dependencies.composeUiUtil)
-    implementation(Dependencies.composeMaterial)
-    implementation(Dependencies.composeMaterial3)
-    implementation(Dependencies.composePreview)
-    implementation(Dependencies.lifecycleRuntime)
+    api(Dependencies.composeCompiler)
+    api(Dependencies.composeActivity)
+    api(Dependencies.composeUiUtil)
+    api(Dependencies.composeMaterial)
+    api(Dependencies.composeMaterial3)
+    api(Dependencies.composePreview)
+    api(Dependencies.lifecycleRuntime)
 }
 
 fun DependencyHandler.addComposeDependencies() {
     addDefaultComposeDependencies()
-    implementation(Dependencies.composeUi)
-    implementation(Dependencies.composeMaterialIcons)
-    implementation(Dependencies.composeTooling)
-    implementation(Dependencies.composeFoundation)
-    implementation(Dependencies.composeFoundationLayout)
-    implementation(Dependencies.composeAnimation)
-    implementation(Dependencies.composeRuntime)
-    implementation(Dependencies.composeNavigation)
-    implementation(Dependencies.composeWork)
-    implementation(Dependencies.composePaging)
+    api(Dependencies.composeUi)
+    api(Dependencies.composeMaterialIcons)
+    api(Dependencies.composeTooling)
+    api(Dependencies.composeFoundation)
+    api(Dependencies.composeFoundationLayout)
+    api(Dependencies.composeAnimation)
+    api(Dependencies.composeRuntime)
+    api(Dependencies.composeNavigation)
+    api(Dependencies.composeWork)
+    api(Dependencies.composePaging)
+}
+
+fun DependencyHandler.addHelpersDependencies() {
+    api(Dependencies.accompanistCoil)
+    api(Dependencies.accompanistInsets)
+    api(Dependencies.shimmer)
+    api(Dependencies.lottie)
+    api(Dependencies.accompanistPager)
+    api(Dependencies.accompanistPagerIndicators)
+    api(Dependencies.accompanistPlaceholder)
 }
 
 fun DependencyHandler.addNetworkDependencies() {
@@ -73,6 +82,11 @@ fun DependencyHandler.addPersistenceDependencies() {
 fun DependencyHandler.addHiltDependenciesBasic() {
     implementation(Dependencies.hiltCore)
     kapt(Dependencies.hiltCompiler)
+}
+
+fun DependencyHandler.addHiltDependenciesExtended() {
+    implementation(Dependencies.hiltLifecycleViewModel)
+    implementation(Dependencies.hiltNavigationCompose)
 }
 
 /*

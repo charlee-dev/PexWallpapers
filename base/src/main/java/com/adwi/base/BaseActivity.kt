@@ -1,7 +1,7 @@
 package com.adwi.base
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -9,7 +9,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : ComponentActivity() {
 
     protected abstract val viewModel: BaseViewModel?
 

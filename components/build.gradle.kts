@@ -1,6 +1,6 @@
 import commons.addComposeDependencies
 import commons.addCoreDependencies
-import dependencies.Dependencies
+import commons.addHelpersDependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -30,11 +30,5 @@ dependencies {
 
     addCoreDependencies()
     addComposeDependencies()
-
-    implementation(Dependencies.accompanistCoil)
-    implementation(Dependencies.shimmer)
-    implementation(Dependencies.lottie)
-    implementation(Dependencies.accompanistPager)
-    implementation(Dependencies.accompanistPagerIndicators)
-    implementation(Dependencies.accompanistPlaceholder)
+    addHelpersDependencies()
 }

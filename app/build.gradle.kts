@@ -1,4 +1,5 @@
 import commons.addHiltDependenciesBasic
+import commons.addHiltDependenciesExtended
 import dependencies.Dependencies
 
 plugins {
@@ -60,6 +61,10 @@ dependencies {
     implementation(project(Modules.HOME))
 
     addHiltDependenciesBasic()
+    addHiltDependenciesExtended()
 
     implementation(Dependencies.sqlDelightAndroidDriver)
+
+//    implementation(Dependencies.hiltWorkCore)
+//    kapt(Dependencies.hiltWorkCompiler)
 }
