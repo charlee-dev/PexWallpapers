@@ -45,18 +45,16 @@ object Dependencies {
     const val composePaging = "androidx.paging:paging-compose:${Versions.pagingCompose}"
 
     // Network
-    const val ktorCore = "io.ktor:ktor-client-core:${Versions.ktor}"
-    const val ktorClientSerialization = "io.ktor:ktor-client-serialization:${Versions.ktor}"
-    const val ktorAndroid = "io.ktor:ktor-client-android:${Versions.ktor}"
-    const val ktorLogging = "io.ktor:ktor-client-logging:${Versions.ktor}"
-    const val serialization =
-        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serialization}"
-    const val ktorClientMock = "io.ktor:ktor-client-mock:${Versions.ktor}"
+    const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+    const val gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
+    const val okHttp = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
+    const val sandwich = "com.github.skydoves:sandwich:${Versions.sandwich}"
 
     // Persistence
-    const val sqlDelightRuntime = "com.squareup.sqldelight:runtime:${Versions.sqlDelight}"
-    const val sqlDelightAndroidDriver =
-        "com.squareup.sqldelight:android-driver:${Versions.sqlDelight}"
+    const val room = "androidx.room:room-ktx:${Versions.room}"
+    const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
+    const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
+    const val roomPaging = "androidx.paging:paging-common-ktx:${Versions.paging}"
 
     // Hilt
     const val hiltCore = "com.google.dagger:hilt-android:${Versions.hilt}"

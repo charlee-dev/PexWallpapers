@@ -81,7 +81,7 @@ class PexAppState(
         }
     }
 
-    fun navigateToPreview(wallpaperId: Long, from: NavBackStackEntry) {
+    fun navigateToPreview(wallpaperId: Int, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.WALLPAPER_PREVIEW_ROUTE}/$wallpaperId")
         }

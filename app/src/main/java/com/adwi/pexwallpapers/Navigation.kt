@@ -29,7 +29,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 fun NavGraphBuilder.myNavGraph(
-    onWallpaperClick: (Long, NavBackStackEntry) -> Unit,
+    onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit,
     onSetWallpaperClick: (Long, NavBackStackEntry) -> Unit,
     upPress: () -> Unit
@@ -89,7 +89,7 @@ fun NavGraphBuilder.myNavGraph(
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 fun NavGraphBuilder.addHomeGraph(
-    onWallpaperClick: (Long, NavBackStackEntry) -> Unit,
+    onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->

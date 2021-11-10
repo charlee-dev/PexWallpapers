@@ -1,6 +1,5 @@
 import commons.addHiltDependenciesBasic
 import commons.addHiltDependenciesExtended
-import dependencies.Dependencies
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -54,16 +53,19 @@ android {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 dependencies {
 
-    implementation(project(Modules.BASE))
     implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.HOME))
 
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()
 
-    implementation(Dependencies.sqlDelightAndroidDriver)
+//    implementation(Dependencies.sqlDelightAndroidDriver)
 
 //    implementation(Dependencies.hiltWorkCore)
 //    kapt(Dependencies.hiltWorkCompiler)

@@ -10,8 +10,7 @@ buildscript {
         classpath(Build.kotlin)
         classpath(Build.jUnit5)
         classpath(Build.hilt)
-        classpath(Build.sqlDelight)
-        classpath(Build.serialization)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     }
 }
 

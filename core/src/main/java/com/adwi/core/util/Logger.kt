@@ -1,5 +1,7 @@
 package com.adwi.core.util
 
+import timber.log.Timber
+
 class Logger(
     private val tag: String = "",
     private val isDebug: Boolean = true,
@@ -8,7 +10,7 @@ class Logger(
         if (!isDebug) {
             // production logging - Crashlytics or whatever you want to use
         } else {
-            printLogD(tag, msg)
+            Timber.tag(tag).d(msg)
         }
     }
 
@@ -27,8 +29,4 @@ class Logger(
             )
         }
     }
-}
-
-fun printLogD(tag: String?, message: String) {
-    println("$tag: $message")
 }

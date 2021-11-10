@@ -2,20 +2,31 @@ package com.adwi.home
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.adwi.base.BaseViewModel
+import androidx.lifecycle.viewModelScope
+import com.adwi.core.base.BaseViewModel
 import com.adwi.core.domain.WallpaperListState
+import com.adwi.core.util.Logger
+import com.adwi.datasource.local.domain.toDomain
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
+import com.adwi.interactors.wallpaper.usecases.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-
+    private val wallpaperRepository: WallpaperRepository,
+//    private val savedStateHandle: SavedStateHandle,
+    private val logger: Logger
 ) : BaseViewModel() {
 
-    val state: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
+    val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 
     val dailyWallpaper = MutableStateFlow(Wallpaper())
 
@@ -23,17 +34,22 @@ class HomeViewModel @Inject constructor(
 
     val wallpaperList = MutableStateFlow<List<Wallpaper>>(emptyList())
 
-//        val getCurated = WallpaperUseCases.build(
-//            sqlDriver = AndroidSqliteDriver(
-//                schema = WallpaperUseCases.schema,
-//                context = this,
-//                name = WallpaperUseCases.dbName,
-//            )
-//        ).getCuratedWallpapers
-//
-//        val logger = Logger("GetCuratedWallpapers")
-//
-//        getCurated.execute().onEach { dataState ->
+    init {
+        getCurated()
+    }
+
+    private fun getCurated() {
+        viewModelScope.launch(Dispatchers.IO) {
+            wallpaperRepository.getCurated(
+                onFetchRemoteFailed = {},
+                onFetchSuccess = {}
+            ).collect { resource ->
+                wallpaperList.value = resource.data?.map { wallpaperEntity ->
+                    wallpaperEntity.toDomain()
+                } ?: listOf()
+            }
+        }
+//        getCuratedWallpapers.execute().onEach { dataState ->
 //            when (dataState) {
 //                is DataState.Response -> {
 //                    when (dataState.uiComponent) {
@@ -46,11 +62,14 @@ class HomeViewModel @Inject constructor(
 //                    }
 //                }
 //                is DataState.Data -> {
-//                    state.value = state.value.copy(wallpapers = dataState.data ?: listOf())
+//                    curatedState.value =
+//                        curatedState.value.copy(wallpapers = dataState.data ?: listOf())
 //                }
 //                is DataState.Loading -> {
-//                    state.value = state.value.copy(progressBarState = dataState.progressBarState)
+//                    curatedState.value =
+//                        curatedState.value.copy(progressBarState = dataState.progressBarState)
 //                }
 //            }
 //        }.launchIn(CoroutineScope(Dispatchers.IO))
+    }
 }

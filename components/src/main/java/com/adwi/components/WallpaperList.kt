@@ -51,7 +51,7 @@ fun WallpaperList(
 @Composable
 fun WallpaperListItem(
     wallpaper: Wallpaper,
-    onSelectHero: (Long) -> Unit,
+    onSelectHero: (Int) -> Unit,
     // imageLoader: ImageLoader, // TODO
 ) {
     Surface(

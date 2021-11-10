@@ -5,13 +5,13 @@ object Modules {
 
     const val APP = ":app"
     const val CORE = ":core"
-    const val BASE = ":base"
     const val COMPONENTS = ":components"
-    const val DOMAIN = ":domain"
     const val TEST_SHARED = ":test-shared"
 
-    const val DATA = ":data"
-    const val USECASES = ":usecases"
+    const val PEX = ":pex"
+    const val DOMAIN = ":pex:domain"
+    const val DATASOURCE = ":pex:datasource"
+    const val INTERACTORS = ":pex:interactors"
 
     const val HOME = ":feature_home"
 //    const val SEARCH = ":feature_search"

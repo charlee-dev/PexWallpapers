@@ -51,12 +51,14 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.BASE))
+    implementation(project(Modules.CORE))
     implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.USECASES)) // may change implementation to api later if needed in app module
+    api(project(Modules.INTERACTORS)) // may change implementation to api later if needed in app module
 
     addCoreDependencies()
     addDefaultComposeDependencies()
     addHiltDependenciesBasic()
     addTestDependencies()
+
+
 }

@@ -20,13 +20,13 @@ include(
     ":app",
 
     ":core",
-    ":base",
-    ":domain",
     ":components",
-    ":test-shared",
+//    ":test-shared",
 
-    ":data",
-    ":usecases",
+    ":pex",
+    ":pex:domain",
+    ":pex:datasource",
+    ":pex:interactors",
 
     ":feature_home",
 //    ":feature_search",

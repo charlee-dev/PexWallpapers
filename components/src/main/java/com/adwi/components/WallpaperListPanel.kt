@@ -57,7 +57,7 @@ fun WallpaperListPanel(
     modifier: Modifier = Modifier,
     state: WallpaperListState = WallpaperListState(),
     categoryName: String = "",
-    onWallpaperClick: (Long) -> Unit = {}
+    onWallpaperClick: (Int) -> Unit = {}
 ) {
     Column(modifier = modifier) {
         CategoryTitle(

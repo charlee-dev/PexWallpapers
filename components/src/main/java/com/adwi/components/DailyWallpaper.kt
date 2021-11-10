@@ -28,7 +28,7 @@ fun DailyWallpaper(
     placeholder: Int = R.drawable.daily_picture,
     elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,
-    onWallpaperClick: (Long) -> Unit
+    onWallpaperClick: (Int) -> Unit
 ) {
     BoxWithConstraints(
         modifier = modifier
