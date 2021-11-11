@@ -1,6 +1,12 @@
-package com.adwi.domain
+package com.adwi.datasource.local.domain
 
-data class ColorCategory(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.adwi.domain.ColorCategory
+
+@Entity(tableName = "colors_table")
+data class ColorCategoryEntity(
+    @PrimaryKey(autoGenerate = false)
     val name: String = "",
     val firstImage: String = "",
     val secondImage: String = "",
@@ -18,3 +24,13 @@ data class ColorCategory(
         )
     }
 }
+
+fun ColorCategory.toEntity() =
+    ColorCategoryEntity(
+        name, firstImage, secondImage, thirdImage, forthImage, timeStamp
+    )
+
+fun ColorCategoryEntity.toDomain() =
+    ColorCategory(
+        name, firstImage, secondImage, thirdImage, forthImage, timeStamp
+    )

@@ -9,10 +9,15 @@ object Constants {
     const val BASE_URL = BuildConfig.PEX_BASE_URL
     const val API_KEY = BuildConfig.PEX_API_ACCESS_KEY
     const val AUTHORIZATION = "Authorization"
+
+    const val DAILY_PAGE_SIZE = 31
+    const val COLORS_PAGE_SIZE = 4
     const val CURATED_PAGE_SIZE = 20
     const val SEARCH_PAGE_SIZE = 20
+
     const val DEFAULT_QUERY = "Flowers"
     const val DEFAULT_CATEGORY = "Curated"
+    const val DEFAULT_DAILY_CATEGORY = "Purple Orange"
 
     // Pager
     const val PAGING_SIZE = 20

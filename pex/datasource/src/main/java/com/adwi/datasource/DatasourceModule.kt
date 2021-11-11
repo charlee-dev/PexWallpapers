@@ -44,6 +44,16 @@ object DatasourceModule {
 
     @Provides
     @Singleton
+    fun provideDailyDao(appDatabase: WallpaperDatabase) =
+        appDatabase.dailyDao()
+
+    @Provides
+    @Singleton
+    fun provideCategoryDao(appDatabase: WallpaperDatabase) =
+        appDatabase.categoryDao()
+
+    @Provides
+    @Singleton
     fun provideSearchDao(appDatabase: WallpaperDatabase) =
         appDatabase.searchDao()
 

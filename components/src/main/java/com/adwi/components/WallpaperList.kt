@@ -18,8 +18,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.adwi.camposables.test.TAG_HERO_NAME
 import com.adwi.camposables.test.TAG_HERO_PRIMARY_ATTRIBUTE
+import com.adwi.components.domain.WallpaperListState
 import com.adwi.core.domain.ProgressBarState
-import com.adwi.core.domain.WallpaperListState
 import com.adwi.domain.Wallpaper
 
 @Composable

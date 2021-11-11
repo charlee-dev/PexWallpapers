@@ -30,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -53,11 +53,11 @@ dependencies {
 
     implementation(project(Modules.CORE))
     implementation(project(Modules.COMPONENTS))
-    api(project(Modules.INTERACTORS)) // may change implementation to api later if needed in app module
+    api(project(Modules.INTERACTORS))
 
     addCoreDependencies()
-    addDefaultComposeDependencies()
     addHiltDependenciesBasic()
+    addDefaultComposeDependencies()
     addTestDependencies()
 
 

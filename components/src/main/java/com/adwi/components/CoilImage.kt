@@ -1,4 +1,4 @@
-package com.adwi.camposables
+package com.adwi.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +26,7 @@ fun PexCoilImage(
             }
         ),
         contentDescription = contentDescription,
+        contentScale = ContentScale.Crop,
         modifier = modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
     )
 }

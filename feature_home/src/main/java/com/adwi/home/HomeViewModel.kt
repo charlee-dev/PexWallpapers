@@ -3,73 +3,113 @@ package com.adwi.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.adwi.components.domain.ColorsState
+import com.adwi.components.domain.DailyState
+import com.adwi.components.domain.WallpaperListState
+import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.domain.WallpaperListState
+import com.adwi.core.domain.DataState
+import com.adwi.core.util.CalendarUtil
 import com.adwi.core.util.Logger
 import com.adwi.datasource.local.domain.toDomain
-import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.wallpaper.usecases.WallpaperRepository
+import com.adwi.interactors.wallpaper.WallpaperInteractors
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val wallpaperRepository: WallpaperRepository,
+    private val interactors: WallpaperInteractors,
 //    private val savedStateHandle: SavedStateHandle,
-    private val logger: Logger
+    private val logger: Logger,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
+    val dailyState: MutableState<DailyState> = mutableStateOf(DailyState())
+    val colorsState: MutableState<ColorsState> = mutableStateOf(ColorsState())
     val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 
-    val dailyWallpaper = MutableStateFlow(Wallpaper())
-
-    val colorList = MutableStateFlow<List<ColorCategory>>(emptyList())
-
-    val wallpaperList = MutableStateFlow<List<Wallpaper>>(emptyList())
-
     init {
+        getDaily()
+        getColors()
         getCurated()
     }
 
-    private fun getCurated() {
-        viewModelScope.launch(Dispatchers.IO) {
-            wallpaperRepository.getCurated(
-                onFetchRemoteFailed = {},
-                onFetchSuccess = {}
-            ).collect { resource ->
-                wallpaperList.value = resource.data?.map { wallpaperEntity ->
-                    wallpaperEntity.toDomain()
-                } ?: listOf()
+    private fun getDaily() {
+//        onDispatcher(ioDispatcher) {
+        interactors.getDaily.execute().onEach { resource ->
+            when (resource) {
+                is DataState.Error -> {
+                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
+                }
+                is DataState.Success -> {
+                    dailyState.value =
+                        dailyState.value.copy(
+                            wallpaper = getTodayDaily(
+                                list = resource.data?.map { it.toDomain() } ?: listOf()
+                            )
+                        )
+                }
+                is DataState.Loading -> {
+                    dailyState.value =
+                        dailyState.value.copy(progressBarState = resource.progressBarState)
+                }
             }
-        }
-//        getCuratedWallpapers.execute().onEach { dataState ->
-//            when (dataState) {
-//                is DataState.Response -> {
-//                    when (dataState.uiComponent) {
-//                        is UIComponent.Dialog -> {
-//                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
-//                        }
-//                        is UIComponent.None -> {
-//                            logger.log((dataState.uiComponent as UIComponent.None).message)
-//                        }
-//                    }
-//                }
-//                is DataState.Data -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(wallpapers = dataState.data ?: listOf())
-//                }
-//                is DataState.Loading -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(progressBarState = dataState.progressBarState)
-//                }
-//            }
-//        }.launchIn(CoroutineScope(Dispatchers.IO))
+        }.launchIn(viewModelScope)
+//        }
+    }
+
+    private fun getColors() {
+//        onDispatcher(ioDispatcher) {
+        interactors.getColors.execute().onEach { resource ->
+            when (resource) {
+                is DataState.Error -> {
+                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
+                }
+                is DataState.Success -> {
+                    colorsState.value =
+                        colorsState.value.copy(
+                            categories = resource.data?.map { it.toDomain() } ?: listOf()
+                        )
+                }
+                is DataState.Loading -> {
+                    colorsState.value =
+                        colorsState.value.copy(progressBarState = resource.progressBarState)
+                }
+            }
+        }.launchIn(viewModelScope)
+//        }
+    }
+
+    private fun getCurated() {
+//        onDispatcher(ioDispatcher) {
+        interactors.getCurated.execute().onEach { resource ->
+            when (resource) {
+                is DataState.Error -> {
+                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
+                }
+                is DataState.Success -> {
+                    curatedState.value =
+                        curatedState.value.copy(
+                            wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
+                        )
+                }
+                is DataState.Loading -> {
+                    curatedState.value =
+                        curatedState.value.copy(progressBarState = resource.progressBarState)
+                }
+            }
+        }.launchIn(viewModelScope)
+//        }
+    }
+
+    private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {
+        val day: Int = CalendarUtil.getDayOfMonthNumber()
+        return list[day]
     }
 }

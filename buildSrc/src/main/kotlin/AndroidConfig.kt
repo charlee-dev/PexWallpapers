@@ -1,6 +1,6 @@
 object AndroidConfig {
     const val id = "com.adwi.pexwallpapers"
-    const val minSdk = 23
+    const val minSdk = 26
     const val compileSdk = 31
     const val targetSdk = 31
     const val versionCode = 1

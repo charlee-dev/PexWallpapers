@@ -30,8 +30,8 @@ dependencies {
     api(project(Modules.DOMAIN))
 
     api(Dependencies.timber)
-    addCoreDependencies()
     addHiltDependenciesBasic()
+    addCoreDependencies()
 
     api(Dependencies.coroutinesCore)
     implementation(Dependencies.lifecycle)

@@ -11,4 +11,10 @@ data class Wallpaper(
     val imageUrlPortrait: String = "",
     val imageUrlLandscape: String = "",
     val imageUrlTiny: String = ""
-)
+) {
+    companion object {
+        val defaultDaily = Wallpaper(
+            imageUrlPortrait = "https://images.pexels.com/photos/2440061/pexels-photo-2440061.jpeg?cs=srgb&dl=pexels-ian-beckley-2440061.jpg&fm=jpg"
+        )
+    }
+}

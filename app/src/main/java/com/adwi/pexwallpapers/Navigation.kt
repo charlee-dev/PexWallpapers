@@ -95,8 +95,6 @@ fun NavGraphBuilder.addHomeGraph(
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
 
-//        viewModel.initData()
-
         HomeScreen(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },

@@ -10,6 +10,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.PexApp
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,10 +31,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PexWallpapersTheme {
-                PexApp(
-                    viewModel = viewModel
-                )
+            ProvideWindowInsets {
+                PexWallpapersTheme {
+                    PexApp(
+                        viewModel = viewModel
+                    )
+                }
             }
         }
     }

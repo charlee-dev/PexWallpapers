@@ -14,11 +14,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.camposables.PexCoilImage
+import com.adwi.components.domain.WallpaperListState
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.paddingValues
 import com.adwi.core.domain.ProgressBarState
-import com.adwi.core.domain.WallpaperListState
 import com.valentinilk.shimmer.shimmer
 
 @Composable

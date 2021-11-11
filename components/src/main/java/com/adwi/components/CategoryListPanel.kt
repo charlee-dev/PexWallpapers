@@ -22,9 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.camposables.PexCoilImage
+import com.adwi.components.domain.ColorsState
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.paddingValues
+import com.adwi.core.domain.ProgressBarState
 import com.adwi.domain.ColorCategory
 import com.valentinilk.shimmer.shimmer
 
@@ -33,8 +34,8 @@ import com.valentinilk.shimmer.shimmer
 @Composable
 fun CategoryListPanel(
     modifier: Modifier = Modifier,
+    state: ColorsState = ColorsState(),
     categoryName: String,
-    list: List<ColorCategory>,
     onCategoryClick: (String) -> Unit
 ) {
     Column(modifier = modifier.animateContentSize()) {
@@ -42,7 +43,7 @@ fun CategoryListPanel(
             name = categoryName,
             modifier = Modifier.padding(horizontal = paddingValues)
         )
-        if (list.isEmpty()) {
+        if (state.progressBarState is ProgressBarState.Loading) {
             ShimmerRow()
         } else {
             LazyRow(
@@ -55,7 +56,7 @@ fun CategoryListPanel(
                 ),
                 horizontalArrangement = Arrangement.spacedBy(paddingValues)
             ) {
-                items(items = list, itemContent = { category ->
+                items(items = state.categories, itemContent = { category ->
                     CategoryItem(
                         categoryName = category.name,
                         image1 = category.firstImage,
@@ -99,43 +100,6 @@ private fun ShimmerRow(
     }
 }
 
-//@ExperimentalCoilApi
-//@ExperimentalMaterialApi
-//@Composable
-//fun WallpaperListPanel(
-//    modifier: Modifier = Modifier,
-//    categoryName: String,
-//    list: List<Wallpaper>,
-//    onWallpaperClick: (Int) -> Unit
-//) {
-//    Column(modifier = modifier) {
-//        CategoryTitle(
-//            name = categoryName,
-//            modifier = Modifier.padding(horizontal = paddingValues)
-//        )
-//        if (list.isNullOrEmpty()) {
-//            ShimmerRow()
-//        } else {
-//            LazyRow(
-//                state = rememberLazyListState(),
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                contentPadding = PaddingValues(
-//                    start = paddingValues,
-//                    end = paddingValues
-//                ),
-//                horizontalArrangement = Arrangement.spacedBy(paddingValues)
-//            ) {
-//                items(items = list, itemContent = { wallpaper ->
-//                    WallpaperItem(
-//                        image = wallpaper.src!!.tiny,
-//                        onWallpaperClick = { onWallpaperClick(wallpaper.id) }
-//                    )
-//                })
-//            }
-//        }
-//    }
-//}
 
 @Composable
 fun CategoryTitle(
@@ -149,35 +113,6 @@ fun CategoryTitle(
         modifier = modifier.padding(vertical = paddingValues / 2)
     )
 }
-
-//@ExperimentalMaterialApi
-//@ExperimentalCoilApi
-//@Composable
-//private fun WallpaperItem(
-//    modifier: Modifier = Modifier,
-//    elevation: Dp = Dimensions.small,
-//    shape: Shape = MaterialTheme.shapes.small,
-//    image: String,
-//    onWallpaperClick: () -> Unit
-//) {
-//    Column(
-//        modifier = modifier,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Card(
-//            onClick = onWallpaperClick,
-//            elevation = elevation,
-//            shape = shape,
-//            modifier = modifier
-//                .size(100.dp)
-//        ) {
-//            PexCoilImage(
-//                imageUrl = image,
-//                modifier = Modifier.fillMaxSize()
-//            )
-//        }
-//    }
-//}
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -265,13 +200,13 @@ fun CategoryTitlePreview() {
 @Composable
 fun CategoryItemPreview() {
     MaterialTheme {
-//        CategoryItem(
-//            categoryName = ColorCategory.mock.name,
-//            image1 = ColorCategory.mock.firstImage,
-//            image2 = ColorCategory.mock.secondImage,
-//            image3 = ColorCategory.mock.thirdImage,
-//            image4 = ColorCategory.mock.forthImage,
-//            onCategoryClick = {}
-//        )
+        CategoryItem(
+            categoryName = ColorCategory.mock.name,
+            image1 = ColorCategory.mock.firstImage,
+            image2 = ColorCategory.mock.secondImage,
+            image3 = ColorCategory.mock.thirdImage,
+            image4 = ColorCategory.mock.forthImage,
+            onCategoryClick = {}
+        )
     }
 }

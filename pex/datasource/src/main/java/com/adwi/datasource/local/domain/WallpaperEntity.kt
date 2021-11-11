@@ -24,7 +24,14 @@ data class CuratedEntity(
     @PrimaryKey val wallpaperId: Int
 )
 
+@Entity(tableName = "daily_table")
+data class DailyEntity(
+    @PrimaryKey val wallpaperId: Int
+)
+
 fun Wallpaper.toCurated() = CuratedEntity(this.id)
+
+fun Wallpaper.toDaily() = DailyEntity(this.id)
 
 fun Wallpaper.toEntity() =
     WallpaperEntity(
