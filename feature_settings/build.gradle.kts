@@ -1,8 +1,10 @@
+import commons.addCoreDependencies
+import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
-import commons.addHiltDependenciesExtended
+import commons.addTestDependencies
 
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
+    id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
@@ -12,16 +14,10 @@ android {
     compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {
-        applicationId = AndroidConfig.id
         minSdk = AndroidConfig.minSdk
         targetSdk = AndroidConfig.targetSdk
-        versionCode = AndroidConfig.versionCode
-        versionName = AndroidConfig.versionName
 
         testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
@@ -53,24 +49,14 @@ android {
     }
 }
 
-hilt {
-    enableExperimentalClasspathAggregation = true
-}
-
 dependencies {
 
+    implementation(project(Modules.CORE))
     implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.HOME))
-    implementation(project(Modules.PREVIEW))
-    implementation(project(Modules.SEARCH))
-    implementation(project(Modules.FAVORITES))
-    implementation(project(Modules.SETTINGS))
+    api(project(Modules.INTERACTORS))
 
+    addCoreDependencies()
     addHiltDependenciesBasic()
-    addHiltDependenciesExtended()
-
-//    implementation(Dependencies.sqlDelightAndroidDriver)
-
-//    implementation(Dependencies.hiltWorkCore)
-//    kapt(Dependencies.hiltWorkCompiler)
+    addDefaultComposeDependencies()
+    addTestDependencies()
 }

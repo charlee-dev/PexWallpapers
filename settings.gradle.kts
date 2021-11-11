@@ -29,7 +29,8 @@ include(
     ":pex:interactors",
 
     ":feature_home",
-//    ":feature_search",
-//    ":feature_favorites",
-//    ":feature_settings"
+    ":feature_search",
+    ":feature_favorites",
+    ":feature_preview",
+    ":feature_settings"
 )

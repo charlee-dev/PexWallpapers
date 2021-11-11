@@ -15,8 +15,8 @@ import kotlinx.coroutines.CoroutineScope
 object MainDestinations {
     const val HOME_ROUTE = "home"
     const val WALLPAPER_PREVIEW_ROUTE = "wallpaper_preview"
-    const val WALLPAPER_ID_KEY = "wallpaperId"
     const val SET_WALLPAPER_ROUTE = "set_wallpaper"
+    const val WALLPAPER_ID_KEY = "wallpaperId"
 }
 
 @Composable

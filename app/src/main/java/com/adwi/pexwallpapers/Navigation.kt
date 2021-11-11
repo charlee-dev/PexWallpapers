@@ -15,8 +15,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.favorites.FavoritesScreen
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
+import com.adwi.preview.PreviewScreen
+import com.adwi.search.SearchScreen
+import com.adwi.settings.SettingsScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -57,11 +61,12 @@ fun NavGraphBuilder.myNavGraph(
 
 //        viewModel.getWallpaperById(wallpaperId)
 
-//        PreviewScreen(
+        PreviewScreen(
+            wallpaperId = wallpaperId
 //            viewModel = viewModel,
 //            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
 //            upPress = upPress
-//        )
+        )
     }
 
     composable(
@@ -103,23 +108,23 @@ fun NavGraphBuilder.addHomeGraph(
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
 //        val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
-//        SearchScreen(
+        SearchScreen(
 //            viewModel = viewModel,
 //            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
-//        )
+        )
     }
     composable(HomeSections.FAVORITES.route) { backStackEntry ->
 //        val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
-//        FavoritesScreen(
+        FavoritesScreen(
 //            viewModel = viewModel,
 //            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
-//        )
+        )
     }
     composable(HomeSections.SETTINGS.route) { backStackEntry ->
 //        val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
-//        SettingsScreen(
+        SettingsScreen(
 //            viewModel = viewModel
-//        )
+        )
     }
 }
 

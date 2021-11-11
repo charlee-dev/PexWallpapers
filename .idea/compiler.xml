@@ -14,6 +14,7 @@
       <module name="PexWallpapers.feature-home" target="11" />
       <module name="PexWallpapers.feature_favorites" target="11" />
       <module name="PexWallpapers.feature_home" target="11" />
+      <module name="PexWallpapers.feature_preview" target="11" />
       <module name="PexWallpapers.feature_search" target="11" />
       <module name="PexWallpapers.feature_settings" target="11" />
       <module name="PexWallpapers.features.composables" target="11" />

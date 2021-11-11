@@ -14,7 +14,8 @@ object Modules {
     const val INTERACTORS = ":pex:interactors"
 
     const val HOME = ":feature_home"
-//    const val SEARCH = ":feature_search"
-//    const val FAVORITES = ":feature_favorites"
-//    const val SETTINGS = ":feature_settings"
+    const val PREVIEW = ":feature_preview"
+    const val SEARCH = ":feature_search"
+    const val FAVORITES = ":feature_favorites"
+    const val SETTINGS = ":feature_settings"
 }
