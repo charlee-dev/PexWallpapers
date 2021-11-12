@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.domain.DailyState
+import com.adwi.components.domain.WallpaperState
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
@@ -25,7 +25,7 @@ import com.adwi.composables.R
 @Composable
 fun DailyWallpaper(
     modifier: Modifier = Modifier,
-    state: DailyState = DailyState(),
+    state: WallpaperState = WallpaperState(),
     placeholder: Int = R.drawable.daily_picture,
     elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,
@@ -90,7 +90,7 @@ fun DailyWallpaper(
 private fun DailyWallpaperPreview() {
     MaterialTheme() {
         DailyWallpaper(
-            state = DailyState(),
+            state = WallpaperState(),
             onWallpaperClick = {}
         )
     }

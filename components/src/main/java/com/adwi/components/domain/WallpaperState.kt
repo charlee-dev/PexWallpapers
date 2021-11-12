@@ -4,7 +4,7 @@ import com.adwi.core.domain.ProgressBarState
 import com.adwi.domain.Wallpaper
 
 
-data class DailyState(
+data class WallpaperState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val wallpaper: Wallpaper = Wallpaper.defaultDaily
 )

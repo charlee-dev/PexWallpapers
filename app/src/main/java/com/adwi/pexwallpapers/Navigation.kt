@@ -19,6 +19,7 @@ import com.adwi.favorites.FavoritesScreen
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
 import com.adwi.preview.PreviewScreen
+import com.adwi.preview.PreviewViewModel
 import com.adwi.search.SearchScreen
 import com.adwi.settings.SettingsScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -55,17 +56,16 @@ fun NavGraphBuilder.myNavGraph(
         })
     ) { backStackEntry ->
 
-//        val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
+        val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         val arguments = requireNotNull(backStackEntry.arguments)
         val wallpaperId = arguments.getInt(MainDestinations.WALLPAPER_ID_KEY)
 
-//        viewModel.getWallpaperById(wallpaperId)
+        viewModel.getPreviewWallpaper(wallpaperId)
 
         PreviewScreen(
-            wallpaperId = wallpaperId
-//            viewModel = viewModel,
+            viewModel = viewModel,
 //            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
-//            upPress = upPress
+            upPress = upPress
         )
     }
 

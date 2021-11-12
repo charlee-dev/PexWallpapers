@@ -4,9 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.adwi.components.domain.ColorsState
-import com.adwi.components.domain.DailyState
 import com.adwi.components.domain.WallpaperListState
-import com.adwi.core.IoDispatcher
+import com.adwi.components.domain.WallpaperState
 import com.adwi.core.base.BaseViewModel
 import com.adwi.core.domain.DataState
 import com.adwi.core.util.CalendarUtil
@@ -15,7 +14,6 @@ import com.adwi.datasource.local.domain.toDomain
 import com.adwi.domain.Wallpaper
 import com.adwi.interactors.wallpaper.WallpaperInteractors
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,11 +24,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val interactors: WallpaperInteractors,
 //    private val savedStateHandle: SavedStateHandle,
-    private val logger: Logger,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    private val logger: Logger
 ) : BaseViewModel() {
 
-    val dailyState: MutableState<DailyState> = mutableStateOf(DailyState())
+    val wallpaperState: MutableState<WallpaperState> = mutableStateOf(WallpaperState())
     val colorsState: MutableState<ColorsState> = mutableStateOf(ColorsState())
     val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 
@@ -48,20 +45,19 @@ class HomeViewModel @Inject constructor(
                     logger.log(resource.error?.localizedMessage ?: "Resource - error")
                 }
                 is DataState.Success -> {
-                    dailyState.value =
-                        dailyState.value.copy(
+                    wallpaperState.value =
+                        wallpaperState.value.copy(
                             wallpaper = getTodayDaily(
                                 list = resource.data?.map { it.toDomain() } ?: listOf()
                             )
                         )
                 }
                 is DataState.Loading -> {
-                    dailyState.value =
-                        dailyState.value.copy(progressBarState = resource.progressBarState)
+                    wallpaperState.value =
+                        wallpaperState.value.copy(progressBarState = resource.progressBarState)
                 }
             }
         }.launchIn(viewModelScope)
-//        }
     }
 
     private fun getColors() {

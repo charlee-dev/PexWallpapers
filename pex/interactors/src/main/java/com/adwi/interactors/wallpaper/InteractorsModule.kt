@@ -5,6 +5,7 @@ import com.adwi.datasource.network.PexService
 import com.adwi.interactors.wallpaper.usecases.GetColors
 import com.adwi.interactors.wallpaper.usecases.GetCurated
 import com.adwi.interactors.wallpaper.usecases.GetDaily
+import com.adwi.interactors.wallpaper.usecases.GetPreview
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,11 +41,18 @@ object InteractorsModule {
 
     @Provides
     @Singleton
+    fun provideGetPreview(
+        database: WallpaperDatabase
+    ): GetPreview = GetPreview(database)
+
+    @Provides
+    @Singleton
     fun provideWallpaperRepository(
         getCurated: GetCurated,
         getDaily: GetDaily,
-        getColors: GetColors
+        getColors: GetColors,
+        getPreview: GetPreview
     ): WallpaperInteractors {
-        return WallpaperInteractors(getCurated, getDaily, getColors)
+        return WallpaperInteractors(getCurated, getDaily, getColors, getPreview)
     }
 }

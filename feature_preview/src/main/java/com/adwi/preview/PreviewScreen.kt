@@ -1,10 +1,14 @@
 package com.adwi.preview
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.components.PexCoilImage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -12,53 +16,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun PreviewScreen(
-//    viewModel: HomeViewModel,
+    viewModel: PreviewViewModel = viewModel(),
 //    onWallpaperClick: (Int) -> Unit,
 //    onCategoryClick: () -> Unit,
-    wallpaperId: Int
+    upPress: () -> Unit
 ) {
-    Column() {
-        Text("Preview")
-        Text(wallpaperId.toString())
+    val preview by viewModel.preview.collectAsState()
+
+    Box(modifier = Modifier) {
+        PexCoilImage(imageUrl = preview.imageUrlPortrait)
     }
-//    val dailyState = viewModel.dailyState.value
-//    val colorsState = viewModel.colorsState.value
-//    val curatedState = viewModel.curatedState.value
-//
-//    LazyColumn(
-//        modifier = Modifier
-//            .fillMaxSize(),
-//        contentPadding = PaddingValues(
-//            bottom = BottomNavHeight + paddingValues
-//        )
-//    ) {
-//        item {
-//            Header()
-//        }
-//        item {
-//            DailyWallpaper(
-//                modifier = Modifier
-//                    .padding(horizontal = paddingValues, vertical = paddingValues / 2),
-//                state = dailyState,
-//                onWallpaperClick = { id -> onWallpaperClick(id) }
-//            )
-//        }
-//        item {
-//            CategoryListPanel(
-//                categoryName = stringResource(id = R.string.colors),
-//                state = colorsState,
-//                onCategoryClick = { name ->
-////                    viewModel.setCategoryName(name)
-//                    onCategoryClick()
-//                }
-//            )
-//        }
-//        item {
-//            WallpaperListPanel(
-//                categoryName = stringResource(id = R.string.curated),
-//                state = curatedState,
-//                onWallpaperClick = { id -> onWallpaperClick(id) }
-//            )
-//        }
-//    }
 }

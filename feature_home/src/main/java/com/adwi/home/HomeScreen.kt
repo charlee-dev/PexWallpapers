@@ -26,7 +26,7 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val dailyState = viewModel.dailyState.value
+    val dailyState = viewModel.wallpaperState.value
     val colorsState = viewModel.colorsState.value
     val curatedState = viewModel.curatedState.value
 
