@@ -87,7 +87,7 @@ class PexAppState(
         }
     }
 
-    fun navigateToSetWallpaper(wallpaperId: Long, from: NavBackStackEntry) {
+    fun navigateToSetWallpaper(wallpaperId: Int, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.SET_WALLPAPER_ROUTE}/$wallpaperId")
         }

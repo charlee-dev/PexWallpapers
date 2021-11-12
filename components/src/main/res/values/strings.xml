@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PexWallapapers Compose</string>
+    <string name="app_name">PexWalls</string>
     <string name="init_class" translatable="false">Initialized</string>
     <!-- UI -->
     <string name="wallpapers">Wallpapers</string>

@@ -36,7 +36,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit,
-    onSetWallpaperClick: (Long, NavBackStackEntry) -> Unit,
+    onSetWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     upPress: () -> Unit
 ) {
     navigation(
@@ -64,7 +64,7 @@ fun NavGraphBuilder.myNavGraph(
 
         PreviewScreen(
             viewModel = viewModel,
-//            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
+            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )
     }

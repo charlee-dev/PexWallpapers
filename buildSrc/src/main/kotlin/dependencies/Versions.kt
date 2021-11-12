@@ -43,7 +43,7 @@ object Versions {
     // Helpers
     const val accompanistCoil = "0.15.0"
     const val timber = "4.7.1"
-    const val lottie = "4.1.0"
+    const val lottie = "4.2.1"
     const val shimmer = "1.0.1"
     const val accompanist = "0.21.0-beta"
 

@@ -35,7 +35,7 @@ fun DependencyHandler.addDefaultComposeDependencies() {
     api(Dependencies.composeActivity)
     api(Dependencies.composeUiUtil)
     api(Dependencies.composeMaterial)
-    api(Dependencies.composeMaterial3)
+//    api(Dependencies.composeMaterial3)
     api(Dependencies.composePreview)
     api(Dependencies.lifecycleRuntime)
 }
