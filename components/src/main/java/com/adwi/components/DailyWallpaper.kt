@@ -2,10 +2,7 @@ package com.adwi.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +16,7 @@ import com.adwi.components.domain.WallpaperState
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
+import com.adwi.core.domain.ProgressBarState
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -78,6 +76,11 @@ fun DailyWallpaper(
                         }
                     }
                 }
+            }
+            if (state.progressBarState is ProgressBarState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }

@@ -4,17 +4,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.components.domain.ColorsState
-import com.adwi.components.domain.WallpaperListState
-import com.adwi.components.domain.WallpaperState
+import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
 import com.adwi.core.domain.DataState
 import com.adwi.core.util.CalendarUtil
 import com.adwi.core.util.Logger
+import com.adwi.core.util.ext.onDispatcher
 import com.adwi.datasource.local.domain.toDomain
 import com.adwi.domain.Wallpaper
+import com.adwi.interactors.settings.SettingsInteractors
 import com.adwi.interactors.wallpaper.WallpaperInteractors
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,92 +25,107 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val interactors: WallpaperInteractors,
+    private val wallpaperInteractors: WallpaperInteractors,
+    private val settingsInteractors: SettingsInteractors,
 //    private val savedStateHandle: SavedStateHandle,
-    private val logger: Logger
+    private val logger: Logger,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val dailyState: MutableState<WallpaperState> = mutableStateOf(WallpaperState())
-    val colorsState: MutableState<ColorsState> = mutableStateOf(ColorsState())
-    val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
+    val state: MutableState<HomeState> = mutableStateOf(HomeState())
 
     init {
-        getDaily()
-        getColors()
-        getCurated()
-    }
-
-    init {
-        onTriggerEvent(HomeEvents.GetDaily)
-        onTriggerEvent(HomeEvents.GetColors)
-        onTriggerEvent(HomeEvents.GetCurated)
+        onTriggerEvent(HomeEvents.Refresh)
     }
 
     fun onTriggerEvent(event: HomeEvents) {
         when (event) {
-            HomeEvents.GetDaily -> getDaily()
-            HomeEvents.GetColors -> getColors()
-            HomeEvents.GetCurated -> getCurated()
+            HomeEvents.GetDaily -> {
+                logger.log("onTriggerEvent - getDaily")
+                getDaily()
+            }
+            HomeEvents.GetColors -> {
+                logger.log("onTriggerEvent - GetColors")
+                getColors()
+            }
+            HomeEvents.GetCurated -> {
+                logger.log("onTriggerEvent - GetCurated")
+                getCurated()
+            }
+            is HomeEvents.SetCategory -> {
+                logger.log("onTriggerEvent - SetCategory")
+                setCategory(event.categoryName)
+            }
+            HomeEvents.Refresh -> {
+                onTriggerEvent(HomeEvents.GetDaily)
+                onTriggerEvent(HomeEvents.GetColors)
+                onTriggerEvent(HomeEvents.GetCurated)
+            }
+            HomeEvents.NoEvent -> {
+                // No event so.. do nothing
+            }
         }
     }
 
     private fun getDaily() {
-        interactors.getDaily.execute().onEach { resource ->
-            when (resource) {
-                is DataState.Response -> {
-                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-                }
-                is DataState.Data -> {
-                    dailyState.value =
-                        dailyState.value.copy(
+        wallpaperInteractors.getDaily.execute().onEach { resource ->
+            state.value.daily.apply {
+                when (resource) {
+                    is DataState.Loading -> {
+                        logger.log("getDaily - SetCategory")
+                        value = value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Data -> {
+                        logger.log("getDaily - Data - ${resource.data!!.size}")
+                        value = value.copy(
                             wallpaper = getTodayDaily(
                                 list = resource.data?.map { it.toDomain() } ?: listOf()
                             )
                         )
-                }
-                is DataState.Loading -> {
-                    dailyState.value =
-                        dailyState.value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Response -> {
+                        logger.log(resource.error?.localizedMessage ?: "getDaily - error")
+                    }
                 }
             }
         }.launchIn(viewModelScope)
     }
 
     private fun getColors() {
-        interactors.getColors.execute().onEach { resource ->
-            when (resource) {
-                is DataState.Response -> {
-                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-                }
-                is DataState.Data -> {
-                    colorsState.value =
-                        colorsState.value.copy(
+        wallpaperInteractors.getColors.execute().onEach { resource ->
+            state.value.colors.apply {
+                when (resource) {
+                    is DataState.Loading -> {
+                        value = value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Data -> {
+                        value = value.copy(
                             categories = resource.data?.map { it.toDomain() } ?: listOf()
                         )
-                }
-                is DataState.Loading -> {
-                    colorsState.value =
-                        colorsState.value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Response -> {
+                        logger.log(resource.error?.localizedMessage ?: "getColors - error")
+                    }
                 }
             }
         }.launchIn(viewModelScope)
     }
 
     private fun getCurated() {
-        interactors.getCurated.execute().onEach { resource ->
-            when (resource) {
-                is DataState.Response -> {
-                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-                }
-                is DataState.Data -> {
-                    curatedState.value =
-                        curatedState.value.copy(
+        wallpaperInteractors.getCurated.execute().onEach { resource ->
+            state.value.curated.apply {
+                when (resource) {
+                    is DataState.Loading -> {
+                        value = value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Data -> {
+                        value = value.copy(
                             wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
                         )
-                }
-                is DataState.Loading -> {
-                    curatedState.value =
-                        curatedState.value.copy(progressBarState = resource.progressBarState)
+                    }
+                    is DataState.Response -> {
+                        logger.log(resource.error?.localizedMessage ?: "getCurated - error")
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -118,5 +134,11 @@ class HomeViewModel @Inject constructor(
     private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {
         val day: Int = CalendarUtil.getDayOfMonthNumber()
         return list[day]
+    }
+
+    private fun setCategory(categoryName: String) {
+        onDispatcher(dispatcher) {
+            settingsInteractors.getSettings.updateLastQuery(categoryName)
+        }
     }
 }

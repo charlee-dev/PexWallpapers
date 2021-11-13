@@ -19,10 +19,10 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.favorites.FavoritesScreen
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
-import com.adwi.home.SearchViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
 import com.adwi.search.SearchScreen
+import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -98,7 +98,6 @@ fun NavGraphBuilder.addHomeGraph(
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
-
         HomeScreen(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },

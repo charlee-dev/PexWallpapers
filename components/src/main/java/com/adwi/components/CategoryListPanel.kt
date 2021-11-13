@@ -43,30 +43,29 @@ fun CategoryListPanel(
             name = categoryName,
             modifier = Modifier.padding(horizontal = paddingValues)
         )
+        LazyRow(
+            state = rememberLazyListState(),
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(
+                start = paddingValues,
+                end = paddingValues
+            ),
+            horizontalArrangement = Arrangement.spacedBy(paddingValues)
+        ) {
+            items(items = state.categories, itemContent = { category ->
+                CategoryItem(
+                    categoryName = category.name,
+                    image1 = category.firstImage,
+                    image2 = category.secondImage,
+                    image3 = category.thirdImage,
+                    image4 = category.forthImage,
+                    onCategoryClick = { onCategoryClick(category.name) }
+                )
+            })
+        }
         if (state.progressBarState is ProgressBarState.Loading) {
             ShimmerRow()
-        } else {
-            LazyRow(
-                state = rememberLazyListState(),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(
-                    start = paddingValues,
-                    end = paddingValues
-                ),
-                horizontalArrangement = Arrangement.spacedBy(paddingValues)
-            ) {
-                items(items = state.categories, itemContent = { category ->
-                    CategoryItem(
-                        categoryName = category.name,
-                        image1 = category.firstImage,
-                        image2 = category.secondImage,
-                        image3 = category.thirdImage,
-                        image4 = category.forthImage,
-                        onCategoryClick = { onCategoryClick(category.name) }
-                    )
-                })
-            }
         }
     }
 }

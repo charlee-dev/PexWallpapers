@@ -1,4 +1,4 @@
-package com.adwi.home
+package com.adwi.search
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +13,6 @@ import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.interactors.settings.SettingsInteractors
 import com.adwi.interactors.wallpaper.WallpaperInteractors
-import com.adwi.search.SearchEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +33,7 @@ class SearchViewModel @Inject constructor(
     val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 
     init {
-//        getCurated()
+        restoreLastQuery()
     }
 
 //    private fun getCurated() {

@@ -63,9 +63,6 @@ fun WallpaperListPanel(
             name = categoryName,
             modifier = Modifier.padding(horizontal = paddingValues)
         )
-        if (state.progressBarState is ProgressBarState.Loading) {
-            ShimmerRow()
-        }
         LazyRow(
             state = rememberLazyListState(),
             modifier = Modifier
@@ -82,6 +79,9 @@ fun WallpaperListPanel(
                     onWallpaperClick = { onWallpaperClick(wallpaper.id) }
                 )
             })
+        }
+        if (state.progressBarState is ProgressBarState.Loading) {
+            ShimmerRow()
         }
     }
 }

@@ -29,10 +29,7 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val dailyState = viewModel.dailyState.value
-    val colorsState = viewModel.colorsState.value
-    val curatedState = viewModel.curatedState.value
-
+    val state = viewModel.state.value
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -50,16 +47,16 @@ fun HomeScreen(
             DailyWallpaper(
                 modifier = Modifier
                     .padding(horizontal = paddingValues, vertical = paddingValues / 2),
-                state = dailyState,
+                state = state.daily.value,
                 onWallpaperClick = { id -> onWallpaperClick(id) }
             )
         }
         item {
             CategoryListPanel(
                 categoryName = stringResource(id = R.string.colors),
-                state = colorsState,
-                onCategoryClick = { name ->
-//                    viewModel.setCategoryName(name)
+                state = state.colors.value,
+                onCategoryClick = { categoryName ->
+                    viewModel.onTriggerEvent(HomeEvents.SetCategory(categoryName))
                     onCategoryClick()
                 }
             )
@@ -67,7 +64,7 @@ fun HomeScreen(
         item {
             WallpaperListPanel(
                 categoryName = stringResource(id = R.string.curated),
-                state = curatedState,
+                state = state.curated.value,
                 onWallpaperClick = { id -> onWallpaperClick(id) }
             )
         }
