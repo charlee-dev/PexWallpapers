@@ -22,32 +22,36 @@ import com.adwi.composables.R
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
-    title: String = stringResource(id = R.string.app_name)
+    title: String = stringResource(id = R.string.app_name),
+    onSearchClick: () -> Unit = {}
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = paddingValues)
             .padding(top = paddingValues / 2)
     ) {
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .weight(1f),
 
             ) {
-            Icon(
-                imageVector = Icons.Outlined.Home,
-                contentDescription = title,
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier
-                    .padding(horizontal = paddingValues / 2)
-            )
+            IconButton(
+                onClick = onSearchClick
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Home,
+                    contentDescription = title,
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .padding(horizontal = paddingValues / 2)
+                )
+            }
             Text(
                 text = title,
                 style = MaterialTheme.typography.subtitle1
                     .merge(TextStyle(color = MaterialTheme.colors.onBackground)),
-//                modifier = Modifier.padding(vertical = paddingValues / 2)
             )
         }
         IconButton(
@@ -69,6 +73,6 @@ fun Header(
 @Composable
 fun HeaderPreview() {
     MaterialTheme {
-        Header()
+        Header(onSearchClick = {})
     }
 }

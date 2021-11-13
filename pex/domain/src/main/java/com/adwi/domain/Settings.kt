@@ -1,7 +1,7 @@
 package com.adwi.domain
 
 data class Settings(
-    val id: Long = 0L,
+    val id: Int = 0,
     val lastQuery: String = "",
     val newWallpaperSet: Boolean = true,
     val wallpaperRecommendations: Boolean = true,
@@ -11,4 +11,19 @@ data class Settings(
     val downloadOverWiFi: Boolean = false,
     val autoHome: Boolean = true,
     val autoLock: Boolean = false
-)
+) {
+    companion object {
+        val default = Settings(
+            id = 0,
+            lastQuery = "Flowers",
+            newWallpaperSet = true,
+            wallpaperRecommendations = true,
+            autoChangeWallpaper = false,
+            selectedButton = 0,
+            sliderValue = 5f,
+            downloadOverWiFi = false,
+            autoHome = true,
+            autoLock = false
+        )
+    }
+}

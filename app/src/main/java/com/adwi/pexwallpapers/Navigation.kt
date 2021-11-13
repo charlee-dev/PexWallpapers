@@ -14,10 +14,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.favorites.FavoritesScreen
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
+import com.adwi.home.SearchViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
 import com.adwi.search.SearchScreen
@@ -33,6 +35,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
+@ExperimentalPagingApi
 fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit,
@@ -55,15 +58,10 @@ fun NavGraphBuilder.myNavGraph(
             type = NavType.IntType
         })
     ) { backStackEntry ->
-
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
-        val arguments = requireNotNull(backStackEntry.arguments)
-        val wallpaperId = arguments.getInt(MainDestinations.WALLPAPER_ID_KEY)
-
-        viewModel.getPreviewWallpaper(wallpaperId)
 
         PreviewScreen(
-            viewModel = viewModel,
+            state = viewModel.state.value,
             onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )
@@ -93,6 +91,7 @@ fun NavGraphBuilder.myNavGraph(
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
+@ExperimentalPagingApi
 fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit
@@ -107,16 +106,18 @@ fun NavGraphBuilder.addHomeGraph(
         )
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
-//        val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
+        val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
         SearchScreen(
-//            viewModel = viewModel,
-//            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+            viewModel = viewModel,
+            onSearchClick = onCategoryClick,
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
     composable(HomeSections.FAVORITES.route) { backStackEntry ->
 //        val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
         FavoritesScreen(
 //            viewModel = viewModel,
+//            onSearchClick = onSearchClick,
 //            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }

@@ -112,4 +112,5 @@
     <string name="home">Home</string>
     <string name="colors">Colors</string>
     <string name="curated">Curated</string>
+    <string name="loading">Loading</string>
 </resources>

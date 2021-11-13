@@ -4,7 +4,7 @@ sealed class DataState<T>(
     val data: T? = null,
     val error: Throwable? = null
 ) {
-    class Success<T>(
+    class Data<T>(
         data: T
     ) : DataState<T>(data)
 
@@ -13,8 +13,8 @@ sealed class DataState<T>(
         val progressBarState: ProgressBarState = ProgressBarState.Idle
     ) : DataState<T>(data)
 
-    class Error<T>(
-        throwable: Throwable,
+    class Response<T>(
+        val uiComponent: UIComponent,
         data: T? = null
-    ) : DataState<T>(data, throwable)
+    ) : DataState<T>(data)
 }

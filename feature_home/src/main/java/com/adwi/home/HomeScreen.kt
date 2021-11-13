@@ -9,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.CategoryListPanel
 import com.adwi.components.DailyWallpaper
@@ -21,13 +22,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
+@ExperimentalPagingApi
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val dailyState = viewModel.wallpaperState.value
+    val dailyState = viewModel.dailyState.value
     val colorsState = viewModel.colorsState.value
     val curatedState = viewModel.curatedState.value
 
@@ -40,6 +42,7 @@ fun HomeScreen(
     ) {
         item {
             Header(
+                onSearchClick = onCategoryClick,
                 modifier = Modifier.fillMaxWidth()
             )
         }

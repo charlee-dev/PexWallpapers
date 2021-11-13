@@ -17,9 +17,16 @@ data class SearchQueryRemoteKey(
     val nextPage: Int
 )
 
-fun wallpaperToSearchResult(searchQuery: String, wallpaper: Wallpaper, queryPosition: Int) =
+fun Wallpaper.toSearchResult(searchQuery: String, queryPosition: Int) =
     SearchResultEntity(
         searchQuery = searchQuery,
-        wallpaperId = wallpaper.id,
+        wallpaperId = this.id,
+        queryPosition = queryPosition
+    )
+
+fun WallpaperEntity.toSearchResult(searchQuery: String, queryPosition: Int) =
+    SearchResultEntity(
+        searchQuery = searchQuery,
+        wallpaperId = this.id,
         queryPosition = queryPosition
     )

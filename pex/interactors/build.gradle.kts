@@ -26,6 +26,7 @@ dependencies {
 
     implementation(project(Modules.CORE))
     api(project(Modules.DATASOURCE))
+    implementation("androidx.paging:paging-common-ktx:3.0.1")
 
     addHiltDependenciesBasic()
 }

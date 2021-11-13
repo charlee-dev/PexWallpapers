@@ -59,4 +59,5 @@ dependencies {
     addHiltDependenciesBasic()
     addDefaultComposeDependencies()
     addTestDependencies()
+
 }

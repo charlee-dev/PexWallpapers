@@ -3,6 +3,7 @@ package com.adwi.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import com.adwi.components.domain.ColorsState
 import com.adwi.components.domain.WallpaperListState
 import com.adwi.components.domain.WallpaperState
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val interactors: WallpaperInteractors,
@@ -27,7 +29,7 @@ class HomeViewModel @Inject constructor(
     private val logger: Logger
 ) : BaseViewModel() {
 
-    val wallpaperState: MutableState<WallpaperState> = mutableStateOf(WallpaperState())
+    val dailyState: MutableState<WallpaperState> = mutableStateOf(WallpaperState())
     val colorsState: MutableState<ColorsState> = mutableStateOf(ColorsState())
     val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 
@@ -37,37 +39,49 @@ class HomeViewModel @Inject constructor(
         getCurated()
     }
 
+    init {
+        onTriggerEvent(HomeEvents.GetDaily)
+        onTriggerEvent(HomeEvents.GetColors)
+        onTriggerEvent(HomeEvents.GetCurated)
+    }
+
+    fun onTriggerEvent(event: HomeEvents) {
+        when (event) {
+            HomeEvents.GetDaily -> getDaily()
+            HomeEvents.GetColors -> getColors()
+            HomeEvents.GetCurated -> getCurated()
+        }
+    }
+
     private fun getDaily() {
-//        onDispatcher(ioDispatcher) {
         interactors.getDaily.execute().onEach { resource ->
             when (resource) {
-                is DataState.Error -> {
+                is DataState.Response -> {
                     logger.log(resource.error?.localizedMessage ?: "Resource - error")
                 }
-                is DataState.Success -> {
-                    wallpaperState.value =
-                        wallpaperState.value.copy(
+                is DataState.Data -> {
+                    dailyState.value =
+                        dailyState.value.copy(
                             wallpaper = getTodayDaily(
                                 list = resource.data?.map { it.toDomain() } ?: listOf()
                             )
                         )
                 }
                 is DataState.Loading -> {
-                    wallpaperState.value =
-                        wallpaperState.value.copy(progressBarState = resource.progressBarState)
+                    dailyState.value =
+                        dailyState.value.copy(progressBarState = resource.progressBarState)
                 }
             }
         }.launchIn(viewModelScope)
     }
 
     private fun getColors() {
-//        onDispatcher(ioDispatcher) {
         interactors.getColors.execute().onEach { resource ->
             when (resource) {
-                is DataState.Error -> {
+                is DataState.Response -> {
                     logger.log(resource.error?.localizedMessage ?: "Resource - error")
                 }
-                is DataState.Success -> {
+                is DataState.Data -> {
                     colorsState.value =
                         colorsState.value.copy(
                             categories = resource.data?.map { it.toDomain() } ?: listOf()
@@ -79,17 +93,15 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-//        }
     }
 
     private fun getCurated() {
-//        onDispatcher(ioDispatcher) {
         interactors.getCurated.execute().onEach { resource ->
             when (resource) {
-                is DataState.Error -> {
+                is DataState.Response -> {
                     logger.log(resource.error?.localizedMessage ?: "Resource - error")
                 }
-                is DataState.Success -> {
+                is DataState.Data -> {
                     curatedState.value =
                         curatedState.value.copy(
                             wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
@@ -101,7 +113,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-//        }
     }
 
     private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {

@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.PexApp
@@ -21,6 +22,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalComposeUiApi
 @InternalCoroutinesApi
 @ExperimentalMaterialApi
+@ExperimentalPagingApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint

@@ -1,16 +1,17 @@
 package com.adwi.interactors.wallpaper
 
-import com.adwi.interactors.wallpaper.usecases.GetColors
-import com.adwi.interactors.wallpaper.usecases.GetCurated
-import com.adwi.interactors.wallpaper.usecases.GetDaily
-import com.adwi.interactors.wallpaper.usecases.GetPreview
+import androidx.paging.ExperimentalPagingApi
+import com.adwi.interactors.wallpaper.usecases.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-data class WallpaperInteractors @Inject constructor(
+@ExperimentalPagingApi
+data class WallpaperInteractors
+@Inject constructor(
+    val getWallpaper: GetWallpaper,
     val getCurated: GetCurated,
     val getDaily: GetDaily,
     val getColors: GetColors,
-    val getPreview: GetPreview
+    val getSearch: GetSearch
 )

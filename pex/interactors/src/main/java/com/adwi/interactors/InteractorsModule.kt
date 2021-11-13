@@ -1,11 +1,12 @@
-package com.adwi.interactors.wallpaper
+package com.adwi.interactors
 
+import androidx.paging.ExperimentalPagingApi
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.network.PexService
-import com.adwi.interactors.wallpaper.usecases.GetColors
-import com.adwi.interactors.wallpaper.usecases.GetCurated
-import com.adwi.interactors.wallpaper.usecases.GetDaily
-import com.adwi.interactors.wallpaper.usecases.GetPreview
+import com.adwi.interactors.settings.SettingsInteractors
+import com.adwi.interactors.settings.usecases.GetSettings
+import com.adwi.interactors.wallpaper.WallpaperInteractors
+import com.adwi.interactors.wallpaper.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object InteractorsModule {
+
+    @Provides
+    @Singleton
+    fun provideGetWallpaper(
+        database: WallpaperDatabase
+    ): GetWallpaper = GetWallpaper(database)
 
     @Provides
     @Singleton
@@ -39,20 +46,38 @@ object InteractorsModule {
         database: WallpaperDatabase
     ): GetColors = GetColors(service, database)
 
+    @ExperimentalPagingApi
     @Provides
     @Singleton
-    fun provideGetPreview(
+    fun provideGetSearch(
+        service: PexService,
         database: WallpaperDatabase
-    ): GetPreview = GetPreview(database)
+    ): GetSearch = GetSearch(service, database)
 
     @Provides
     @Singleton
-    fun provideWallpaperRepository(
+    fun provideGetSettings(
+        database: WallpaperDatabase
+    ): GetSettings = GetSettings(database)
+
+    @ExperimentalPagingApi
+    @Provides
+    @Singleton
+    fun provideWallpaperInteractors(
+        getWallpaper: GetWallpaper,
         getCurated: GetCurated,
         getDaily: GetDaily,
         getColors: GetColors,
-        getPreview: GetPreview
+        getSearch: GetSearch
     ): WallpaperInteractors {
-        return WallpaperInteractors(getCurated, getDaily, getColors, getPreview)
+        return WallpaperInteractors(getWallpaper, getCurated, getDaily, getColors, getSearch)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSettingsInteractors(
+        getSettings: GetSettings
+    ): SettingsInteractors {
+        return SettingsInteractors(getSettings)
     }
 }

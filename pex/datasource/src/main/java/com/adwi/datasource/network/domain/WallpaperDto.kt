@@ -35,4 +35,20 @@ fun WallpaperDto.toDomain(
     imageUrlTiny = this.src.tiny
 )
 
+fun WallpaperDto.toEntity(
+    categoryName: String = DEFAULT_CATEGORY,
+    isFavorite: Boolean = false
+) = Wallpaper(
+    id = this.id,
+    height = heights,
+    url = this.pexUrl,
+    photographer = photographer,
+    categoryName = categoryName,
+    isFavorite = isFavorite,
+    updatedAt = System.currentTimeMillis(),
+    imageUrlPortrait = this.src.portrait,
+    imageUrlLandscape = this.src.landscape,
+    imageUrlTiny = this.src.tiny
+)
+
 private val heights = listOf(830, 1220, 975, 513, 600, 790).random()

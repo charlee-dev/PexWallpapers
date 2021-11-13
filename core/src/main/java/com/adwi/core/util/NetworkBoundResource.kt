@@ -1,6 +1,7 @@
 package com.adwi.core.util
 
 import com.adwi.core.domain.DataState
+import com.adwi.core.domain.UIComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -28,12 +29,19 @@ inline fun <ResultType, RequestType> networkBoundResource(
             delay(2000)
             saveFetchResult(fetch())
             loading.cancel()
-            query().collect { send(DataState.Success(it)) }
+            query().collect { send(DataState.Data(it)) }
         } catch (t: Throwable) {
             loading.cancel()
-            query().collect { send(DataState.Error(t, it)) }
+            query().collect {
+                send(
+                    DataState.Response(
+                        uiComponent = UIComponent.Dialog(it.toString()),
+                        it
+                    )
+                )
+            }
         }
     } else {
-        query().collect { send(DataState.Success(it)) }
+        query().collect { send(DataState.Data(it)) }
     }
 }

@@ -32,7 +32,7 @@ interface PexService {
     ): WallpaperResponse
 
     @GET("v1/search")
-    suspend fun searchWallpapers(
+    suspend fun getSearch(
         @Query("query") query: String,
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = SEARCH_PAGE_SIZE

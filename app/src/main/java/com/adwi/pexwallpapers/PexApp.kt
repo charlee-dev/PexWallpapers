@@ -11,6 +11,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.PexSnackBar
 import com.adwi.components.theme.PexWallpapersTheme
@@ -30,6 +31,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
+@ExperimentalPagingApi
 @Composable
 fun PexApp(
     viewModel: BaseViewModel
