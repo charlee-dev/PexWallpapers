@@ -11,6 +11,5 @@ data class HomeState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val daily: MutableState<WallpaperState> = mutableStateOf(WallpaperState()),
     val colors: MutableState<ColorsState> = mutableStateOf(ColorsState()),
-    val curated: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState()),
-    var event: HomeEvents = HomeEvents.NoEvent
+    val curated: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
 )

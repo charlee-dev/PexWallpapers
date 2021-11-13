@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.paging.ExperimentalPagingApi
@@ -26,6 +27,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()

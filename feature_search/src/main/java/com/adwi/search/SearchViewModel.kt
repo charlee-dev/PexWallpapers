@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
-import com.adwi.components.domain.WallpaperListState
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
 import com.adwi.core.util.Logger
@@ -30,31 +29,27 @@ class SearchViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
+    val state: MutableState<SearchState> = mutableStateOf(SearchState())
 
-    init {
-        restoreLastQuery()
+
+    fun onTriggerEvent(event: SearchEvents) {
+        when (event) {
+            SearchEvents.GetSearch -> {
+            }
+            is SearchEvents.OnFavoriteClick -> {
+                onFavoriteClick(event.wallpaper)
+            }
+            is SearchEvents.OnSearchQuerySubmit -> {
+                onSearchQuerySubmit(event.query)
+            }
+            SearchEvents.RestoreLastQuery -> {
+                restoreLastQuery()
+            }
+            is SearchEvents.UpdateSavedQuery -> {
+                updateSavedQuery(event.query)
+            }
+        }
     }
-
-//    private fun getCurated() {
-//        interactors.getCurated.execute().onEach { resource ->
-//            when (resource) {
-//                is DataState.Error -> {
-//                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-//                }
-//                is DataState.Success -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(
-//                            wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
-//                        )
-//                }
-//                is DataState.Loading -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(progressBarState = resource.progressBarState)
-//                }
-//            }
-//        }.launchIn(viewModelScope)
-//    }
 
     val currentQuery = MutableStateFlow<String?>(null)
 
@@ -71,20 +66,10 @@ class SearchViewModel @Inject constructor(
         } ?: emptyFlow()
     }.cachedIn(viewModelScope)
 
-
     init {
         restoreLastQuery()
-    }
-
-    fun onTriggerEvent(event: SearchEvents) {
-        when (event) {
-            SearchEvents.GetSearch -> TODO()
-            is SearchEvents.OnFavoriteClick -> {
-
-            }
-            is SearchEvents.OnSearchQuerySubmit -> TODO()
-            SearchEvents.RestoreLastQuery -> TODO()
-            is SearchEvents.UpdateSavedQuery -> TODO()
+        currentQuery.value?.let {
+            onTriggerEvent(SearchEvents.OnSearchQuerySubmit(currentQuery.value!!))
         }
     }
 

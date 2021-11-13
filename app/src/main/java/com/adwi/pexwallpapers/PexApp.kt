@@ -1,6 +1,7 @@
 package com.adwi.pexwallpapers
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.ExperimentalMaterialApi
@@ -32,6 +33,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalPagingApi
+@ExperimentalFoundationApi
 @Composable
 fun PexApp(
     viewModel: BaseViewModel

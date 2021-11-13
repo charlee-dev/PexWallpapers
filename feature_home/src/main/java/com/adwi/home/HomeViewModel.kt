@@ -61,9 +61,6 @@ class HomeViewModel @Inject constructor(
                 onTriggerEvent(HomeEvents.GetColors)
                 onTriggerEvent(HomeEvents.GetCurated)
             }
-            HomeEvents.NoEvent -> {
-                // No event so.. do nothing
-            }
         }
     }
 

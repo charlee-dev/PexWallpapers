@@ -2,6 +2,7 @@ package com.adwi.pexwallpapers
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmark
@@ -36,6 +37,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalPagingApi
+@ExperimentalFoundationApi
 fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit,
@@ -92,6 +94,8 @@ fun NavGraphBuilder.myNavGraph(
 @ExperimentalPagerApi
 @ExperimentalCoilApi
 @ExperimentalPagingApi
+@ExperimentalFoundationApi
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit
