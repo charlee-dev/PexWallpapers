@@ -61,6 +61,7 @@ fun PexSearchToolbar(
             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
             textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
             colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.background),
+            maxLines = 1
         )
         Column(
             modifier = Modifier

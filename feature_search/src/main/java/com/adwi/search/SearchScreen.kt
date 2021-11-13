@@ -3,12 +3,12 @@ package com.adwi.search
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,6 +23,7 @@ import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.local.domain.toDomain
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
@@ -40,6 +41,19 @@ fun SearchScreen(
 
     val query = remember { mutableStateOf("") }
 
+    val pendingScrollToTop = remember { mutableStateOf(viewModel.pendingScrollToTopAfterRefresh) }
+
+    val state = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    if (pendingScrollToTop.value) {
+        LaunchedEffect(true) {
+            coroutineScope.launch {
+                state.animateScrollToItem(0)
+            }
+        }
+    }
+
     Column {
         PexSearchToolbar(
             query = query.value,
@@ -49,7 +63,7 @@ fun SearchScreen(
             onExecuteSearch = { viewModel.onSearchQuerySubmit(query.value) },
             onShowFilterDialog = {},
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(horizontal = paddingValues)
                 .fillMaxWidth()
         )
         WallpaperListPaged(
@@ -65,14 +79,14 @@ fun SearchScreen(
 @Composable
 fun WallpaperListPaged(
     wallpapers: Flow<PagingData<WallpaperEntity>>,
-    onWallpaperClick: (Int) -> Unit
+    onWallpaperClick: (Int) -> Unit,
+    state: LazyListState = rememberLazyListState()
 ) {
     val lazyWallpaperItems = wallpapers.collectAsLazyPagingItems()
     LazyColumn(
+        state = state,
         contentPadding = PaddingValues(
-//        start = paddingValues,
-//        end = paddingValues,
-            top = paddingValues,
+            top = paddingValues / 2,
             bottom = paddingValues * 3
         ),
         verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
