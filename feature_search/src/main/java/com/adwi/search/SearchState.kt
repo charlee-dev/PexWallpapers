@@ -1,10 +1,10 @@
 package com.adwi.search
 
-import androidx.paging.PagingData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.adwi.core.domain.ProgressBarState
-import com.adwi.datasource.local.domain.WallpaperEntity
 
 data class SearchState(
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
-    val wallpapers: PagingData<WallpaperEntity>? = null
+    val wallpapers: MutableState<PagingState> = mutableStateOf(PagingState())
 )

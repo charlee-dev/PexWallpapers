@@ -18,6 +18,7 @@ import com.adwi.components.WallpaperListPanel
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
@@ -29,7 +30,8 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val state = viewModel.state.value
+    val state = viewModel.state
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -48,7 +50,14 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(horizontal = paddingValues, vertical = paddingValues / 2),
                 state = state.daily.value,
-                onWallpaperClick = { id -> onWallpaperClick(id) }
+                onWallpaperClick = { id ->
+                    Timber.tag("HomeScreen").d("$id - click")
+                    onWallpaperClick(id)
+                },
+                onLongPress = { id ->
+                    Timber.tag("HomeScreen").d("$id - long")
+                    viewModel.onTriggerEvent(HomeEvents.OnFavoriteClick(state.daily.value.wallpaper))
+                }
             )
         }
         item {
@@ -65,7 +74,11 @@ fun HomeScreen(
             WallpaperListPanel(
                 categoryName = stringResource(id = R.string.curated),
                 state = state.curated.value,
-                onWallpaperClick = { id -> onWallpaperClick(id) }
+                onWallpaperClick = { id -> onWallpaperClick(id) },
+                onLongPress = { wallpaper ->
+                    Timber.tag("HomeScreen").d("${wallpaper.id} - long")
+                    viewModel.onTriggerEvent(HomeEvents.OnFavoriteClick(wallpaper))
+                }
             )
         }
     }

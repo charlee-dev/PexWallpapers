@@ -1,6 +1,6 @@
 package com.adwi.home
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val state: MutableState<HomeState> = mutableStateOf(HomeState())
+    val state by mutableStateOf(HomeState())
 
     init {
         onTriggerEvent(HomeEvents.Refresh)
@@ -61,12 +61,13 @@ class HomeViewModel @Inject constructor(
                 onTriggerEvent(HomeEvents.GetColors)
                 onTriggerEvent(HomeEvents.GetCurated)
             }
+            is HomeEvents.OnFavoriteClick -> doFavorite(event.wallpaper)
         }
     }
 
     private fun getDaily() {
         wallpaperInteractors.getDaily.execute().onEach { resource ->
-            state.value.daily.apply {
+            state.daily.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         logger.log("getDaily - SetCategory")
@@ -90,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getColors() {
         wallpaperInteractors.getColors.execute().onEach { resource ->
-            state.value.colors.apply {
+            state.colors.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         value = value.copy(progressBarState = resource.progressBarState)
@@ -110,7 +111,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getCurated() {
         wallpaperInteractors.getCurated.execute().onEach { resource ->
-            state.value.curated.apply {
+            state.curated.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         value = value.copy(progressBarState = resource.progressBarState)
@@ -136,6 +137,15 @@ class HomeViewModel @Inject constructor(
     private fun setCategory(categoryName: String) {
         onDispatcher(dispatcher) {
             settingsInteractors.getSettings.updateLastQuery(categoryName)
+        }
+    }
+
+    private fun doFavorite(wallpaper: Wallpaper) {
+        onDispatcher(dispatcher) {
+            val isFavorite = wallpaper.isFavorite
+            val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
+            snackBarMessage.value = "Long pressed"
+            wallpaperInteractors.getWallpaper.update(newWallpaper)
         }
     }
 }
