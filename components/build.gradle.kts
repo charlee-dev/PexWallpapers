@@ -26,7 +26,7 @@ android {
 
 dependencies {
 
-    api(project(Modules.CORE))
+    api(project(Modules.COMMON))
 
     addCoreDependencies()
     addComposeDependencies()

@@ -51,7 +51,7 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
+    implementation(project(Modules.COMMON))
     implementation(project(Modules.COMPONENTS))
     api(project(Modules.INTERACTORS))
 

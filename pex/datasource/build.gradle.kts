@@ -20,7 +20,7 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
+    implementation(project(Modules.COMMON))
 
     addPersistenceDependencies()
     addNetworkDependencies()

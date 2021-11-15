@@ -227,4 +227,4 @@ fun slideOutHorizontallyWithFade(duration: Int) = slideOutHorizontally(
     )
 ) + fadeOut(animationSpec = tween(duration))
 
-const val SHORT_DURATION = 300
+const val SHORT_DURATION = 700

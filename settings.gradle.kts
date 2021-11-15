@@ -19,7 +19,7 @@ include(
 
     ":app",
 
-    ":core",
+    ":common",
     ":components",
 //    ":test-shared",
 

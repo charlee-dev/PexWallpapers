@@ -24,7 +24,7 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
+    implementation(project(Modules.COMMON))
     api(project(Modules.DATASOURCE))
     implementation("androidx.paging:paging-common-ktx:3.0.1")
 
