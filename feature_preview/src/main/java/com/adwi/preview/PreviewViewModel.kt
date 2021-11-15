@@ -41,7 +41,7 @@ class PreviewViewModel
         interactors.getWallpaper.getWallpaperById(id).onEach { dataState ->
             when (dataState) {
                 is DataState.Loading -> {
-                    state.value = state.value.copy(progressBarState = dataState.progressBarState)
+                    state.value = state.value.copy(loadingState = dataState.loadingState)
                 }
                 is DataState.Data -> {
                     state.value = state.value.copy(wallpaper = dataState.data)

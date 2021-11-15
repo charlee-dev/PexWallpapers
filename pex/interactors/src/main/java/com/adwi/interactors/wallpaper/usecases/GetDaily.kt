@@ -13,7 +13,6 @@ import com.adwi.interactors.common.networkBoundResource
 import com.adwi.interactors.common.shouldFetch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -30,7 +29,7 @@ class GetDaily @Inject constructor(
         query = { dailyDao.getAllDailyWallpapers() },
         fetch = { service.getDailyWallpapers(categoryName = categoryName).wallpaperList },
         saveFetchResult = { remoteList ->
-            val favoriteWallpapers = wallpapersDao.getAllFavorites().first()
+            val favoriteWallpapers = wallpapersDao.getAllFavorites()
 
             val wallpaperList = remoteList.keepFavorites(
                 categoryName = categoryName,

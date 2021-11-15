@@ -12,7 +12,6 @@ import com.adwi.interactors.common.networkBoundResource
 import com.adwi.interactors.common.shouldFetch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -26,7 +25,7 @@ class GetCurated @Inject constructor(
         query = { dao.getAllCuratedWallpapers() },
         fetch = { service.getCuratedWallpapers().wallpaperList },
         saveFetchResult = { remoteList ->
-            val favoriteWallpapers = dao.getAllFavorites().first()
+            val favoriteWallpapers = dao.getAllFavorites()
 
             val wallpaperList = remoteList.keepFavorites(favoritesList = favoriteWallpapers)
 

@@ -2,6 +2,7 @@ package com.adwi.interactors
 
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.datasource.local.WallpaperDatabase
+import com.adwi.datasource.local.dao.WallpapersDao
 import com.adwi.datasource.network.PexService
 import com.adwi.interactors.settings.SettingsInteractors
 import com.adwi.interactors.settings.usecases.GetSettings
@@ -46,6 +47,12 @@ object InteractorsModule {
         database: WallpaperDatabase
     ): GetColors = GetColors(service, database)
 
+    @Provides
+    @Singleton
+    fun provideGetFavorites(
+        dao: WallpapersDao
+    ): GetFavorites = GetFavorites(dao)
+
     @ExperimentalPagingApi
     @Provides
     @Singleton
@@ -68,9 +75,17 @@ object InteractorsModule {
         getCurated: GetCurated,
         getDaily: GetDaily,
         getColors: GetColors,
-        getSearch: GetSearch
+        getSearch: GetSearch,
+        getFavorites: GetFavorites
     ): WallpaperInteractors {
-        return WallpaperInteractors(getWallpaper, getCurated, getDaily, getColors, getSearch)
+        return WallpaperInteractors(
+            getWallpaper,
+            getCurated,
+            getDaily,
+            getColors,
+            getSearch,
+            getFavorites
+        )
     }
 
     @Provides

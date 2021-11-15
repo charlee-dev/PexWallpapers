@@ -3,7 +3,9 @@ package com.adwi.interactors.wallpaper.usecases
 import com.adwi.core.domain.DataState
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.domain.ColorCategoryEntity
+import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.network.PexService
+import com.adwi.datasource.network.domain.toEntity
 import com.adwi.interactors.common.networkBoundResource
 import com.adwi.interactors.common.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,14 +18,22 @@ class GetColors @Inject constructor(
     private val database: WallpaperDatabase
 ) {
     private val categoryDao = database.categoryDao()
+    private val wallpaperDao = database.wallpaperDao()
 
     fun execute(): Flow<DataState<List<ColorCategoryEntity>>> = networkBoundResource(
         query = { categoryDao.getAllColors() },
         fetch = {
             val colorList = mutableListOf<ColorCategoryEntity>()
+            val wallpaperList = mutableListOf<WallpaperEntity>()
+
             colorNameList.forEach { color ->
                 val response = service.getColor(color)
                 val wallpapers = response.wallpaperList
+
+                wallpapers.forEach {
+                    wallpaperList.add(it.toEntity(color))
+                }
+
                 colorList += ColorCategoryEntity(
                     name = color,
                     firstImage = wallpapers[0].src.tiny,
@@ -33,6 +43,9 @@ class GetColors @Inject constructor(
                     timeStamp = System.currentTimeMillis()
                 )
             }
+
+            wallpaperDao.insertWallpapers(wallpaperList)
+
             colorList.toList()
         },
         saveFetchResult = { categoryDao.insertColors(it) },

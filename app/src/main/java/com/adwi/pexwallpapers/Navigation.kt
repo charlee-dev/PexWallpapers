@@ -17,11 +17,14 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.favorites.FavoritesEvent
 import com.adwi.favorites.FavoritesScreen
+import com.adwi.favorites.FavoritesViewModel
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
+import com.adwi.search.SearchEvents
 import com.adwi.search.SearchScreen
 import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
@@ -111,18 +114,24 @@ fun NavGraphBuilder.addHomeGraph(
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
-        viewModel.restoreLastQuery()
+
+        viewModel.onTriggerEvent(SearchEvents.RestoreLastQuery)
+
         SearchScreen(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
     composable(HomeSections.FAVORITES.route) { backStackEntry ->
-//        val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
+        val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
+
+        viewModel.onTriggerEvent(FavoritesEvent.GetFavorites)
+
         FavoritesScreen(
-//            viewModel = viewModel,
-//            onSearchClick = onSearchClick,
-//            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+            state = viewModel.state.value,
+            onTriggerEvent = viewModel::onTriggerEvent,
+            onSearchClick = onCategoryClick, // onCategoryClick navigates to Search only
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
     composable(HomeSections.SETTINGS.route) { backStackEntry ->

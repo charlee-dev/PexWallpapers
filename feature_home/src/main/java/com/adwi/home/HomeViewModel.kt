@@ -13,7 +13,10 @@ import com.adwi.core.util.ext.onDispatcher
 import com.adwi.datasource.local.domain.toDomain
 import com.adwi.domain.Wallpaper
 import com.adwi.interactors.settings.SettingsInteractors
-import com.adwi.interactors.wallpaper.WallpaperInteractors
+import com.adwi.interactors.wallpaper.usecases.GetColors
+import com.adwi.interactors.wallpaper.usecases.GetCurated
+import com.adwi.interactors.wallpaper.usecases.GetDaily
+import com.adwi.interactors.wallpaper.usecases.GetWallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +28,10 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val wallpaperInteractors: WallpaperInteractors,
+    private val getDaily: GetDaily,
+    private val getColors: GetColors,
+    private val getCurated: GetCurated,
+    private val getWallpaper: GetWallpaper,
     private val settingsInteractors: SettingsInteractors,
 //    private val savedStateHandle: SavedStateHandle,
     private val logger: Logger,
@@ -66,12 +72,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getDaily() {
-        wallpaperInteractors.getDaily.execute().onEach { resource ->
+        getDaily.execute().onEach { resource ->
             state.value.daily.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         logger.log("getDaily - SetCategory")
-                        value = value.copy(progressBarState = resource.progressBarState)
+                        value = value.copy(loadingState = resource.loadingState)
                     }
                     is DataState.Data -> {
                         logger.log("getDaily - Data - ${resource.data!!.size}")
@@ -90,11 +96,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getColors() {
-        wallpaperInteractors.getColors.execute().onEach { resource ->
+        getColors.execute().onEach { resource ->
             state.value.colors.apply {
                 when (resource) {
                     is DataState.Loading -> {
-                        value = value.copy(progressBarState = resource.progressBarState)
+                        value = value.copy(loadingState = resource.loadingState)
                     }
                     is DataState.Data -> {
                         value = value.copy(
@@ -110,11 +116,11 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getCurated() {
-        wallpaperInteractors.getCurated.execute().onEach { resource ->
+        getCurated.execute().onEach { resource ->
             state.value.curated.apply {
                 when (resource) {
                     is DataState.Loading -> {
-                        value = value.copy(progressBarState = resource.progressBarState)
+                        value = value.copy(loadingState = resource.loadingState)
                     }
                     is DataState.Data -> {
                         value = value.copy(
@@ -145,7 +151,7 @@ class HomeViewModel @Inject constructor(
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
             snackBarMessage.value = "Long pressed"
-            wallpaperInteractors.getWallpaper.update(newWallpaper)
+            getWallpaper.update(newWallpaper)
         }
     }
 }

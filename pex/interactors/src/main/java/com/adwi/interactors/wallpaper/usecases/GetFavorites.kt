@@ -3,29 +3,23 @@ package com.adwi.interactors.wallpaper.usecases
 import com.adwi.core.domain.DataState
 import com.adwi.core.domain.LoadingState
 import com.adwi.core.domain.UIComponent
-import com.adwi.datasource.local.WallpaperDatabase
+import com.adwi.datasource.local.dao.WallpapersDao
 import com.adwi.datasource.local.domain.toDomain
-import com.adwi.datasource.local.domain.toEntity
 import com.adwi.domain.Wallpaper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetWallpaper @Inject constructor(
-    database: WallpaperDatabase
+class GetFavorites @Inject constructor(
+    private val dao: WallpapersDao
 ) {
-    val dao = database.wallpaperDao()
-
-    fun getWallpaperById(
-        id: Int,
-    ): Flow<DataState<Wallpaper>> = flow {
+    fun execute(): Flow<DataState<List<Wallpaper>>> = flow {
         try {
             emit(DataState.Loading(loadingState = LoadingState.Loading))
 
-            // emit data from network
-            val wallpaperEntity = dao.getWallpaperById(id)
+            val favorites = dao.getAllFavorites()
 
-            emit(DataState.Data(wallpaperEntity.toDomain()))
+            emit(DataState.Data(data = favorites.map { it.toDomain() }))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(
@@ -39,9 +33,5 @@ class GetWallpaper @Inject constructor(
         } finally {
             emit(DataState.Loading(loadingState = LoadingState.Idle))
         }
-    }
-
-    suspend fun update(wallpaper: Wallpaper) {
-        dao.updateWallpaper(wallpaper.toEntity())
     }
 }

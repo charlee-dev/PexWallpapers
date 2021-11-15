@@ -1,7 +1,5 @@
 package com.adwi.search
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
@@ -15,7 +13,10 @@ import com.adwi.interactors.wallpaper.WallpaperInteractors
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -28,9 +29,6 @@ class SearchViewModel @Inject constructor(
     private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
-
-    val state: MutableState<SearchState> = mutableStateOf(SearchState())
-
 
     fun onTriggerEvent(event: SearchEvents) {
         when (event) {
@@ -53,9 +51,6 @@ class SearchViewModel @Inject constructor(
 
     val currentQuery = MutableStateFlow<String?>(null)
 
-    val hasCurrentQuery = currentQuery.map { it != null }
-
-    var refreshInProgress = false
     var pendingScrollToTopAfterRefresh = false
     var newQueryInProgress = false
     var pendingScrollToTopAfterNewQuery = false
@@ -66,7 +61,7 @@ class SearchViewModel @Inject constructor(
         } ?: emptyFlow()
     }.cachedIn(viewModelScope)
 
-    fun onSearchQuerySubmit(query: String) {
+    private fun onSearchQuerySubmit(query: String) {
         currentQuery.value = query
         newQueryInProgress = true
         pendingScrollToTopAfterNewQuery = true
@@ -77,7 +72,7 @@ class SearchViewModel @Inject constructor(
         onDispatcher(ioDispatcher) { settingsInteractors.getSettings.updateLastQuery(query) }
     }
 
-    fun restoreLastQuery() {
+    private fun restoreLastQuery() {
         onDispatcher(ioDispatcher) {
             currentQuery.value = settingsInteractors.getSettings.getSettings().first().lastQuery
             newQueryInProgress = false
@@ -85,7 +80,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun onFavoriteClick(wallpaper: Wallpaper) {
+    private fun onFavoriteClick(wallpaper: Wallpaper) {
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {

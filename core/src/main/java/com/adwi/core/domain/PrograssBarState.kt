@@ -1,7 +1,7 @@
 package com.adwi.core.domain
 
-sealed class ProgressBarState {
+sealed class LoadingState {
 
-    object Loading : ProgressBarState()
-    object Idle : ProgressBarState()
+    object Loading : LoadingState()
+    object Idle : LoadingState()
 }

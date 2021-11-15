@@ -1,7 +1,6 @@
 package com.adwi.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -27,6 +26,6 @@ fun PexCoilImage(
         ),
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
     )
 }

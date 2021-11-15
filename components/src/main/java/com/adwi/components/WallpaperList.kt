@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.adwi.camposables.test.TAG_HERO_NAME
 import com.adwi.camposables.test.TAG_HERO_PRIMARY_ATTRIBUTE
 import com.adwi.components.domain.WallpaperListState
-import com.adwi.core.domain.ProgressBarState
+import com.adwi.core.domain.LoadingState
 import com.adwi.domain.Wallpaper
 
 @Composable
@@ -40,7 +40,7 @@ fun WallpaperList(
                 )
             }
         }
-        if (state.progressBarState is ProgressBarState.Loading) {
+        if (state.loadingState is LoadingState.Loading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
             )

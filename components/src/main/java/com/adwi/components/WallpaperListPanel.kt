@@ -18,7 +18,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.domain.WallpaperListState
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.paddingValues
-import com.adwi.core.domain.ProgressBarState
+import com.adwi.core.domain.LoadingState
 import com.adwi.domain.Wallpaper
 import com.valentinilk.shimmer.shimmer
 
@@ -59,7 +59,7 @@ fun WallpaperListPanel(
                 )
             })
         }
-        if (state.progressBarState is ProgressBarState.Loading) {
+        if (state.loadingState is LoadingState.Loading) {
             ShimmerRow()
         }
     }

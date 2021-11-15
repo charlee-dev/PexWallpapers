@@ -1,10 +1,10 @@
 package com.adwi.components.domain
 
-import com.adwi.core.domain.ProgressBarState
+import com.adwi.core.domain.LoadingState
 import com.adwi.domain.ColorCategory
 
 
 data class ColorsState(
-    val progressBarState: ProgressBarState = ProgressBarState.Idle,
+    val loadingState: LoadingState = LoadingState.Idle,
     val categories: List<ColorCategory> = listOf()
 )

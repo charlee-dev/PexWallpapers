@@ -18,7 +18,7 @@ import com.adwi.components.domain.WallpaperState
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
-import com.adwi.core.domain.ProgressBarState
+import com.adwi.core.domain.LoadingState
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -34,7 +34,7 @@ fun DailyWallpaper(
 ) {
     BoxWithConstraints(
         modifier = modifier
-            .fillMaxWidth()
+//            .fillMaxSize()
     ) {
         val width = this.maxWidth
 
@@ -54,9 +54,11 @@ fun DailyWallpaper(
         ) {
             Box {
                 PexCoilImage(
-                    imageUrl = state.wallpaper.imageUrlLandscape,
+                    imageUrl = state.wallpaper.imageUrlPortrait,
                     placeholder = placeholder,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .fillMaxSize()
                 )
                 PexAnimatedHeart(
                     state = state.wallpaper.isFavorite,
@@ -92,7 +94,7 @@ fun DailyWallpaper(
                     }
                 }
             }
-            if (state.progressBarState is ProgressBarState.Loading) {
+            if (state.loadingState is LoadingState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )

@@ -31,7 +31,6 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -42,7 +41,9 @@ fun HomeScreen(
         item {
             Header(
                 onSearchClick = onCategoryClick,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = paddingValues)
             )
         }
         item {
@@ -50,12 +51,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(horizontal = paddingValues, vertical = paddingValues / 2),
                 state = state.daily.value,
-                onWallpaperClick = { id ->
-                    Timber.tag("HomeScreen").d("$id - click")
-                    onWallpaperClick(id)
-                },
+                onWallpaperClick = { id -> onWallpaperClick(id) },
                 onLongPress = { id ->
-                    Timber.tag("HomeScreen").d("$id - long")
                     onTriggerEvent(HomeEvent.OnFavoriteClick(state.daily.value.wallpaper))
                 }
             )

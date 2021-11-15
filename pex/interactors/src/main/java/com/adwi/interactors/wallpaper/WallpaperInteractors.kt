@@ -13,5 +13,6 @@ data class WallpaperInteractors
     val getCurated: GetCurated,
     val getDaily: GetDaily,
     val getColors: GetColors,
-    val getSearch: GetSearch
+    val getSearch: GetSearch,
+    val getFavorites: GetFavorites
 )

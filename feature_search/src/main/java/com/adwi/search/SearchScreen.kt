@@ -73,7 +73,7 @@ fun SearchScreen(
             onHeroNameChanged = { newQuery ->
                 query.value = newQuery
             },
-            onExecuteSearch = { viewModel.onSearchQuerySubmit(query.value) },
+            onExecuteSearch = { viewModel.onTriggerEvent(SearchEvents.OnSearchQuerySubmit(query.value)) },
             onShowFilterDialog = {},
             modifier = Modifier
                 .padding(horizontal = paddingValues)
@@ -114,7 +114,7 @@ fun WallpaperListPaged(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
-                        .height((wallpaper.height / 2).dp)
+                        .height((wallpaper.height / 2.5).dp)
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },

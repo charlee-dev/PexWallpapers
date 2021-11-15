@@ -10,7 +10,7 @@ sealed class DataState<T>(
 
     class Loading<T>(
         data: T? = null,
-        val progressBarState: ProgressBarState = ProgressBarState.Idle
+        val loadingState: LoadingState = LoadingState.Idle
     ) : DataState<T>(data)
 
     class Response<T>(

@@ -11,9 +11,8 @@ import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.local.domain.toEntity
 import com.adwi.datasource.local.domain.toSearchResult
 import com.adwi.datasource.network.PexService
-import com.adwi.datasource.network.domain.toDomain
+import com.adwi.interactors.common.keepFavorites
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -45,17 +44,12 @@ class SearchNewsRemoteMediator(
             delay(3000)
             val searchServerResults = response.wallpaperList
 
-            val favoriteWallpapers = this.wallpaperDao.getAllFavorites().first()
+            val favoriteWallpapers = this.wallpaperDao.getAllFavorites()
 
-            val searchResultWallpapers = searchServerResults.map { serverSearchResultWallpaper ->
-                val isFavorite = favoriteWallpapers.any { favoriteWallpaper ->
-                    favoriteWallpaper.id == serverSearchResultWallpaper.id
-                }
-                serverSearchResultWallpaper.toDomain(
-                    categoryName = searchQuery,
-                    isFavorite = isFavorite
-                ).toEntity()
-            }
+            val searchResultWallpapers = searchServerResults.keepFavorites(
+                categoryName = searchQuery,
+                favoritesList = favoriteWallpapers
+            ).map { it.toEntity() }
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {

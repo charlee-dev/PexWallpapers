@@ -28,7 +28,6 @@ fun Header(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = paddingValues)
             .padding(top = paddingValues / 2)
     ) {
         Row(

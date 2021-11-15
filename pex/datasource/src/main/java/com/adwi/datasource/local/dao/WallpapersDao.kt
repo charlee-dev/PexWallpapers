@@ -26,7 +26,7 @@ interface WallpapersDao {
     // Favorites
 
     @Query("SELECT * FROM wallpaper_table WHERE isFavorite = 1")
-    fun getAllFavorites(): Flow<List<WallpaperEntity>>
+    suspend fun getAllFavorites(): List<WallpaperEntity>
 
     @Query("UPDATE wallpaper_table SET isFavorite = 0")
     suspend fun resetAllFavorites()
