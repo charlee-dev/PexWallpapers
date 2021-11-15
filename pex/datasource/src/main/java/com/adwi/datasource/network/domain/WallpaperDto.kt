@@ -1,6 +1,7 @@
 package com.adwi.datasource.network.domain
 
 import com.adwi.core.util.Constants.DEFAULT_CATEGORY
+import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.domain.Wallpaper
 import com.google.gson.annotations.SerializedName
 
@@ -38,7 +39,7 @@ fun WallpaperDto.toDomain(
 fun WallpaperDto.toEntity(
     categoryName: String = DEFAULT_CATEGORY,
     isFavorite: Boolean = false
-) = Wallpaper(
+) = WallpaperEntity(
     id = this.id,
     height = heights,
     url = this.pexUrl,

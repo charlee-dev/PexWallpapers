@@ -1,14 +1,13 @@
 package com.adwi.interactors.wallpaper.usecases
 
-import androidx.room.withTransaction
 import com.adwi.core.domain.DataState
-import com.adwi.core.util.networkBoundResource
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.domain.ColorCategoryEntity
 import com.adwi.datasource.network.PexService
+import com.adwi.interactors.common.networkBoundResource
+import com.adwi.interactors.common.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -19,9 +18,7 @@ class GetColors @Inject constructor(
     private val categoryDao = database.categoryDao()
 
     fun execute(): Flow<DataState<List<ColorCategoryEntity>>> = networkBoundResource(
-        query = {
-            categoryDao.getAllColors()
-        },
+        query = { categoryDao.getAllColors() },
         fetch = {
             val colorList = mutableListOf<ColorCategoryEntity>()
             colorNameList.forEach { color ->
@@ -38,24 +35,9 @@ class GetColors @Inject constructor(
             }
             colorList.toList()
         },
-        saveFetchResult = {
-            database.withTransaction {
-                categoryDao.insertColors(it)
-            }
-        },
-        shouldFetch = { colors ->
-            if (colors.isEmpty()) {
-                true
-            } else {
-                val sortedWallpapers = colors.sortedBy { color ->
-                    color.timeStamp
-                }
-                val oldestTimestamp = sortedWallpapers.firstOrNull()?.timeStamp
-                val needsRefresh = oldestTimestamp == null ||
-                        oldestTimestamp < System.currentTimeMillis() -
-                        TimeUnit.DAYS.toMillis(7)
-                needsRefresh
-            }
+        saveFetchResult = { categoryDao.insertColors(it) },
+        shouldFetch = { list ->
+            if (list.isEmpty()) true else list.shouldFetchColors()
         }
     )
 

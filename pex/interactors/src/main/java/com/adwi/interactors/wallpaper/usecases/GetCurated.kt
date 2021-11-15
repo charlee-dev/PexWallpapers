@@ -2,18 +2,17 @@ package com.adwi.interactors.wallpaper.usecases
 
 import androidx.room.withTransaction
 import com.adwi.core.domain.DataState
-import com.adwi.core.util.networkBoundResource
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.local.domain.toCurated
 import com.adwi.datasource.local.domain.toEntity
 import com.adwi.datasource.network.PexService
-import com.adwi.datasource.network.domain.toDomain
+import com.adwi.interactors.common.keepFavorites
+import com.adwi.interactors.common.networkBoundResource
+import com.adwi.interactors.common.shouldFetch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -24,48 +23,23 @@ class GetCurated @Inject constructor(
     private val dao = database.wallpaperDao()
 
     fun execute(): Flow<DataState<List<WallpaperEntity>>> = networkBoundResource(
-        query = {
-            dao.getAllCuratedWallpapers()
-        },
-        fetch = {
-            val response = service.getCuratedWallpapers()
-            response.wallpaperList
-        },
-        saveFetchResult = { remoteWallpaperList ->
-            Timber.d("wallpaperList size - $remoteWallpaperList")
+        query = { dao.getAllCuratedWallpapers() },
+        fetch = { service.getCuratedWallpapers().wallpaperList },
+        saveFetchResult = { remoteList ->
             val favoriteWallpapers = dao.getAllFavorites().first()
 
-                val wallpaperList =
-                    remoteWallpaperList.map { wallpaperDto ->
-                        val isFavorite = favoriteWallpapers.any { favoriteWallpaper ->
-                            favoriteWallpaper.id == wallpaperDto.id
-                        }
-                        wallpaperDto.toDomain(isFavorite = isFavorite)
-                    }
+            val wallpaperList = remoteList.keepFavorites(favoritesList = favoriteWallpapers)
 
-                val curatedWallpapers = wallpaperList.map { wallpaper ->
-                    wallpaper.toCurated()
-                }
+            val curatedWallpapers = wallpaperList.map { it.toCurated() }
 
-                database.withTransaction {
-                    dao.deleteAllCuratedWallpapers()
-                    dao.insertWallpapers(wallpaperList.map { it.toEntity() })
-                    dao.insertCuratedWallpapers(curatedWallpapers)
-                }
-            },
-            shouldFetch = { wallpapers ->
-                if (wallpapers.isEmpty()) {
-                    true
-                } else {
-                    val sortedWallpapers = wallpapers.sortedBy { wallpaper ->
-                        wallpaper.updatedAt
-                    }
-                    val oldestTimestamp = sortedWallpapers.firstOrNull()?.updatedAt
-                    val needsRefresh = oldestTimestamp == null ||
-                            oldestTimestamp < System.currentTimeMillis() -
-                            TimeUnit.DAYS.toMillis(5)
-                    needsRefresh
-                }
+            database.withTransaction {
+                dao.deleteAllCuratedWallpapers()
+                dao.insertWallpapers(wallpaperList.map { it.toEntity() })
+                dao.insertCuratedWallpapers(curatedWallpapers)
             }
-        )
+        },
+        shouldFetch = { list ->
+            if (list.isEmpty()) true else list.shouldFetch()
+        }
+    )
 }

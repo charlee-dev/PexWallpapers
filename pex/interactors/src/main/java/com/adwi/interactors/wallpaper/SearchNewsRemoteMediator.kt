@@ -46,6 +46,7 @@ class SearchNewsRemoteMediator(
             val searchServerResults = response.wallpaperList
 
             val favoriteWallpapers = this.wallpaperDao.getAllFavorites().first()
+
             val searchResultWallpapers = searchServerResults.map { serverSearchResultWallpaper ->
                 val isFavorite = favoriteWallpapers.any { favoriteWallpaper ->
                     favoriteWallpaper.id == serverSearchResultWallpaper.id

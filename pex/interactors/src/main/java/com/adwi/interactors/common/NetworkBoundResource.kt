@@ -1,4 +1,4 @@
-package com.adwi.core.util
+package com.adwi.interactors.common
 
 import com.adwi.core.domain.DataState
 import com.adwi.core.domain.UIComponent

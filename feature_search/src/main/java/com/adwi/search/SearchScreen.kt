@@ -40,7 +40,6 @@ import timber.log.Timber
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
-    onSearchClick: () -> Unit,
     onWallpaperClick: (Int) -> Unit
 ) {
     val wallpapers = viewModel.searchResults

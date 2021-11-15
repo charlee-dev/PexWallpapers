@@ -66,13 +66,6 @@ class SearchViewModel @Inject constructor(
         } ?: emptyFlow()
     }.cachedIn(viewModelScope)
 
-    init {
-        restoreLastQuery()
-        currentQuery.value?.let {
-            onTriggerEvent(SearchEvents.OnSearchQuerySubmit(currentQuery.value!!))
-        }
-    }
-
     fun onSearchQuerySubmit(query: String) {
         currentQuery.value = query
         newQueryInProgress = true
@@ -84,7 +77,7 @@ class SearchViewModel @Inject constructor(
         onDispatcher(ioDispatcher) { settingsInteractors.getSettings.updateLastQuery(query) }
     }
 
-    private fun restoreLastQuery() {
+    fun restoreLastQuery() {
         onDispatcher(ioDispatcher) {
             currentQuery.value = settingsInteractors.getSettings.getSettings().first().lastQuery
             newQueryInProgress = false

@@ -1,6 +1,6 @@
 package com.adwi.home
 
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -32,42 +32,42 @@ class HomeViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val state by mutableStateOf(HomeState())
+    val state: MutableState<HomeState> = mutableStateOf(HomeState())
 
     init {
-        onTriggerEvent(HomeEvents.Refresh)
+        onTriggerEvent(HomeEvent.Refresh)
     }
 
-    fun onTriggerEvent(event: HomeEvents) {
+    fun onTriggerEvent(event: HomeEvent) {
         when (event) {
-            HomeEvents.GetDaily -> {
+            HomeEvent.GetDaily -> {
                 logger.log("onTriggerEvent - getDaily")
                 getDaily()
             }
-            HomeEvents.GetColors -> {
+            HomeEvent.GetColors -> {
                 logger.log("onTriggerEvent - GetColors")
                 getColors()
             }
-            HomeEvents.GetCurated -> {
+            HomeEvent.GetCurated -> {
                 logger.log("onTriggerEvent - GetCurated")
                 getCurated()
             }
-            is HomeEvents.SetCategory -> {
+            is HomeEvent.SetCategory -> {
                 logger.log("onTriggerEvent - SetCategory")
                 setCategory(event.categoryName)
             }
-            HomeEvents.Refresh -> {
-                onTriggerEvent(HomeEvents.GetDaily)
-                onTriggerEvent(HomeEvents.GetColors)
-                onTriggerEvent(HomeEvents.GetCurated)
+            HomeEvent.Refresh -> {
+                onTriggerEvent(HomeEvent.GetDaily)
+                onTriggerEvent(HomeEvent.GetColors)
+                onTriggerEvent(HomeEvent.GetCurated)
             }
-            is HomeEvents.OnFavoriteClick -> doFavorite(event.wallpaper)
+            is HomeEvent.OnFavoriteClick -> doFavorite(event.wallpaper)
         }
     }
 
     private fun getDaily() {
         wallpaperInteractors.getDaily.execute().onEach { resource ->
-            state.daily.apply {
+            state.value.daily.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         logger.log("getDaily - SetCategory")
@@ -91,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getColors() {
         wallpaperInteractors.getColors.execute().onEach { resource ->
-            state.colors.apply {
+            state.value.colors.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         value = value.copy(progressBarState = resource.progressBarState)
@@ -111,7 +111,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getCurated() {
         wallpaperInteractors.getCurated.execute().onEach { resource ->
-            state.curated.apply {
+            state.value.curated.apply {
                 when (resource) {
                     is DataState.Loading -> {
                         value = value.copy(progressBarState = resource.progressBarState)

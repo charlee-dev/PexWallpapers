@@ -26,11 +26,11 @@ import timber.log.Timber
 @ExperimentalPagingApi
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+    state: HomeState,
+    onTriggerEvent: (HomeEvent) -> Unit,
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val state = viewModel.state
 
     LazyColumn(
         modifier = Modifier
@@ -56,7 +56,7 @@ fun HomeScreen(
                 },
                 onLongPress = { id ->
                     Timber.tag("HomeScreen").d("$id - long")
-                    viewModel.onTriggerEvent(HomeEvents.OnFavoriteClick(state.daily.value.wallpaper))
+                    onTriggerEvent(HomeEvent.OnFavoriteClick(state.daily.value.wallpaper))
                 }
             )
         }
@@ -65,7 +65,7 @@ fun HomeScreen(
                 categoryName = stringResource(id = R.string.colors),
                 state = state.colors.value,
                 onCategoryClick = { categoryName ->
-                    viewModel.onTriggerEvent(HomeEvents.SetCategory(categoryName))
+                    onTriggerEvent(HomeEvent.SetCategory(categoryName))
                     onCategoryClick()
                 }
             )
@@ -77,7 +77,7 @@ fun HomeScreen(
                 onWallpaperClick = { id -> onWallpaperClick(id) },
                 onLongPress = { wallpaper ->
                     Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                    viewModel.onTriggerEvent(HomeEvents.OnFavoriteClick(wallpaper))
+                    onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
                 }
             )
         }

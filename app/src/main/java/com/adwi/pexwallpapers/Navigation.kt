@@ -103,16 +103,17 @@ fun NavGraphBuilder.addHomeGraph(
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
         HomeScreen(
-            viewModel = viewModel,
+            state = viewModel.state.value,
+            onTriggerEvent = viewModel::onTriggerEvent,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onCategoryClick = onCategoryClick
         )
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
+        viewModel.restoreLastQuery()
         SearchScreen(
             viewModel = viewModel,
-            onSearchClick = onCategoryClick,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
