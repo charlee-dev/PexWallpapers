@@ -48,6 +48,7 @@ fun WallpaperListPanel(
         ) {
             items(items = state.wallpapers, itemContent = { wallpaper ->
                 var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
+
                 WallpaperItem(
                     wallpaper = wallpaper,
                     onWallpaperClick = { onWallpaperClick(wallpaper.id) },
@@ -68,7 +69,7 @@ fun WallpaperListPanel(
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
-private fun WallpaperItem(
+fun WallpaperItem(
     modifier: Modifier = Modifier,
     elevation: Dp = Dimensions.small,
     shape: Shape = MaterialTheme.shapes.small,

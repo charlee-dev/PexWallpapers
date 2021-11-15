@@ -82,6 +82,8 @@ object Dependencies {
         "com.google.accompanist:accompanist-placeholder-material:${Versions.accompanist}"
     const val accompanistSwipeRefresh =
         "com.google.accompanist:accompanist-swiperefresh:${Versions.accompanist}"
+    const val accompanistNavigationAnimation =
+        "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
 }
 
 object TestDependencies {

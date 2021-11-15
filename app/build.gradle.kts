@@ -1,5 +1,6 @@
 import commons.addHiltDependenciesBasic
 import commons.addHiltDependenciesExtended
+import dependencies.Dependencies
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -69,7 +70,7 @@ dependencies {
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()
 
-//    implementation(Dependencies.sqlDelightAndroidDriver)
+    implementation(Dependencies.accompanistNavigationAnimation)
 
 //    implementation(Dependencies.hiltWorkCore)
 //    kapt(Dependencies.hiltWorkCompiler)

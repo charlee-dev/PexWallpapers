@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.PexSnackBar
@@ -21,9 +20,11 @@ import com.adwi.pexwallpapers.ui.components.PexBottomBar
 import com.adwi.pexwallpapers.ui.components.PexScaffold
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+
 
 @ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi
@@ -65,7 +66,7 @@ fun PexApp(
                     )
                 }
             ) {
-                NavHost(
+                AnimatedNavHost(
                     navController = appState.navController,
                     startDestination = MainDestinations.HOME_ROUTE,
                     modifier = Modifier

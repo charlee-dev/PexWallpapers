@@ -62,6 +62,8 @@ fun DependencyHandler.addHelpersDependencies() {
     api(Dependencies.accompanistPager)
     api(Dependencies.accompanistPagerIndicators)
     api(Dependencies.accompanistPlaceholder)
+    api(Dependencies.accompanistNavigationAnimation)
+    api(Dependencies.accompanistSwipeRefresh)
 }
 
 fun DependencyHandler.addNetworkDependencies() {

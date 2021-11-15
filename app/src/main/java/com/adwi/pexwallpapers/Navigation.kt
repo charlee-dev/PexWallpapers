@@ -1,7 +1,9 @@
 package com.adwi.pexwallpapers
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
@@ -14,7 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
-import androidx.navigation.compose.composable
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.favorites.FavoritesEvent
@@ -28,6 +29,7 @@ import com.adwi.search.SearchEvents
 import com.adwi.search.SearchScreen
 import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
+import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -103,7 +105,25 @@ fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    composable(HomeSections.HOME.route) { backStackEntry ->
+    composable(
+        HomeSections.HOME.route,
+        enterTransition = { initial, _ ->
+            when (initial.destination.route) {
+                HomeSections.SEARCH.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.FAVORITES.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        },
+        exitTransition = { _, target ->
+            when (target.destination.route) {
+                HomeSections.SEARCH.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.FAVORITES.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        }
+    ) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
         HomeScreen(
             state = viewModel.state.value,
@@ -112,7 +132,23 @@ fun NavGraphBuilder.addHomeGraph(
             onCategoryClick = onCategoryClick
         )
     }
-    composable(HomeSections.SEARCH.route) { backStackEntry ->
+    composable(
+        route = HomeSections.SEARCH.route,
+        enterTransition = { initial, _ ->
+            when (initial.destination.route) {
+                HomeSections.FAVORITES.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        },
+        exitTransition = { _, target ->
+            when (target.destination.route) {
+                HomeSections.FAVORITES.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        }
+    ) { backStackEntry ->
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
         viewModel.onTriggerEvent(SearchEvents.RestoreLastQuery)
@@ -122,7 +158,21 @@ fun NavGraphBuilder.addHomeGraph(
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
-    composable(HomeSections.FAVORITES.route) { backStackEntry ->
+    composable(
+        route = HomeSections.FAVORITES.route,
+        enterTransition = { initial, _ ->
+            when (initial.destination.route) {
+                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        },
+        exitTransition = { _, target ->
+            when (target.destination.route) {
+                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
+                else -> null
+            }
+        }
+    ) { backStackEntry ->
         val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
 
         viewModel.onTriggerEvent(FavoritesEvent.GetFavorites)
@@ -162,3 +212,19 @@ enum class HomeSections(
     FAVORITES(R.string.favorites, Icons.Outlined.Bookmark, "home/bookmark"),
     SETTINGS(R.string.settings, Icons.Outlined.Settings, "home/settings")
 }
+
+fun slideInHorizontallyWithFade(duration: Int) = slideInHorizontally(
+    initialOffsetX = { -1000 }, animationSpec = tween(
+        durationMillis = duration,
+        easing = FastOutSlowInEasing
+    )
+) + fadeIn(animationSpec = tween(duration))
+
+fun slideOutHorizontallyWithFade(duration: Int) = slideOutHorizontally(
+    targetOffsetX = { -1000 }, animationSpec = tween(
+        durationMillis = duration,
+        easing = FastOutSlowInEasing
+    )
+) + fadeOut(animationSpec = tween(duration))
+
+const val SHORT_DURATION = 300
