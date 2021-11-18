@@ -20,8 +20,8 @@ fun DependencyHandler.addTestDependencies() {
     testImplementation(TestDependencies.turbine)
     testImplementation(TestDependencies.kotest)
     testImplementation(TestDependencies.truth_ext)
-    testImplementation(TestDependencies.jupiter)
-    testImplementation(TestDependencies.jupiterEngine)
+    testImplementation(TestDependencies.jupiterApi)
+    testImplementation(TestDependencies.jupiterEngineRuntimeOnly)
     testImplementation(TestDependencies.mockk)
 }
 
@@ -91,6 +91,13 @@ fun DependencyHandler.addHiltDependenciesExtended() {
     implementation(Dependencies.hiltNavigationCompose)
 }
 
+fun DependencyHandler.addJUnit5() {
+    testImplementation(TestDependencies.jupiterApi)
+    testRuntimeOnly(TestDependencies.jupiterEngineRuntimeOnly)
+    testImplementation(TestDependencies.jupiterParams)
+//    testRuntimeOnly(TestDependencies.jupiterVintageRuntimeOnly)
+}
+
 /*
  * These extensions mimic the extensions that are generated on the fly by Gradle.
  * They are used here to provide above dependency syntax that mimics Gradle Kotlin DSL
@@ -110,6 +117,9 @@ fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
 
 private fun DependencyHandler.testImplementation(dependencyNotation: Any): Dependency? =
     add("testImplementation", dependencyNotation)
+
+private fun DependencyHandler.testRuntimeOnly(dependencyNotation: Any): Dependency? =
+    add("testRuntimeOnly", dependencyNotation)
 
 private fun DependencyHandler.androidTestImplementation(dependencyNotation: Any): Dependency? =
     add("androidTestImplementation", dependencyNotation)

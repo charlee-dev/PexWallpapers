@@ -105,9 +105,17 @@ object TestDependencies {
     const val rules = "androidx.test:rules:${Versions.rules}"
     const val kotest = "io.kotest:kotest-assertions-core:${Versions.kotest}"
     const val truth_ext = "androidx.test.ext:truth:${Versions.truth}"
-    const val jupiter = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
-    const val jupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}"
 
     // Third party
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
+
+    // JUnit5
+    const val jupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
+    const val jupiterEngineRuntimeOnly = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}"
+    const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit5}"
+    const val jupiterVintageRuntimeOnly =
+        "org.junit.vintage:junit-vintage-engine:${Versions.junit5}"
+
+    //Hilt
+    const val hilt = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
 }

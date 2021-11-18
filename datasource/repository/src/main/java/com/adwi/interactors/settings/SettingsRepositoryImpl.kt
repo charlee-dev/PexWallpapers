@@ -13,9 +13,8 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override fun getSettings() = dao.getSettings().map { it.toDomain() }
 
-    override suspend fun insertSettings(setting: Settings) {
-        val settings = setting.toEntity()
-        dao.insertSettings(settings)
+    override suspend fun insertSettings(settings: Settings) {
+        dao.insertSettings(settings.toEntity())
     }
 
     override suspend fun updateLastQuery(query: String) {

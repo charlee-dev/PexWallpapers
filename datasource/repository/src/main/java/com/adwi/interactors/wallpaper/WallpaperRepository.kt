@@ -42,7 +42,7 @@ interface WallpaperRepository {
 
     fun getSearch(query: String): Flow<PagingData<WallpaperEntity>> // TODO("change it for toDomain")
 
-    fun getFavorites(): Flow<List<Wallpaper>>
+     fun getFavorites(): Flow<List<Wallpaper>>
 
     fun getWallpaperById(id: Int): Flow<Wallpaper>
 

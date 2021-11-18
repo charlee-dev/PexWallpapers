@@ -16,7 +16,7 @@ import com.adwi.datasource.local.domain.*
         ColorCategoryEntity::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class WallpaperDatabase : RoomDatabase() {
 

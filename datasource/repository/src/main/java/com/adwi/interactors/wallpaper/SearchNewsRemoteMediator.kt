@@ -13,6 +13,7 @@ import com.adwi.datasource.local.domain.toSearchResult
 import com.adwi.datasource.network.PexService
 import com.adwi.interactors.util.keepFavorites
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -44,7 +45,7 @@ class SearchNewsRemoteMediator(
             delay(3000)
             val searchServerResults = response.wallpaperList
 
-            val favoriteWallpapers = this.wallpaperDao.getAllFavorites()
+            val favoriteWallpapers = this.wallpaperDao.getAllFavorites().first()
 
             val searchResultWallpapers = searchServerResults.keepFavorites(
                 categoryName = searchQuery,

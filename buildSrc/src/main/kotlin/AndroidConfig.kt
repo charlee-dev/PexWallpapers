@@ -6,6 +6,7 @@ object AndroidConfig {
     const val versionCode = 1
     const val versionName = "0.1.0"
     const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+    const val HILT_TEST_INSTRUMENTATION_RUNNER = "com.adwi.pexwallpapers.HiltTestRunner"
 }
 
 interface BuildType {

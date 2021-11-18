@@ -12,7 +12,7 @@ interface WallpapersDao {
     suspend fun insertWallpapers(wallpapers: List<WallpaperEntity>)
 
     @Query("SELECT * FROM wallpaper_table")
-    suspend fun getAllWallpapers(): List<WallpaperEntity>
+    fun getAllWallpapers(): Flow<List<WallpaperEntity>>
 
     @Query("SELECT * FROM wallpaper_table WHERE id = :wallpaperId")
     suspend fun getWallpaperById(wallpaperId: Int): WallpaperEntity
@@ -26,7 +26,7 @@ interface WallpapersDao {
     // Favorites
 
     @Query("SELECT * FROM wallpaper_table WHERE isFavorite = 1")
-    suspend fun getAllFavorites(): List<WallpaperEntity>
+    fun getAllFavorites(): Flow<List<WallpaperEntity>>
 
     @Query("UPDATE wallpaper_table SET isFavorite = 0")
     suspend fun resetAllFavorites()

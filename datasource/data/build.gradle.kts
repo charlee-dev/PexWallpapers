@@ -7,6 +7,7 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
+    id(Plugins.ANDROID_JUNIT_5)
 }
 
 android {
@@ -14,7 +15,12 @@ android {
     defaultConfig {
         minSdk = AndroidConfig.minSdk
         targetSdk = AndroidConfig.targetSdk
-        testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunner = AndroidConfig.HILT_TEST_INSTRUMENTATION_RUNNER
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
@@ -25,8 +31,12 @@ dependencies {
     addPersistenceDependencies()
     addNetworkDependencies()
     addHiltDependenciesBasic()
-//    addTestDependencies()
 
-//    implementation(Dependencies.paging)
-//    implementation(Dependencies.composePaging)
+//    addJUnit5()
+//    implementation(TestDependencies.mockk)
+//    implementation(TestDependencies.hilt)
+//    implementation(TestDependencies.coroutinesTest)
+////    implementation(TestDependencies.junit)
+////    implementation(TestDependencies.kotest)
+//    implementation(TestDependencies.truth_ext)
 }

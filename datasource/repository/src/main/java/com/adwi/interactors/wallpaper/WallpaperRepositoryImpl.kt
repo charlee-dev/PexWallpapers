@@ -19,6 +19,7 @@ import com.adwi.interactors.util.shouldFetch
 import com.adwi.interactors.util.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
@@ -52,7 +53,7 @@ class WallpaperRepositoryImpl @Inject constructor(
             response.wallpaperList
         },
         saveFetchResult = { remoteList ->
-            val favoriteWallpapers = wallpapersDao.getAllFavorites()
+            val favoriteWallpapers = wallpapersDao.getAllFavorites().first()
             val wallpaperList = remoteList.keepFavorites(favoritesList = favoriteWallpapers)
             val entityList = wallpaperList.map { it.toEntity() }
             val curatedList = wallpaperList.map { it.toCurated() }
@@ -88,7 +89,7 @@ class WallpaperRepositoryImpl @Inject constructor(
         },
         fetch = { service.getDailyWallpapers(categoryName = categoryName).wallpaperList },
         saveFetchResult = { remoteList ->
-            val favoriteWallpapers = wallpapersDao.getAllFavorites()
+            val favoriteWallpapers = wallpapersDao.getAllFavorites().first()
 
             val wallpaperList = remoteList.keepFavorites(
                 categoryName = categoryName,
@@ -180,7 +181,7 @@ class WallpaperRepositoryImpl @Inject constructor(
             response.wallpaperList
         },
         saveFetchResult = { remoteList ->
-            val favoriteWallpapers = wallpapersDao.getAllFavorites()
+            val favoriteWallpapers = wallpapersDao.getAllFavorites().first()
             val sortedWallpapers = remoteList.keepFavorites(favoritesList = favoriteWallpapers)
             val entityList = sortedWallpapers.toEntityList()
 
@@ -214,11 +215,8 @@ class WallpaperRepositoryImpl @Inject constructor(
         emit(wallpaper)
     }
 
-    override fun getFavorites(): Flow<List<Wallpaper>> = flow {
-        val entities = wallpapersDao.getAllFavorites()
-        val favorites = entities.toDomainList()
-        emit(favorites)
-    }
+    override fun getFavorites(): Flow<List<Wallpaper>> =
+        wallpapersDao.getAllFavorites().map { it.toDomainList() }
 
     override suspend fun updateWallpaper(wallpaper: Wallpaper) {
         wallpapersDao.updateWallpaper(wallpaper.toEntity())
