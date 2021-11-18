@@ -37,6 +37,7 @@ object Dependencies {
     const val composeFoundationLayout =
         "androidx.compose.foundation:foundation-layout:${Versions.compose}"
     const val composeAnimation = "androidx.compose.animation:animation:${Versions.compose}"
+    const val composeAnimationCore = "androidx.compose.animation:animation-core:${Versions.compose}"
     const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.compose}"
     const val composeMaterial3 = "androidx.compose.material3:material3:${Versions.material3}"
     const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"

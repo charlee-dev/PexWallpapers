@@ -16,6 +16,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.Header
 import com.adwi.components.PexAnimatedHeart
@@ -23,20 +24,22 @@ import com.adwi.components.PexCoilImage
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
-import com.adwi.core.domain.LoadingState
 import com.adwi.domain.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun FavoritesScreen(
-    state: FavoritesState,
+    viewModel: FavoritesViewModel,
     onTriggerEvent: (FavoritesEvent) -> Unit,
     onSearchClick: () -> Unit,
     onWallpaperClick: (Int) -> Unit,
 ) {
+    val wallpapers by viewModel.wallpapers.collectAsState()
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -52,7 +55,7 @@ fun FavoritesScreen(
                 onSearchClick = onSearchClick
             )
         }
-        items(items = state.favorites.value.wallpapers, itemContent = { wallpaper ->
+        items(items = wallpapers, itemContent = { wallpaper ->
             var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
 
             WallpaperItemVertical(
@@ -66,7 +69,7 @@ fun FavoritesScreen(
             )
         })
     }
-    if (state.loadingState is LoadingState.Loading) {
+    if (wallpapers.isEmpty()) {
         Text(text = "No favorites yet")
     }
 }

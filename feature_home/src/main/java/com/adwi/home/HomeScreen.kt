@@ -7,14 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.CategoryListPanel
+import com.adwi.components.CategoryListHorizontalPanel
 import com.adwi.components.DailyWallpaper
 import com.adwi.components.Header
-import com.adwi.components.WallpaperListPanel
+import com.adwi.components.WallpaperListHorizontalPanel
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,11 +28,15 @@ import timber.log.Timber
 @ExperimentalPagingApi
 @Composable
 fun HomeScreen(
-    state: HomeState,
+    viewModel: HomeViewModel,
     onTriggerEvent: (HomeEvent) -> Unit,
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
+    val daily by viewModel.dailyWallpaper.collectAsState()
+    val colors by viewModel.colorList.collectAsState()
+    val curated by viewModel.curatedList.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -50,17 +56,17 @@ fun HomeScreen(
             DailyWallpaper(
                 modifier = Modifier
                     .padding(horizontal = paddingValues, vertical = paddingValues / 2),
-                state = state.daily.value,
+                wallpaper = daily,
                 onWallpaperClick = { id -> onWallpaperClick(id) },
                 onLongPress = { id ->
-                    onTriggerEvent(HomeEvent.OnFavoriteClick(state.daily.value.wallpaper))
+                    onTriggerEvent(HomeEvent.OnFavoriteClick(daily))
                 }
             )
         }
         item {
-            CategoryListPanel(
+            CategoryListHorizontalPanel(
                 categoryName = stringResource(id = R.string.colors),
-                state = state.colors.value,
+                colors = colors,
                 onCategoryClick = { categoryName ->
                     onTriggerEvent(HomeEvent.SetCategory(categoryName))
                     onCategoryClick()
@@ -68,13 +74,18 @@ fun HomeScreen(
             )
         }
         item {
-            WallpaperListPanel(
-                categoryName = stringResource(id = R.string.curated),
-                state = state.curated.value,
+            val categoryName = stringResource(id = R.string.curated)
+            WallpaperListHorizontalPanel(
+                categoryName = categoryName,
+                wallpapers = curated,
                 onWallpaperClick = { id -> onWallpaperClick(id) },
                 onLongPress = { wallpaper ->
                     Timber.tag("HomeScreen").d("${wallpaper.id} - long")
                     onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
+                },
+                onShowMoreClick = {
+                    onTriggerEvent(HomeEvent.SetCategory(categoryName))
+                    onCategoryClick()
                 }
             )
         }

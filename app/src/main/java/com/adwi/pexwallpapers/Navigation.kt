@@ -68,7 +68,7 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
 
         PreviewScreen(
-            state = viewModel.state.value,
+            viewModel = viewModel,
             onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )
@@ -126,7 +126,7 @@ fun NavGraphBuilder.addHomeGraph(
     ) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
         HomeScreen(
-            state = viewModel.state.value,
+            viewModel = viewModel,
             onTriggerEvent = viewModel::onTriggerEvent,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onCategoryClick = onCategoryClick
@@ -178,7 +178,7 @@ fun NavGraphBuilder.addHomeGraph(
         viewModel.onTriggerEvent(FavoritesEvent.GetFavorites)
 
         FavoritesScreen(
-            state = viewModel.state.value,
+            viewModel = viewModel,
             onTriggerEvent = viewModel::onTriggerEvent,
             onSearchClick = onCategoryClick, // onCategoryClick navigates to Search only
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }

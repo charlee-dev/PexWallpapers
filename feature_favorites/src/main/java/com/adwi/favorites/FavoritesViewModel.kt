@@ -1,33 +1,28 @@
 package com.adwi.favorites
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.domain.DataState
-import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.wallpaper.usecases.GetFavorites
-import com.adwi.interactors.wallpaper.usecases.GetWallpaper
+import com.adwi.interactors.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(
-    private val getFavorites: GetFavorites,
-    private val getWallpaper: GetWallpaper,
-    private val logger: Logger,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+class FavoritesViewModel @ExperimentalPagingApi
+@Inject constructor(
+    private val wallpaperRepository: WallpaperRepositoryImpl,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    var state: MutableState<FavoritesState> = mutableStateOf(FavoritesState())
+    val wallpapers: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(listOf())
 
     fun onTriggerEvent(event: FavoritesEvent) {
         when (event) {
@@ -35,37 +30,23 @@ class FavoritesViewModel @Inject constructor(
 
             is FavoritesEvent.OnFavoriteClick -> {
                 doFavorite(event.wallpaper)
-                getFavorites
+                getFavorites()
             }
         }
     }
 
     private fun getFavorites() {
-        getFavorites.execute().onEach { resource ->
-            state.value.favorites.apply {
-                when (resource) {
-                    is DataState.Loading -> {
-                        value = value.copy(loadingState = resource.loadingState)
-                    }
-                    is DataState.Data -> {
-                        value = value.copy(
-                            wallpapers = resource.data ?: listOf()
-                        )
-                    }
-                    is DataState.Response -> {
-                        logger.log(resource.error?.localizedMessage ?: "Resource - error")
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.getFavorites().collect { wallpapers.value = it }
+        }
     }
 
     private fun doFavorite(wallpaper: Wallpaper) {
-        onDispatcher(dispatcher) {
+        onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
             snackBarMessage.value = "Long pressed"
-            getWallpaper.update(newWallpaper)
+            wallpaperRepository.updateWallpaper(newWallpaper)
         }
     }
 }

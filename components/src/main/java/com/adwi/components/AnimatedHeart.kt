@@ -15,7 +15,7 @@ fun PexAnimatedHeart(
     modifier: Modifier = Modifier,
     state: Boolean = false,
     size: Dp = 64.dp,
-    speed: Float = 1f
+    speed: Float = 1.5f
 ) {
     AnimatedVisibility(
         visible = state,
@@ -27,7 +27,7 @@ fun PexAnimatedHeart(
             res = R.raw.heart,
             modifier = Modifier.size(size),
             restartOnPlay = false,
-            speed = 1.5f
+            speed = speed
         )
     }
 }

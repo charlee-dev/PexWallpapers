@@ -53,7 +53,7 @@ dependencies {
 
     implementation(project(Modules.COMMON))
     implementation(project(Modules.COMPONENTS))
-    api(project(Modules.INTERACTORS))
+    api(project(Modules.REPOSITORY))
 
     addCoreDependencies()
     addHiltDependenciesBasic()

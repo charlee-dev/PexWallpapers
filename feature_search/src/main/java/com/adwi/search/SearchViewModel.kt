@@ -8,8 +8,8 @@ import com.adwi.core.base.BaseViewModel
 import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.settings.SettingsInteractors
-import com.adwi.interactors.wallpaper.WallpaperInteractors
+import com.adwi.interactors.settings.SettingsRepository
+import com.adwi.interactors.wallpaper.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,8 +23,8 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val wallpaperInteractors: WallpaperInteractors,
-    private val settingsInteractors: SettingsInteractors,
+    private val wallpaperRepository: WallpaperRepository,
+    private val settingsRepository: SettingsRepository,
 //    private val savedStateHandle: SavedStateHandle,
     private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
@@ -57,7 +57,7 @@ class SearchViewModel @Inject constructor(
 
     val searchResults = currentQuery.flatMapLatest { query ->
         query?.let {
-            wallpaperInteractors.getSearch.getSearchResultsPaged(query)
+            wallpaperRepository.getSearch(query)
         } ?: emptyFlow()
     }.cachedIn(viewModelScope)
 
@@ -69,12 +69,12 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun updateSavedQuery(query: String) {
-        onDispatcher(ioDispatcher) { settingsInteractors.getSettings.updateLastQuery(query) }
+        onDispatcher(ioDispatcher) { settingsRepository.updateLastQuery(query) }
     }
 
     private fun restoreLastQuery() {
         onDispatcher(ioDispatcher) {
-            currentQuery.value = settingsInteractors.getSettings.getSettings().first().lastQuery
+            currentQuery.value = settingsRepository.getSettings().first().lastQuery
             newQueryInProgress = false
             pendingScrollToTopAfterNewQuery = false
         }
@@ -84,7 +84,7 @@ class SearchViewModel @Inject constructor(
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            wallpaperInteractors.getWallpaper.update(wallpaper)
+            wallpaperRepository.updateWallpaper(wallpaper)
         }
     }
 }

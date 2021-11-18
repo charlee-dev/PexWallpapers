@@ -10,7 +10,6 @@ buildscript {
         classpath(Build.kotlin)
         classpath(Build.jUnit5)
         classpath(Build.hilt)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     }
 }
 

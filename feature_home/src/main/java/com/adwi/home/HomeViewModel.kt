@@ -1,47 +1,52 @@
 package com.adwi.home
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.domain.DataState
+import com.adwi.core.base.Event
+import com.adwi.core.base.Refresh
 import com.adwi.core.util.CalendarUtil
+import com.adwi.core.util.Constants.COULD_NOT_REFRESH
 import com.adwi.core.util.Logger
+import com.adwi.core.util.ext.exhaustive
 import com.adwi.core.util.ext.onDispatcher
-import com.adwi.datasource.local.domain.toDomain
+import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.settings.SettingsInteractors
-import com.adwi.interactors.wallpaper.usecases.GetColors
-import com.adwi.interactors.wallpaper.usecases.GetCurated
-import com.adwi.interactors.wallpaper.usecases.GetDaily
-import com.adwi.interactors.wallpaper.usecases.GetWallpaper
+import com.adwi.interactors.settings.SettingsRepositoryImpl
+import com.adwi.interactors.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getDaily: GetDaily,
-    private val getColors: GetColors,
-    private val getCurated: GetCurated,
-    private val getWallpaper: GetWallpaper,
-    private val settingsInteractors: SettingsInteractors,
-//    private val savedStateHandle: SavedStateHandle,
+    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val settingsRepository: SettingsRepositoryImpl,
     private val logger: Logger,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val state: MutableState<HomeState> = mutableStateOf(HomeState())
+    val dailyWallpaper: MutableStateFlow<Wallpaper> = MutableStateFlow(Wallpaper())
+    val colorList: MutableStateFlow<List<ColorCategory>> = MutableStateFlow(emptyList())
+    val curatedList: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(emptyList())
+
+    private val eventChannel = Channel<Event>()
+    private val events = eventChannel.receiveAsFlow()
+
+    private val refreshTriggerChannel = Channel<Refresh>()
+    val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
+
+    var pendingScrollToTopAfterRefresh = false
 
     init {
         onTriggerEvent(HomeEvent.Refresh)
+        getEvents()
     }
 
     fun onTriggerEvent(event: HomeEvent) {
@@ -71,68 +76,42 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getDaily() {
-        getDaily.execute().onEach { resource ->
-            state.value.daily.apply {
-                when (resource) {
-                    is DataState.Loading -> {
-                        logger.log("getDaily - SetCategory")
-                        value = value.copy(loadingState = resource.loadingState)
-                    }
-                    is DataState.Data -> {
-                        logger.log("getDaily - Data - ${resource.data!!.size}")
-                        value = value.copy(
-                            wallpaper = getTodayDaily(
-                                list = resource.data?.map { it.toDomain() } ?: listOf()
-                            )
-                        )
-                    }
-                    is DataState.Response -> {
-                        logger.log(resource.error?.localizedMessage ?: "getDaily - error")
-                    }
+    private fun getDaily(refresh: Boolean = true) {
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.getDaily(
+                forceRefresh = refresh,
+                onFetchSuccess = {},
+                onFetchRemoteFailed = { setEventMessage(it) }
+            ).collect {
+                val list = it.data ?: return@collect
+                Timber.tag("HomeViewModel").d("getDailyWallpaper ${list.size}")
+                if (list.isNotEmpty()) {
+                    dailyWallpaper.value = getTodayDaily(list)
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    private fun getColors() {
-        getColors.execute().onEach { resource ->
-            state.value.colors.apply {
-                when (resource) {
-                    is DataState.Loading -> {
-                        value = value.copy(loadingState = resource.loadingState)
-                    }
-                    is DataState.Data -> {
-                        value = value.copy(
-                            categories = resource.data?.map { it.toDomain() } ?: listOf()
-                        )
-                    }
-                    is DataState.Response -> {
-                        logger.log(resource.error?.localizedMessage ?: "getColors - error")
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
+    private fun getColors(refresh: Boolean = true) {
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.getColors(
+                forceRefresh = refresh,
+                onFetchSuccess = { },
+                onFetchRemoteFailed = { setEventMessage(it) }
+            ).collect { colorList.value = it.data ?: return@collect }
+        }
     }
 
-    private fun getCurated() {
-        getCurated.execute().onEach { resource ->
-            state.value.curated.apply {
-                when (resource) {
-                    is DataState.Loading -> {
-                        value = value.copy(loadingState = resource.loadingState)
-                    }
-                    is DataState.Data -> {
-                        value = value.copy(
-                            wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
-                        )
-                    }
-                    is DataState.Response -> {
-                        logger.log(resource.error?.localizedMessage ?: "getCurated - error")
-                    }
+    private fun getCurated(refresh: Boolean = true) {
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.getCurated(
+                forceRefresh = refresh,
+                onFetchSuccess = { pendingScrollToTopAfterRefresh = true },
+                onFetchRemoteFailed = { t ->
+                    onDispatcher(ioDispatcher) { eventChannel.send(Event.ShowErrorMessage(t)) }
                 }
-            }
-        }.launchIn(viewModelScope)
+            ).collect { curatedList.value = it.data ?: return@collect }
+        }
     }
 
     private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {
@@ -141,17 +120,33 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun setCategory(categoryName: String) {
-        onDispatcher(dispatcher) {
-            settingsInteractors.getSettings.updateLastQuery(categoryName)
+        onDispatcher(ioDispatcher) {
+            settingsRepository.updateLastQuery(categoryName)
         }
     }
 
     private fun doFavorite(wallpaper: Wallpaper) {
-        onDispatcher(dispatcher) {
+        onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
             snackBarMessage.value = "Long pressed"
-            getWallpaper.update(newWallpaper)
+            wallpaperRepository.updateWallpaper(newWallpaper)
         }
+    }
+
+    private fun getEvents() {
+        onDispatcher(ioDispatcher) {
+            events.collect { event ->
+                when (event) {
+                    is Event.ShowErrorMessage -> {
+                        setSnackBar(event.error.localizedMessage ?: COULD_NOT_REFRESH)
+                    }
+                }.exhaustive
+            }
+        }
+    }
+
+    private fun setEventMessage(t: Throwable) {
+        onDispatcher(ioDispatcher) { eventChannel.send(Event.ShowErrorMessage(t)) }
     }
 }

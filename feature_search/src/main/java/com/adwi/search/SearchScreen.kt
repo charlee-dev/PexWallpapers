@@ -97,6 +97,7 @@ fun WallpaperListPaged(
     state: LazyListState = rememberLazyListState()
 ) {
     val lazyWallpaperItems = wallpapers.collectAsLazyPagingItems()
+
     LazyColumn(
         modifier = modifier,
         state = state,

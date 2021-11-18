@@ -30,3 +30,13 @@ abstract class BaseViewModel : ViewModel() {
         snackBarMessage.value = message
     }
 }
+
+enum class LoadingState { NOT_LOADING, LOADING, SUCCESS }
+
+enum class Refresh {
+    FORCE, NORMAL
+}
+
+sealed class Event {
+    data class ShowErrorMessage(val error: Throwable) : Event()
+}

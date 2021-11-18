@@ -1,7 +1,7 @@
 object Versions {
 
     // Gradle
-    const val gradleBuildTool = "7.2.0-alpha03"
+    const val gradleBuildTool = "7.0.3"
     const val junit5Plugin = "1.7.1.1"
 
     // Kotlin
@@ -45,7 +45,7 @@ object Versions {
     const val timber = "4.7.1"
     const val lottie = "4.2.1"
     const val shimmer = "1.0.1"
-    const val accompanist = "0.21.2-beta"
+    const val accompanist = "0.21.0-beta"
 
     // Testing
     const val test_core = "1.4.0"

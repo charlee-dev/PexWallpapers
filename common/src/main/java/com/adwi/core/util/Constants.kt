@@ -54,4 +54,7 @@ object Constants {
     const val WALLPAPER_KEY = "wallpaper_key"
 
     const val STORAGE_REQUEST_CODE = 233
+
+    // Messages
+    const val COULD_NOT_REFRESH = "Could not refresh"
 }

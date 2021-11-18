@@ -8,10 +8,10 @@ object Modules {
     const val COMPONENTS = ":components"
     const val TEST_SHARED = ":test-shared"
 
-    const val PEX = ":pex"
-    const val DOMAIN = ":pex:domain"
-    const val DATASOURCE = ":pex:datasource"
-    const val INTERACTORS = ":pex:interactors"
+    const val DATASOURCE = ":datasource"
+    const val DOMAIN = ":datasource:domain"
+    const val DATA = ":datasource:data"
+    const val REPOSITORY = ":datasource:repository"
 
     const val HOME = ":feature_home"
     const val PREVIEW = ":feature_preview"

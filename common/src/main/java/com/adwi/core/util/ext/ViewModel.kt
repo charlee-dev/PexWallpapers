@@ -11,3 +11,6 @@ fun ViewModel.onDispatcher(dispatcher: CoroutineDispatcher, body: suspend () -> 
         body()
     }
 }
+
+val <T> T.exhaustive: T
+    get() = this

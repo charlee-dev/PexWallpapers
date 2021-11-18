@@ -23,10 +23,10 @@ include(
     ":components",
 //    ":test-shared",
 
-    ":pex",
-    ":pex:domain",
-    ":pex:datasource",
-    ":pex:interactors",
+    ":datasource",
+    ":datasource:domain",
+    ":datasource:data",
+    ":datasource:repository",
 
     ":feature_home",
     ":feature_search",
