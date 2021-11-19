@@ -49,6 +49,10 @@ android {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 dependencies {
 
     implementation(project(Modules.COMMON))

@@ -26,6 +26,10 @@ android {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 dependencies {
     api(project(Modules.DOMAIN))
 

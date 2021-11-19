@@ -4,7 +4,7 @@ import commons.addPersistenceDependencies
 import dependencies.TestDependencies
 
 plugins {
-    id(Plugins.ANDROID_APPLICATION)
+    id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
@@ -25,6 +25,10 @@ android {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 dependencies {
 
     implementation(project(Modules.COMMON))
@@ -33,14 +37,6 @@ dependencies {
     addNetworkDependencies()
     addHiltDependenciesBasic()
 
-//    testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.junit5}")
-//    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}")
-//    testImplementation("com.github.thecodeside:timber-junit5-extension:${Versions.timber}")
-//    testImplementation("io.mockk:mockk:${Versions.mockk}")
-//    testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
-//    testImplementation("app.cash.turbine:turbine:${Versions.turbine}")
-//    implementation(TestDependencies.hilt)
     implementation(TestDependencies.coroutinesTest)
     implementation(TestDependencies.truth)
     implementation(TestDependencies.test_runner)
