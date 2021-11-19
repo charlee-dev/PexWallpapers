@@ -1,4 +1,4 @@
-package com.adwi.interactors.settings
+package com.adwi.repository.settings
 
 import com.adwi.domain.Settings
 import kotlinx.coroutines.flow.Flow

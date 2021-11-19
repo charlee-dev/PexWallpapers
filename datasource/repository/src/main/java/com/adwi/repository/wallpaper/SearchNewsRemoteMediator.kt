@@ -1,4 +1,4 @@
-package com.adwi.interactors.wallpaper
+package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -11,7 +11,7 @@ import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.local.domain.toEntity
 import com.adwi.datasource.local.domain.toSearchResult
 import com.adwi.datasource.network.PexService
-import com.adwi.interactors.util.keepFavorites
+import com.adwi.repository.util.keepFavorites
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException

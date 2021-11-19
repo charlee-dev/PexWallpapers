@@ -115,7 +115,8 @@ object TestDependencies {
     const val kotlin_junit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
     const val test_runner = "androidx.test:runner:${Versions.test_core}"
 
-    const val hilt = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
+    const val hiltTest = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
+    const val hiltTestCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 

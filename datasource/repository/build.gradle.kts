@@ -1,4 +1,5 @@
 import commons.addHiltDependenciesBasic
+import dependencies.TestDependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -33,4 +34,13 @@ dependencies {
     implementation("androidx.paging:paging-common-ktx:3.0.1")
 
     addHiltDependenciesBasic()
+
+    implementation(TestDependencies.coroutinesTest)
+    implementation(TestDependencies.truth)
+    implementation(TestDependencies.test_runner)
+    implementation(TestDependencies.test_core)
+    implementation(TestDependencies.mockk)
+
+    testImplementation(TestDependencies.hiltTest)
+    kaptTest(TestDependencies.hiltTestCompiler)
 }

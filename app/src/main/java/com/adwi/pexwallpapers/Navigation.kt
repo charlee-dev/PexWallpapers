@@ -23,6 +23,7 @@ import com.adwi.favorites.FavoritesScreen
 import com.adwi.favorites.FavoritesViewModel
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
+import com.adwi.home.SettingsViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
 import com.adwi.search.SearchEvents
@@ -185,9 +186,10 @@ fun NavGraphBuilder.addHomeGraph(
         )
     }
     composable(HomeSections.SETTINGS.route) { backStackEntry ->
-//        val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
+        val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
         SettingsScreen(
-//            viewModel = viewModel
+            viewModel = viewModel,
+            onTriggerEvent = viewModel::onTriggerEvent
         )
     }
 }

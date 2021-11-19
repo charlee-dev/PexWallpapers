@@ -1,4 +1,4 @@
-package com.adwi.interactors.util
+package com.adwi.repository.util
 
 import com.adwi.core.util.Constants.DEFAULT_CATEGORY
 import com.adwi.core.util.Constants.REFRESH_DATA_EVERY

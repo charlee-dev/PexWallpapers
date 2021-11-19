@@ -1,115 +1,163 @@
-//package com.adwi.home
-//
-//import androidx.compose.runtime.MutableState
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.lifecycle.viewModelScope
-//import com.adwi.components.domain.ColorsState
-//import com.adwi.components.domain.DailyState
-//import com.adwi.components.domain.WallpaperListState
-//import com.adwi.core.IoDispatcher
-//import com.adwi.core.base.BaseViewModel
-//import com.adwi.core.domain.DataState
-//import com.adwi.core.util.CalendarUtil
-//import com.adwi.core.util.Logger
-//import com.adwi.datasource.local.domain.toDomain
-//import com.adwi.domain.Wallpaper
-//import com.adwi.interactors.wallpaper.WallpaperInteractors
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import kotlinx.coroutines.CoroutineDispatcher
-//import kotlinx.coroutines.ExperimentalCoroutinesApi
-//import kotlinx.coroutines.flow.launchIn
-//import kotlinx.coroutines.flow.onEach
-//import javax.inject.Inject
-//
-//@ExperimentalCoroutinesApi
-//@HiltViewModel
-//class HomeViewModel @Inject constructor(
-//    private val interactors: WallpaperInteractors,
-////    private val savedStateHandle: SavedStateHandle,
-//    private val logger: Logger,
-//    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-//) : BaseViewModel() {
-//
-//    val dailyState: MutableState<DailyState> = mutableStateOf(DailyState())
-//    val colorsState: MutableState<ColorsState> = mutableStateOf(ColorsState())
-//    val curatedState: MutableState<WallpaperListState> = mutableStateOf(WallpaperListState())
-//
-//    init {
-//        getDaily()
-//        getColors()
-//        getCurated()
+package com.adwi.home
+
+import androidx.paging.ExperimentalPagingApi
+import com.adwi.core.IoDispatcher
+import com.adwi.core.base.BaseViewModel
+import com.adwi.core.util.Logger
+import com.adwi.core.util.ext.onDispatcher
+import com.adwi.domain.Settings
+import com.adwi.domain.Wallpaper
+import com.adwi.repository.settings.SettingsRepositoryImpl
+import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
+import com.adwi.settings.SettingsEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
+
+@ExperimentalCoroutinesApi
+@ExperimentalPagingApi
+@HiltViewModel
+class SettingsViewModel
+@Inject constructor(
+    private val settingsRepository: SettingsRepositoryImpl,
+    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val logger: Logger,
+//    private val sharingTools: SharingTools,
+//    private val workTools: WorkTools,
+//    private val imageTools: ImageTools,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) : BaseViewModel() {
+
+    val settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
+    private val favorites: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(emptyList())
+
+    init {
+        onTriggerEvent(SettingsEvent.GetSettings)
+        onTriggerEvent(SettingsEvent.GetFavorites)
+    }
+
+    fun onTriggerEvent(event: SettingsEvent) {
+        when (event) {
+            SettingsEvent.GetSettings -> getSettings()
+            SettingsEvent.GetFavorites -> getFavorites()
+
+            SettingsEvent.ContactSupport -> contactSupport()
+            SettingsEvent.ResetSettings -> {
+                resetSettings()
+                getSettings()
+            }
+
+            is SettingsEvent.UpdateAutoChangeWallpaper -> {
+                updateAutoChangeWallpaper(event.checked)
+            }
+            is SettingsEvent.UpdateNewWallpaperSet -> {
+                updateNewWallpaperSet(event.checked)
+            }
+            is SettingsEvent.UpdateWallpaperRecommendations -> {
+                updateWallpaperRecommendations(event.checked)
+            }
+
+            is SettingsEvent.UpdateAutoHome -> {
+                updateAutoHome(event.checked)
+            }
+            is SettingsEvent.UpdateAutoLock -> {
+                updateAutoLock(event.checked)
+            }
+            is SettingsEvent.UpdateChangePeriodType -> {
+                updateChangePeriodType(event.button)
+            }
+            is SettingsEvent.UpdateChangePeriodValue -> {
+                updateChangePeriodValue(event.value)
+            }
+
+            is SettingsEvent.UpdateDownloadOverWiFi -> {
+                updateDownloadOverWiFi(event.checked)
+            }
+        }
+    }
+
+    private fun getSettings() {
+        onDispatcher(ioDispatcher) {
+            settingsRepository.getSettings().collect { settings.value = it }
+        }
+    }
+
+    private fun getFavorites() {
+        onDispatcher(ioDispatcher) {
+            favorites.value = wallpaperRepository.getFavorites().first()
+        }
+    }
+
+    private fun updateNewWallpaperSet(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateNewWallpaperSet(checked) }
+    }
+
+    private fun updateWallpaperRecommendations(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateWallpaperRecommendations(checked) }
+    }
+
+    private fun updateAutoChangeWallpaper(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateAutoChangeWallpaper(checked) }
+    }
+
+    private fun updateChangePeriodType(radioButton: Int) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodType(radioButton) }
+    }
+
+    private fun updateChangePeriodValue(periodValue: Float) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodValue(periodValue) }
+    }
+
+    private fun updateDownloadOverWiFi(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateDownloadOverWiFi(checked) }
+    }
+
+    private fun updateAutoHome(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateAutoHome(checked) }
+    }
+
+    private fun updateAutoLock(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateAutoLock(checked) }
+    }
+
+    private fun resetSettings() {
+        onDispatcher(ioDispatcher) { settingsRepository.resetAllSettings() }
+    }
+
+    private fun contactSupport() {
+//        sharingTools.contactSupport()
+    }
+
+//    fun cancelWorks(workTag: String) {
+//        workTools.cancelWorks(workTag)
+//        imageTools.deleteAllBackups()
 //    }
 //
-//    private fun getDaily() {
-////        onDispatcher(ioDispatcher) {
-//        interactors.getDaily.execute().onEach { resource ->
-//            when (resource) {
-//                is DataState.Error -> {
-//                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-//                }
-//                is DataState.Success -> {
-//                    dailyState.value =
-//                        dailyState.value.copy(
-//                            wallpaper = getTodayDaily(
-//                                list = resource.data?.map { it.toDomain() } ?: listOf()
-//                            )
-//                        )
-//                }
-//                is DataState.Loading -> {
-//                    dailyState.value =
-//                        dailyState.value.copy(progressBarState = resource.progressBarState)
-//                }
+//    fun saveSettings(settings: Settings) {
+//        onDispatcher(ioDispatcher) {
+//            if (settings.autoChangeWallpaper && favorites.value.isNotEmpty()) {
+//                workTools.setupAutoChangeWallpaperWorks(
+//                    favorites = favorites.value,
+//                    timeUnit = getTimeUnit(settings.selectedButton),
+//                    timeValue = settings.sliderValue
+//                )
+//            } else {
+//                // Cancel works if not favorites list is empty
+//                cancelWorks(WORK_AUTO_WALLPAPER)
 //            }
-//        }.launchIn(viewModelScope)
-////        }
+//        }
 //    }
 //
-//    private fun getColors() {
-////        onDispatcher(ioDispatcher) {
-//        interactors.getColors.execute().onEach { resource ->
-//            when (resource) {
-//                is DataState.Error -> {
-//                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-//                }
-//                is DataState.Success -> {
-//                    colorsState.value =
-//                        colorsState.value.copy(
-//                            categories = resource.data?.map { it.toDomain() } ?: listOf()
-//                        )
-//                }
-//                is DataState.Loading -> {
-//                    colorsState.value =
-//                        colorsState.value.copy(progressBarState = resource.progressBarState)
-//                }
-//            }
-//        }.launchIn(viewModelScope)
-////        }
+//    private fun getTimeUnit(buttonId: Int): TimeUnit {
+//        return when (buttonId) {
+//            R.id.minutes_radio_button -> TimeUnit.MINUTES
+//            R.id.hours_radio_button -> TimeUnit.HOURS
+//            else -> TimeUnit.DAYS
+//        }
 //    }
-//
-//    private fun getCurated() {
-////        onDispatcher(ioDispatcher) {
-//        interactors.getCurated.execute().onEach { resource ->
-//            when (resource) {
-//                is DataState.Error -> {
-//                    logger.log(resource.error?.localizedMessage ?: "Resource - error")
-//                }
-//                is DataState.Success -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(
-//                            wallpapers = resource.data?.map { it.toDomain() } ?: listOf()
-//                        )
-//                }
-//                is DataState.Loading -> {
-//                    curatedState.value =
-//                        curatedState.value.copy(progressBarState = resource.progressBarState)
-//                }
-//            }
-//        }.launchIn(viewModelScope)
-////        }
-//    }
-//
-//    private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {
-//        val day: Int = CalendarUtil.getDayOfMonthNumber()
-//        return list[day]
-//    }
-//}
+
+}

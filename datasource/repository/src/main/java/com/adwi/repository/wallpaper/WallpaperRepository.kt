@@ -1,4 +1,4 @@
-package com.adwi.interactors.wallpaper
+package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData

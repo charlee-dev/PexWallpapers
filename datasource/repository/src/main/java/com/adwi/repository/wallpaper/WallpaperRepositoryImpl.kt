@@ -1,4 +1,4 @@
-package com.adwi.interactors.wallpaper
+package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -13,10 +13,10 @@ import com.adwi.datasource.network.PexService
 import com.adwi.datasource.network.domain.toEntity
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.util.keepFavorites
-import com.adwi.interactors.util.networkBoundResource
-import com.adwi.interactors.util.shouldFetch
-import com.adwi.interactors.util.shouldFetchColors
+import com.adwi.repository.util.keepFavorites
+import com.adwi.repository.util.networkBoundResource
+import com.adwi.repository.util.shouldFetch
+import com.adwi.repository.util.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

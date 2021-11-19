@@ -1,4 +1,4 @@
-package com.adwi.interactors.util
+package com.adwi.repository.util
 
 import com.adwi.core.domain.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi

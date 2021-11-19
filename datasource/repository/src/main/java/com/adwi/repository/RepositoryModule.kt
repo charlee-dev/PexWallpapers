@@ -1,13 +1,13 @@
-package com.adwi.interactors
+package com.adwi.repository
 
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.dao.SettingsDao
 import com.adwi.datasource.network.PexService
-import com.adwi.interactors.settings.SettingsRepository
-import com.adwi.interactors.settings.SettingsRepositoryImpl
-import com.adwi.interactors.wallpaper.WallpaperRepository
-import com.adwi.interactors.wallpaper.WallpaperRepositoryImpl
+import com.adwi.repository.settings.SettingsRepository
+import com.adwi.repository.settings.SettingsRepositoryImpl
+import com.adwi.repository.wallpaper.WallpaperRepository
+import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

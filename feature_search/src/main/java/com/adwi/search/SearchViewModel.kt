@@ -8,8 +8,8 @@ import com.adwi.core.base.BaseViewModel
 import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.settings.SettingsRepository
-import com.adwi.interactors.wallpaper.WallpaperRepository
+import com.adwi.repository.settings.SettingsRepository
+import com.adwi.repository.wallpaper.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,4 +1,4 @@
-package com.adwi.interactors.settings
+package com.adwi.repository.settings
 
 import com.adwi.datasource.local.dao.SettingsDao
 import com.adwi.datasource.local.domain.toDomain

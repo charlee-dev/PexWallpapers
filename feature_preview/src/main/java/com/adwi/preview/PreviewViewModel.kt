@@ -6,7 +6,7 @@ import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.wallpaper.WallpaperRepositoryImpl
+import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

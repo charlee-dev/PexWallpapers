@@ -12,8 +12,8 @@ import com.adwi.core.util.ext.exhaustive
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
-import com.adwi.interactors.settings.SettingsRepositoryImpl
-import com.adwi.interactors.wallpaper.WallpaperRepositoryImpl
+import com.adwi.repository.settings.SettingsRepositoryImpl
+import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

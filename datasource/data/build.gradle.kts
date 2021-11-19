@@ -42,10 +42,7 @@ dependencies {
     implementation(TestDependencies.test_runner)
     implementation(TestDependencies.test_core)
 
-    testImplementation("com.google.dagger:hilt-android-testing:2.38.1")
-    kaptTest("com.google.dagger:hilt-android-compiler:2.38.1")
-
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.38.1")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.38.1")
+    androidTestImplementation(TestDependencies.hiltTest)
+    kaptAndroidTest(TestDependencies.hiltTestCompiler)
 
 }

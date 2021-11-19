@@ -104,45 +104,6 @@ class WallpaperDaoTest {
         }
 
     @Test
-    fun resetAllFavorites_returnsTrue() = coroutineScope.dispatcher.runBlockingTest {
-
-        wallpaperDao.insertWallpapers(wallpaperList)
-
-        val checked = wallpaperDao.getAllFavorites().first()
-        // Check if 2 isFavorite wallpapers inserted
-        assertEquals(checked.size, 2)
-
-        wallpaperDao.resetAllFavorites()
-
-        val actual: List<WallpaperEntity> = wallpaperDao.getAllFavorites().first()
-        // Check if all isFavorite has been removed
-        assertEquals(actual, emptyList<WallpaperEntity>())
-    }
-
-    @Test
-    fun deleteNonFavoriteWallpapersOlderThan_returnsTrue() =
-        coroutineScope.dispatcher.runBlockingTest {
-
-            // Inserting 4 wallpapers, two of them are isFavorite = true
-            wallpaperDao.insertWallpapers(wallpaperList)
-
-            val list = wallpaperDao.getAllWallpapers().first()
-            // Confirm list.size = 4
-            assertEquals(4, list.size)
-
-            val checked = wallpaperDao.getAllFavorites().first()
-            // Confirm that 2 favorites in the list
-            assertEquals(2, checked.size)
-
-            // Delete all old non-favorites
-            wallpaperDao.deleteNonFavoriteWallpapersOlderThan(1630665095293)
-
-            val actual = wallpaperDao.getAllWallpapers().first()
-            // Check if all old isFavorite has been removed, returns list size 2
-            assertEquals(2, actual.size)
-        }
-
-    @Test
     fun insertCuratedWallpaperAndGetAllWallpapersResultOneCuratedWallpaper_returnTrue() =
         coroutineScope.dispatcher.runBlockingTest {
 
