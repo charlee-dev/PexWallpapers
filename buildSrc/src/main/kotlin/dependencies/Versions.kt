@@ -53,7 +53,7 @@ object Versions {
     const val espresso_core = "3.4.0"
     const val turbine = "0.6.0"
     const val kotest = "4.6.1"
-    const val truth = "1.4.0"
+    const val truth = "1.1.3"
     const val junit5 = "5.7.2"
     const val mockk = "1.12.0"
     const val rules = "1.4.0"

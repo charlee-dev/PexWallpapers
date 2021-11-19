@@ -1,4 +1,4 @@
-package com.adwi.datasource.local
+package com.adwi.datasource.local.entity
 
 import com.adwi.datasource.local.domain.WallpaperEntity
 

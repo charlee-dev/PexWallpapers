@@ -19,7 +19,7 @@ fun DependencyHandler.addTestDependencies() {
     testImplementation(TestDependencies.coroutinesTest)
     testImplementation(TestDependencies.turbine)
     testImplementation(TestDependencies.kotest)
-    testImplementation(TestDependencies.truth_ext)
+    testImplementation(TestDependencies.truth)
     testImplementation(TestDependencies.jupiterApi)
     testImplementation(TestDependencies.jupiterEngineRuntimeOnly)
     testImplementation(TestDependencies.mockk)
@@ -95,7 +95,8 @@ fun DependencyHandler.addJUnit5() {
     testImplementation(TestDependencies.jupiterApi)
     testRuntimeOnly(TestDependencies.jupiterEngineRuntimeOnly)
     testImplementation(TestDependencies.jupiterParams)
-//    testRuntimeOnly(TestDependencies.jupiterVintageRuntimeOnly)
+    testRuntimeOnly(TestDependencies.jupiterVintageRuntimeOnly)
+    testRuntimeOnly(TestDependencies.kotlin_junit)
 }
 
 /*
