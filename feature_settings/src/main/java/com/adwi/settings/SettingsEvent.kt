@@ -7,8 +7,8 @@ sealed class SettingsEvent {
 
     data class UpdateNewWallpaperSet(val checked: Boolean) : SettingsEvent()
     data class UpdateWallpaperRecommendations(val checked: Boolean) : SettingsEvent()
-    data class UpdateAutoChangeWallpaper(val checked: Boolean) : SettingsEvent()
 
+    data class UpdateAutoChangeWallpaper(val checked: Boolean) : SettingsEvent()
     data class UpdateChangePeriodType(val button: Int) : SettingsEvent()
     data class UpdateChangePeriodValue(val value: Float) : SettingsEvent()
     data class UpdateAutoHome(val checked: Boolean) : SettingsEvent()

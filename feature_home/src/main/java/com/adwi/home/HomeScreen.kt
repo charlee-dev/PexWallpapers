@@ -46,7 +46,8 @@ fun HomeScreen(
     ) {
         item {
             Header(
-                onSearchClick = onCategoryClick,
+                title = stringResource(id = R.string.home),
+                onActionClick = onCategoryClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = paddingValues)

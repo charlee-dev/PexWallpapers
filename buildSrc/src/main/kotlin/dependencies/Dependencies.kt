@@ -4,6 +4,7 @@ object Dependencies {
     // Gradle
     const val buildTools = "com.android.tools.build:gradle:${Versions.gradleBuildTool}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinReflect}"
 
     // Core
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appCompat}"

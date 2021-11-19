@@ -39,4 +39,5 @@ dependencies {
 
     api(Dependencies.coroutinesCore)
     implementation(Dependencies.lifecycle)
+//    implementation(Dependencies.kotlinReflect)
 }

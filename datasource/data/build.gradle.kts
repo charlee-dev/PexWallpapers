@@ -8,7 +8,7 @@ plugins {
     kotlin(Plugins.KOTLIN_ANDROID)
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
-    id(Plugins.ANDROID_JUNIT_5)
+//    id(Plugins.ANDROID_JUNIT_5)
 }
 
 android {
@@ -23,10 +23,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-}
-
-hilt {
-    enableExperimentalClasspathAggregation = true
 }
 
 dependencies {
@@ -44,5 +40,4 @@ dependencies {
 
     androidTestImplementation(TestDependencies.hiltTest)
     kaptAndroidTest(TestDependencies.hiltTestCompiler)
-
 }

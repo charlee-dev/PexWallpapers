@@ -8,7 +8,7 @@ import com.adwi.domain.Settings
 @Entity(tableName = "settings_table")
 data class SettingsEntity(
     @PrimaryKey(autoGenerate = false)
-    val id: Int = 1,
+    val id: Int = 0,
     val lastQuery: String = DEFAULT_QUERY,
     val newWallpaperSet: Boolean = true,
     val wallpaperRecommendations: Boolean = true,

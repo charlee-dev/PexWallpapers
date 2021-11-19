@@ -15,7 +15,6 @@ val Neutral0 = Color(0xffffffff)
 val PrimaryDarker = Color(0xFFFF7A59)
 val PrimaryDark = Color(0xFFFE9C8A)
 val PrimaryMedium = Color(0xFFFDD7D2)
-val PrimaryMediumTransparent = Color(0xB0FDD7D2)
 val PrimaryLight = Color(0xFFFEDED4)
 
 val AccentDark = Color(0xFF4F295D)

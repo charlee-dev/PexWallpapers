@@ -40,7 +40,7 @@ fun CategoryListHorizontalPanel(
     Column(modifier = modifier.animateContentSize()) {
         CategoryPanel(
             categoryName = categoryName,
-            modifier = Modifier
+            modifier = Modifier.padding(horizontal = paddingValues)
         )
         if (colors.isEmpty()) {
             ShimmerRow()

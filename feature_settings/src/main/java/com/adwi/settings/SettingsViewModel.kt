@@ -3,7 +3,6 @@ package com.adwi.home
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Settings
 import com.adwi.domain.Wallpaper
@@ -25,10 +24,6 @@ class SettingsViewModel
 @Inject constructor(
     private val settingsRepository: SettingsRepositoryImpl,
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val logger: Logger,
-//    private val sharingTools: SharingTools,
-//    private val workTools: WorkTools,
-//    private val imageTools: ImageTools,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 

@@ -39,7 +39,8 @@ fun WallpaperListHorizontalPanel(
         CategoryPanel(
             categoryName = categoryName,
             onShowMoreClick = onShowMoreClick,
-            showMore = true
+            showMore = true,
+            modifier = Modifier.padding(horizontal = paddingValues)
         )
         if (wallpapers.isEmpty()) {
             ShimmerRow()

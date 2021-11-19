@@ -13,8 +13,8 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
@@ -23,9 +23,12 @@ import com.adwi.composables.R
 fun Header(
     modifier: Modifier = Modifier,
     title: String = stringResource(id = R.string.app_name),
-    onSearchClick: () -> Unit = {}
+    icon: ImageVector = Icons.Outlined.Home,
+    actionIcon: ImageVector? = Icons.Outlined.Search,
+    onActionClick: () -> Unit = {}
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .padding(top = paddingValues / 2)
@@ -36,42 +39,38 @@ fun Header(
                 .weight(1f),
 
             ) {
-            IconButton(
-                onClick = onSearchClick
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Home,
-                    contentDescription = title,
-                    tint = MaterialTheme.colors.onBackground,
-                    modifier = Modifier
-                        .padding(horizontal = paddingValues / 2)
-                )
-            }
-            Text(
-                text = title,
-                style = MaterialTheme.typography.subtitle1
-                    .merge(TextStyle(color = MaterialTheme.colors.onBackground)),
-            )
-        }
-        IconButton(
-            onClick = {}
-        ) {
+
             Icon(
-                imageVector = Icons.Outlined.Search,
-                contentDescription = stringResource(id = R.string.search),
+                imageVector = icon,
+                contentDescription = title,
                 tint = MaterialTheme.colors.onBackground,
                 modifier = Modifier
-//                    .padding(horizontal = Dimensions.medium)
+                    .padding(horizontal = paddingValues / 2)
+            )
+            Text(
+                text = title,
+                color = MaterialTheme.colors.onBackground
             )
         }
+        actionIcon?.let {
+            IconButton(
+                onClick = onActionClick
+            ) {
+                Icon(
+                    imageVector = actionIcon,
+                    contentDescription = stringResource(id = R.string.search),
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                )
+            }
+        }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
     MaterialTheme {
-        Header(onSearchClick = {})
+        Header(onActionClick = {})
     }
 }

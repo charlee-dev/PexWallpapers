@@ -6,6 +6,7 @@ object Versions {
 
     // Kotlin
     const val kotlin = "1.5.31"
+    const val kotlinReflect = "1.5.0"
     const val coroutines = "1.5.2"
 
     // Core

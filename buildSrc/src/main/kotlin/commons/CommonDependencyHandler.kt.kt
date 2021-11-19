@@ -5,24 +5,17 @@ import dependencies.TestDependencies
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
-/*
-Credit: https://github.com/igorwojda/android-showcase/blob/master/buildSrc/src/main/kotlin/CommonModuleDependency.kt
-
-Define common dependencies, so they can be easily updated across another modules
- */
 fun DependencyHandler.addTestDependencies() {
-//    testImplementation(project(Modules.TEST_SHARED))
 
     testImplementation(TestDependencies.test_core)
     testImplementation(TestDependencies.arch_core)
     testImplementation(TestDependencies.espresso_core)
-    testImplementation(TestDependencies.coroutinesTest)
     testImplementation(TestDependencies.turbine)
     testImplementation(TestDependencies.kotest)
     testImplementation(TestDependencies.truth)
-    testImplementation(TestDependencies.jupiterApi)
-    testImplementation(TestDependencies.jupiterEngineRuntimeOnly)
-    testImplementation(TestDependencies.mockk)
+//    testImplementation(TestDependencies.jupiterApi)
+//    testImplementation(TestDependencies.jupiterEngineRuntimeOnly)
+//    testImplementation(TestDependencies.mockk)
 }
 
 fun DependencyHandler.addCoreDependencies() {

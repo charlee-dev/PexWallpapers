@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,7 +39,12 @@ fun PreviewScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Header(modifier = Modifier)
+        Header(
+            modifier = Modifier,
+            title = stringResource(id = R.string.preview),
+            icon = Icons.Outlined.Image,
+            actionIcon = null
+        )
         PreviewCard(
             imageUrl = wallpaper.imageUrlPortrait,
             modifier = Modifier

@@ -18,7 +18,7 @@ private val LightColorPalette = lightColors(
     secondary = AccentDark,
     background = PrimaryMedium,
     onBackground = AccentDark,
-    surface = PrimaryDark,
+    surface = PrimaryLight,
     onSurface = AccentDark
 )
 

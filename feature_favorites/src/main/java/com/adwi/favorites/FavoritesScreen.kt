@@ -52,7 +52,7 @@ fun FavoritesScreen(
         item {
             Header(
                 title = stringResource(id = R.string.favorites),
-                onSearchClick = onSearchClick
+                onActionClick = onSearchClick
             )
         }
         items(items = wallpapers, itemContent = { wallpaper ->

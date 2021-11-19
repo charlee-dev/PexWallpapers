@@ -1,7 +1,6 @@
 import commons.addCoreDependencies
 import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
-import commons.addTestDependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -49,10 +48,6 @@ android {
     }
 }
 
-hilt {
-    enableExperimentalClasspathAggregation = true
-}
-
 dependencies {
 
     implementation(project(Modules.COMMON))
@@ -62,7 +57,5 @@ dependencies {
     addCoreDependencies()
     addHiltDependenciesBasic()
     addDefaultComposeDependencies()
-    addTestDependencies()
-
-
+//    addTestDependencies()
 }

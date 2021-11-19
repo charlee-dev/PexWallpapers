@@ -17,21 +17,13 @@ android {
 
         testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
     }
-    kotlinOptions {
-        freeCompilerArgs + "-Xopt-in=androidx.paging.ExperimentalPagingApi"
-        freeCompilerArgs + "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-    }
-}
-
-hilt {
-    enableExperimentalClasspathAggregation = true
 }
 
 dependencies {
 
     implementation(project(Modules.COMMON))
     api(project(Modules.DATA))
-    implementation("androidx.paging:paging-common-ktx:3.0.1")
+    implementation("androidx.paging:paging-common-ktx:3.1.0")
 
     addHiltDependenciesBasic()
 
@@ -39,7 +31,7 @@ dependencies {
     implementation(TestDependencies.truth)
     implementation(TestDependencies.test_runner)
     implementation(TestDependencies.test_core)
-    implementation(TestDependencies.mockk)
+//    implementation(TestDependencies.mockk)
 
     testImplementation(TestDependencies.hiltTest)
     kaptTest(TestDependencies.hiltTestCompiler)

@@ -5,7 +5,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepository
@@ -26,7 +25,7 @@ class SearchViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepository,
     private val settingsRepository: SettingsRepository,
 //    private val savedStateHandle: SavedStateHandle,
-    private val logger: Logger,
+//    private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 

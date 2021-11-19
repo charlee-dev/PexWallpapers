@@ -7,7 +7,6 @@ import com.adwi.core.base.Event
 import com.adwi.core.base.Refresh
 import com.adwi.core.util.CalendarUtil
 import com.adwi.core.util.Constants.COULD_NOT_REFRESH
-import com.adwi.core.util.Logger
 import com.adwi.core.util.ext.exhaustive
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.ColorCategory
@@ -28,7 +27,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepositoryImpl,
     private val settingsRepository: SettingsRepositoryImpl,
-    private val logger: Logger,
+//    private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -52,19 +51,15 @@ class HomeViewModel @Inject constructor(
     fun onTriggerEvent(event: HomeEvent) {
         when (event) {
             HomeEvent.GetDaily -> {
-                logger.log("onTriggerEvent - getDaily")
                 getDaily()
             }
             HomeEvent.GetColors -> {
-                logger.log("onTriggerEvent - GetColors")
                 getColors()
             }
             HomeEvent.GetCurated -> {
-                logger.log("onTriggerEvent - GetCurated")
                 getCurated()
             }
             is HomeEvent.SetCategory -> {
-                logger.log("onTriggerEvent - SetCategory")
                 setCategory(event.categoryName)
             }
             HomeEvent.Refresh -> {

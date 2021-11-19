@@ -44,13 +44,16 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            pickFirsts += "META-INF/atomicfu.kotlin_module"
+            pickFirsts += "win32-x86/attach_hotspot_windows.dll"
+            pickFirsts += "win32-x86-64/attach_hotspot_windows.dll"
+            pickFirsts += "META-INF/licenses/ASM"
+            excludes += "**/attach_hotspot_windows.dll"
+            excludes += "META-INF/licenses/**"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
         }
     }
-}
-
-hilt {
-    enableExperimentalClasspathAggregation = true
 }
 
 dependencies {

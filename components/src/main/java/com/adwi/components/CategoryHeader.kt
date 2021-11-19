@@ -22,7 +22,7 @@ fun CategoryPanel(
 ) {
     Row(
         verticalAlignment = Alignment.Bottom,
-        modifier = modifier.padding(horizontal = paddingValues)
+        modifier = modifier
     ) {
         CategoryTitle(
             name = categoryName,
