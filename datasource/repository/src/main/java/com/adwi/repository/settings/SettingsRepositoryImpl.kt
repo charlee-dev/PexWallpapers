@@ -3,6 +3,7 @@ package com.adwi.repository.settings
 import com.adwi.datasource.local.dao.SettingsDao
 import com.adwi.datasource.local.domain.toDomain
 import com.adwi.datasource.local.domain.toEntity
+import com.adwi.domain.Duration
 import com.adwi.domain.Settings
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -37,12 +38,12 @@ class SettingsRepositoryImpl @Inject constructor(
         dao.updateDownloadOverWiFi(enabled)
     }
 
-    override suspend fun updateChangePeriodType(radioButton: Int) {
-        dao.updateChangePeriodType(radioButton)
+    override suspend fun updateChangePeriodType(durationSelected: Duration) {
+        dao.updateChangePeriodType(durationSelected)
     }
 
-    override suspend fun updateChangePeriodValue(periodValue: Float) {
-        dao.updateChangePeriodValue(periodValue)
+    override suspend fun updateChangePeriodValue(durationValue: Float) {
+        dao.updateChangePeriodValue(durationValue)
     }
 
     override suspend fun updateAutoHome(enabled: Boolean) {

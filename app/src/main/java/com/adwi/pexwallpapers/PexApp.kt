@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.common.base.BaseViewModel
 import com.adwi.components.PexSnackBar
 import com.adwi.components.theme.PexWallpapersTheme
-import com.adwi.core.base.BaseViewModel
 import com.adwi.pexwallpapers.ui.components.PexBottomBar
 import com.adwi.pexwallpapers.ui.components.PexScaffold
 import com.google.accompanist.insets.ProvideWindowInsets

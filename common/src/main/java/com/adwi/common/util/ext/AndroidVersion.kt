@@ -1,4 +1,4 @@
-package com.adwi.core.util.ext
+package com.adwi.common.util.ext
 
 val runningOOrLater =
     android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O

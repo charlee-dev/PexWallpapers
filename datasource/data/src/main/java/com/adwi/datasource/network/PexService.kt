@@ -1,10 +1,10 @@
 package com.adwi.datasource.network
 
-import com.adwi.core.util.Constants.COLORS_PAGE_SIZE
-import com.adwi.core.util.Constants.CURATED_PAGE_SIZE
-import com.adwi.core.util.Constants.DAILY_PAGE_SIZE
-import com.adwi.core.util.Constants.DEFAULT_DAILY_CATEGORY
-import com.adwi.core.util.Constants.PAGING_PAGE_SIZE
+import com.adwi.common.util.Constants.COLORS_PAGE_SIZE
+import com.adwi.common.util.Constants.CURATED_PAGE_SIZE
+import com.adwi.common.util.Constants.DAILY_PAGE_SIZE
+import com.adwi.common.util.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.common.util.Constants.PAGING_PAGE_SIZE
 import com.adwi.datasource.network.domain.WallpaperResponse
 import retrofit2.http.GET
 import retrofit2.http.Query

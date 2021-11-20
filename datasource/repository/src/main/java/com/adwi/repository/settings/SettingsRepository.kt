@@ -1,5 +1,6 @@
 package com.adwi.repository.settings
 
+import com.adwi.domain.Duration
 import com.adwi.domain.Settings
 import kotlinx.coroutines.flow.Flow
 
@@ -12,8 +13,8 @@ interface SettingsRepository {
     suspend fun updateWallpaperRecommendations(enabled: Boolean)
     suspend fun updateAutoChangeWallpaper(enabled: Boolean)
     suspend fun updateDownloadOverWiFi(enabled: Boolean)
-    suspend fun updateChangePeriodType(radioButton: Int)
-    suspend fun updateChangePeriodValue(periodValue: Float)
+    suspend fun updateChangePeriodType(durationSelected: Duration)
+    suspend fun updateChangePeriodValue(durationValue: Float)
     suspend fun updateAutoHome(enabled: Boolean)
     suspend fun updateAutoLock(enabled: Boolean)
     suspend fun resetAllSettings()

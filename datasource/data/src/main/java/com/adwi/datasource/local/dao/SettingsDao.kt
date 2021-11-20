@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.adwi.datasource.local.domain.SettingsEntity
+import com.adwi.domain.Duration
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -31,11 +32,11 @@ interface SettingsDao {
     @Query("UPDATE settings_table SET downloadOverWiFi = :enabled")
     suspend fun updateDownloadOverWiFi(enabled: Boolean)
 
-    @Query("UPDATE settings_table SET selectedButton = :radioButton")
-    suspend fun updateChangePeriodType(radioButton: Int)
+    @Query("UPDATE settings_table SET durationSelected = :durationSelected")
+    suspend fun updateChangePeriodType(durationSelected: Duration)
 
-    @Query("UPDATE settings_table SET sliderValue = :periodValue")
-    suspend fun updateChangePeriodValue(periodValue: Float)
+    @Query("UPDATE settings_table SET durationValue = :durationValue")
+    suspend fun updateChangePeriodValue(durationValue: Float)
 
     @Query("UPDATE settings_table SET autoHome = :enabled")
     suspend fun updateAutoHome(enabled: Boolean)

@@ -2,9 +2,12 @@ package com.adwi.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.adwi.datasource.local.dao.*
 import com.adwi.datasource.local.domain.*
 
+
+@TypeConverters(Converters::class)
 @Database(
     entities = [
         WallpaperEntity::class,

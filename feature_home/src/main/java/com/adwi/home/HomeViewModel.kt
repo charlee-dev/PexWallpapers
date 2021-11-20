@@ -1,14 +1,14 @@
 package com.adwi.home
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.core.IoDispatcher
-import com.adwi.core.base.BaseViewModel
-import com.adwi.core.base.Event
-import com.adwi.core.base.Refresh
-import com.adwi.core.util.CalendarUtil
-import com.adwi.core.util.Constants.COULD_NOT_REFRESH
-import com.adwi.core.util.ext.exhaustive
-import com.adwi.core.util.ext.onDispatcher
+import com.adwi.common.IoDispatcher
+import com.adwi.common.base.BaseViewModel
+import com.adwi.common.base.Event
+import com.adwi.common.base.Refresh
+import com.adwi.common.util.CalendarUtil
+import com.adwi.common.util.Constants.COULD_NOT_REFRESH
+import com.adwi.common.util.ext.exhaustive
+import com.adwi.common.util.ext.onDispatcher
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl

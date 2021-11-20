@@ -1,4 +1,4 @@
-package com.adwi.core.util
+package com.adwi.common.util
 
 import timber.log.Timber
 

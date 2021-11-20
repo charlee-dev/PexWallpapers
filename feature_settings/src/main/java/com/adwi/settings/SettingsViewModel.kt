@@ -1,9 +1,10 @@
 package com.adwi.home
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.core.IoDispatcher
-import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.ext.onDispatcher
+import com.adwi.common.IoDispatcher
+import com.adwi.common.base.BaseViewModel
+import com.adwi.common.util.ext.onDispatcher
+import com.adwi.domain.Duration
 import com.adwi.domain.Settings
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
@@ -63,10 +64,10 @@ class SettingsViewModel
                 updateAutoLock(event.checked)
             }
             is SettingsEvent.UpdateChangePeriodType -> {
-                updateChangePeriodType(event.button)
+                updateChangePeriodType(event.durationSelected)
             }
             is SettingsEvent.UpdateChangePeriodValue -> {
-                updateChangePeriodValue(event.value)
+                updateChangePeriodValue(event.durationValue)
             }
 
             is SettingsEvent.UpdateDownloadOverWiFi -> {
@@ -99,12 +100,12 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsRepository.updateAutoChangeWallpaper(checked) }
     }
 
-    private fun updateChangePeriodType(radioButton: Int) {
-        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodType(radioButton) }
+    private fun updateChangePeriodType(durationSelected: Duration) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodType(durationSelected) }
     }
 
-    private fun updateChangePeriodValue(periodValue: Float) {
-        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodValue(periodValue) }
+    private fun updateChangePeriodValue(durationValue: Float) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodValue(durationValue) }
     }
 
     private fun updateDownloadOverWiFi(checked: Boolean) {

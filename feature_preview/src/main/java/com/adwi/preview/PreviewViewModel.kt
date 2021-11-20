@@ -2,9 +2,9 @@ package com.adwi.preview
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.core.IoDispatcher
-import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.ext.onDispatcher
+import com.adwi.common.IoDispatcher
+import com.adwi.common.base.BaseViewModel
+import com.adwi.common.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

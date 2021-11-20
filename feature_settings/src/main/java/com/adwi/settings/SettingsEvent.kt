@@ -1,5 +1,7 @@
 package com.adwi.settings
 
+import com.adwi.domain.Duration
+
 sealed class SettingsEvent {
 
     object GetSettings : SettingsEvent()
@@ -9,8 +11,8 @@ sealed class SettingsEvent {
     data class UpdateWallpaperRecommendations(val checked: Boolean) : SettingsEvent()
 
     data class UpdateAutoChangeWallpaper(val checked: Boolean) : SettingsEvent()
-    data class UpdateChangePeriodType(val button: Int) : SettingsEvent()
-    data class UpdateChangePeriodValue(val value: Float) : SettingsEvent()
+    data class UpdateChangePeriodType(val durationSelected: Duration) : SettingsEvent()
+    data class UpdateChangePeriodValue(val durationValue: Float) : SettingsEvent()
     data class UpdateAutoHome(val checked: Boolean) : SettingsEvent()
     data class UpdateAutoLock(val checked: Boolean) : SettingsEvent()
     data class UpdateDownloadOverWiFi(val checked: Boolean) : SettingsEvent()

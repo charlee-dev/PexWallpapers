@@ -5,8 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.room.withTransaction
-import com.adwi.core.domain.Resource
-import com.adwi.core.util.Constants
+import com.adwi.common.domain.Resource
+import com.adwi.common.util.Constants
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.domain.*
 import com.adwi.datasource.network.PexService

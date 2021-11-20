@@ -14,7 +14,7 @@ private val DarkColorPalette = darkColors(
 
 private val LightColorPalette = lightColors(
     primary = AccentDark,
-    primaryVariant = AccentMedium,
+    primaryVariant = AccentLightBlue,
     secondary = AccentDark,
     background = PrimaryMedium,
     onBackground = AccentDark,

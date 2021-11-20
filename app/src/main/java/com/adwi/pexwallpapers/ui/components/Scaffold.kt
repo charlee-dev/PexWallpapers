@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import com.adwi.common.base.BaseViewModel
 import com.adwi.components.theme.Neutral3
-import com.adwi.core.base.BaseViewModel
 
 @Composable
 fun PexScaffold(

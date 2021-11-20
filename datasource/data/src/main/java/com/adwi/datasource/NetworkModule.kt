@@ -1,16 +1,11 @@
 package com.adwi.datasource
 
-import android.content.Context
-import androidx.room.Room
-import com.adwi.core.util.Constants
-import com.adwi.core.util.Constants.WALLPAPER_DATABASE
-import com.adwi.datasource.local.WallpaperDatabase
+import com.adwi.common.util.Constants
 import com.adwi.datasource.network.PexService
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -23,44 +18,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
-
-    @Provides
-    @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context) =
-        Room
-            .databaseBuilder(
-                context,
-                WallpaperDatabase::class.java,
-                WALLPAPER_DATABASE
-            )
-            .createFromAsset("database/db.db")
-            .build()
-
-    @Provides
-    @Singleton
-    fun provideWallpaperDao(appDatabase: WallpaperDatabase) =
-        appDatabase.wallpaperDao()
-
-    @Provides
-    @Singleton
-    fun provideDailyDao(appDatabase: WallpaperDatabase) =
-        appDatabase.dailyDao()
-
-    @Provides
-    @Singleton
-    fun provideCategoryDao(appDatabase: WallpaperDatabase) =
-        appDatabase.categoryDao()
-
-    @Provides
-    @Singleton
-    fun provideSearchDao(appDatabase: WallpaperDatabase) =
-        appDatabase.searchDao()
-
-    @Provides
-    @Singleton
-    fun provideSettingsDao(appDatabase: WallpaperDatabase) =
-        appDatabase.settingsDao()
+object NetworkModule {
 
     @Singleton
     @Provides
