@@ -1,4 +1,4 @@
-package com.adwi.common.util
+package com.adwi.core.util
 
 import android.os.Build
 import androidx.annotation.RequiresApi

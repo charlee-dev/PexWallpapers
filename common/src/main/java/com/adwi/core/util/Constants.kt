@@ -1,6 +1,6 @@
-package com.adwi.common.util
+package com.adwi.core.util
 
-import com.adwi.common.BuildConfig
+import com.adwi.core.BuildConfig
 
 
 object Constants {

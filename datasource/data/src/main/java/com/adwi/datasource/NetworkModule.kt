@@ -1,6 +1,6 @@
 package com.adwi.datasource
 
-import com.adwi.common.util.Constants
+import com.adwi.core.util.Constants
 import com.adwi.datasource.network.PexService
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module

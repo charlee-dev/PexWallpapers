@@ -1,4 +1,4 @@
-package com.adwi.common.base
+package com.adwi.core.base
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

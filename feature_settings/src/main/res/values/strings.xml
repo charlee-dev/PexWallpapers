@@ -76,8 +76,11 @@
     <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over Wi-Fi</string>
     <string name="time_range">Time range: </string>
     <string name="push_notifications">Push notifications</string>
+    <string name="activate_data_saver">Activate data saver</string>
     <string name="new_wallpaper_set">New wallpaper set</string>
     <string name="wallpaper_recomendations">Wallpaper recomendations</string>
+    <string name="auto_change_only_on_wifi">Auto change only on WiFi</string>
+    <string name="download_miniatures_only_in_tiny_resolution">Download thumbnails in lower resolution</string>
     <string name="auto_change_wallpaper">Auto change wallpaper</string>
     <string name="change_wallpaper_every">Change wallpaper every:</string>
     <string name="minutes">Minutes</string>

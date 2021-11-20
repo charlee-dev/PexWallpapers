@@ -44,8 +44,9 @@ fun PexButton(
     text: String,
     shape: Shape = MaterialTheme.shapes.large,
     enabled: Boolean = true,
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = MaterialTheme.colors.primaryVariant,
     contentColor: Color = MaterialTheme.colors.onSurface,
+    textColor: Color = MaterialTheme.colors.primary,
     onClick: () -> Unit = {}
 ) {
     Button(
@@ -74,7 +75,8 @@ fun PexButton(
                 end = paddingValues,
                 top = paddingValues / 2,
                 bottom = paddingValues / 2
-            )
+            ),
+            color = textColor
         )
     }
 }

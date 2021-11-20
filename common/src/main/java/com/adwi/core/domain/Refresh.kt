@@ -1,4 +1,4 @@
-package com.adwi.common.domain
+package com.adwi.core.domain
 
 enum class Refresh {
     FORCE, NORMAL

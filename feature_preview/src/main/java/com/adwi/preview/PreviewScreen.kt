@@ -40,7 +40,7 @@ fun PreviewScreen(
             .fillMaxSize()
     ) {
         Header(
-            modifier = Modifier,
+            modifier = Modifier.padding(horizontal = paddingValues, vertical = paddingValues / 2),
             title = stringResource(id = R.string.preview),
             icon = Icons.Outlined.Image,
             actionIcon = null

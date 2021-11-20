@@ -22,6 +22,10 @@ class SettingsRepositoryImpl @Inject constructor(
         dao.updateLastQuery(query)
     }
 
+    override suspend fun updatePushNotifications(enabled: Boolean) {
+        dao.updatePushNotifications(enabled)
+    }
+
     override suspend fun updateNewWallpaperSet(enabled: Boolean) {
         dao.updateNewWallpaperSet(enabled)
     }
@@ -38,12 +42,12 @@ class SettingsRepositoryImpl @Inject constructor(
         dao.updateDownloadOverWiFi(enabled)
     }
 
-    override suspend fun updateChangePeriodType(durationSelected: Duration) {
-        dao.updateChangePeriodType(durationSelected)
+    override suspend fun updateChangeDurationSelected(durationSelected: Duration) {
+        dao.updateChangeDurationSelected(durationSelected)
     }
 
-    override suspend fun updateChangePeriodValue(durationValue: Float) {
-        dao.updateChangePeriodValue(durationValue)
+    override suspend fun updateChangeDurationValue(durationValue: Float) {
+        dao.updateChangeDurationValue(durationValue)
     }
 
     override suspend fun updateAutoHome(enabled: Boolean) {

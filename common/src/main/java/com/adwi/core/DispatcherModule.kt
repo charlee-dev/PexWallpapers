@@ -1,4 +1,4 @@
-package com.adwi.common
+package com.adwi.core
 
 import dagger.Module
 import dagger.Provides

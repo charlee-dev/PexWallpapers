@@ -20,6 +20,9 @@ interface SettingsDao {
     @Query("UPDATE settings_table SET lastQuery = :query")
     suspend fun updateLastQuery(query: String)
 
+    @Query("UPDATE settings_table SET pushNotifications = :enabled")
+    suspend fun updatePushNotifications(enabled: Boolean)
+
     @Query("UPDATE settings_table SET newWallpaperSet = :enabled")
     suspend fun updateNewWallpaperSet(enabled: Boolean)
 
@@ -33,10 +36,10 @@ interface SettingsDao {
     suspend fun updateDownloadOverWiFi(enabled: Boolean)
 
     @Query("UPDATE settings_table SET durationSelected = :durationSelected")
-    suspend fun updateChangePeriodType(durationSelected: Duration)
+    suspend fun updateChangeDurationSelected(durationSelected: Duration)
 
     @Query("UPDATE settings_table SET durationValue = :durationValue")
-    suspend fun updateChangePeriodValue(durationValue: Float)
+    suspend fun updateChangeDurationValue(durationValue: Float)
 
     @Query("UPDATE settings_table SET autoHome = :enabled")
     suspend fun updateAutoHome(enabled: Boolean)

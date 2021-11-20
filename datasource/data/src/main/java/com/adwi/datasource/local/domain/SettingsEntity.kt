@@ -3,7 +3,7 @@ package com.adwi.datasource.local.domain
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.adwi.common.util.Constants.DEFAULT_QUERY
+import com.adwi.core.util.Constants.DEFAULT_QUERY
 import com.adwi.domain.Duration
 import com.adwi.domain.Settings
 
@@ -25,28 +25,32 @@ data class SettingsEntity(
 
 fun Settings.toEntity() =
     SettingsEntity(
-        id,
-        lastQuery,
-        pushNotifications,
-        newWallpaperSet,
-        wallpaperRecommendations,
-        autoChangeWallpaper,
-        durationSelected,
-        durationValue,
-        downloadOverWiFi
+        id = id,
+        lastQuery = lastQuery,
+        pushNotifications = pushNotifications,
+        newWallpaperSet = newWallpaperSet,
+        wallpaperRecommendations = wallpaperRecommendations,
+        autoChangeWallpaper = autoChangeWallpaper,
+        durationSelected = durationSelected,
+        durationValue = durationValue,
+        autoHome = autoHome,
+        autoLock = autoLock,
+        downloadOverWiFi = downloadOverWiFi
     )
 
 fun SettingsEntity.toDomain() =
     Settings(
-        id,
-        lastQuery,
-        pushNotifications,
-        newWallpaperSet,
-        wallpaperRecommendations,
-        autoChangeWallpaper,
-        durationSelected,
-        durationValue,
-        downloadOverWiFi
+        id = id,
+        lastQuery = lastQuery,
+        pushNotifications = pushNotifications,
+        newWallpaperSet = newWallpaperSet,
+        wallpaperRecommendations = wallpaperRecommendations,
+        autoChangeWallpaper = autoChangeWallpaper,
+        durationSelected = durationSelected,
+        durationValue = durationValue,
+        autoHome = autoHome,
+        autoLock = autoLock,
+        downloadOverWiFi = downloadOverWiFi
     )
 
 class Converters {

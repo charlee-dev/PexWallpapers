@@ -1,6 +1,6 @@
 package com.adwi.pexwallpapers.di
 
-import com.adwi.common.util.Logger
+import com.adwi.core.util.Logger
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

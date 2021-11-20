@@ -1,4 +1,4 @@
-package com.adwi.common.domain
+package com.adwi.core.domain
 
 sealed class Resource<T>(
     val data: T? = null,

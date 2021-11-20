@@ -1,6 +1,6 @@
 package com.adwi.repository.util
 
-import com.adwi.common.domain.Resource
+import com.adwi.core.domain.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

@@ -1,22 +1,23 @@
 package com.adwi.settings
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColor
+import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Refresh
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,10 +28,11 @@ import com.adwi.components.Header
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
-import com.adwi.domain.Duration
 import com.adwi.home.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
@@ -65,8 +67,8 @@ fun SettingsScreen(
                 modifier = Modifier,
                 panelName = stringResource(id = R.string.notifications),
                 mainName = stringResource(id = R.string.push_notifications),
-                checked = settings.newWallpaperSet,
-                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                checked = settings.pushNotifications,
+                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdatePushNotifications(it)) }
             ) {
                 SwitchRow(
                     name = stringResource(id = R.string.new_wallpaper_set),
@@ -84,6 +86,7 @@ fun SettingsScreen(
                         )
                     }
                 )
+                Spacer(modifier = Modifier.size(paddingValues / 2))
             }
         }
         item {
@@ -94,11 +97,98 @@ fun SettingsScreen(
                 checked = settings.autoChangeWallpaper,
                 onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoChangeWallpaper(it)) }
             ) {
-                HomeOrLockRow(
-                    homeState = settings.autoHome,
-                    onHomeChange = { onTriggerEvent(SettingsEvent.UpdateAutoHome(it)) },
-                    lockState = settings.autoLock,
-                    onLockChange = { onTriggerEvent(SettingsEvent.UpdateAutoLock(it)) }
+                Spacer(modifier = Modifier.size(paddingValues / 2))
+                Text(
+                    text = stringResource(id = com.adwi.composables.R.string.screen_to_change),
+                    modifier = Modifier.padding(horizontal = paddingValues)
+                )
+                CheckBoxRow(
+                    name = stringResource(id = R.string.home_screen),
+                    checked = settings.autoHome,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoHome(it)) })
+                CheckBoxRow(
+                    name = stringResource(id = R.string.lock_screen),
+                    checked = settings.autoLock,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoLock(it)) })
+                Spacer(modifier = Modifier.size(paddingValues))
+                Text(
+                    text = stringResource(id = R.string.change_wallpaper_every),
+                    modifier = Modifier.padding(horizontal = paddingValues)
+                )
+                Spacer(modifier = Modifier.size(paddingValues / 2))
+                DurationPicker()
+                Spacer(modifier = Modifier.size(paddingValues))
+                Surface(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colors.primaryVariant
+                ) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Save",
+                            color = MaterialTheme.colors.primary,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .padding(paddingValues)
+                        )
+                    }
+                }
+            }
+        }
+        item {
+            SettingPanel(
+                modifier = Modifier,
+                panelName = stringResource(id = R.string.data_usage),
+                mainName = stringResource(id = R.string.activate_data_saver),
+                checked = settings.downloadOverWiFi,
+                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateDownloadOverWiFi(it)) }
+            ) {
+                SwitchRow(
+                    name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
+                    checked = settings.newWallpaperSet,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                )
+                SwitchRow(
+                    name = stringResource(id = R.string.download_miniatures_only_in_tiny_resolution),
+                    checked = settings.wallpaperRecommendations,
+                    onCheckedChange = {
+                        onTriggerEvent(
+                            SettingsEvent.UpdateWallpaperRecommendations(
+                                it
+                            )
+                        )
+                    }
+                )
+                SwitchRow(
+                    name = stringResource(id = R.string.auto_change_only_on_wifi),
+                    checked = settings.wallpaperRecommendations,
+                    onCheckedChange = {
+                        onTriggerEvent(
+                            SettingsEvent.UpdateWallpaperRecommendations(
+                                it
+                            )
+                        )
+                    }
+                )
+                Spacer(modifier = Modifier.size(paddingValues / 2))
+            }
+        }
+        item {
+            Column(Modifier.padding(top = paddingValues)) {
+                InfoRow(
+                    onClick = { },
+                    title = stringResource(id = R.string.about_us),
+                    icon = Icons.Outlined.QuestionAnswer
+                )
+                InfoRow(
+                    onClick = { },
+                    title = stringResource(id = R.string.privacy_policy),
+                    icon = Icons.Outlined.Security
+                )
+                InfoRow(
+                    onClick = { },
+                    title = stringResource(id = R.string.support),
+                    icon = Icons.Outlined.Mail
                 )
             }
         }
@@ -114,23 +204,21 @@ private fun SettingPanel(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     shape: Shape = MaterialTheme.shapes.large,
-    background: Color = MaterialTheme.colors.surface,
     content: @Composable () -> Unit
 ) {
-    var expanded by remember { mutableStateOf(checked) }
-    val transition = updateTransition(targetState = expanded, label = "Card")
+    val transition = updateTransition(targetState = checked, label = "Card")
 
     val elevation by transition.animateDp(label = "Card elevation") { state ->
         if (state) 10.dp else 2.dp
     }
 
     val backgroundColor by transition.animateColor(label = "Card background color") { state ->
-        if (state) MaterialTheme.colors.primary else background
+        if (state) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
     }
     val textColor by transition.animateColor(label = "Card text color") { state ->
         if (state) MaterialTheme.colors.surface else MaterialTheme.colors.onSurface
     }
-    val switchColor by transition.animateColor(label = "Card switch color") { state ->
+    val switchEnabledColor by transition.animateColor(label = "Card enabled switch color") { state ->
         if (state) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
     }
 
@@ -149,24 +237,24 @@ private fun SettingPanel(
         ) {
             SwitchRow(
                 name = mainName,
-                checked = expanded,
+                checked = checked,
                 onCheckedChange = {
                     onCheckedChange(it)
-                    expanded = !expanded
                 },
                 modifier = Modifier
                     .background(backgroundColor)
                     .padding(top = paddingValues / 2)
                     .padding(bottom = paddingValues / 2),
                 textColor = textColor,
-                switchColor = switchColor
+                switchEnabledColor = switchEnabledColor,
+                switchDisabledColor = MaterialTheme.colors.primary
             )
-            AnimatedVisibility(expanded) {
+            AnimatedVisibility(checked) {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(vertical = paddingValues / 2)
                 ) {
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
                     content()
                 }
             }
@@ -182,15 +270,13 @@ private fun SwitchRow(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     textColor: Color = MaterialTheme.colors.onSurface,
-    switchColor: Color = MaterialTheme.colors.primary,
+    switchEnabledColor: Color = MaterialTheme.colors.primary,
+    switchDisabledColor: Color = MaterialTheme.colors.secondary,
     backgroundColor: Color = MaterialTheme.colors.surface,
 ) {
-    var state by remember { mutableStateOf(checked) }
-
     Surface(
         onClick = {
-            state = !state
-            onCheckedChange(state)
+            onCheckedChange(!checked)
         },
         modifier = Modifier.fillMaxWidth(),
         color = backgroundColor
@@ -207,13 +293,13 @@ private fun SwitchRow(
                 color = textColor
             )
             Switch(
-                checked = state,
+                checked = checked,
                 onCheckedChange = {
-                    state = it
                     onCheckedChange(it)
                 },
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = switchColor
+                    checkedThumbColor = switchEnabledColor,
+                    uncheckedThumbColor = switchDisabledColor
                 )
             )
         }
@@ -224,10 +310,10 @@ private fun SwitchRow(
 @Composable
 private fun HomeOrLockRow(
     modifier: Modifier = Modifier,
-    homeState: Boolean,
-    onHomeChange: (Boolean) -> Unit,
-    lockState: Boolean,
-    onLockChange: (Boolean) -> Unit,
+    homeChecked: Boolean,
+    onHomeCheckedChange: (Boolean) -> Unit,
+    lockChecked: Boolean,
+    onLockCheckedChange: (Boolean) -> Unit
 ) {
     Column(
         Modifier
@@ -243,14 +329,14 @@ private fun HomeOrLockRow(
         ) {
             Spacer(modifier = Modifier.size(paddingValues / 2))
             CheckBoxRow(
-                text = stringResource(id = R.string.home_screen),
-                state = homeState,
-                onStateChange = { onHomeChange(it) }
+                name = stringResource(id = R.string.home_screen),
+                checked = homeChecked,
+                onCheckedChange = { onHomeCheckedChange(it) }
             )
             CheckBoxRow(
-                text = stringResource(id = R.string.lock_screen),
-                state = lockState,
-                onStateChange = { onLockChange(it) }
+                name = stringResource(id = R.string.lock_screen),
+                checked = lockChecked,
+                onCheckedChange = { onLockCheckedChange(it) }
             )
         }
     }
@@ -260,17 +346,14 @@ private fun HomeOrLockRow(
 @Composable
 private fun CheckBoxRow(
     modifier: Modifier = Modifier,
-    text: String,
-    state: Boolean,
-    onStateChange: (Boolean) -> Unit,
+    name: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     backgroundColor: Color = MaterialTheme.colors.surface
 ) {
-    var checked by remember { mutableStateOf(state) }
-
     Surface(
         onClick = {
-            checked = !checked
-            onStateChange(checked)
+            onCheckedChange(!checked)
         }, modifier = Modifier.fillMaxWidth(),
         color = backgroundColor
     ) {
@@ -281,77 +364,230 @@ private fun CheckBoxRow(
             Checkbox(
                 checked = checked,
                 onCheckedChange = {
-                    checked = !checked
-                    onStateChange(checked)
-                })
+                    onCheckedChange(it)
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = MaterialTheme.colors.secondary,
+                    checkmarkColor = MaterialTheme.colors.primary
+                )
+            )
             Text(
-                text = text,
+                text = name,
                 modifier = Modifier.padding(start = paddingValues / 2)
             )
         }
     }
 }
 
+@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 @Composable
-private fun DurationPanel(
+private fun DurationPicker(
     modifier: Modifier = Modifier,
-    text: String,
-    duration: Duration,
-    onDurationChange: (Boolean) -> Unit,
-    backgroundColor: Color = MaterialTheme.colors.surface
 ) {
-    val radioOptions = listOf(Duration.MINUTE, Duration.HOUR, Duration.DAY, Duration.WEEK)
+    val dayMax = 31
+    val hoursMax = 23
+    val minutesMax = 59
 
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
+    var days by remember { mutableStateOf(0) }
+    var hours by remember { mutableStateOf(0) }
+    var minutes by remember { mutableStateOf(0) }
 
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
+            .padding(horizontal = paddingValues)
     ) {
-        Text(
-            text = stringResource(id = R.string.change_wallpaper_every) + ":",
-            modifier = Modifier.padding(horizontal = paddingValues)
-        )
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
-            Spacer(modifier = Modifier.size(paddingValues / 2))
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Days",
+                modifier = Modifier.align(Alignment.CenterStart),
+                style = MaterialTheme.typography.subtitle1
+            )
+            TimeUnitItem(
+                count = days,
+                range = dayMax,
+                onUpClick = { days++ },
+                onDownClick = { days -= 1 },
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Hours",
+                modifier = Modifier.align(Alignment.CenterStart),
+                style = MaterialTheme.typography.subtitle1
+            )
+            TimeUnitItem(
+                count = hours,
+                range = hoursMax,
+                onUpClick = { hours++ },
+                onDownClick = { hours -= 1 },
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "Minutes",
+                modifier = Modifier.align(Alignment.CenterStart),
+                style = MaterialTheme.typography.subtitle1
+            )
+            TimeUnitItem(
+                count = minutes,
+                range = minutesMax,
+                onUpClick = { minutes++ },
+                onDownClick = { minutes -= 1 },
+                modifier = Modifier.align(Alignment.Center)
 
-            radioOptions.forEach { text ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .selectable(
-                            selected = (text == selectedOption),
-                            onClick = {
-                                onOptionSelected(text)
-                            }
-                        )
-                        .padding(horizontal = 16.dp)
-                ) {
-                    RadioButton(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected(text) }
-                    )
-                    Text(
-                        text = text.name,
-                        style = MaterialTheme.typography.body1.merge(),
-                        modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+    }
+}
+
+@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
+@Composable
+private fun TimeUnitItem(
+    modifier: Modifier = Modifier,
+    count: Int,
+    range: Int,
+    onUpClick: () -> Unit,
+    onDownClick: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = modifier
+    ) {
+
+        IconButton(
+            onClick = onDownClick,
+            enabled = count > 0
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.RemoveCircleOutline,
+                contentDescription = "Subtract"
+            )
+        }
+        AnimatedCounter(count = count)
+        IconButton(
+            onClick = onUpClick,
+            enabled = count < range
+        ) {
+            Icon(imageVector = Icons.Outlined.AddCircleOutline, contentDescription = "Add")
+        }
+    }
+}
+
+@ExperimentalAnimationApi
+@Composable
+private fun AnimatedCounter(
+    modifier: Modifier = Modifier,
+    count: Int
+) {
+    Surface(
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colors.primary
+        ),
+        shape = RoundedCornerShape(percent = 20),
+        modifier = modifier.size(40.dp),
+        color = MaterialTheme.colors.primary,
+        elevation = 4.dp
+    ) {
+        Row(
+            Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnimatedContent(
+                targetState = count,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        slideInVertically(initialOffsetY = { height -> -height }) + fadeIn() with
+                                slideOutVertically(targetOffsetY = { height -> height }) + fadeOut()
+                    } else {
+                        slideInVertically(initialOffsetY = { height -> height }) + fadeIn() with
+                                slideOutVertically(targetOffsetY = { height -> -height }) + fadeOut()
+                    }.using(
+                        SizeTransform(clip = false)
                     )
                 }
+            ) { targetCount ->
+                Text(
+                    text = "$targetCount",
+                    modifier = Modifier.padding(4.dp),
+                    color = MaterialTheme.colors.primaryVariant
+                )
             }
         }
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-private fun RadioItem(
+private fun InfoRow(
     modifier: Modifier = Modifier,
-    text: String,
-
+    onClick: () -> Unit,
+    title: String,
+    icon: ImageVector
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colors.background
     ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Card(
+                shape = RoundedCornerShape(30),
+                elevation = 6.dp,
+                modifier = Modifier.padding(paddingValues / 2),
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
+                Box() {
+                    Icon(
+                        imageVector = icon,
+                        tint = MaterialTheme.colors.primaryVariant,
+                        contentDescription = title,
+                        modifier = Modifier
+                            .padding(paddingValues / 2)
+                            .align(Alignment.Center)
+                    )
+                }
 
+            }
+            Text(
+                text = title,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = paddingValues / 2),
+                color = MaterialTheme.colors.primary
+            )
+        }
+    }
+}
+
+@ExperimentalAnimationApi
+@Preview(showBackground = true)
+@Composable
+private fun AnimatedCounterPreview() {
+    PexWallpapersTheme {
+        AnimatedCounter(count = 5)
+    }
+}
+
+@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
+@Preview(showBackground = true)
+@Composable
+private fun NumberSetterItemPreview() {
+    PexWallpapersTheme {
+        DurationPicker()
+    }
 }
 
 @ExperimentalMaterialApi
@@ -368,6 +604,10 @@ private fun SwitchRowPreview() {
 @Composable
 private fun HomeOrLockRowPreview() {
     PexWallpapersTheme {
-        HomeOrLockRow(homeState = true, onHomeChange = {}, lockState = false, onLockChange = {})
+        HomeOrLockRow(
+            homeChecked = true,
+            onHomeCheckedChange = {},
+            lockChecked = false,
+            onLockCheckedChange = {})
     }
 }

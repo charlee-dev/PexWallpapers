@@ -29,12 +29,10 @@ data class Settings(
         )
     }
 }
-
 enum class Duration(value: Int) {
-    MINUTE(value = 1),
-    HOUR(value = 2),
-    DAY(value = 3),
-    WEEK(value = 4)
+    MINUTE(value = 0),
+    HOUR(value = 1),
+    DAY(value = 2),
 }
 
 const val DEFAULT_QUERY = "Flowers"

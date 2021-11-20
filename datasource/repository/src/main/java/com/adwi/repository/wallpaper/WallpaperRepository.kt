@@ -2,8 +2,8 @@ package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import com.adwi.common.domain.Resource
-import com.adwi.common.util.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.core.domain.Resource
+import com.adwi.core.util.Constants.DEFAULT_DAILY_CATEGORY
 import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper

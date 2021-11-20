@@ -1,6 +1,6 @@
 package com.adwi.datasource.network.domain
 
-import com.adwi.common.util.Constants.DEFAULT_CATEGORY
+import com.adwi.core.util.Constants.DEFAULT_CATEGORY
 import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.domain.Wallpaper
 import com.google.gson.annotations.SerializedName

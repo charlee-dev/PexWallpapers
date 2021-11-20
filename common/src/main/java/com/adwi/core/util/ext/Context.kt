@@ -1,4 +1,4 @@
-package com.adwi.common.util.ext
+package com.adwi.core.util.ext
 
 import android.app.Activity
 import android.content.Context

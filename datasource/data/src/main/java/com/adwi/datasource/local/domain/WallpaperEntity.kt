@@ -29,36 +29,36 @@ data class DailyEntity(
     @PrimaryKey val wallpaperId: Int
 )
 
-fun Wallpaper.toCurated() = CuratedEntity(this.id)
+fun Wallpaper.toCurated() = CuratedEntity(id)
 
-fun Wallpaper.toDaily() = DailyEntity(this.id)
+fun Wallpaper.toDaily() = DailyEntity(id)
 
 fun Wallpaper.toEntity() =
     WallpaperEntity(
-        id = this.id,
-        photographer = this.photographer,
-        height = this.height,
-        url = this.url,
+        id = id,
+        photographer = photographer,
+        height = height,
+        url = url,
         isFavorite = isFavorite,
         categoryName = categoryName,
-        updatedAt = this.updatedAt,
-        imageUrlLandscape = this.imageUrlLandscape,
-        imageUrlPortrait = this.imageUrlPortrait,
-        imageUrlTiny = this.imageUrlTiny
+        updatedAt = updatedAt,
+        imageUrlLandscape = imageUrlLandscape,
+        imageUrlPortrait = imageUrlPortrait,
+        imageUrlTiny = imageUrlTiny
     )
 
 fun WallpaperEntity.toDomain() =
     Wallpaper(
-        id = this.id,
-        photographer = this.photographer,
-        height = this.height,
-        url = this.url,
+        id = id,
+        photographer = photographer,
+        height = height,
+        url = url,
         isFavorite = isFavorite,
         categoryName = categoryName,
-        updatedAt = this.updatedAt,
-        imageUrlLandscape = this.imageUrlLandscape,
-        imageUrlPortrait = this.imageUrlPortrait,
-        imageUrlTiny = this.imageUrlTiny
+        updatedAt = updatedAt,
+        imageUrlLandscape = imageUrlLandscape,
+        imageUrlPortrait = imageUrlPortrait,
+        imageUrlTiny = imageUrlTiny
     )
 
 fun List<WallpaperEntity>.toDomainList() = this.map { it.toDomain() }

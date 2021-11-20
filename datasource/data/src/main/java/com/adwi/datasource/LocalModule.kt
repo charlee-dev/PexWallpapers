@@ -2,7 +2,7 @@ package com.adwi.datasource
 
 import android.content.Context
 import androidx.room.Room
-import com.adwi.common.util.Constants
+import com.adwi.core.util.Constants
 import com.adwi.datasource.local.WallpaperDatabase
 import dagger.Module
 import dagger.Provides

@@ -1,9 +1,9 @@
 package com.adwi.home
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.common.IoDispatcher
-import com.adwi.common.base.BaseViewModel
-import com.adwi.common.util.ext.onDispatcher
+import com.adwi.core.IoDispatcher
+import com.adwi.core.base.BaseViewModel
+import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Duration
 import com.adwi.domain.Settings
 import com.adwi.domain.Wallpaper
@@ -47,6 +47,9 @@ class SettingsViewModel
                 getSettings()
             }
 
+            is SettingsEvent.UpdatePushNotifications -> {
+                updatePushNotifications(event.checked)
+            }
             is SettingsEvent.UpdateAutoChangeWallpaper -> {
                 updateAutoChangeWallpaper(event.checked)
             }
@@ -63,11 +66,11 @@ class SettingsViewModel
             is SettingsEvent.UpdateAutoLock -> {
                 updateAutoLock(event.checked)
             }
-            is SettingsEvent.UpdateChangePeriodType -> {
-                updateChangePeriodType(event.durationSelected)
+            is SettingsEvent.UpdateChangeDurationSelected -> {
+                updateChangeDurationSelected(event.durationSelected)
             }
-            is SettingsEvent.UpdateChangePeriodValue -> {
-                updateChangePeriodValue(event.durationValue)
+            is SettingsEvent.UpdateChangeDurationValue -> {
+                updateChangeDurationValue(event.durationValue)
             }
 
             is SettingsEvent.UpdateDownloadOverWiFi -> {
@@ -78,7 +81,9 @@ class SettingsViewModel
 
     private fun getSettings() {
         onDispatcher(ioDispatcher) {
-            settingsRepository.getSettings().collect { settings.value = it }
+            settingsRepository.getSettings().collect {
+                settings.value = it
+            }
         }
     }
 
@@ -86,6 +91,10 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) {
             favorites.value = wallpaperRepository.getFavorites().first()
         }
+    }
+
+    private fun updatePushNotifications(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsRepository.updatePushNotifications(checked) }
     }
 
     private fun updateNewWallpaperSet(checked: Boolean) {
@@ -100,12 +109,16 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsRepository.updateAutoChangeWallpaper(checked) }
     }
 
-    private fun updateChangePeriodType(durationSelected: Duration) {
-        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodType(durationSelected) }
+    private fun updateChangeDurationSelected(durationSelected: Duration) {
+        onDispatcher(ioDispatcher) {
+            settingsRepository.updateChangeDurationSelected(
+                durationSelected
+            )
+        }
     }
 
-    private fun updateChangePeriodValue(durationValue: Float) {
-        onDispatcher(ioDispatcher) { settingsRepository.updateChangePeriodValue(durationValue) }
+    private fun updateChangeDurationValue(durationValue: Float) {
+        onDispatcher(ioDispatcher) { settingsRepository.updateChangeDurationValue(durationValue) }
     }
 
     private fun updateDownloadOverWiFi(checked: Boolean) {
