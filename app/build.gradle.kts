@@ -64,14 +64,8 @@ dependencies {
     implementation(project(Modules.FEATURE_FAVORITES))
     implementation(project(Modules.FEATURE_SETTINGS))
 
-    implementation(project(Modules.SHARED_WORK))
-    implementation(project(Modules.SHARED_NOTIFICATIONS))
-
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()
 
     implementation(Dependencies.accompanistNavigationAnimation)
-
-//    implementation(Dependencies.hiltWorkCore)
-//    kapt(Dependencies.hiltWorkCompiler)
 }

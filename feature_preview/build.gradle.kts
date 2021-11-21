@@ -53,6 +53,7 @@ dependencies {
 
     implementation(project(Modules.COMMON))
     implementation(project(Modules.COMPONENTS))
+    implementation(project(Modules.SHARED))
     api(project(Modules.REPOSITORY))
 
     addCoreDependencies()

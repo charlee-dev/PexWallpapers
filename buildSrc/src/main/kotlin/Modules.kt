@@ -6,19 +6,13 @@ object Modules {
     const val APP = ":app"
     const val COMMON = ":common"
     const val COMPONENTS = ":components"
-//    const val TEST_SHARED = ":test-shared"
+    const val SHARED = ":shared"
 
     // Datasource
     const val DOMAIN = ":datasource:domain"
     const val DATA = ":datasource:data"
     const val REPOSITORY = ":datasource:repository"
 
-    // Shared
-    const val SHARED_IMAGE = ":shared:image"
-    const val SHARED_NOTIFICATIONS = ":shared:notifications"
-    const val SHARED_SHARING = ":shared:sharing"
-    const val SHARED_WALLPAPER_SETTER = ":shared:wallpaper_setter"
-    const val SHARED_WORK = ":shared:work"
 
     // features
     const val FEATURE_HOME = ":feature_home"
