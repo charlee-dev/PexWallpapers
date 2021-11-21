@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.ui.components
+package com.adwi.components
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +21,7 @@ fun PexScaffold(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable (() -> Unit) = {},
-    snackbarHost: @Composable (SnackbarHostState) -> Unit = { SnackbarHost(it) },
+    snackbarHost: @Composable (SnackbarHostState) -> Unit = { PexSnackBarHost(hostState = it) },
     floatingActionButton: @Composable (() -> Unit) = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
     isFloatingActionButtonDocked: Boolean = false,
@@ -36,6 +36,7 @@ fun PexScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     val snackbarMessage by viewModel.snackBarMessage.collectAsState("")
+
     if (snackbarMessage.isNotEmpty()) {
         LaunchedEffect(scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(snackbarMessage)

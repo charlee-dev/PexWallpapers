@@ -1,5 +1,6 @@
 package com.adwi.settings
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
@@ -25,11 +26,13 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.CategoryPanel
 import com.adwi.components.Header
+import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.home.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -46,154 +49,186 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = paddingValues),
-        contentPadding = PaddingValues(
-            bottom = BottomNavHeight + paddingValues
-        )
+    val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
+    val coroutineScope = rememberCoroutineScope()
+
+
+    PexScaffold(
+        viewModel = viewModel,
+        scaffoldState = scaffoldState
     ) {
-        item {
-            Header(
-                title = stringResource(id = R.string.settings),
-                icon = Icons.Outlined.Settings,
-                actionIcon = Icons.Outlined.Refresh,
-                onActionClick = { onTriggerEvent(SettingsEvent.ResetSettings) }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = paddingValues),
+            contentPadding = PaddingValues(
+                bottom = BottomNavHeight + paddingValues
             )
-        }
-        item {
-            SettingPanel(
-                modifier = Modifier,
-                panelName = stringResource(id = R.string.notifications),
-                mainName = stringResource(id = R.string.push_notifications),
-                checked = settings.pushNotifications,
-                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdatePushNotifications(it)) }
-            ) {
-                SwitchRow(
-                    name = stringResource(id = R.string.new_wallpaper_set),
-                    checked = settings.newWallpaperSet,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
-                )
-                SwitchRow(
-                    name = stringResource(id = R.string.wallpaper_recomendations),
-                    checked = settings.wallpaperRecommendations,
-                    onCheckedChange = {
-                        onTriggerEvent(
-                            SettingsEvent.UpdateWallpaperRecommendations(
-                                it
+        ) {
+            item {
+                Button(
+                    onClick = {
+                        coroutineScope.launch { // using the `coroutineScope` to `launch` showing the snackbar
+                            // taking the `snackbarHostState` from the attached `scaffoldState`
+                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                                message = "This is your message",
+                                actionLabel = "Do something."
                             )
-                        )
+                            when (snackbarResult) {
+                                SnackbarResult.Dismissed -> Log.d("SnackbarDemo", "Dismissed")
+                                SnackbarResult.ActionPerformed -> Log.d(
+                                    "SnackbarDemo",
+                                    "Snackbar's button clicked"
+                                )
+                            }
+                        }
                     }
-                )
-                Spacer(modifier = Modifier.size(paddingValues / 2))
-            }
-        }
-        item {
-            SettingPanel(
-                modifier = Modifier,
-                panelName = stringResource(id = R.string.automation),
-                mainName = stringResource(id = R.string.auto_change_wallpaper),
-                checked = settings.autoChangeWallpaper,
-                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoChangeWallpaper(it)) }
-            ) {
-                Spacer(modifier = Modifier.size(paddingValues / 2))
-                Text(
-                    text = stringResource(id = com.adwi.composables.R.string.screen_to_change),
-                    modifier = Modifier.padding(horizontal = paddingValues)
-                )
-                CheckBoxRow(
-                    name = stringResource(id = R.string.home_screen),
-                    checked = settings.autoHome,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoHome(it)) })
-                CheckBoxRow(
-                    name = stringResource(id = R.string.lock_screen),
-                    checked = settings.autoLock,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoLock(it)) })
-                Spacer(modifier = Modifier.size(paddingValues))
-                Text(
-                    text = stringResource(id = R.string.change_wallpaper_every),
-                    modifier = Modifier.padding(horizontal = paddingValues)
-                )
-                Spacer(modifier = Modifier.size(paddingValues / 2))
-                DurationPicker()
-                Spacer(modifier = Modifier.size(paddingValues))
-                Surface(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colors.primaryVariant
                 ) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            text = "Save",
-                            color = MaterialTheme.colors.primary,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .padding(paddingValues)
-                        )
+                    Text(text = "A button that shows a Snackbar")
+                }
+            }
+            item {
+                Header(
+                    title = stringResource(id = R.string.settings),
+                    icon = Icons.Outlined.Settings,
+                    actionIcon = Icons.Outlined.Refresh,
+                    onActionClick = { onTriggerEvent(SettingsEvent.ResetSettings) }
+                )
+            }
+            item {
+                SettingPanel(
+                    modifier = Modifier,
+                    panelName = stringResource(id = R.string.notifications),
+                    mainName = stringResource(id = R.string.push_notifications),
+                    checked = settings.pushNotifications,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdatePushNotifications(it)) }
+                ) {
+                    SwitchRow(
+                        name = stringResource(id = R.string.new_wallpaper_set),
+                        checked = settings.newWallpaperSet,
+                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                    )
+                    SwitchRow(
+                        name = stringResource(id = R.string.wallpaper_recomendations),
+                        checked = settings.wallpaperRecommendations,
+                        onCheckedChange = {
+                            onTriggerEvent(
+                                SettingsEvent.UpdateWallpaperRecommendations(
+                                    it
+                                )
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
+                }
+            }
+            item {
+                SettingPanel(
+                    modifier = Modifier,
+                    panelName = stringResource(id = R.string.automation),
+                    mainName = stringResource(id = R.string.auto_change_wallpaper),
+                    checked = settings.autoChangeWallpaper,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoChangeWallpaper(it)) }
+                ) {
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
+                    Text(
+                        text = stringResource(id = com.adwi.composables.R.string.screen_to_change),
+                        modifier = Modifier.padding(horizontal = paddingValues)
+                    )
+                    CheckBoxRow(
+                        name = stringResource(id = R.string.home_screen),
+                        checked = settings.autoHome,
+                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoHome(it)) })
+                    CheckBoxRow(
+                        name = stringResource(id = R.string.lock_screen),
+                        checked = settings.autoLock,
+                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoLock(it)) })
+                    Spacer(modifier = Modifier.size(paddingValues))
+                    Text(
+                        text = stringResource(id = R.string.change_wallpaper_every),
+                        modifier = Modifier.padding(horizontal = paddingValues)
+                    )
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
+                    DurationPicker()
+                    Spacer(modifier = Modifier.size(paddingValues))
+                    Surface(
+                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colors.primaryVariant
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Text(
+                                text = "Save",
+                                color = MaterialTheme.colors.primary,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(paddingValues)
+                            )
+                        }
                     }
                 }
             }
-        }
-        item {
-            SettingPanel(
-                modifier = Modifier,
-                panelName = stringResource(id = R.string.data_usage),
-                mainName = stringResource(id = R.string.activate_data_saver),
-                checked = settings.downloadOverWiFi,
-                onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateDownloadOverWiFi(it)) }
-            ) {
-                SwitchRow(
-                    name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
-                    checked = settings.newWallpaperSet,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
-                )
-                SwitchRow(
-                    name = stringResource(id = R.string.download_miniatures_only_in_tiny_resolution),
-                    checked = settings.wallpaperRecommendations,
-                    onCheckedChange = {
-                        onTriggerEvent(
-                            SettingsEvent.UpdateWallpaperRecommendations(
-                                it
+            item {
+                SettingPanel(
+                    modifier = Modifier,
+                    panelName = stringResource(id = R.string.data_usage),
+                    mainName = stringResource(id = R.string.activate_data_saver),
+                    checked = settings.downloadOverWiFi,
+                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateDownloadOverWiFi(it)) }
+                ) {
+                    SwitchRow(
+                        name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
+                        checked = settings.newWallpaperSet,
+                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                    )
+                    SwitchRow(
+                        name = stringResource(id = R.string.download_miniatures_only_in_tiny_resolution),
+                        checked = settings.wallpaperRecommendations,
+                        onCheckedChange = {
+                            onTriggerEvent(
+                                SettingsEvent.UpdateWallpaperRecommendations(
+                                    it
+                                )
                             )
-                        )
-                    }
-                )
-                SwitchRow(
-                    name = stringResource(id = R.string.auto_change_only_on_wifi),
-                    checked = settings.wallpaperRecommendations,
-                    onCheckedChange = {
-                        onTriggerEvent(
-                            SettingsEvent.UpdateWallpaperRecommendations(
-                                it
+                        }
+                    )
+                    SwitchRow(
+                        name = stringResource(id = R.string.auto_change_only_on_wifi),
+                        checked = settings.wallpaperRecommendations,
+                        onCheckedChange = {
+                            onTriggerEvent(
+                                SettingsEvent.UpdateWallpaperRecommendations(
+                                    it
+                                )
                             )
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.size(paddingValues / 2))
+                        }
+                    )
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
+                }
             }
-        }
-        item {
-            Column(Modifier.padding(top = paddingValues)) {
-                InfoRow(
-                    onClick = { },
-                    title = stringResource(id = R.string.about_us),
-                    icon = Icons.Outlined.QuestionAnswer
-                )
-                InfoRow(
-                    onClick = { },
-                    title = stringResource(id = R.string.privacy_policy),
-                    icon = Icons.Outlined.Security
-                )
-                InfoRow(
-                    onClick = { },
-                    title = stringResource(id = R.string.support),
-                    icon = Icons.Outlined.Mail
-                )
+            item {
+                Column(Modifier.padding(top = paddingValues)) {
+                    InfoRow(
+                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        title = stringResource(id = R.string.about_us),
+                        icon = Icons.Outlined.QuestionAnswer
+                    )
+                    InfoRow(
+                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        title = stringResource(id = R.string.privacy_policy),
+                        icon = Icons.Outlined.Security
+                    )
+                    InfoRow(
+                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        title = stringResource(id = R.string.support),
+                        icon = Icons.Outlined.Mail
+                    )
+                }
             }
         }
     }
 }
+
 
 @ExperimentalMaterialApi
 @Composable
