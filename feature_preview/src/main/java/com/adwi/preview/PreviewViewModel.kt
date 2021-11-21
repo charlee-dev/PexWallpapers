@@ -47,15 +47,22 @@ class PreviewViewModel
     fun onTriggerEvent(event: PreviewEvent) {
         when (event) {
             is PreviewEvent.GetWallpaperById -> getWallpaperById(event.wallpaperId)
-            is PreviewEvent.DownloadWallpaper -> downloadWallpaper(event.wallpaper)
+            is PreviewEvent.DownloadWallpaper -> {
+                downloadWallpaper(event.wallpaper)
+                setSnackBar("Wallpaper saved to gallery")
+            }
             is PreviewEvent.GoToPexels -> goToPexels(event.wallpaper)
-            is PreviewEvent.SetWallpaper -> setWallpaper(
-                event.imageUrl,
-                event.setHomeScreen,
-                event.setLockScreen
-            )
+            is PreviewEvent.SetWallpaper -> {
+                setWallpaper(
+                    event.imageUrl,
+                    event.setHomeScreen,
+                    event.setLockScreen
+                )
+                setSnackBar("Wallpaper set")
+            }
             is PreviewEvent.ShareWallpaper -> shareWallpaper(event.activity, event.wallpaper)
             is PreviewEvent.DoFavorite -> doFavorite(event.wallpaper)
+            is PreviewEvent.ShowSnackbar -> setSnackBar(event.message)
         }
     }
 
@@ -104,7 +111,6 @@ class PreviewViewModel
         onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-            snackBarMessage.value = "Added to fav"
             wallpaperRepository.updateWallpaper(newWallpaper)
         }
     }

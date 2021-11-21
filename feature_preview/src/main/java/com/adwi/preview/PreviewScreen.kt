@@ -86,7 +86,6 @@ fun PreviewScreen(
                             setLockScreen = false
                         )
                     )
-                    viewModel.setSnackBar("Not implemented yet")
                 },
                 text = stringResource(id = R.string.set_wallpaper),
                 modifier = Modifier

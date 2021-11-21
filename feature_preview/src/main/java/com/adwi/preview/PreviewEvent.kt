@@ -23,4 +23,6 @@ sealed class PreviewEvent {
     ) : PreviewEvent()
 
     data class DoFavorite(val wallpaper: Wallpaper) : PreviewEvent()
+
+    data class ShowSnackbar(val message: String) : PreviewEvent()
 }
