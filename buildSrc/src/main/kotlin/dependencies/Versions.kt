@@ -42,6 +42,7 @@ object Versions {
     const val hiltWork = "1.0.0"
 
     // Helpers
+    const val coil = "1.4.0"
     const val accompanistCoil = "0.15.0"
     const val timber = "4.7.1"
     const val lottie = "4.2.1"

@@ -57,11 +57,15 @@ android {
 dependencies {
 
     implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.HOME))
-    implementation(project(Modules.PREVIEW))
-    implementation(project(Modules.SEARCH))
-    implementation(project(Modules.FAVORITES))
-    implementation(project(Modules.SETTINGS))
+
+    implementation(project(Modules.FEATURE_HOME))
+    implementation(project(Modules.FEATURE_PREVIEW))
+    implementation(project(Modules.FEATURE_SEARCH))
+    implementation(project(Modules.FEATURE_FAVORITES))
+    implementation(project(Modules.FEATURE_SETTINGS))
+
+    implementation(project(Modules.SHARED_WORK))
+    implementation(project(Modules.SHARED_NOTIFICATIONS))
 
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()

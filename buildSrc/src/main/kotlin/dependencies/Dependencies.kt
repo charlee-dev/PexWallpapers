@@ -73,6 +73,7 @@ object Dependencies {
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val lottie = "com.airbnb.android:lottie-compose:${Versions.lottie}"
     const val shimmer = "com.valentinilk.shimmer:compose-shimmer:${Versions.shimmer}"
+    const val coil = "io.coil-kt:coil:${Versions.coil}"
     const val accompanistCoil =
         "com.google.accompanist:accompanist-coil:${Versions.accompanistCoil}"
     const val accompanistInsets =

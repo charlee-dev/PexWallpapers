@@ -24,6 +24,12 @@
             <option value="$PROJECT_DIR$/feature_preview" />
             <option value="$PROJECT_DIR$/feature_search" />
             <option value="$PROJECT_DIR$/feature_settings" />
+            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/image" />
+            <option value="$PROJECT_DIR$/shared/notifications" />
+            <option value="$PROJECT_DIR$/shared/sharing" />
+            <option value="$PROJECT_DIR$/shared/wallpaper_setter" />
+            <option value="$PROJECT_DIR$/shared/work" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

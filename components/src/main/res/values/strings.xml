@@ -106,7 +106,6 @@
     <string name="group_notification_for">This is the % notification group.</string>
     <string name="auto_change_wallpaper_cannot_be_used_without_storage_permission">Auto change wallpaper cannot be used\nREAD EXTERNAL STORAGE\npermission is required</string>
     <string name="fix">Fix</string>
-    <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
     <string name="minimum_one_screen_need_to_be_selected">Minimum one screen need to be selected</string>
     <string name="add_minimum_2_wallpapers_to_favorites">Add minimum 2 wallpapers to favorites</string>
     <string name="home">Home</string>

@@ -20,9 +20,16 @@
       <module name="PexWallpapers.feature_search" target="11" />
       <module name="PexWallpapers.feature_settings" target="11" />
       <module name="PexWallpapers.features.composables" target="11" />
+      <module name="PexWallpapers.ImageTools" target="11" />
       <module name="PexWallpapers.interactors" target="11" />
       <module name="PexWallpapers.pex.data" target="11" />
       <module name="PexWallpapers.pex.interactors" target="11" />
+      <module name="PexWallpapers.shared.image" target="11" />
+      <module name="PexWallpapers.shared.image_tools" target="11" />
+      <module name="PexWallpapers.shared.notifications" target="11" />
+      <module name="PexWallpapers.shared.sharing" target="11" />
+      <module name="PexWallpapers.shared.wallpaper_setter" target="11" />
+      <module name="PexWallpapers.shared.work" target="11" />
       <module name="PexWallpapers.test-shared" target="11" />
     </bytecodeTargetLevel>
   </component>

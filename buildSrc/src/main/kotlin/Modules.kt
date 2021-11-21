@@ -6,16 +6,24 @@ object Modules {
     const val APP = ":app"
     const val COMMON = ":common"
     const val COMPONENTS = ":components"
-    const val TEST_SHARED = ":test-shared"
+//    const val TEST_SHARED = ":test-shared"
 
-    const val DATASOURCE = ":datasource"
+    // Datasource
     const val DOMAIN = ":datasource:domain"
     const val DATA = ":datasource:data"
     const val REPOSITORY = ":datasource:repository"
 
-    const val HOME = ":feature_home"
-    const val PREVIEW = ":feature_preview"
-    const val SEARCH = ":feature_search"
-    const val FAVORITES = ":feature_favorites"
-    const val SETTINGS = ":feature_settings"
+    // Shared
+    const val SHARED_IMAGE = ":shared:image"
+    const val SHARED_NOTIFICATIONS = ":shared:notifications"
+    const val SHARED_SHARING = ":shared:sharing"
+    const val SHARED_WALLPAPER_SETTER = ":shared:wallpaper_setter"
+    const val SHARED_WORK = ":shared:work"
+
+    // features
+    const val FEATURE_HOME = ":feature_home"
+    const val FEATURE_PREVIEW = ":feature_preview"
+    const val FEATURE_SEARCH = ":feature_search"
+    const val FEATURE_FAVORITES = ":feature_favorites"
+    const val FEATURE_SETTINGS = ":feature_settings"
 }
