@@ -14,10 +14,12 @@ import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.PexApp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalCoilApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi

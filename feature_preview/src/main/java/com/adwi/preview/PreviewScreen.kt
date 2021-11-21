@@ -79,6 +79,13 @@ fun PreviewScreen(
             PexButton(
                 onClick = {
 //                    onSetWallpaperClick(wallpaper.id)
+                    onTriggerEvent(
+                        PreviewEvent.SetWallpaper(
+                            imageUrl = wallpaper.imageUrlPortrait,
+                            setHomeScreen = true,
+                            setLockScreen = false
+                        )
+                    )
                     viewModel.setSnackBar("Not implemented yet")
                 },
                 text = stringResource(id = R.string.set_wallpaper),

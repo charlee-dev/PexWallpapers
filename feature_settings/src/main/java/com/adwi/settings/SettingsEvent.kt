@@ -20,4 +20,10 @@ sealed class SettingsEvent {
 
     object ResetSettings : SettingsEvent()
     object ContactSupport : SettingsEvent()
+
+    data class SetDays(val value: Int) : SettingsEvent()
+    data class SetHours(val value: Int) : SettingsEvent()
+    data class SetMinutes(val value: Int) : SettingsEvent()
+
+    object SaveSettings : SettingsEvent()
 }

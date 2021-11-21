@@ -15,7 +15,6 @@ import android.media.RingtoneManager.TYPE_NOTIFICATION
 import android.media.RingtoneManager.getDefaultUri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.navigation.NavDeepLinkBuilder
 import androidx.paging.ExperimentalPagingApi
 import com.adrianwitaszak.work_notifications.R
 import com.adwi.shared.notifications.receivers.ActionRestoreReceiver
@@ -149,10 +148,10 @@ class NotificationTools @Inject constructor(
 
         when (channelId) {
             Channel.AUTO_WALLPAPER -> {
-                val onClickIntent = NavDeepLinkBuilder(context)
+//                val onClickIntent = NavDeepLinkBuilder(context)
 //                    .setGraph(R.navigation.nav_graph)
 //                    .setDestination(R.id.favoritesFragment)
-                    .createPendingIntent()
+//                    .createPendingIntent()
 
                 val dismissPendingIntent = getPendingIntent(
                     Intent(context, OnDismissReceiver::class.java).apply {
@@ -175,7 +174,7 @@ class NotificationTools @Inject constructor(
                     .setContentTitle(notificationTitle)
                     .setContentText(notificationMessage)
                     .setLargeIcon(smallBitmap)
-                    .setContentIntent(onClickIntent)
+//                    .setContentIntent(onClickIntent)
                     .setDeleteIntent(dismissPendingIntent)
                     .addAction(
                         R.drawable.ic_refresh,

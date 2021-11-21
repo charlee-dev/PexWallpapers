@@ -99,8 +99,7 @@ class WorkTools @Inject constructor(
 
     fun setupAutoChangeWallpaperWorks(
         favorites: List<Wallpaper>,
-        timeUnit: TimeUnit,
-        timeValue: Float
+        timeValue: Long
     ) {
         Timber.tag(TAG).d("setupAutoChangeWallpaperWorks")
         cancelWorks(WORK_AUTO_WALLPAPER)
@@ -110,15 +109,10 @@ class WorkTools @Inject constructor(
         for (number in 1..minutesWorkTimes) {
             favorites.forEach { wallpaper ->
 
-                val delay = getDelay(
-                    timeUnit = timeUnit,
-                    timeValue = timeValue
-                ) / timeSpeeding
-
                 createAutoChangeWallpaperWork(
                     workName = "${number}_${WORK_AUTO_WALLPAPER_NAME}_${wallpaper.id}",
                     wallpaper = wallpaper,
-                    delay = delay * multiplier
+                    delay = timeValue * multiplier
                 )
                 multiplier++
             }
@@ -132,14 +126,14 @@ class WorkTools @Inject constructor(
         delay: Long
     ) {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresStorageNotLow(true)
-            .setRequiresBatteryNotLow(true)
+//            .setRequiredNetworkType(NetworkType.CONNECTED)
+//            .setRequiresStorageNotLow(true)
+//            .setRequiresBatteryNotLow(true)
             .build()
 
         val work = OneTimeWorkRequestBuilder<AutoChangeWallpaperWork>()
             .setInputData(createDataForAutoChangeWallpaperWorker(wallpaper))
-            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInitialDelay(delay, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .addTag(WORK_AUTO_WALLPAPER)
             .build()
@@ -151,7 +145,7 @@ class WorkTools @Inject constructor(
         )
 
         Timber.tag(TAG)
-            .d("Created work: \nwallpaperId = ${wallpaper.id}, \ndelay = ${delay / 1000}s")
+            .d("Created work: \nwallpaperId = ${wallpaper.id}, \ndelay = $delay min")
     }
 
     private fun createDataForAutoChangeWallpaperWorker(wallpaper: Wallpaper): Data {
@@ -160,19 +154,5 @@ class WorkTools @Inject constructor(
         Timber.tag(TAG)
             .d("createDataForAutoChangeWallpaperWorker \nimageUrl = ${wallpaper.imageUrlPortrait} \nwallpaperId = ${wallpaper.id}")
         return builder.build()
-    }
-
-    private fun getDelay(timeUnit: TimeUnit, timeValue: Float): Long {
-        val minute = 60 * 1000
-        val hour = 60 * minute
-        val day = 24 * hour
-        val value = timeValue.toInt()
-        val delay = when (timeUnit) {
-            TimeUnit.MINUTES -> minute * value
-            TimeUnit.HOURS -> hour * value
-            else -> day * value
-        }.toLong()
-
-        return delay
     }
 }

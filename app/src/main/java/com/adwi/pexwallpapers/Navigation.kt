@@ -32,10 +32,12 @@ import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoroutinesApi
+@ExperimentalPermissionsApi
 @InternalCoroutinesApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -94,6 +96,7 @@ fun NavGraphBuilder.myNavGraph(
     }
 }
 
+@ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

@@ -12,12 +12,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,8 +32,11 @@ import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.home.SettingsViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalPermissionsApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalPagingApi
@@ -46,10 +51,14 @@ fun SettingsScreen(
 //    onCategoryClick: () -> Unit,
 ) {
     val settings by viewModel.settings.collectAsState()
+    val days by viewModel.days.collectAsState()
+    val hours by viewModel.hours.collectAsState()
+    val minutes by viewModel.minutes.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
-    val restoreMessage = stringResource(id = R.string.default_settings_restored)
+
 
     PexScaffold(
         viewModel = viewModel,
@@ -64,14 +73,13 @@ fun SettingsScreen(
             )
         ) {
             item {
-
                 Header(
                     title = stringResource(id = R.string.settings),
                     icon = Icons.Outlined.Settings,
                     actionIcon = Icons.Outlined.Refresh,
                     onActionClick = {
                         onTriggerEvent(SettingsEvent.ResetSettings)
-                        viewModel.setSnackBar(restoreMessage)
+                        viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
                     }
                 )
             }
@@ -129,23 +137,20 @@ fun SettingsScreen(
                         modifier = Modifier.padding(horizontal = paddingValues)
                     )
                     Spacer(modifier = Modifier.size(paddingValues / 2))
-                    DurationPicker()
+                    DurationPicker(
+                        modifier = Modifier,
+                        days = days,
+                        hours = hours,
+                        minutes = minutes,
+                        onDaysChange = { onTriggerEvent(SettingsEvent.SetDays(it)) },
+                        onHourChange = { onTriggerEvent(SettingsEvent.SetHours(it)) },
+                        onMinutesChange = { onTriggerEvent(SettingsEvent.SetMinutes(it)) }
+                    )
                     Spacer(modifier = Modifier.size(paddingValues))
-                    Surface(
-                        onClick = { viewModel.setSnackBar("Not implemented yet") },
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colors.primaryVariant
-                    ) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Text(
-                                text = "Save",
-                                color = MaterialTheme.colors.primary,
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .padding(paddingValues)
-                            )
-                        }
-                    }
+                    SaveButton(
+                        modifier = Modifier,
+                        onClick = { onTriggerEvent(SettingsEvent.SaveSettings) }
+                    )
                 }
             }
             item {
@@ -209,6 +214,67 @@ fun SettingsScreen(
     }
 }
 
+@ExperimentalPermissionsApi
+@ExperimentalMaterialApi
+@Composable
+private fun SaveButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    var doNotShowRationale by rememberSaveable { mutableStateOf(false) }
+
+    val readPermissionState = rememberPermissionState(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
+    when {
+        readPermissionState.hasPermission -> {
+            Surface(
+                onClick = onClick,
+                modifier = modifier.fillMaxWidth(),
+                color = MaterialTheme.colors.primaryVariant
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "Save",
+                        color = MaterialTheme.colors.primary,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(paddingValues)
+                    )
+                }
+            }
+        }
+        readPermissionState.shouldShowRationale ||
+                !readPermissionState.permissionRequested -> {
+            if (doNotShowRationale) {
+                Text("Feature not available")
+            } else {
+                Column {
+                    Text("The Read External Storage is important for this app. Please grant the permission.")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row {
+                        Button(onClick = { readPermissionState.launchPermissionRequest() }) {
+                            Text("Request permission")
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Button(onClick = { doNotShowRationale = true }) {
+                            Text("Don't show rationale again")
+                        }
+                    }
+                }
+            }
+        }
+        else -> {
+            Column {
+                Text(
+                    "Read External Storage permission denied. See this FAQ with information about why we " +
+                            "need this permission. Please, grant us access on the Settings screen."
+                )
+            }
+        }
+    }
+}
 
 @ExperimentalMaterialApi
 @Composable
@@ -399,14 +465,16 @@ private fun CheckBoxRow(
 @Composable
 private fun DurationPicker(
     modifier: Modifier = Modifier,
+    days: Int,
+    hours: Int,
+    minutes: Int,
+    onDaysChange: (Int) -> Unit,
+    onHourChange: (Int) -> Unit,
+    onMinutesChange: (Int) -> Unit,
 ) {
     val dayMax = 31
     val hoursMax = 23
     val minutesMax = 59
-
-    var days by remember { mutableStateOf(0) }
-    var hours by remember { mutableStateOf(0) }
-    var minutes by remember { mutableStateOf(0) }
 
     Column(
         modifier
@@ -422,8 +490,8 @@ private fun DurationPicker(
             TimeUnitItem(
                 count = days,
                 range = dayMax,
-                onUpClick = { days++ },
-                onDownClick = { days -= 1 },
+                onUpClick = { onDaysChange(days + 1) },
+                onDownClick = { onDaysChange(days - 1) },
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -436,8 +504,8 @@ private fun DurationPicker(
             TimeUnitItem(
                 count = hours,
                 range = hoursMax,
-                onUpClick = { hours++ },
-                onDownClick = { hours -= 1 },
+                onUpClick = { onHourChange(hours + 1) },
+                onDownClick = { onHourChange(hours - 1) },
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -450,8 +518,8 @@ private fun DurationPicker(
             TimeUnitItem(
                 count = minutes,
                 range = minutesMax,
-                onUpClick = { minutes++ },
-                onDownClick = { minutes -= 1 },
+                onUpClick = { onMinutesChange(minutes + 1) },
+                onDownClick = { onMinutesChange(minutes - 1) },
                 modifier = Modifier.align(Alignment.Center)
 
             )
@@ -601,7 +669,14 @@ private fun AnimatedCounterPreview() {
 @Composable
 private fun NumberSetterItemPreview() {
     PexWallpapersTheme {
-        DurationPicker()
+        DurationPicker(
+            days = 3,
+            hours = 2,
+            minutes = 7,
+            onMinutesChange = {},
+            onHourChange = {},
+            onDaysChange = {}
+        )
     }
 }
 

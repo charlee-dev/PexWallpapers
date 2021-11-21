@@ -16,10 +16,11 @@ import com.adwi.pexwallpapers.ui.main.MainViewModel
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
-
+@ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @ExperimentalComposeUiApi
 @InternalCoroutinesApi

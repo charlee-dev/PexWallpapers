@@ -74,4 +74,6 @@ dependencies {
     implementation(Dependencies.workManager)
     implementation(Dependencies.hiltWorkCore)
     kapt(Dependencies.hiltWorkCompiler)
+
+    implementation(Dependencies.accompanistPermissions)
 }

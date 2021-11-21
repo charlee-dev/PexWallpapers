@@ -2,6 +2,7 @@ import commons.addCoreDependencies
 import commons.addDefaultComposeDependencies
 import commons.addHiltDependenciesBasic
 import commons.addTestDependencies
+import dependencies.Dependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -60,4 +61,5 @@ dependencies {
     addHiltDependenciesBasic()
     addDefaultComposeDependencies()
     addTestDependencies()
+    implementation(Dependencies.accompanistPermissions)
 }
