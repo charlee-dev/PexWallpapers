@@ -53,7 +53,8 @@ fun PexApp(
                         hostState = it,
                         modifier = Modifier
                     )
-                }
+                },
+                scaffoldState = appState.scaffoldState
             ) {
                 AnimatedNavHost(
                     navController = appState.navController,

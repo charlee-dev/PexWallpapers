@@ -8,6 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,10 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.Header
-import com.adwi.components.ImageActionButtons
-import com.adwi.components.PexButton
-import com.adwi.components.PreviewCard
+import com.adwi.components.*
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,41 +33,56 @@ fun PreviewScreen(
     upPress: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+
+    val scaffoldState = rememberScaffoldState()
+
+    PexScaffold(
+        viewModel = viewModel,
+        scaffoldState = scaffoldState
     ) {
-        Header(
-            modifier = Modifier.padding(horizontal = paddingValues, vertical = paddingValues / 2),
-            title = stringResource(id = R.string.preview),
-            icon = Icons.Outlined.Image,
-            actionIcon = null
-        )
-        PreviewCard(
-            imageUrl = wallpaper.imageUrlPortrait,
+        Column(
             modifier = Modifier
-                .padding(horizontal = paddingValues)
-                .padding(vertical = paddingValues / 2)
-                .weight(1f)
-        )
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(paddingValues / 2), text = "Photo by ${wallpaper.photographer}"
-        )
-        ImageActionButtons(
-            modifier = Modifier
-                .fillMaxWidth(),
-            onUrlClick = {},
-            onSaveClick = {},
-            onFavoriteClick = {}
-        )
-        PexButton(
-            onClick = { onSetWallpaperClick(wallpaper.id) },
-            text = stringResource(id = R.string.set_wallpaper),
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-        )
+                .fillMaxSize()
+        ) {
+            Header(
+                modifier = Modifier.padding(
+                    horizontal = paddingValues,
+                    vertical = paddingValues / 2
+                ),
+                title = stringResource(id = R.string.preview),
+                icon = Icons.Outlined.Image,
+                actionIcon = null
+            )
+            PreviewCard(
+                imageUrl = wallpaper.imageUrlPortrait,
+                modifier = Modifier
+                    .padding(horizontal = paddingValues)
+                    .padding(vertical = paddingValues / 2)
+                    .weight(1f)
+            )
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(paddingValues / 2),
+                text = "Photo by ${wallpaper.photographer}"
+            )
+            ImageActionButtons(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onUrlClick = {},
+                onSaveClick = {},
+                onFavoriteClick = {}
+            )
+            PexButton(
+                onClick = {
+//                    onSetWallpaperClick(wallpaper.id)
+                    viewModel.setSnackBar("Not implemented yet")
+                },
+                text = stringResource(id = R.string.set_wallpaper),
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxWidth()
+            )
+        }
     }
 }

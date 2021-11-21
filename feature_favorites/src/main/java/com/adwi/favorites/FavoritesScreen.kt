@@ -4,10 +4,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +18,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.Header
 import com.adwi.components.PexAnimatedHeart
 import com.adwi.components.PexCoilImage
+import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
@@ -40,37 +38,41 @@ fun FavoritesScreen(
 ) {
     val wallpapers by viewModel.wallpapers.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            start = paddingValues,
-            end = paddingValues,
-            bottom = BottomNavHeight + paddingValues
-        ),
-        verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
-    ) {
-        item {
-            Header(
-                title = stringResource(id = R.string.favorites),
-                onActionClick = onSearchClick
-            )
-        }
-        items(items = wallpapers, itemContent = { wallpaper ->
-            var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
+    val scaffoldState = rememberScaffoldState()
 
-            WallpaperItemVertical(
-                wallpaper = wallpaper,
-                onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                onLongPress = { item ->
-                    isHeartEnabled = !isHeartEnabled
-                    onTriggerEvent(FavoritesEvent.OnFavoriteClick(item))
-                },
-                isHeartEnabled = isHeartEnabled
-            )
-        })
-    }
-    if (wallpapers.isEmpty()) {
-        Text(text = "No favorites yet")
+    PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(
+                start = paddingValues,
+                end = paddingValues,
+                bottom = BottomNavHeight + paddingValues
+            ),
+            verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
+        ) {
+            item {
+                Header(
+                    title = stringResource(id = R.string.favorites),
+                    onActionClick = onSearchClick
+                )
+            }
+            items(items = wallpapers, itemContent = { wallpaper ->
+                var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
+
+                WallpaperItemVertical(
+                    wallpaper = wallpaper,
+                    onWallpaperClick = { onWallpaperClick(wallpaper.id) },
+                    onLongPress = { item ->
+                        isHeartEnabled = !isHeartEnabled
+                        onTriggerEvent(FavoritesEvent.OnFavoriteClick(item))
+                    },
+                    isHeartEnabled = isHeartEnabled
+                )
+            })
+        }
+        if (wallpapers.isEmpty()) {
+            Text(text = "No favorites yet")
+        }
     }
 }
 

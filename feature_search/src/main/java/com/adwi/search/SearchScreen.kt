@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -21,6 +22,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.PexAnimatedHeart
 import com.adwi.components.PexCoilImage
+import com.adwi.components.PexScaffold
 import com.adwi.components.PexSearchToolbar
 import com.adwi.components.theme.paddingValues
 import com.adwi.datasource.local.domain.WallpaperEntity
@@ -50,6 +52,7 @@ fun SearchScreen(
 
     val state = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     if (pendingScrollToTop.value) {
         LaunchedEffect(true) {
@@ -58,30 +61,35 @@ fun SearchScreen(
             }
         }
     }
-    Box(modifier = Modifier.fillMaxSize()) {
-        WallpaperListPaged(
-            modifier = Modifier.fillMaxSize(),
-            wallpapers = wallpapers,
-            onWallpaperClick = onWallpaperClick,
-            onLongPress = { wallpaper ->
-                Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                viewModel.onTriggerEvent(SearchEvents.OnFavoriteClick(wallpaper))
-            }
-        )
-        PexSearchToolbar(
-            query = query.value,
-            onHeroNameChanged = { newQuery ->
-                query.value = newQuery
-            },
-            onExecuteSearch = { viewModel.onTriggerEvent(SearchEvents.OnSearchQuerySubmit(query.value)) },
-            onShowFilterDialog = {},
-            modifier = Modifier
-                .padding(horizontal = paddingValues)
-                .padding(vertical = paddingValues / 2)
-                .fillMaxWidth()
-                .align(Alignment.TopCenter)
-        )
 
+    PexScaffold(
+        viewModel = viewModel,
+        scaffoldState = scaffoldState
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            WallpaperListPaged(
+                modifier = Modifier.fillMaxSize(),
+                wallpapers = wallpapers,
+                onWallpaperClick = onWallpaperClick,
+                onLongPress = { wallpaper ->
+                    Timber.tag("HomeScreen").d("${wallpaper.id} - long")
+                    viewModel.onTriggerEvent(SearchEvents.OnFavoriteClick(wallpaper))
+                }
+            )
+            PexSearchToolbar(
+                query = query.value,
+                onHeroNameChanged = { newQuery ->
+                    query.value = newQuery
+                },
+                onExecuteSearch = { viewModel.onTriggerEvent(SearchEvents.OnSearchQuerySubmit(query.value)) },
+                onShowFilterDialog = {},
+                modifier = Modifier
+                    .padding(horizontal = paddingValues)
+                    .padding(vertical = paddingValues / 2)
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+            )
+        }
     }
 }
 

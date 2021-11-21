@@ -1,6 +1,5 @@
 package com.adwi.settings
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
@@ -32,7 +31,6 @@ import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.home.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -49,9 +47,9 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsState()
 
-    val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
-    val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
+    val restoreMessage = stringResource(id = R.string.default_settings_restored)
 
     PexScaffold(
         viewModel = viewModel,
@@ -66,33 +64,15 @@ fun SettingsScreen(
             )
         ) {
             item {
-                Button(
-                    onClick = {
-                        coroutineScope.launch { // using the `coroutineScope` to `launch` showing the snackbar
-                            // taking the `snackbarHostState` from the attached `scaffoldState`
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = "This is your message",
-                                actionLabel = "Do something."
-                            )
-                            when (snackbarResult) {
-                                SnackbarResult.Dismissed -> Log.d("SnackbarDemo", "Dismissed")
-                                SnackbarResult.ActionPerformed -> Log.d(
-                                    "SnackbarDemo",
-                                    "Snackbar's button clicked"
-                                )
-                            }
-                        }
-                    }
-                ) {
-                    Text(text = "A button that shows a Snackbar")
-                }
-            }
-            item {
+
                 Header(
                     title = stringResource(id = R.string.settings),
                     icon = Icons.Outlined.Settings,
                     actionIcon = Icons.Outlined.Refresh,
-                    onActionClick = { onTriggerEvent(SettingsEvent.ResetSettings) }
+                    onActionClick = {
+                        onTriggerEvent(SettingsEvent.ResetSettings)
+                        viewModel.setSnackBar(restoreMessage)
+                    }
                 )
             }
             item {
