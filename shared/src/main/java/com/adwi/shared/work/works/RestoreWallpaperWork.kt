@@ -1,12 +1,12 @@
-package com.adrianwitaszak.work_notifications.work.works
+package com.adwi.shared.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.adrianwitaszak.work_notifications.image.ImageTools
-import com.adrianwitaszak.work_notifications.setter.WallpaperSetter
-import com.adrianwitaszak.work_notifications.util.Constants.WALLPAPER_ID
+import com.adwi.shared.image.ImageTools
+import com.adwi.shared.setter.WallpaperSetter
+import com.adwi.shared.util.Constants.WALLPAPER_ID
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber

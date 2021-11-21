@@ -1,19 +1,21 @@
-package com.adrianwitaszak.work_notifications.work
+package com.adwi.shared.work
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.*
-import com.adrianwitaszak.work_notifications.util.Constants.WALLPAPER_ID
-import com.adrianwitaszak.work_notifications.util.Constants.WALLPAPER_IMAGE_URL
-import com.adrianwitaszak.work_notifications.util.Constants.WORK_AUTO_WALLPAPER
-import com.adrianwitaszak.work_notifications.util.Constants.WORK_AUTO_WALLPAPER_NAME
-import com.adrianwitaszak.work_notifications.util.Constants.WORK_DOWNLOAD_WALLPAPER
-import com.adrianwitaszak.work_notifications.util.Constants.WORK_RESTORE_WALLPAPER
-import com.adrianwitaszak.work_notifications.util.Constants.WORK_RESTORE_WALLPAPER_NAME
-import com.adrianwitaszak.work_notifications.work.works.AutoChangeWallpaperWork
-import com.adrianwitaszak.work_notifications.work.works.DownloadWallpaperWork
-import com.adrianwitaszak.work_notifications.work.works.RestoreWallpaperWork
 import com.adwi.domain.Wallpaper
+import com.adwi.shared.util.Constants.WALLPAPER_ID
+import com.adwi.shared.util.Constants.WALLPAPER_IMAGE_URL
+import com.adwi.shared.util.Constants.WORK_AUTO_WALLPAPER
+import com.adwi.shared.util.Constants.WORK_AUTO_WALLPAPER_NAME
+import com.adwi.shared.util.Constants.WORK_DOWNLOAD_WALLPAPER
+import com.adwi.shared.util.Constants.WORK_RESTORE_WALLPAPER
+import com.adwi.shared.util.Constants.WORK_RESTORE_WALLPAPER_NAME
+import com.adwi.shared.work.works.AutoChangeWallpaperWork
+import com.adwi.shared.work.works.DownloadWallpaperWork
+import com.adwi.shared.work.works.RestoreWallpaperWork
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -22,9 +24,12 @@ private const val TAG = "WorkTools"
 private const val timeSpeeding = 30
 private const val minutesWorkTimes = 3
 
+@ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 class WorkTools @Inject constructor(
     private val workManager: WorkManager
 ) {
+
     fun cancelWorks(workTag: String) {
         workManager.cancelAllWorkByTag(workTag)
         Timber.tag(TAG).d("cancelWorks - $workTag")
@@ -49,7 +54,7 @@ class WorkTools @Inject constructor(
         Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
     }
 
-    fun createDownloadWallpaperWork(wallpaper: Wallpaper, wifiOnly: Boolean) {
+    fun createDownloadWallpaperWork(wallpaper: Wallpaper, wifiOnly: Boolean): UUID {
         Timber.tag(TAG).d("downloadWallpaperWork")
 
         val constraints = if (wifiOnly) {
@@ -67,10 +72,12 @@ class WorkTools @Inject constructor(
             .putString(WALLPAPER_IMAGE_URL, wallpaper.imageUrlPortrait)
             .build()
 
+        val workTag = "$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}"
+
         val work = OneTimeWorkRequestBuilder<DownloadWallpaperWork>()
             .setInputData(builder)
             .setConstraints(constraints)
-            .addTag(WORK_DOWNLOAD_WALLPAPER) // TODO()
+            .addTag(workTag) // TODO()
             .build()
 
         workManager.enqueueUniqueWork(
@@ -86,9 +93,10 @@ class WorkTools @Inject constructor(
 
         Timber.tag(TAG)
             .d("Created work: \nwallpaperId = ${wallpaper.id}")
+
+        return work.id
     }
 
-    @ExperimentalPagingApi
     fun setupAutoChangeWallpaperWorks(
         favorites: List<Wallpaper>,
         timeUnit: TimeUnit,
@@ -117,7 +125,7 @@ class WorkTools @Inject constructor(
         }
     }
 
-    @ExperimentalPagingApi
+
     private fun createAutoChangeWallpaperWork(
         workName: String,
         wallpaper: Wallpaper,

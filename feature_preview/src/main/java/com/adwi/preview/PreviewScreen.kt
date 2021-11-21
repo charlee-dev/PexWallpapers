@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
@@ -29,12 +30,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PreviewScreen(
     viewModel: PreviewViewModel,
+    onTriggerEvent: (PreviewEvent) -> Unit,
     onSetWallpaperClick: (Int) -> Unit,
     upPress: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     PexScaffold(
         viewModel = viewModel,
@@ -67,11 +70,11 @@ fun PreviewScreen(
                 text = "Photo by ${wallpaper.photographer}"
             )
             ImageActionButtons(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onUrlClick = {},
-                onSaveClick = {},
-                onFavoriteClick = {}
+                modifier = Modifier.fillMaxWidth(),
+                onUrlClick = { onTriggerEvent(PreviewEvent.GoToPexels(wallpaper)) },
+                onSaveClick = { onTriggerEvent(PreviewEvent.DownloadWallpaper(wallpaper)) },
+                onFavoriteClick = { onTriggerEvent(PreviewEvent.DoFavorite(wallpaper)) },
+                isFavorite = wallpaper.isFavorite
             )
             PexButton(
                 onClick = {

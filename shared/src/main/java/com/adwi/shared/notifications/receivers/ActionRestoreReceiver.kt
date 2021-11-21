@@ -1,17 +1,21 @@
-package com.adrianwitaszak.work_notifications.notifications.receivers
+package com.adwi.shared.notifications.receivers
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.paging.ExperimentalPagingApi
 import com.adrianwitaszak.work_notifications.R
-import com.adrianwitaszak.work_notifications.util.Constants.ACTION_AUTO
-import com.adrianwitaszak.work_notifications.work.WorkTools
+import com.adwi.shared.util.Constants.ACTION_AUTO
+import com.adwi.shared.work.WorkTools
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class ActionRestoreReceiver : BroadcastReceiver() {
 

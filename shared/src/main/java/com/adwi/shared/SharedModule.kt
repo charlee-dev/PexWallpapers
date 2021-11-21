@@ -1,24 +1,28 @@
-package com.adrianwitaszak.work_notifications
+package com.adwi.shared
 
 import android.app.WallpaperManager
 import android.content.Context
+import androidx.paging.ExperimentalPagingApi
 import androidx.work.WorkManager
-import com.adrianwitaszak.work_notifications.image.ImageTools
-import com.adrianwitaszak.work_notifications.notifications.NotificationTools
-import com.adrianwitaszak.work_notifications.setter.WallpaperSetter
-import com.adrianwitaszak.work_notifications.sharing.SharingTools
-import com.adrianwitaszak.work_notifications.work.WorkTools
+import com.adwi.shared.image.ImageTools
+import com.adwi.shared.notifications.NotificationTools
+import com.adwi.shared.setter.WallpaperSetter
+import com.adwi.shared.sharing.SharingTools
+import com.adwi.shared.work.WorkTools
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object SharedModule {
 
+    @ExperimentalCoroutinesApi
+    @ExperimentalPagingApi
     @Singleton
     @Provides
     fun provideWorkTools(
@@ -50,6 +54,8 @@ object SharedModule {
         @ApplicationContext context: Context
     ): SharingTools = SharingTools(context)
 
+    @ExperimentalCoroutinesApi
+    @ExperimentalPagingApi
     @Provides
     @Singleton
     fun provideNotificationTools(

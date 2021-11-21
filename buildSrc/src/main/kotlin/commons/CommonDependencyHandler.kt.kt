@@ -44,7 +44,6 @@ fun DependencyHandler.addComposeDependencies() {
     api(Dependencies.composeAnimationCore)
     api(Dependencies.composeRuntime)
     api(Dependencies.composeNavigation)
-    api(Dependencies.composeWork)
     api(Dependencies.composePaging)
 }
 

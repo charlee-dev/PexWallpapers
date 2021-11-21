@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.setter
+package com.adwi.shared.setter
 
 import android.annotation.SuppressLint
 import android.app.WallpaperManager

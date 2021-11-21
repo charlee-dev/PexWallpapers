@@ -1,11 +1,11 @@
-package com.adrianwitaszak.work_notifications.notifications.receivers
+package com.adwi.shared.notifications.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.adrianwitaszak.work_notifications.image.ImageTools
-import com.adrianwitaszak.work_notifications.util.Constants.ACTION_AUTO
+import com.adwi.shared.image.ImageTools
+import com.adwi.shared.util.Constants.ACTION_AUTO
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject

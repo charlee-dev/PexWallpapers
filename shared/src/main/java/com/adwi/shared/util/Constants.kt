@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.util
+package com.adwi.shared.util
 
 object Constants {
 
@@ -41,7 +41,7 @@ object Constants {
     // IMAGE
     const val DIR_IMAGES = "images"
     const val DIR_RELATIVE_PATH = "Pictures/pex_wallpapers"
-    const val MIME_TYPE = "image/*"
+    const val MIME_TYPE = "image/jpeg"
     const val DISPLAY_NAME = "img_"
     const val IMAGE_FILE_EXT = ".jpg"
 

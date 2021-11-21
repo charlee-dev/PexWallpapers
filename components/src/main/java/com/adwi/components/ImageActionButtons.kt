@@ -1,5 +1,6 @@
 package com.adwi.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -20,22 +21,26 @@ import com.adwi.components.theme.paddingValues
 @Composable
 fun ImageActionButtons(
     modifier: Modifier = Modifier,
-    onUrlClick: (String) -> Unit,
-    onSaveClick: (String) -> Unit,
-    onFavoriteClick: (String) -> Unit,
+    onUrlClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    isFavorite: Boolean
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         ActionButton(
-            icon = Icons.Outlined.Link
+            icon = Icons.Outlined.Link,
+            modifier = Modifier.clickable { onUrlClick() }
         )
         ActionButton(
-            icon = Icons.Outlined.Save
+            icon = Icons.Outlined.Save,
+            modifier = Modifier.clickable { onSaveClick() }
         )
         ActionButton(
-            icon = Icons.Outlined.Bookmark
+            icon = Icons.Outlined.Bookmark,
+            modifier = Modifier.clickable { onFavoriteClick() }
         )
     }
 }
@@ -64,6 +69,11 @@ fun ActionButton(
 @Composable
 fun ImageActionButtonsPreview() {
     MaterialTheme {
-        ImageActionButtons(onUrlClick = {}, onSaveClick = {}, onFavoriteClick = {})
+        ImageActionButtons(
+            onUrlClick = {},
+            onSaveClick = {},
+            onFavoriteClick = {},
+            isFavorite = true
+        )
     }
 }

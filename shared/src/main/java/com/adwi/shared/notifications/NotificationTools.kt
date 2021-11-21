@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.notifications
+package com.adwi.shared.notifications
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -16,14 +16,16 @@ import android.media.RingtoneManager.getDefaultUri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
+import androidx.paging.ExperimentalPagingApi
 import com.adrianwitaszak.work_notifications.R
-import com.adrianwitaszak.work_notifications.notifications.receivers.ActionRestoreReceiver
-import com.adrianwitaszak.work_notifications.notifications.receivers.OnDismissReceiver
-import com.adrianwitaszak.work_notifications.util.Constants.ACTION_AUTO
-import com.adrianwitaszak.work_notifications.util.Constants.CHANNEL_AUTO
-import com.adrianwitaszak.work_notifications.util.Constants.CHANNEL_INFO
-import com.adrianwitaszak.work_notifications.util.Constants.CHANNEL_RECOMMENDATIONS
+import com.adwi.shared.notifications.receivers.ActionRestoreReceiver
+import com.adwi.shared.notifications.receivers.OnDismissReceiver
+import com.adwi.shared.util.Constants.ACTION_AUTO
+import com.adwi.shared.util.Constants.CHANNEL_AUTO
+import com.adwi.shared.util.Constants.CHANNEL_INFO
+import com.adwi.shared.util.Constants.CHANNEL_RECOMMENDATIONS
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 /**
@@ -35,6 +37,8 @@ enum class Channel {
     INFO
 }
 
+@ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @SuppressLint("NewApi")
 class NotificationTools @Inject constructor(
     @ApplicationContext private val context: Context

@@ -33,7 +33,7 @@ dependencies {
     implementation(Dependencies.paging)
     implementation(Dependencies.timber)
 
-    implementation(Dependencies.composeWork)
+    implementation(Dependencies.workManager)
     implementation(Dependencies.hiltWorkCore)
     kapt(Dependencies.hiltWorkCompiler)
 }

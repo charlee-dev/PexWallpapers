@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.image
+package com.adwi.shared.image
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -11,15 +11,15 @@ import android.provider.MediaStore
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.adrianwitaszak.work_notifications.util.Constants.BACKUP_WALLPAPER
-import com.adrianwitaszak.work_notifications.util.Constants.DIR_IMAGES
-import com.adrianwitaszak.work_notifications.util.Constants.DIR_RELATIVE_PATH
-import com.adrianwitaszak.work_notifications.util.Constants.DISPLAY_NAME
-import com.adrianwitaszak.work_notifications.util.Constants.IMAGE_FILE_EXT
-import com.adrianwitaszak.work_notifications.util.Constants.MIME_TYPE
-import com.adrianwitaszak.work_notifications.util.compressStream
-import com.adrianwitaszak.work_notifications.util.decodeBitmap
-import com.adrianwitaszak.work_notifications.util.getUri
+import com.adwi.shared.util.Constants.BACKUP_WALLPAPER
+import com.adwi.shared.util.Constants.DIR_IMAGES
+import com.adwi.shared.util.Constants.DIR_RELATIVE_PATH
+import com.adwi.shared.util.Constants.DISPLAY_NAME
+import com.adwi.shared.util.Constants.IMAGE_FILE_EXT
+import com.adwi.shared.util.Constants.MIME_TYPE
+import com.adwi.shared.util.compressStream
+import com.adwi.shared.util.decodeBitmap
+import com.adwi.shared.util.getUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.io.File
@@ -108,6 +108,7 @@ class ImageTools @Inject constructor(
         return File(directory, fileName)
     }
 
+    // Images saved in sdcard/Pictures/pex_wallpapers/
     @SuppressLint("InlinedApi")
     fun saveImageToGallery(id: Int, bitmap: Bitmap): Uri? {
 //        if (runningQOrLater) {

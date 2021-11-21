@@ -50,48 +50,6 @@
     <string name="wallpaper_thumbnail">Wallpaper thumbnail</string>
     <string name="photo_by">Photo by:</string>
     <string name="add_to_favorites">Add to favorites</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="download">Download</string>
-    <string name="settings">Settings</string>
-    <string name="notifications">Notifications</string>
-    <string name="privacy_policy">Privacy policy</string>
-    <string name="support">Support</string>
-    <string name="info">Info</string>
-    <string name="about_us">About Us</string>
-    <string name="automation">Automation</string>
-    <string name="data_usage">Data usage</string>
-    <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over Wi-Fi</string>
-    <string name="time_range">Time range: </string>
-    <string name="push_notifications">Push notifications</string>
-    <string name="new_wallpaper_set">New wallpaper set</string>
-    <string name="wallpaper_recomendations">Wallpaper recomendations</string>
-    <string name="auto_change_wallpaper">Auto change wallpaper</string>
-    <string name="change_wallpaper_every">Change wallpaper every:</string>
-    <string name="minutes">Minutes</string>
-    <string name="minute">Minute</string>
-    <string name="hours">Hours</string>
-    <string name="hour">Hour</string>
-    <string name="days">Days</string>
-    <string name="day">Day</string>
-    <string name="weeks">Weeks</string>
-    <string name="set_period">Set period</string>
-    <string name="sign_out">Sign out</string>
-    <string name="reset_settings">Reset settings</string>
-    <string name="slide_next">Slide next</string>
-    <string name="other">Other</string>
 
     <string name="rationale_title">We need permission to read external storage</string>
     <string name="rationale_desc">We require access to read external storage permission to be able to backup your previous wallpaper

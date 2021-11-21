@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.sharing
+package com.adwi.shared.sharing
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import com.adrianwitaszak.work_notifications.R
-import com.adrianwitaszak.work_notifications.util.Constants.DATA_TYPE
-import com.adrianwitaszak.work_notifications.util.Constants.SUPPORT_EMAIL
+
+import com.adwi.shared.util.Constants.DATA_TYPE
+import com.adwi.shared.util.Constants.SUPPORT_EMAIL
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

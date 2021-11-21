@@ -57,6 +57,7 @@ android {
 dependencies {
 
     implementation(project(Modules.COMPONENTS))
+    implementation(project(Modules.SHARED))
 
     implementation(project(Modules.FEATURE_HOME))
     implementation(project(Modules.FEATURE_PREVIEW))
@@ -68,4 +69,9 @@ dependencies {
     addHiltDependenciesExtended()
 
     implementation(Dependencies.accompanistNavigationAnimation)
+    implementation(Dependencies.timber)
+
+    implementation(Dependencies.workManager)
+    implementation(Dependencies.hiltWorkCore)
+    kapt(Dependencies.hiltWorkCompiler)
 }

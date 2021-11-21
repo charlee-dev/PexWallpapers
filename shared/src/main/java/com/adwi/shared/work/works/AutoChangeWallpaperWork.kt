@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.work.works
+package com.adwi.shared.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -7,14 +7,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adrianwitaszak.work_notifications.image.ImageTools
-import com.adrianwitaszak.work_notifications.notifications.Channel
-import com.adrianwitaszak.work_notifications.notifications.NotificationTools
-import com.adrianwitaszak.work_notifications.setter.WallpaperSetter
-import com.adrianwitaszak.work_notifications.util.Constants.WALLPAPER_ID
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepository
 import com.adwi.repository.wallpaper.WallpaperRepository
+import com.adwi.shared.image.ImageTools
+import com.adwi.shared.notifications.Channel
+import com.adwi.shared.notifications.NotificationTools
+import com.adwi.shared.setter.WallpaperSetter
+import com.adwi.shared.util.Constants.WALLPAPER_ID
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi

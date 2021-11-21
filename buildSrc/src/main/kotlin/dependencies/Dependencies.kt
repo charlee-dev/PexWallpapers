@@ -43,7 +43,6 @@ object Dependencies {
     const val composeMaterial3 = "androidx.compose.material3:material3:${Versions.material3}"
     const val composeNavigation = "androidx.navigation:navigation-compose:${Versions.navigation}"
     const val composeActivity = "androidx.activity:activity-compose:${Versions.activityCompose}"
-    const val composeWork = "androidx.work:work-runtime-ktx:${Versions.work}"
     const val composePaging = "androidx.paging:paging-compose:${Versions.pagingCompose}"
 
     // Network
@@ -65,8 +64,12 @@ object Dependencies {
         "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hiltNavigation}"
     const val hiltNavigationCompose =
         "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}"
+
     const val hiltWorkCore = "androidx.hilt:hilt-work:${Versions.hiltWork}"
     const val hiltWorkCompiler = "androidx.hilt:hilt-compiler:${Versions.hiltWork}"
+
+    // Work
+    const val workManager = "androidx.work:work-runtime-ktx:${Versions.work}"
 
     // Helpers
     const val paging = "androidx.paging:paging-common-ktx:${Versions.paging}"

@@ -1,4 +1,4 @@
-package com.adrianwitaszak.work_notifications.util
+package com.adwi.shared.util
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

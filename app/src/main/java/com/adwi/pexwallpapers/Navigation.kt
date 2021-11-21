@@ -69,6 +69,7 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         PreviewScreen(
             viewModel = viewModel,
+            onTriggerEvent = viewModel::onTriggerEvent,
             onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )

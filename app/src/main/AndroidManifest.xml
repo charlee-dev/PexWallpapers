@@ -43,13 +43,6 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
-
-        <receiver
-            android:name="com.adrianwitaszak.notifications.ActionRestoreReceiver"
-            android:exported="false" />
-        <receiver
-            android:name="com.adrianwitaszak.notifications.OnDismissReceiver"
-            android:exported="false" />
     </application>
 
 </manifest>

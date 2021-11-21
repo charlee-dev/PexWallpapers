@@ -21,11 +21,10 @@ object Versions {
     const val lifecycle = "2.4.0"
 
     // Compose
-    const val compose = "1.1.0-beta02"
+    const val compose = "1.1.0-beta03"
     const val material3 = "1.0.0-alpha01"
     const val navigation = "2.4.0-beta02"
     const val activityCompose = "1.3.1"
-    const val work = "2.7.0"
     const val pagingCompose = "1.0.0-alpha14"
 
     // Network
@@ -40,6 +39,9 @@ object Versions {
     const val hilt = "2.38.1"
     const val hiltNavigation = "1.0.0-alpha03"
     const val hiltWork = "1.0.0"
+
+    // Work
+    const val work = "2.7.1"
 
     // Helpers
     const val coil = "1.4.0"
