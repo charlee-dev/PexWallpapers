@@ -78,8 +78,11 @@ fun SettingsScreen(
                     icon = Icons.Outlined.Settings,
                     actionIcon = Icons.Outlined.Refresh,
                     onActionClick = {
-                        onTriggerEvent(SettingsEvent.ResetSettings)
-                        viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
+                        onTriggerEvent(
+                            SettingsEvent.ResetSettings(
+                                context.getString(R.string.default_settings_restored)
+                            )
+                        )
                     }
                 )
             }
@@ -149,7 +152,10 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.size(paddingValues))
                     SaveButton(
                         modifier = Modifier,
-                        onClick = { onTriggerEvent(SettingsEvent.SaveSettings) }
+                        onClick = {
+                            onTriggerEvent(SettingsEvent.SaveSettings)
+                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Automation saved"))
+                        }
                     )
                 }
             }
@@ -194,17 +200,23 @@ fun SettingsScreen(
             item {
                 Column(Modifier.padding(top = paddingValues)) {
                     InfoRow(
-                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        onClick = {
+                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                        },
                         title = stringResource(id = R.string.about_us),
                         icon = Icons.Outlined.QuestionAnswer
                     )
                     InfoRow(
-                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        onClick = {
+                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                        },
                         title = stringResource(id = R.string.privacy_policy),
                         icon = Icons.Outlined.Security
                     )
                     InfoRow(
-                        onClick = { viewModel.setSnackBar("Not implemented yet") },
+                        onClick = {
+                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                        },
                         title = stringResource(id = R.string.support),
                         icon = Icons.Outlined.Mail
                     )

@@ -117,4 +117,5 @@
     <string name="curated">Curated</string>
     <string name="not_implemented_yet">Not implemented yet</string>
     <string name="default_settings_restored">Default settings restored</string>
+    <string name="automation_saved">Automation saved</string>
 </resources>

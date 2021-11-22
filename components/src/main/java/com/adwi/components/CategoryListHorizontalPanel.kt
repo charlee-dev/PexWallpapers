@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,30 +26,44 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
+import com.adwi.composables.R
+import com.adwi.core.domain.Resource
 import com.adwi.domain.ColorCategory
-import com.valentinilk.shimmer.shimmer
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
-    colors: List<ColorCategory>,
-    categoryName: String,
+    colors: Resource<List<ColorCategory>>?,
+    panelTitle: String,
     onCategoryClick: (String) -> Unit
 ) {
     Column(modifier = modifier.animateContentSize()) {
         CategoryPanel(
-            categoryName = categoryName,
+            categoryName = panelTitle,
             modifier = Modifier.padding(horizontal = paddingValues)
         )
-        if (colors.isEmpty()) {
-            ShimmerRow()
-        } else {
-            CategoryListHorizontal(
-                categoryList = colors,
-                onCategoryClick = onCategoryClick
+        colors?.let { resource ->
+
+            ShimmerRow(
+                visible = resource.data.isNullOrEmpty() && resource.error == null
             )
+            ShimmerErrorMessage(
+                visible = resource.data.isNullOrEmpty() && resource.error != null,
+                message = stringResource(
+                    id = R.string.could_not_refresh,
+                    resource.error?.localizedMessage
+                        ?: stringResource(R.string.unknown_error_occurred)
+                ),
+                modifier = Modifier.padding(horizontal = paddingValues)
+            )
+            resource.data?.let { list ->
+                CategoryListHorizontal(
+                    categoryList = list,
+                    onCategoryClick = onCategoryClick
+                )
+            }
         }
     }
 }
@@ -105,8 +120,7 @@ private fun CategoryItem(
             onClick = onCategoryClick,
             elevation = elevation,
             shape = shape,
-            modifier = modifier
-                .size(100.dp)
+            modifier = modifier.size(100.dp)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(
@@ -150,35 +164,6 @@ private fun CategoryItem(
             style = MaterialTheme.typography.subtitle1
                 .merge(TextStyle(color = MaterialTheme.colors.onBackground))
         )
-    }
-}
-
-@Composable
-private fun ShimmerRow(
-    modifier: Modifier = Modifier,
-    elevation: Dp = Dimensions.small,
-    shape: Shape = MaterialTheme.shapes.small
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shimmer(),
-            contentPadding = PaddingValues(start = paddingValues),
-            horizontalArrangement = Arrangement.spacedBy(paddingValues / 2)
-        ) {
-            items(5) {
-                Card(
-                    elevation = elevation,
-                    modifier = modifier
-                        .padding(paddingValues / 2)
-                        .size(100.dp)
-                        .shimmer(),
-                    shape = shape,
-                    content = {}
-                )
-            }
-        }
     }
 }
 

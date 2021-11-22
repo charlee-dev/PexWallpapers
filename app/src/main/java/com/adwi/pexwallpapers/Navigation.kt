@@ -21,6 +21,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.favorites.FavoritesEvent
 import com.adwi.favorites.FavoritesScreen
 import com.adwi.favorites.FavoritesViewModel
+import com.adwi.home.HomeEvent
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
 import com.adwi.home.SettingsViewModel
@@ -109,26 +110,9 @@ fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    composable(
-        HomeSections.HOME.route,
-        enterTransition = { initial, _ ->
-            when (initial.destination.route) {
-                HomeSections.SEARCH.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.FAVORITES.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        },
-        exitTransition = { _, target ->
-            when (target.destination.route) {
-                HomeSections.SEARCH.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.FAVORITES.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        }
-    ) { backStackEntry ->
+    composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
+        viewModel.onTriggerEvent(HomeEvent.OnStart)
         HomeScreen(
             viewModel = viewModel,
             onTriggerEvent = viewModel::onTriggerEvent,

@@ -13,6 +13,7 @@ data class WallpaperDto(
     val src: SrcDto
 ) {
     data class SrcDto(
+        val original: String,
         val medium: String,
         val landscape: String,
         val portrait: String,
@@ -32,7 +33,7 @@ fun WallpaperDto.toDomain(
     isFavorite = isFavorite,
     updatedAt = System.currentTimeMillis(),
     imageUrlPortrait = this.src.portrait,
-    imageUrlLandscape = this.src.landscape,
+    imageUrlLandscape = this.src.original,
     imageUrlTiny = this.src.tiny
 )
 
@@ -48,7 +49,7 @@ fun WallpaperDto.toEntity(
     isFavorite = isFavorite,
     updatedAt = System.currentTimeMillis(),
     imageUrlPortrait = this.src.portrait,
-    imageUrlLandscape = this.src.landscape,
+    imageUrlLandscape = this.src.medium,
     imageUrlTiny = this.src.tiny
 )
 

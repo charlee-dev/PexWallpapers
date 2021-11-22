@@ -56,7 +56,7 @@ class SettingsViewModel
 
             SettingsEvent.ContactSupport -> contactSupport()
 
-            SettingsEvent.ResetSettings -> {
+            is SettingsEvent.ResetSettings -> {
                 resetSettings()
                 getSettings()
             }
@@ -100,6 +100,8 @@ class SettingsViewModel
             is SettingsEvent.SetMinutes -> setMinutes(event.value)
 
             SettingsEvent.SaveSettings -> saveSettings()
+
+            is SettingsEvent.SetSnackBarMessage -> setSnackBar(event.message)
         }
     }
 

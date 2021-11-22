@@ -18,7 +18,7 @@ sealed class SettingsEvent {
     data class UpdateAutoLock(val checked: Boolean) : SettingsEvent()
     data class UpdateDownloadOverWiFi(val checked: Boolean) : SettingsEvent()
 
-    object ResetSettings : SettingsEvent()
+    data class ResetSettings(val message: String) : SettingsEvent()
     object ContactSupport : SettingsEvent()
 
     data class SetDays(val value: Int) : SettingsEvent()
@@ -26,4 +26,6 @@ sealed class SettingsEvent {
     data class SetMinutes(val value: Int) : SettingsEvent()
 
     object SaveSettings : SettingsEvent()
+
+    data class SetSnackBarMessage(val message: String) : SettingsEvent()
 }

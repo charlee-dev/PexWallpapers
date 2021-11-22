@@ -28,6 +28,8 @@ import com.adwi.components.theme.paddingValues
 import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.datasource.local.domain.toDomain
 import com.adwi.domain.Wallpaper
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -67,15 +69,25 @@ fun SearchScreen(
         scaffoldState = scaffoldState
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            WallpaperListPaged(
-                modifier = Modifier.fillMaxSize(),
-                wallpapers = wallpapers,
-                onWallpaperClick = onWallpaperClick,
-                onLongPress = { wallpaper ->
-                    Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                    viewModel.onTriggerEvent(SearchEvents.OnFavoriteClick(wallpaper))
-                }
-            )
+            val showRefresh = false
+            val swipeRefreshState = rememberSwipeRefreshState(showRefresh)
+
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = {
+//                            onRefresh TODO(add onRefresh in viewModel)
+                },
+            ) {
+                WallpaperListPaged(
+                    modifier = Modifier.fillMaxSize(),
+                    wallpapers = wallpapers,
+                    onWallpaperClick = onWallpaperClick,
+                    onLongPress = { wallpaper ->
+                        Timber.tag("HomeScreen").d("${wallpaper.id} - long")
+                        viewModel.onTriggerEvent(SearchEvents.OnFavoriteClick(wallpaper))
+                    }
+                )
+            }
             PexSearchToolbar(
                 query = query.value,
                 onHeroNameChanged = { newQuery ->

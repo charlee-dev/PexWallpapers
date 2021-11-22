@@ -222,6 +222,11 @@ class WallpaperRepositoryImpl @Inject constructor(
         wallpapersDao.updateWallpaper(wallpaper.toEntity())
     }
 
+    override suspend fun deleteNonFavoriteWallpapersOlderThan(timestampInMillis: Long) =
+        wallpapersDao.deleteNonFavoriteWallpapersOlderThan(timestampInMillis)
+
+    override suspend fun resetAllFavorites() = wallpapersDao.resetAllFavorites()
+
     private val colorNameList = listOf(
         "Purple",
         "Orange",

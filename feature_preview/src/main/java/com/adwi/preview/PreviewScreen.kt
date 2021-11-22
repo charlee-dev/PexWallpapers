@@ -57,7 +57,7 @@ fun PreviewScreen(
                 actionIcon = null
             )
             PreviewCard(
-                imageUrl = wallpaper.imageUrlPortrait,
+                imageUrl = wallpaper.imageUrlLandscape,
                 modifier = Modifier
                     .padding(horizontal = paddingValues)
                     .padding(vertical = paddingValues / 2)
@@ -67,7 +67,7 @@ fun PreviewScreen(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(paddingValues / 2),
-                text = "Photo by ${wallpaper.photographer}"
+                text = stringResource(id = R.string.photo_by, wallpaper.photographer)
             )
             ImageActionButtons(
                 modifier = Modifier.fillMaxWidth(),

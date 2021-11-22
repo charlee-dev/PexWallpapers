@@ -1,24 +1,27 @@
 package com.adwi.home
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.base.Event
-import com.adwi.core.base.Refresh
-import com.adwi.core.util.CalendarUtil
-import com.adwi.core.util.Constants.COULD_NOT_REFRESH
+import com.adwi.core.domain.Event
+import com.adwi.core.domain.Refresh
+import com.adwi.core.domain.Resource
+import com.adwi.core.util.Constants
 import com.adwi.core.util.ext.exhaustive
 import com.adwi.core.util.ext.onDispatcher
-import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -27,91 +30,153 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepositoryImpl,
     private val settingsRepository: SettingsRepositoryImpl,
-//    private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val dailyWallpaper: MutableStateFlow<Wallpaper> = MutableStateFlow(Wallpaper())
-    val colorList: MutableStateFlow<List<ColorCategory>> = MutableStateFlow(emptyList())
-    val curatedList: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(emptyList())
+    val isRefreshing = MutableStateFlow(false)
+
+    val pendingScrollToTopAfterRefresh = MutableStateFlow(false)
+    var categoryPendingScrollToTopAfterRefresh = false
+    var curatedPendingScrollToTopAfterRefresh = false
 
     private val eventChannel = Channel<Event>()
-    private val events = eventChannel.receiveAsFlow()
+    val events = eventChannel.receiveAsFlow()
 
-    private val refreshTriggerChannel = Channel<Refresh>()
-    val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
+    private val dailyRefreshTriggerChannel = Channel<Refresh>()
+    val dailyRefreshTrigger = dailyRefreshTriggerChannel.receiveAsFlow()
 
-    var pendingScrollToTopAfterRefresh = false
+    private val curatedRefreshTriggerChannel = Channel<Refresh>()
+    val curatedRefreshTrigger = curatedRefreshTriggerChannel.receiveAsFlow()
+
+    private val colorRefreshTriggerChannel = Channel<Refresh>()
+    val colorRefreshTrigger = colorRefreshTriggerChannel.receiveAsFlow()
+
+    val dailyList = dailyRefreshTrigger.flatMapLatest { refresh ->
+        getDaily(refresh == Refresh.FORCE)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    val colorList = colorRefreshTrigger.flatMapLatest { refresh ->
+        getColors(refresh == Refresh.FORCE)
+
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    val curatedList = curatedRefreshTrigger.flatMapLatest { refresh ->
+        getCurated(refresh == Refresh.FORCE)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     init {
-        onTriggerEvent(HomeEvent.Refresh)
+        deleteOldNonFavoriteWallpapers()
         getEvents()
     }
 
     fun onTriggerEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.GetDaily -> {
-                getDaily()
-            }
-            HomeEvent.GetColors -> {
-                getColors()
-            }
-            HomeEvent.GetCurated -> {
-                getCurated()
-            }
-            is HomeEvent.SetCategory -> {
-                setCategory(event.categoryName)
-            }
-            HomeEvent.Refresh -> {
-                onTriggerEvent(HomeEvent.GetDaily)
-                onTriggerEvent(HomeEvent.GetColors)
-                onTriggerEvent(HomeEvent.GetCurated)
-            }
-            is HomeEvent.OnFavoriteClick -> doFavorite(event.wallpaper)
+            is HomeEvent.SetCategory -> setCategory(event.categoryName)
+            is HomeEvent.OnFavoriteClick -> onFavoriteClick(event.wallpaper)
+            HomeEvent.ManualRefresh -> onManualRefresh()
+            HomeEvent.DeleteOldNonFavoriteWallpapers -> deleteOldNonFavoriteWallpapers()
+            HomeEvent.OnStart -> onStart()
         }
     }
 
-    private fun getDaily(refresh: Boolean = true) {
+    private fun getCurated(refresh: Boolean) = wallpaperRepository.getCurated(
+        forceRefresh = refresh,
+        onFetchSuccess = {
+            Timber.tag("HomeViewModel").d("getCurated - success")
+            isRefreshing.value = false
+            pendingScrollToTopAfterRefresh.value = true
+        },
+        onFetchRemoteFailed = {
+            isRefreshing.value = false
+            setEventMessage(it)
+        }
+    )
+
+    private fun getColors(refresh: Boolean) = wallpaperRepository.getColors(
+        forceRefresh = refresh,
+        onFetchSuccess = {
+            Timber.tag("HomeViewModel").d("getColors - success")
+            isRefreshing.value = false
+            pendingScrollToTopAfterRefresh.value = true
+        },
+        onFetchRemoteFailed = {
+            isRefreshing.value = false
+            setEventMessage(it)
+        }
+    )
+
+    private fun getDaily(refresh: Boolean) = wallpaperRepository.getDaily(
+        forceRefresh = refresh,
+        onFetchSuccess = {
+            Timber.tag("HomeViewModel").d("getDaily - success")
+            isRefreshing.value = false
+            pendingScrollToTopAfterRefresh.value = true
+        },
+        onFetchRemoteFailed = {
+            isRefreshing.value = false
+            setEventMessage(it)
+        }
+    )
+
+    private fun getEvents() {
+        viewModelScope.launch(Dispatchers.IO) {
+            events.collect { event ->
+                when (event) {
+                    is Event.ShowErrorMessage -> {
+                        setSnackBar(event.error.localizedMessage ?: Constants.COULD_NOT_REFRESH)
+                    }
+                }.exhaustive
+            }
+        }
+    }
+
+    private fun setEventMessage(t: Throwable) {
+        viewModelScope.launch(Dispatchers.IO) {
+            eventChannel.send(Event.ShowErrorMessage(t))
+        }
+    }
+
+    private fun setRefreshTriggerIfCurrentlyNotLoading(refresh: Refresh) {
+        if (
+            curatedList.value !is Resource.Loading
+        ) {
+            onDispatcher(ioDispatcher) {
+                curatedRefreshTriggerChannel.send(refresh)
+            }
+        }
+        if (
+            dailyList.value !is Resource.Loading
+        ) {
+            onDispatcher(ioDispatcher) {
+                dailyRefreshTriggerChannel.send(refresh)
+            }
+        }
+        if (
+            colorList.value !is Resource.Loading
+        ) {
+            onDispatcher(ioDispatcher) {
+                colorRefreshTriggerChannel.send(refresh)
+            }
+        }
+    }
+
+    private fun onStart() {
+        setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
+        Timber.tag("HomeViewModel").d("onStart")
+    }
+
+    private fun onManualRefresh() {
+        Timber.tag("HomeViewModel").d("onManualRefresh")
+        setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
+        isRefreshing.value = true
+    }
+
+    private fun deleteOldNonFavoriteWallpapers() {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getDaily(
-                forceRefresh = refresh,
-                onFetchSuccess = {},
-                onFetchRemoteFailed = { setEventMessage(it) }
-            ).collect {
-                val list = it.data ?: return@collect
-                Timber.tag("HomeViewModel").d("getDailyWallpaper ${list.size}")
-                if (list.isNotEmpty()) {
-                    dailyWallpaper.value = getTodayDaily(list)
-                }
-            }
+            wallpaperRepository.deleteNonFavoriteWallpapersOlderThan(
+                System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)
+            )
         }
-    }
-
-    private fun getColors(refresh: Boolean = true) {
-        onDispatcher(ioDispatcher) {
-            wallpaperRepository.getColors(
-                forceRefresh = refresh,
-                onFetchSuccess = { },
-                onFetchRemoteFailed = { setEventMessage(it) }
-            ).collect { colorList.value = it.data ?: return@collect }
-        }
-    }
-
-    private fun getCurated(refresh: Boolean = true) {
-        onDispatcher(ioDispatcher) {
-            wallpaperRepository.getCurated(
-                forceRefresh = refresh,
-                onFetchSuccess = { pendingScrollToTopAfterRefresh = true },
-                onFetchRemoteFailed = { t ->
-                    onDispatcher(ioDispatcher) { eventChannel.send(Event.ShowErrorMessage(t)) }
-                }
-            ).collect { curatedList.value = it.data ?: return@collect }
-        }
-    }
-
-    private fun getTodayDaily(list: List<Wallpaper>): Wallpaper {
-        val day: Int = CalendarUtil.getDayOfMonthNumber()
-        return list[day]
     }
 
     private fun setCategory(categoryName: String) {
@@ -120,28 +185,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun doFavorite(wallpaper: Wallpaper) {
+    private fun onFavoriteClick(wallpaper: Wallpaper) {
+        val isFavorite = wallpaper.isFavorite
+        val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
+
         onDispatcher(ioDispatcher) {
-            val isFavorite = wallpaper.isFavorite
-            val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-            snackBarMessage.value = "Long pressed"
             wallpaperRepository.updateWallpaper(newWallpaper)
         }
-    }
-
-    private fun getEvents() {
-        onDispatcher(ioDispatcher) {
-            events.collect { event ->
-                when (event) {
-                    is Event.ShowErrorMessage -> {
-                        setSnackBar(event.error.localizedMessage ?: COULD_NOT_REFRESH)
-                    }
-                }.exhaustive
-            }
-        }
-    }
-
-    private fun setEventMessage(t: Throwable) {
-        onDispatcher(ioDispatcher) { eventChannel.send(Event.ShowErrorMessage(t)) }
     }
 }
