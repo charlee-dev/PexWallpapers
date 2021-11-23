@@ -36,7 +36,6 @@ class HomeViewModel @Inject constructor(
 
     val colorList = refreshTrigger.flatMapLatest { refresh ->
         getColors(refresh == Refresh.FORCE)
-
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val curatedList = refreshTrigger.flatMapLatest { refresh ->

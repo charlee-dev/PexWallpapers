@@ -1,5 +1,6 @@
 package com.adwi.favorites
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
@@ -9,8 +10,8 @@ import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -22,7 +23,8 @@ class FavoritesViewModel @ExperimentalPagingApi
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val wallpapers: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(listOf())
+    val wallpapers = getFavorites()
+        .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
     fun onTriggerEvent(event: FavoritesEvent) {
         when (event) {
@@ -35,11 +37,7 @@ class FavoritesViewModel @ExperimentalPagingApi
         }
     }
 
-    private fun getFavorites() {
-        onDispatcher(ioDispatcher) {
-            wallpaperRepository.getFavorites().collect { wallpapers.value = it }
-        }
-    }
+    private fun getFavorites() = wallpaperRepository.getFavorites()
 
     private fun doFavorite(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {

@@ -7,7 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
@@ -197,7 +197,7 @@ enum class HomeSections(
 ) {
     HOME(R.string.home, Icons.Outlined.Home, "home/home"),
     SEARCH(R.string.search, Icons.Outlined.Search, "home/search"),
-    FAVORITES(R.string.favorites, Icons.Outlined.Bookmark, "home/bookmark"),
+    FAVORITES(R.string.favorites, Icons.Outlined.Favorite, "home/favorites"),
     SETTINGS(R.string.settings, Icons.Outlined.Settings, "home/settings")
 }
 

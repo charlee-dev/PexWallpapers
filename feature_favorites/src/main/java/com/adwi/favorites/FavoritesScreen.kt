@@ -1,5 +1,8 @@
 package com.adwi.favorites
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,37 +44,49 @@ fun FavoritesScreen(
     val scaffoldState = rememberScaffoldState()
 
     PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                start = paddingValues,
-                end = paddingValues,
-                bottom = BottomNavHeight + paddingValues
-            ),
-            verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = paddingValues)
         ) {
-            item {
-                Header(
-                    title = stringResource(id = R.string.favorites),
-                    onActionClick = onSearchClick
-                )
+            Header(
+                title = stringResource(id = R.string.favorites),
+                onActionClick = onSearchClick
+            )
+            AnimatedVisibility(
+                visible = wallpapers.isNullOrEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "No favorites yet",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
             }
-            items(items = wallpapers, itemContent = { wallpaper ->
-                var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    bottom = BottomNavHeight + paddingValues
+                ),
+                verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
+            ) {
+                items(items = wallpapers, itemContent = { wallpaper ->
+                    var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
 
-                WallpaperItemVertical(
-                    wallpaper = wallpaper,
-                    onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                    onLongPress = { item ->
-                        isHeartEnabled = !isHeartEnabled
-                        onTriggerEvent(FavoritesEvent.OnFavoriteClick(item))
-                    },
-                    isHeartEnabled = isHeartEnabled
-                )
-            })
-        }
-        if (wallpapers.isEmpty()) {
-            Text(text = "No favorites yet")
+                    WallpaperItemVertical(
+                        wallpaper = wallpaper,
+                        onWallpaperClick = { onWallpaperClick(wallpaper.id) },
+                        onLongPress = { item ->
+                            isHeartEnabled = !isHeartEnabled
+                            onTriggerEvent(FavoritesEvent.OnFavoriteClick(item))
+                        },
+                        isHeartEnabled = isHeartEnabled
+                    )
+                })
+
+            }
         }
     }
 }
