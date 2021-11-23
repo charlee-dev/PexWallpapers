@@ -14,8 +14,9 @@ import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -29,32 +30,16 @@ class HomeViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val isRefreshing = MutableStateFlow(false)
-
-    val pendingScrollToTopAfterRefresh = MutableStateFlow(false)
-    var categoryPendingScrollToTopAfterRefresh = MutableStateFlow(false)
-    var curatedPendingScrollToTopAfterRefresh = MutableStateFlow(false)
-
-
-    private val dailyRefreshTriggerChannel = Channel<Refresh>()
-    val dailyRefreshTrigger = dailyRefreshTriggerChannel.receiveAsFlow()
-
-    private val curatedRefreshTriggerChannel = Channel<Refresh>()
-    val curatedRefreshTrigger = curatedRefreshTriggerChannel.receiveAsFlow()
-
-    private val colorRefreshTriggerChannel = Channel<Refresh>()
-    val colorRefreshTrigger = colorRefreshTriggerChannel.receiveAsFlow()
-
-    val dailyList = dailyRefreshTrigger.flatMapLatest { refresh ->
+    val dailyList = refreshTrigger.flatMapLatest { refresh ->
         getDaily(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val colorList = colorRefreshTrigger.flatMapLatest { refresh ->
+    val colorList = refreshTrigger.flatMapLatest { refresh ->
         getColors(refresh == Refresh.FORCE)
 
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val curatedList = curatedRefreshTrigger.flatMapLatest { refresh ->
+    val curatedList = refreshTrigger.flatMapLatest { refresh ->
         getCurated(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -69,6 +54,7 @@ class HomeViewModel @Inject constructor(
             HomeEvent.ManualRefresh -> onManualRefresh()
             HomeEvent.DeleteOldNonFavoriteWallpapers -> deleteOldNonFavoriteWallpapers()
             HomeEvent.OnStart -> onStart()
+            is HomeEvent.ShowMessageEvent -> setEvent(event.event)
         }
     }
 
@@ -76,11 +62,11 @@ class HomeViewModel @Inject constructor(
         forceRefresh = refresh,
         onFetchSuccess = {
             Timber.tag("HomeViewModel").d("getCurated - success")
-            isRefreshing.value = false
-            pendingScrollToTopAfterRefresh.value = true
+            setIsRefreshing(false)
+            pendingScrollToTopAfterRefresh = true
         },
         onFetchRemoteFailed = {
-            isRefreshing.value = false
+            setIsRefreshing(false)
             setEvent(Event.ShowErrorMessage(it))
         }
     )
@@ -89,11 +75,11 @@ class HomeViewModel @Inject constructor(
         forceRefresh = refresh,
         onFetchSuccess = {
             Timber.tag("HomeViewModel").d("getColors - success")
-            isRefreshing.value = false
-            pendingScrollToTopAfterRefresh.value = true
+            setIsRefreshing(false)
+            pendingScrollToTopAfterRefresh = true
         },
         onFetchRemoteFailed = {
-            isRefreshing.value = false
+            setIsRefreshing(false)
             setEvent(Event.ShowErrorMessage(it))
         }
     )
@@ -102,11 +88,11 @@ class HomeViewModel @Inject constructor(
         forceRefresh = refresh,
         onFetchSuccess = {
             Timber.tag("HomeViewModel").d("getDaily - success")
-            isRefreshing.value = false
-            pendingScrollToTopAfterRefresh.value = true
+            setIsRefreshing(false)
+            pendingScrollToTopAfterRefresh = true
         },
         onFetchRemoteFailed = {
-            isRefreshing.value = false
+            setIsRefreshing(false)
             setEvent(Event.ShowErrorMessage(it))
         }
     )
@@ -115,35 +101,30 @@ class HomeViewModel @Inject constructor(
         if (
             curatedList.value !is DataState.Loading
         ) {
-            onDispatcher(ioDispatcher) {
-                curatedRefreshTriggerChannel.send(refresh)
-            }
+            setRefreshTriggerChannel(refresh)
         }
         if (
             dailyList.value !is DataState.Loading
         ) {
-            onDispatcher(ioDispatcher) {
-                dailyRefreshTriggerChannel.send(refresh)
-            }
+            setRefreshTriggerChannel(refresh)
         }
         if (
             colorList.value !is DataState.Loading
         ) {
-            onDispatcher(ioDispatcher) {
-                colorRefreshTriggerChannel.send(refresh)
-            }
+            setRefreshTriggerChannel(refresh)
         }
     }
 
     private fun onStart() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
+        setIsRefreshing(false)
         Timber.tag("HomeViewModel").d("onStart")
     }
 
     private fun onManualRefresh() {
+        setRefreshTriggerIfCurrentlyNotLoading(Refresh.FORCE)
+        setIsRefreshing(true)
         Timber.tag("HomeViewModel").d("onManualRefresh")
-        setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
-        isRefreshing.value = true
     }
 
     private fun deleteOldNonFavoriteWallpapers() {

@@ -45,12 +45,12 @@ class SearchViewModel @Inject constructor(
             is SearchEvents.UpdateSavedQuery -> {
                 updateSavedQuery(event.query)
             }
+            is SearchEvents.ShowMessageEvent -> setEvent(event.event)
         }
     }
 
     val currentQuery = MutableStateFlow<String?>(null)
 
-    var pendingScrollToTopAfterRefresh = false
     var newQueryInProgress = false
     var pendingScrollToTopAfterNewQuery = false
 

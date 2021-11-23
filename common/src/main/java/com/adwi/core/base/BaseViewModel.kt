@@ -3,6 +3,7 @@ package com.adwi.core.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adwi.core.domain.Event
+import com.adwi.core.domain.Refresh
 import com.adwi.core.util.ext.exhaustive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -25,6 +26,14 @@ abstract class BaseViewModel : ViewModel() {
 
     private val eventChannel = Channel<Event>()
     private val events = eventChannel.receiveAsFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
+
+    var pendingScrollToTopAfterRefresh = false
+
+    private val refreshTriggerChannel = Channel<Refresh>()
+    val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
 
     init {
         getEvents()
@@ -58,5 +67,15 @@ abstract class BaseViewModel : ViewModel() {
 
     private fun setSnackBar(message: String) {
         _snackBarMessage.value = message
+    }
+
+    fun setIsRefreshing(refresh: Boolean) {
+        _isRefreshing.value = refresh
+    }
+
+    fun setRefreshTriggerChannel(refresh: Refresh) {
+        viewModelScope.launch {
+            refreshTriggerChannel.send(refresh)
+        }
     }
 }

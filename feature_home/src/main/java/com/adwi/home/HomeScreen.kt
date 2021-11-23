@@ -36,9 +36,9 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val curated by viewModel.curatedList.collectAsState()
-    val colors by viewModel.colorList.collectAsState()
-    val dailys by viewModel.dailyList.collectAsState()
+    val curated by viewModel.curatedList.collectAsState(null)
+    val colors by viewModel.colorList.collectAsState(null)
+    val daily by viewModel.dailyList.collectAsState(null)
     val isRefreshing by viewModel.isRefreshing.collectAsState()
 
     val homeListState = rememberLazyListState()
@@ -70,7 +70,7 @@ fun HomeScreen(
                     DailyWallpaper(
                         modifier = Modifier
                             .padding(vertical = paddingValues / 2),
-                        dailyList = dailys,
+                        dailyList = daily,
                         onWallpaperClick = { id -> onWallpaperClick(id) },
                         onLongPress = { wallpaper ->
                             onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
