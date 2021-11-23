@@ -101,7 +101,7 @@ class SettingsViewModel
 
             SettingsEvent.SaveSettings -> saveSettings()
 
-            is SettingsEvent.SetSnackBarMessage -> setSnackBar(event.message)
+            is SettingsEvent.ShowMessageEvent -> setEvent(event.event)
         }
     }
 

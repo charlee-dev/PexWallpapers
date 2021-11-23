@@ -1,6 +1,6 @@
 package com.adwi.repository.util
 
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -24,20 +24,20 @@ inline fun <ResultType, RequestType> networkBoundResource(
 
     if (shouldFetch(data)) {
         val loading = launch {
-            query().collect { send(Resource.Loading(it)) }
+            query().collect { send(DataState.Loading(it)) }
         }
         try {
             delay(2000)
             saveFetchResult(fetch())
             onFetchSuccess()
             loading.cancel()
-            query().collect { send(Resource.Success(it)) }
+            query().collect { send(DataState.Success(it)) }
         } catch (t: Throwable) {
             onFetchFailed(t)
             loading.cancel()
-            query().collect { send(Resource.Error(t, it)) }
+            query().collect { send(DataState.Error(t, it)) }
         }
     } else {
-        query().collect { send(Resource.Success(it)) }
+        query().collect { send(DataState.Success(it)) }
     }
 }

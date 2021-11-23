@@ -24,7 +24,7 @@ import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import com.adwi.domain.Wallpaper
 
 @ExperimentalCoilApi
@@ -32,7 +32,7 @@ import com.adwi.domain.Wallpaper
 @Composable
 fun WallpaperListHorizontalPanel(
     modifier: Modifier = Modifier,
-    wallpapers: Resource<List<Wallpaper>>?,
+    wallpapers: DataState<List<Wallpaper>>?,
     categoryName: String = "",
     onWallpaperClick: (Int) -> Unit,
     onShowMoreClick: () -> Unit,

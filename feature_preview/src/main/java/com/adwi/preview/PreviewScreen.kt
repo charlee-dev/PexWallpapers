@@ -21,6 +21,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
+import com.adwi.core.domain.Event
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -72,8 +73,17 @@ fun PreviewScreen(
             ImageActionButtons(
                 modifier = Modifier.fillMaxWidth(),
                 onUrlClick = { onTriggerEvent(PreviewEvent.GoToPexels(wallpaper)) },
-                onSaveClick = { onTriggerEvent(PreviewEvent.DownloadWallpaper(wallpaper)) },
-                onFavoriteClick = { onTriggerEvent(PreviewEvent.DoFavorite(wallpaper)) },
+                onSaveClick = {
+                    onTriggerEvent(PreviewEvent.DownloadWallpaper(wallpaper))
+                    onTriggerEvent(
+                        PreviewEvent.ShowMessageEvent(
+                            Event.ShowSnackBar(
+                                context.getString(R.string.automation_saved)
+                            )
+                        )
+                    )
+                },
+                onFavoriteClick = { onTriggerEvent(PreviewEvent.OnFavoriteClick(wallpaper)) },
                 isFavorite = wallpaper.isFavorite
             )
             PexButton(

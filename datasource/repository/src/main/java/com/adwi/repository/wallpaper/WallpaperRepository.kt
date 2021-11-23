@@ -2,7 +2,7 @@ package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import com.adwi.core.util.Constants.DEFAULT_DAILY_CATEGORY
 import com.adwi.datasource.local.domain.WallpaperEntity
 import com.adwi.domain.ColorCategory
@@ -18,27 +18,27 @@ interface WallpaperRepository {
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>>
+    ): Flow<DataState<List<Wallpaper>>>
 
     fun getDaily(
         categoryName: String = DEFAULT_DAILY_CATEGORY,
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>>
+    ): Flow<DataState<List<Wallpaper>>>
 
     fun getColors(
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<ColorCategory>>>
+    ): Flow<DataState<List<ColorCategory>>>
 
     fun getWallpapersOfCategory(
         categoryName: String,
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>>
+    ): Flow<DataState<List<Wallpaper>>>
 
     fun getSearch(query: String): Flow<PagingData<WallpaperEntity>> // TODO("change it for toDomain")
 

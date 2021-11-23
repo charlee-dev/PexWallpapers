@@ -26,7 +26,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import com.adwi.domain.Wallpaper
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -40,7 +40,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun DailyWallpaper(
     modifier: Modifier = Modifier,
-    dailyList: Resource<List<Wallpaper>>?,
+    dailyList: DataState<List<Wallpaper>>?,
     placeholder: Int = R.drawable.daily_picture,
     elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,

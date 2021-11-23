@@ -31,6 +31,7 @@ import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
+import com.adwi.core.domain.Event
 import com.adwi.home.SettingsViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -154,7 +155,13 @@ fun SettingsScreen(
                         modifier = Modifier,
                         onClick = {
                             onTriggerEvent(SettingsEvent.SaveSettings)
-                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Automation saved"))
+                            onTriggerEvent(
+                                SettingsEvent.ShowMessageEvent(
+                                    Event.ShowSnackBar(
+                                        context.getString(com.adwi.composables.R.string.automation_saved)
+                                    )
+                                )
+                            )
                         }
                     )
                 }
@@ -201,21 +208,33 @@ fun SettingsScreen(
                 Column(Modifier.padding(top = paddingValues)) {
                     InfoRow(
                         onClick = {
-                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                            onTriggerEvent(
+                                SettingsEvent.ShowMessageEvent(
+                                    Event.ShowSnackBar("Not implemented yet")
+                                )
+                            )
                         },
                         title = stringResource(id = R.string.about_us),
                         icon = Icons.Outlined.QuestionAnswer
                     )
                     InfoRow(
                         onClick = {
-                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                            onTriggerEvent(
+                                SettingsEvent.ShowMessageEvent(
+                                    Event.ShowSnackBar("Not implemented yet")
+                                )
+                            )
                         },
                         title = stringResource(id = R.string.privacy_policy),
                         icon = Icons.Outlined.Security
                     )
                     InfoRow(
                         onClick = {
-                            onTriggerEvent(SettingsEvent.SetSnackBarMessage("Not implemented yet"))
+                            onTriggerEvent(
+                                SettingsEvent.ShowMessageEvent(
+                                    Event.ShowSnackBar("Not implemented yet")
+                                )
+                            )
                         },
                         title = stringResource(id = R.string.support),
                         icon = Icons.Outlined.Mail

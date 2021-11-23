@@ -4,22 +4,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
+import com.adwi.core.domain.DataState
 import com.adwi.core.domain.Event
 import com.adwi.core.domain.Refresh
-import com.adwi.core.domain.Resource
-import com.adwi.core.util.Constants
-import com.adwi.core.util.ext.exhaustive
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -36,11 +32,9 @@ class HomeViewModel @Inject constructor(
     val isRefreshing = MutableStateFlow(false)
 
     val pendingScrollToTopAfterRefresh = MutableStateFlow(false)
-    var categoryPendingScrollToTopAfterRefresh = false
-    var curatedPendingScrollToTopAfterRefresh = false
+    var categoryPendingScrollToTopAfterRefresh = MutableStateFlow(false)
+    var curatedPendingScrollToTopAfterRefresh = MutableStateFlow(false)
 
-    private val eventChannel = Channel<Event>()
-    val events = eventChannel.receiveAsFlow()
 
     private val dailyRefreshTriggerChannel = Channel<Refresh>()
     val dailyRefreshTrigger = dailyRefreshTriggerChannel.receiveAsFlow()
@@ -66,7 +60,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         deleteOldNonFavoriteWallpapers()
-        getEvents()
     }
 
     fun onTriggerEvent(event: HomeEvent) {
@@ -88,7 +81,7 @@ class HomeViewModel @Inject constructor(
         },
         onFetchRemoteFailed = {
             isRefreshing.value = false
-            setEventMessage(it)
+            setEvent(Event.ShowErrorMessage(it))
         }
     )
 
@@ -101,7 +94,7 @@ class HomeViewModel @Inject constructor(
         },
         onFetchRemoteFailed = {
             isRefreshing.value = false
-            setEventMessage(it)
+            setEvent(Event.ShowErrorMessage(it))
         }
     )
 
@@ -114,45 +107,27 @@ class HomeViewModel @Inject constructor(
         },
         onFetchRemoteFailed = {
             isRefreshing.value = false
-            setEventMessage(it)
+            setEvent(Event.ShowErrorMessage(it))
         }
     )
 
-    private fun getEvents() {
-        viewModelScope.launch(Dispatchers.IO) {
-            events.collect { event ->
-                when (event) {
-                    is Event.ShowErrorMessage -> {
-                        setSnackBar(event.error.localizedMessage ?: Constants.COULD_NOT_REFRESH)
-                    }
-                }.exhaustive
-            }
-        }
-    }
-
-    private fun setEventMessage(t: Throwable) {
-        viewModelScope.launch(Dispatchers.IO) {
-            eventChannel.send(Event.ShowErrorMessage(t))
-        }
-    }
-
     private fun setRefreshTriggerIfCurrentlyNotLoading(refresh: Refresh) {
         if (
-            curatedList.value !is Resource.Loading
+            curatedList.value !is DataState.Loading
         ) {
             onDispatcher(ioDispatcher) {
                 curatedRefreshTriggerChannel.send(refresh)
             }
         }
         if (
-            dailyList.value !is Resource.Loading
+            dailyList.value !is DataState.Loading
         ) {
             onDispatcher(ioDispatcher) {
                 dailyRefreshTriggerChannel.send(refresh)
             }
         }
         if (
-            colorList.value !is Resource.Loading
+            colorList.value !is DataState.Loading
         ) {
             onDispatcher(ioDispatcher) {
                 colorRefreshTriggerChannel.send(refresh)

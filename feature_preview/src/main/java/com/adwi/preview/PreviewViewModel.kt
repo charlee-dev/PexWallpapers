@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
+import com.adwi.core.domain.Event
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
@@ -49,7 +50,7 @@ class PreviewViewModel
             is PreviewEvent.GetWallpaperById -> getWallpaperById(event.wallpaperId)
             is PreviewEvent.DownloadWallpaper -> {
                 downloadWallpaper(event.wallpaper)
-                setSnackBar("Wallpaper saved to gallery")
+                setEvent(Event.ShowSnackBar("Wallpaper saved to gallery"))
             }
             is PreviewEvent.GoToPexels -> goToPexels(event.wallpaper)
             is PreviewEvent.SetWallpaper -> {
@@ -58,11 +59,11 @@ class PreviewViewModel
                     event.setHomeScreen,
                     event.setLockScreen
                 )
-                setSnackBar("Wallpaper set")
+                setEvent(Event.ShowSnackBar("Wallpaper set"))
             }
             is PreviewEvent.ShareWallpaper -> shareWallpaper(event.activity, event.wallpaper)
-            is PreviewEvent.DoFavorite -> doFavorite(event.wallpaper)
-            is PreviewEvent.ShowSnackbar -> setSnackBar(event.message)
+            is PreviewEvent.OnFavoriteClick -> onFavoriteClick(event.wallpaper)
+            is PreviewEvent.ShowMessageEvent -> setEvent(event.event)
         }
     }
 
@@ -88,8 +89,7 @@ class PreviewViewModel
     private fun downloadWallpaper(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val settings = settingsRepository.getSettings().first()
-            val workId = workTools.createDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
-
+            workTools.createDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
         }
     }
 
@@ -107,7 +107,7 @@ class PreviewViewModel
         }
     }
 
-    private fun doFavorite(wallpaper: Wallpaper) {
+    private fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)

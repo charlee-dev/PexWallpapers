@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.room.withTransaction
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import com.adwi.core.util.Constants
 import com.adwi.datasource.local.WallpaperDatabase
 import com.adwi.datasource.local.domain.*
@@ -42,7 +42,7 @@ class WallpaperRepositoryImpl @Inject constructor(
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>> = networkBoundResource(
+    ): Flow<DataState<List<Wallpaper>>> = networkBoundResource(
         query = {
             val entities = wallpapersDao.getAllCuratedWallpapers()
             val wallpapers = entities.map { it.toDomainList() }
@@ -81,7 +81,7 @@ class WallpaperRepositoryImpl @Inject constructor(
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>> = networkBoundResource(
+    ): Flow<DataState<List<Wallpaper>>> = networkBoundResource(
         query = {
             val entities = dailyDao.getAllDailyWallpapers()
             val wallpapers = entities.map { it.toDomainList() }
@@ -119,7 +119,7 @@ class WallpaperRepositoryImpl @Inject constructor(
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<ColorCategory>>> = networkBoundResource(
+    ): Flow<DataState<List<ColorCategory>>> = networkBoundResource(
         query = {
             val entities = categoryDao.getAllColors()
             val categories = entities.map { it.toDomainList() }
@@ -170,7 +170,7 @@ class WallpaperRepositoryImpl @Inject constructor(
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<Resource<List<Wallpaper>>> = networkBoundResource(
+    ): Flow<DataState<List<Wallpaper>>> = networkBoundResource(
         query = {
             val entities = wallpapersDao.getWallpapersOfCategory(categoryName)
             val wallpapers = entities.map { it.toDomainList() }

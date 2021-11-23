@@ -27,7 +27,7 @@ import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
-import com.adwi.core.domain.Resource
+import com.adwi.core.domain.DataState
 import com.adwi.domain.ColorCategory
 
 @ExperimentalCoilApi
@@ -35,7 +35,7 @@ import com.adwi.domain.ColorCategory
 @Composable
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
-    colors: Resource<List<ColorCategory>>?,
+    colors: DataState<List<ColorCategory>>?,
     panelTitle: String,
     onCategoryClick: (String) -> Unit
 ) {

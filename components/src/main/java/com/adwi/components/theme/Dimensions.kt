@@ -19,7 +19,7 @@ object Dimensions {
 
     object BottomBar {
         val TextIconSpacing = 2.dp
-        val BottomNavHeight = 56.dp
+        val BottomNavHeight = 64.dp
         val BottomNavLabelTransformOrigin = TransformOrigin(0f, 0.5f)
         val BottomNavIndicatorShape = RoundedCornerShape(percent = 50)
         val BottomNavigationItemPadding = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)

@@ -45,7 +45,6 @@ class FavoritesViewModel @ExperimentalPagingApi
         onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-            snackBarMessage.value = "Long pressed"
             wallpaperRepository.updateWallpaper(newWallpaper)
         }
     }

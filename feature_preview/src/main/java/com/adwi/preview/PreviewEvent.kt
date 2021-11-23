@@ -1,6 +1,7 @@
 package com.adwi.preview
 
 import androidx.appcompat.app.AppCompatActivity
+import com.adwi.core.domain.Event
 import com.adwi.domain.Wallpaper
 
 sealed class PreviewEvent {
@@ -22,7 +23,7 @@ sealed class PreviewEvent {
         val setLockScreen: Boolean
     ) : PreviewEvent()
 
-    data class DoFavorite(val wallpaper: Wallpaper) : PreviewEvent()
+    data class OnFavoriteClick(val wallpaper: Wallpaper) : PreviewEvent()
 
-    data class ShowSnackbar(val message: String) : PreviewEvent()
+    data class ShowMessageEvent(val event: Event) : PreviewEvent()
 }

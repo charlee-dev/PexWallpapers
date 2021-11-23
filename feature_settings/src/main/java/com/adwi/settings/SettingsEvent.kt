@@ -1,5 +1,6 @@
 package com.adwi.settings
 
+import com.adwi.core.domain.Event
 import com.adwi.domain.Duration
 
 sealed class SettingsEvent {
@@ -27,5 +28,5 @@ sealed class SettingsEvent {
 
     object SaveSettings : SettingsEvent()
 
-    data class SetSnackBarMessage(val message: String) : SettingsEvent()
+    data class ShowMessageEvent(val event: Event) : SettingsEvent()
 }

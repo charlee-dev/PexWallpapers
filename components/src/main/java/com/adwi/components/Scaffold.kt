@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import com.adwi.components.theme.Neutral3
 import com.adwi.core.base.BaseViewModel
+import com.adwi.core.domain.Event
 
 @Composable
 fun PexScaffold(
@@ -40,7 +41,7 @@ fun PexScaffold(
     if (snackbarMessage.isNotEmpty()) {
         LaunchedEffect(scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar(snackbarMessage)
-            viewModel.snackBarMessage.value = ""
+            viewModel.setEvent(Event.ShowSnackBar(""))
         }
     }
 
