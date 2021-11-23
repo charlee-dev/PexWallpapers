@@ -9,6 +9,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.runtime.Composable
@@ -26,6 +27,12 @@ fun ImageActionButtons(
     onFavoriteClick: () -> Unit,
     isFavorite: Boolean
 ) {
+//    val favoriteTransition = updateTransition(targetState = isFavorite, label = "Card")
+//
+//    val tintColor by favoriteTransition.animateColor(label = "Favorite icon color") { state ->
+//        if (state) Color.Red else MaterialTheme.colors.primary
+//    }
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -38,10 +45,20 @@ fun ImageActionButtons(
             icon = Icons.Outlined.Save,
             modifier = Modifier.clickable { onSaveClick() }
         )
-        ActionButton(
-            icon = Icons.Outlined.Bookmark,
-            modifier = Modifier.clickable { onFavoriteClick() }
-        )
+        if (isFavorite) {
+            ActionButton(
+                icon = Icons.Outlined.Favorite,
+                modifier = Modifier.clickable { onFavoriteClick() },
+//            tint = tintColor
+            )
+        } else {
+            ActionButton(
+                icon = Icons.Outlined.Bookmark,
+                modifier = Modifier.clickable { onFavoriteClick() },
+//            tint = tintColor
+            )
+        }
+
     }
 }
 

@@ -2,15 +2,14 @@ package com.adwi.components
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -32,39 +31,39 @@ import com.adwi.domain.Wallpaper
 @Composable
 fun WallpaperListHorizontalPanel(
     modifier: Modifier = Modifier,
-    wallpapers: DataState<List<Wallpaper>>?,
+    wallpapers: DataState<List<Wallpaper>>,
+    listState: LazyListState = rememberLazyListState(),
     categoryName: String = "",
     onWallpaperClick: (Int) -> Unit,
     onShowMoreClick: () -> Unit,
     onLongPress: (Wallpaper) -> Unit
 ) {
-    wallpapers?.let { resource ->
-        Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-            CategoryPanel(
-                categoryName = categoryName,
-                onShowMoreClick = onShowMoreClick,
-                showMore = true,
-                modifier = Modifier.padding(horizontal = paddingValues)
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        CategoryPanel(
+            categoryName = categoryName,
+            onShowMoreClick = onShowMoreClick,
+            showMore = true,
+            modifier = Modifier.padding(horizontal = paddingValues)
+        )
+        ShimmerRow(
+            visible = wallpapers.data.isNullOrEmpty() && wallpapers.error == null
+        )
+        ShimmerErrorMessage(
+            visible = wallpapers.data.isNullOrEmpty() && wallpapers.error != null,
+            message = stringResource(
+                id = R.string.could_not_refresh,
+                wallpapers.error?.localizedMessage
+                    ?: stringResource(R.string.unknown_error_occurred)
+            ),
+            modifier = Modifier.padding(horizontal = paddingValues)
+        )
+        wallpapers.data?.let { list ->
+            WallpaperListHorizontal(
+                listState = listState,
+                onWallpaperClick = onWallpaperClick,
+                onLongPress = onLongPress,
+                wallpapers = list
             )
-            ShimmerRow(
-                visible = resource.data.isNullOrEmpty() && resource.error == null
-            )
-            ShimmerErrorMessage(
-                visible = resource.data.isNullOrEmpty() && resource.error != null,
-                message = stringResource(
-                    id = R.string.could_not_refresh,
-                    resource.error?.localizedMessage
-                        ?: stringResource(R.string.unknown_error_occurred)
-                ),
-                modifier = Modifier.padding(horizontal = paddingValues)
-            )
-            resource.data?.let { list ->
-                WallpaperListHorizontal(
-                    onWallpaperClick = onWallpaperClick,
-                    onLongPress = onLongPress,
-                    wallpapers = list
-                )
-            }
         }
     }
 }
@@ -74,11 +73,13 @@ fun WallpaperListHorizontalPanel(
 @Composable
 private fun WallpaperListHorizontal(
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     wallpapers: List<Wallpaper>,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit
 ) {
     LazyRow(
+        state = listState,
         modifier = modifier
             .fillMaxWidth(),
         contentPadding = PaddingValues(
@@ -88,13 +89,12 @@ private fun WallpaperListHorizontal(
         horizontalArrangement = Arrangement.spacedBy(paddingValues)
     ) {
         items(items = wallpapers, itemContent = { wallpaper ->
-            val isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
 
             WallpaperItem(
                 wallpaper = wallpaper,
                 onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                 onLongPress = { onLongPress(wallpaper) },
-                isHeartEnabled = isHeartEnabled,
+                isHeartEnabled = wallpaper.isFavorite,
             )
         })
     }
@@ -119,6 +119,7 @@ private fun WallpaperItem(
         Card(
             elevation = elevation,
             shape = shape,
+            backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier
                 .size(100.dp)
                 .pointerInput(Unit) {
@@ -133,7 +134,8 @@ private fun WallpaperItem(
                     imageUrl = wallpaper.imageUrlTiny,
                     modifier = Modifier
                         .fillMaxSize()
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
+                    wallpaperId = wallpaper.id
                 )
                 PexAnimatedHeart(
                     state = isHeartEnabled,

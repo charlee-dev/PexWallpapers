@@ -50,16 +50,17 @@ fun SearchScreen(
 
     val query = remember { mutableStateOf("") }
 
-    val pendingScrollToTop = remember { mutableStateOf(viewModel.pendingScrollToTopAfterRefresh) }
+    val pendingScrollToTop =
+        remember { mutableStateOf(viewModel.pendingScrollToTopAfterRefresh.value) }
 
-    val state = rememberLazyListState()
+    val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     if (pendingScrollToTop.value) {
         LaunchedEffect(true) {
             coroutineScope.launch {
-                state.animateScrollToItem(0)
+                listState.animateScrollToItem(0)
             }
         }
     }

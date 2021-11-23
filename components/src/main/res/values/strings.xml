@@ -72,4 +72,6 @@
     <string name="screen_to_change">Screen to change</string>
     <string name="swipe_down_to_refresh">Swipe down to refresh</string>
     <string name="automation_saved">Automation saved</string>
+    <string name="daily">Daily</string>
+    <string name="wallpaper">Wallpaper</string>
 </resources>

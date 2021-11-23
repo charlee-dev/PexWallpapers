@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
@@ -19,9 +16,11 @@ import com.adwi.components.*
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @ExperimentalPagerApi
@@ -36,15 +35,35 @@ fun HomeScreen(
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: () -> Unit
 ) {
-    val curated by viewModel.curatedList.collectAsState(null)
-    val colors by viewModel.colorList.collectAsState(null)
-    val daily by viewModel.dailyList.collectAsState(null)
+    val daily by viewModel.daily.collectAsState(null)
+    val colors by viewModel.colors.collectAsState(null)
+    val curated by viewModel.curated.collectAsState(null)
+
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
 
     val homeListState = rememberLazyListState()
-    val scaffoldState = rememberScaffoldState()
+    val pagerState = rememberPagerState()
+    val colorsListState = rememberLazyListState()
+    val curatedListState = rememberLazyListState()
 
-    PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
+    val coroutineScope = rememberCoroutineScope()
+
+    if (pendingScrollToTopAfterRefresh) {
+        LaunchedEffect(pendingScrollToTopAfterRefresh) {
+            coroutineScope.launch {
+                homeListState.animateScrollToItem(0)
+                pagerState.animateScrollToPage(0)
+                colorsListState.animateScrollToItem(0)
+                curatedListState.animateScrollToItem(0)
+                viewModel.setPendingScrollToTopAfterRefresh(false)
+            }
+        }
+    }
+
+    PexScaffold(
+        viewModel = viewModel
+    ) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
             onRefresh = { onTriggerEvent(HomeEvent.ManualRefresh) }
@@ -67,41 +86,50 @@ fun HomeScreen(
                     )
                 }
                 item {
-                    DailyWallpaper(
-                        modifier = Modifier
-                            .padding(vertical = paddingValues / 2),
-                        dailyList = daily,
-                        onWallpaperClick = { id -> onWallpaperClick(id) },
-                        onLongPress = { wallpaper ->
-                            onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
-                        }
-                    )
+                    daily?.let { list ->
+                        DailyWallpaper(
+                            pagerState = pagerState,
+                            modifier = Modifier
+                                .padding(vertical = paddingValues / 2),
+                            dailyList = list,
+                            onWallpaperClick = { id -> onWallpaperClick(id) },
+                            onLongPress = { wallpaper ->
+                                onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
+                            }
+                        )
+                    }
                 }
                 item {
-                    CategoryListHorizontalPanel(
-                        panelTitle = stringResource(id = R.string.colors),
-                        colors = colors,
-                        onCategoryClick = { categoryName ->
-                            onTriggerEvent(HomeEvent.SetCategory(categoryName))
-                            onCategoryClick()
-                        }
-                    )
+                    colors?.let { list ->
+                        CategoryListHorizontalPanel(
+                            panelTitle = stringResource(id = R.string.colors),
+                            listState = colorsListState,
+                            colors = list,
+                            onCategoryClick = { categoryName ->
+                                onTriggerEvent(HomeEvent.SetCategory(categoryName))
+                                onCategoryClick()
+                            }
+                        )
+                    }
                 }
                 item {
-                    val categoryName = stringResource(id = R.string.curated)
-                    WallpaperListHorizontalPanel(
-                        categoryName = categoryName,
-                        wallpapers = curated,
-                        onWallpaperClick = { id -> onWallpaperClick(id) },
-                        onLongPress = { wallpaper ->
-                            Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                            onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
-                        },
-                        onShowMoreClick = {
-                            onTriggerEvent(HomeEvent.SetCategory(categoryName))
-                            onCategoryClick()
-                        }
-                    )
+                    curated?.let { list ->
+                        val categoryName = stringResource(id = R.string.curated)
+                        WallpaperListHorizontalPanel(
+                            categoryName = categoryName,
+                            wallpapers = list,
+                            listState = curatedListState,
+                            onWallpaperClick = { id -> onWallpaperClick(id) },
+                            onLongPress = { wallpaper ->
+                                Timber.tag("HomeScreen").d("${wallpaper.id} - long")
+                                onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
+                            },
+                            onShowMoreClick = {
+                                onTriggerEvent(HomeEvent.SetCategory(categoryName))
+                                onCategoryClick()
+                            }
+                        )
+                    }
                 }
             }
         }

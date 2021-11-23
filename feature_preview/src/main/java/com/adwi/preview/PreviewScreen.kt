@@ -8,7 +8,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +22,7 @@ import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
 import com.adwi.core.domain.Event
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
@@ -35,14 +35,12 @@ fun PreviewScreen(
     onSetWallpaperClick: (Int) -> Unit,
     upPress: () -> Unit
 ) {
-    val wallpaper by viewModel.wallpaper.collectAsState()
+    val wallpaper by viewModel.wallpaper.collectAsState(null)
 
-    val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
     PexScaffold(
-        viewModel = viewModel,
-        scaffoldState = scaffoldState
+        viewModel = viewModel
     ) {
         Column(
             modifier = Modifier
@@ -57,51 +55,59 @@ fun PreviewScreen(
                 icon = Icons.Outlined.Image,
                 actionIcon = null
             )
-            PreviewCard(
-                imageUrl = wallpaper.imageUrlLandscape,
-                modifier = Modifier
-                    .padding(horizontal = paddingValues)
-                    .padding(vertical = paddingValues / 2)
-                    .weight(1f)
-            )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(paddingValues / 2),
-                text = stringResource(id = R.string.photo_by, wallpaper.photographer)
-            )
-            ImageActionButtons(
-                modifier = Modifier.fillMaxWidth(),
-                onUrlClick = { onTriggerEvent(PreviewEvent.GoToPexels(wallpaper)) },
-                onSaveClick = {
-                    onTriggerEvent(PreviewEvent.DownloadWallpaper(wallpaper))
-                    onTriggerEvent(
-                        PreviewEvent.ShowMessageEvent(
-                            Event.ShowSnackBar(
-                                context.getString(R.string.automation_saved)
+            wallpaper?.let {
+                PreviewCard(
+                    imageUrl = it.imageUrlPortrait,
+                    wallpaperId = it.id,
+                    modifier = Modifier
+                        .padding(horizontal = paddingValues)
+                        .padding(vertical = paddingValues / 2)
+                        .weight(1f),
+                    onLongPress = {
+                        onTriggerEvent(PreviewEvent.OnFavoriteClick(it))
+                        Timber.d(it.isFavorite.toString())
+                    },
+                    isHeartEnabled = it.isFavorite
+                )
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(paddingValues / 2),
+                    text = stringResource(id = R.string.photo_by, it.photographer)
+                )
+                ImageActionButtons(
+                    modifier = Modifier.fillMaxWidth(),
+                    onUrlClick = { onTriggerEvent(PreviewEvent.GoToPexels(it)) },
+                    onSaveClick = {
+                        onTriggerEvent(PreviewEvent.DownloadWallpaper(it))
+                        onTriggerEvent(
+                            PreviewEvent.ShowMessageEvent(
+                                Event.ShowSnackBar(
+                                    context.getString(R.string.automation_saved)
+                                )
                             )
                         )
-                    )
-                },
-                onFavoriteClick = { onTriggerEvent(PreviewEvent.OnFavoriteClick(wallpaper)) },
-                isFavorite = wallpaper.isFavorite
-            )
-            PexButton(
-                onClick = {
+                    },
+                    onFavoriteClick = { onTriggerEvent(PreviewEvent.OnFavoriteClick(it)) },
+                    isFavorite = it.isFavorite
+                )
+                PexButton(
+                    onClick = {
 //                    onSetWallpaperClick(wallpaper.id)
-                    onTriggerEvent(
-                        PreviewEvent.SetWallpaper(
-                            imageUrl = wallpaper.imageUrlPortrait,
-                            setHomeScreen = true,
-                            setLockScreen = false
+                        onTriggerEvent(
+                            PreviewEvent.SetWallpaper(
+                                imageUrl = it.imageUrlPortrait,
+                                setHomeScreen = true,
+                                setLockScreen = false
+                            )
                         )
-                    )
-                },
-                text = stringResource(id = R.string.set_wallpaper),
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxWidth()
-            )
+                    },
+                    text = stringResource(id = R.string.set_wallpaper),
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }

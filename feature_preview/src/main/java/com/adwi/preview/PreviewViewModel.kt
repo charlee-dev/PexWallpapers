@@ -37,7 +37,7 @@ class PreviewViewModel
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val wallpaper: MutableStateFlow<Wallpaper> = MutableStateFlow(Wallpaper())
+    val wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
 
     init {
         savedStateHandle.get<Int>("wallpaperId")?.let { wallpaperId ->
@@ -108,10 +108,10 @@ class PreviewViewModel
     }
 
     private fun onFavoriteClick(wallpaper: Wallpaper) {
+        val isFavorite = wallpaper.isFavorite
+        wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            val isFavorite = wallpaper.isFavorite
-            val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-            wallpaperRepository.updateWallpaper(newWallpaper)
+            wallpaperRepository.updateWallpaper(wallpaper)
         }
     }
 }

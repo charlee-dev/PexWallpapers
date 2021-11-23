@@ -5,7 +5,6 @@ import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
 import com.adwi.core.domain.DataState
-import com.adwi.core.domain.Event
 import com.adwi.core.domain.Refresh
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
@@ -17,7 +16,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -30,15 +28,15 @@ class HomeViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val dailyList = refreshTrigger.flatMapLatest { refresh ->
+    val daily = refreshTrigger.flatMapLatest { refresh ->
         getDaily(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val colorList = refreshTrigger.flatMapLatest { refresh ->
+    val colors = refreshTrigger.flatMapLatest { refresh ->
         getColors(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val curatedList = refreshTrigger.flatMapLatest { refresh ->
+    val curated = refreshTrigger.flatMapLatest { refresh ->
         getCurated(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -48,68 +46,44 @@ class HomeViewModel @Inject constructor(
 
     fun onTriggerEvent(event: HomeEvent) {
         when (event) {
+            HomeEvent.OnStart -> onStart()
+            HomeEvent.ManualRefresh -> onManualRefresh()
+            is HomeEvent.ShowMessageEvent -> setEvent(event.event)
             is HomeEvent.SetCategory -> setCategory(event.categoryName)
             is HomeEvent.OnFavoriteClick -> onFavoriteClick(event.wallpaper)
-            HomeEvent.ManualRefresh -> onManualRefresh()
-            HomeEvent.DeleteOldNonFavoriteWallpapers -> deleteOldNonFavoriteWallpapers()
-            HomeEvent.OnStart -> onStart()
-            is HomeEvent.ShowMessageEvent -> setEvent(event.event)
         }
     }
 
-    private fun getCurated(refresh: Boolean) = wallpaperRepository.getCurated(
-        forceRefresh = refresh,
-        onFetchSuccess = {
-            Timber.tag("HomeViewModel").d("getCurated - success")
-            setIsRefreshing(false)
-            pendingScrollToTopAfterRefresh = true
-        },
-        onFetchRemoteFailed = {
-            setIsRefreshing(false)
-            setEvent(Event.ShowErrorMessage(it))
-        }
-    )
+    private fun getDaily(refresh: Boolean) =
+        wallpaperRepository.getDaily(
+            forceRefresh = refresh,
+            onFetchSuccess = { onFetchSuccess() },
+            onFetchRemoteFailed = { onFetchFailed(it) }
+        )
 
-    private fun getColors(refresh: Boolean) = wallpaperRepository.getColors(
-        forceRefresh = refresh,
-        onFetchSuccess = {
-            Timber.tag("HomeViewModel").d("getColors - success")
-            setIsRefreshing(false)
-            pendingScrollToTopAfterRefresh = true
-        },
-        onFetchRemoteFailed = {
-            setIsRefreshing(false)
-            setEvent(Event.ShowErrorMessage(it))
-        }
-    )
+    private fun getColors(refresh: Boolean = true) =
+        wallpaperRepository.getColors(
+            forceRefresh = refresh,
+            onFetchSuccess = { onFetchSuccess() },
+            onFetchRemoteFailed = { onFetchFailed(it) }
+        )
 
-    private fun getDaily(refresh: Boolean) = wallpaperRepository.getDaily(
-        forceRefresh = refresh,
-        onFetchSuccess = {
-            Timber.tag("HomeViewModel").d("getDaily - success")
-            setIsRefreshing(false)
-            pendingScrollToTopAfterRefresh = true
-        },
-        onFetchRemoteFailed = {
-            setIsRefreshing(false)
-            setEvent(Event.ShowErrorMessage(it))
-        }
-    )
+
+    private fun getCurated(refresh: Boolean = true) =
+        wallpaperRepository.getCurated(
+            forceRefresh = refresh,
+            onFetchSuccess = { onFetchSuccess() },
+            onFetchRemoteFailed = { onFetchFailed(it) }
+        )
 
     private fun setRefreshTriggerIfCurrentlyNotLoading(refresh: Refresh) {
-        if (
-            curatedList.value !is DataState.Loading
-        ) {
+        if (curated.value !is DataState.Loading) {
             setRefreshTriggerChannel(refresh)
         }
-        if (
-            dailyList.value !is DataState.Loading
-        ) {
+        if (daily.value !is DataState.Loading) {
             setRefreshTriggerChannel(refresh)
         }
-        if (
-            colorList.value !is DataState.Loading
-        ) {
+        if (colors.value !is DataState.Loading) {
             setRefreshTriggerChannel(refresh)
         }
     }
@@ -117,21 +91,10 @@ class HomeViewModel @Inject constructor(
     private fun onStart() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
         setIsRefreshing(false)
-        Timber.tag("HomeViewModel").d("onStart")
     }
 
     private fun onManualRefresh() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.FORCE)
-        setIsRefreshing(true)
-        Timber.tag("HomeViewModel").d("onManualRefresh")
-    }
-
-    private fun deleteOldNonFavoriteWallpapers() {
-        onDispatcher(ioDispatcher) {
-            wallpaperRepository.deleteNonFavoriteWallpapersOlderThan(
-                System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)
-            )
-        }
     }
 
     private fun setCategory(categoryName: String) {
@@ -142,10 +105,17 @@ class HomeViewModel @Inject constructor(
 
     private fun onFavoriteClick(wallpaper: Wallpaper) {
         val isFavorite = wallpaper.isFavorite
-        val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-
+        wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaper(newWallpaper)
+            wallpaperRepository.updateWallpaper(wallpaper)
+        }
+    }
+
+    private fun deleteOldNonFavoriteWallpapers() {
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.deleteNonFavoriteWallpapersOlderThan(
+                System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)
+            )
         }
     }
 }

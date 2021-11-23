@@ -30,7 +30,8 @@ abstract class BaseViewModel : ViewModel() {
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
 
-    var pendingScrollToTopAfterRefresh = false
+    private var _pendingScrollToTopAfterRefresh = MutableStateFlow(false)
+    val pendingScrollToTopAfterRefresh: StateFlow<Boolean> get() = _pendingScrollToTopAfterRefresh
 
     private val refreshTriggerChannel = Channel<Refresh>()
     val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
@@ -77,5 +78,23 @@ abstract class BaseViewModel : ViewModel() {
         viewModelScope.launch {
             refreshTriggerChannel.send(refresh)
         }
+    }
+
+    fun setPendingScrollToTopAfterRefresh(scroll: Boolean) {
+        viewModelScope.launch {
+            _pendingScrollToTopAfterRefresh.value = scroll
+        }
+    }
+
+    protected fun onFetchSuccess() {
+        Timber.tag(tag).d("onFetchSuccess")
+        _pendingScrollToTopAfterRefresh.value = true
+        setIsRefreshing(false)
+    }
+
+    protected fun onFetchFailed(throwable: Throwable) {
+        Timber.tag(tag).d("onFetchFailed")
+        setIsRefreshing(false)
+        setEvent(Event.ShowErrorMessage(throwable))
     }
 }

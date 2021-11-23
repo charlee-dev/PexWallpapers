@@ -3,6 +3,7 @@ package com.adwi.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -35,7 +36,8 @@ import com.adwi.domain.ColorCategory
 @Composable
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
-    colors: DataState<List<ColorCategory>>?,
+    colors: DataState<List<ColorCategory>>,
+    listState: LazyListState = rememberLazyListState(),
     panelTitle: String,
     onCategoryClick: (String) -> Unit
 ) {
@@ -44,24 +46,24 @@ fun CategoryListHorizontalPanel(
             categoryName = panelTitle,
             modifier = Modifier.padding(horizontal = paddingValues)
         )
-        colors?.let { resource ->
-
+        Box {
             ShimmerRow(
-                visible = resource.data.isNullOrEmpty() && resource.error == null
+                visible = colors.data.isNullOrEmpty() && colors.error == null
             )
             ShimmerErrorMessage(
-                visible = resource.data.isNullOrEmpty() && resource.error != null,
+                visible = colors.data.isNullOrEmpty() && colors.error != null,
                 message = stringResource(
                     id = R.string.could_not_refresh,
-                    resource.error?.localizedMessage
+                    colors.error?.localizedMessage
                         ?: stringResource(R.string.unknown_error_occurred)
                 ),
                 modifier = Modifier.padding(horizontal = paddingValues)
             )
-            resource.data?.let { list ->
+            colors.data?.let { list ->
                 CategoryListHorizontal(
                     categoryList = list,
-                    onCategoryClick = onCategoryClick
+                    onCategoryClick = onCategoryClick,
+                    listState = listState
                 )
             }
         }
@@ -73,11 +75,12 @@ fun CategoryListHorizontalPanel(
 @Composable
 fun CategoryListHorizontal(
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     categoryList: List<ColorCategory>,
     onCategoryClick: (String) -> Unit
 ) {
     LazyRow(
-        state = rememberLazyListState(),
+        state = listState,
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(
             start = paddingValues,
@@ -120,6 +123,7 @@ private fun CategoryItem(
             onClick = onCategoryClick,
             elevation = elevation,
             shape = shape,
+            backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier.size(100.dp)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {

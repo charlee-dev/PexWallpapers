@@ -28,9 +28,7 @@ import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
 import com.adwi.core.domain.DataState
 import com.adwi.domain.Wallpaper
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.accompanist.pager.*
 import com.valentinilk.shimmer.shimmer
 import kotlin.math.absoluteValue
 
@@ -40,8 +38,8 @@ import kotlin.math.absoluteValue
 @Composable
 fun DailyWallpaper(
     modifier: Modifier = Modifier,
-    dailyList: DataState<List<Wallpaper>>?,
-    placeholder: Int = R.drawable.daily_picture,
+    pagerState: PagerState = rememberPagerState(),
+    dailyList: DataState<List<Wallpaper>>,
     elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,
     onWallpaperClick: (Int) -> Unit,
@@ -52,107 +50,100 @@ fun DailyWallpaper(
     ) {
         val width = this.maxWidth
 
-        dailyList?.let { resource ->
-
-            DailyShimmer(
-                width = width,
-                visible = resource.data.isNullOrEmpty(),
-                showErrorMessage = resource.data.isNullOrEmpty() && resource.error != null,
-                message = stringResource(
-                    id = R.string.could_not_refresh,
-                    resource.error?.localizedMessage
-                        ?: stringResource(R.string.unknown_error_occurred)
-                )
+        DailyShimmer(
+            width = width,
+            visible = dailyList.data.isNullOrEmpty(),
+            showErrorMessage = dailyList.data.isNullOrEmpty() && dailyList.error != null,
+            message = stringResource(
+                id = R.string.could_not_refresh,
+                dailyList.error?.localizedMessage
+                    ?: stringResource(R.string.unknown_error_occurred)
             )
+        )
 
-            resource.data?.let { list ->
+        dailyList.data?.let { list ->
+            HorizontalPager(
+                state = pagerState,
+                count = list.size,
+                modifier = Modifier.align(Alignment.Center),
+                contentPadding = PaddingValues(horizontal = paddingValues),
+                itemSpacing = paddingValues
+            ) { page ->
+                val wallpaper = list[page]
 
-                HorizontalPager(
-                    count = list.size,
-                    modifier = Modifier.align(Alignment.Center),
-                    contentPadding = PaddingValues(horizontal = paddingValues),
-                    itemSpacing = paddingValues
-                ) { page ->
-                    val wallpaper = list[page]
+                AnimatedVisibility(
+                    visible = !list.isNullOrEmpty()
+                ) {
+                    Card(
+                        elevation = elevation,
+                        shape = shape,
+                        backgroundColor = MaterialTheme.colors.primary,
+                        modifier = Modifier
+                            .height(width)
+                            .pointerInput(Unit) {
+                                detectTapGestures(
+                                    onLongPress = { onLongPress(wallpaper) },
+                                    onTap = { onWallpaperClick(wallpaper.id) },
+                                )
+                            }
+                            .graphicsLayer {
+                                val pageOffset =
+                                    calculateCurrentOffsetForPage(page).absoluteValue
 
-                    AnimatedVisibility(
-                        visible = !list.isNullOrEmpty()
+                                lerp(
+                                    start = 0.85f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                ).also { scale ->
+                                    scaleX = scale
+                                    scaleY = scale
+                                }
+
+                                alpha = lerp(
+                                    start = 0.5f,
+                                    stop = 1f,
+                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                )
+                            }
                     ) {
-                        Card(
-                            elevation = elevation,
-                            shape = shape,
-                            modifier = Modifier
-                                .height(width)
-                                .pointerInput(Unit) {
-                                    detectTapGestures(
-                                        onLongPress = { onLongPress(wallpaper) },
-                                        onTap = { onWallpaperClick(wallpaper.id) },
-                                    )
-                                }
-                                .graphicsLayer {
-                                    // Calculate the absolute offset for the current page from the
-                                    // scroll position. We use the absolute value which allows us to mirror
-                                    // any effects for both directions
-                                    val pageOffset =
-                                        calculateCurrentOffsetForPage(page).absoluteValue
-
-                                    // We animate the scaleX + scaleY, between 85% and 100%
-                                    lerp(
-                                        start = 0.85f,
-                                        stop = 1f,
-                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                    ).also { scale ->
-                                        scaleX = scale
-                                        scaleY = scale
-                                    }
-
-                                    // We animate the alpha, between 50% and 100%
-                                    alpha = lerp(
-                                        start = 0.5f,
-                                        stop = 1f,
-                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                    )
-                                }
-                        ) {
-                            Box {
-                                PexCoilImage(
-                                    imageUrl = wallpaper.imageUrlLandscape,
-                                    placeholder = placeholder,
-                                    isSquare = true,
+                        Box {
+                            PexCoilImage(
+                                imageUrl = wallpaper.imageUrlLandscape,
+                                wallpaperId = wallpaper.id,
+                                isSquare = true,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            )
+                            PexAnimatedHeart(
+                                state = wallpaper.isFavorite,
+                                size = 128.dp,
+                                speed = 1.5f,
+                                modifier = Modifier.align(Alignment.TopEnd)
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .padding(all = paddingValues)
+                                    .fillMaxSize(.5f)
+                                    .align(Alignment.BottomStart),
+                                shape = shape
+                            ) {
+                                Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                )
-                                PexAnimatedHeart(
-                                    state = wallpaper.isFavorite,
-                                    size = 128.dp,
-                                    speed = 1.5f,
-                                    modifier = Modifier.align(Alignment.TopEnd)
-                                )
-                                Card(
-                                    modifier = Modifier
-                                        .padding(all = paddingValues)
-                                        .fillMaxSize(.5f)
-                                        .align(Alignment.BottomStart),
-                                    shape = shape
+                                        .background(PrimaryDark)
                                 ) {
-                                    Box(
+                                    Column(
                                         modifier = Modifier
-                                            .fillMaxSize()
-                                            .background(PrimaryDark)
+                                            .align(Alignment.Center)
                                     ) {
-                                        Column(
-                                            modifier = Modifier
-                                                .align(Alignment.Center)
-                                        ) {
-                                            Text(
-                                                text = "Daily",
-                                                fontSize = 24.sp
-                                            )
-                                            Text(
-                                                text = "Wallpaper",
-                                                fontSize = 24.sp
-                                            )
-                                        }
+                                        Text(
+                                            text = stringResource(R.string.daily),
+                                            fontSize = 24.sp
+                                        )
+                                        Text(
+                                            text = stringResource(R.string.wallpaper),
+                                            fontSize = 24.sp
+                                        )
                                     }
                                 }
                             }

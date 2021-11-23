@@ -8,24 +8,27 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.adwi.composables.R
 
 @ExperimentalCoilApi
 @Composable
 fun PexCoilImage(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    placeholder: Int? = null,
+    placeholder: Int = R.drawable.image_placeholder,
     contentDescription: String = "",
-    isSquare: Boolean = false
+    isSquare: Boolean = false,
+    wallpaperId: Int? = null
 ) {
     if (isSquare) modifier.size(200.dp)
     Image(
         painter = rememberImagePainter(
             data = imageUrl,
-//            onExecute = { _, _ -> true },
             builder = {
-                crossfade(true)
-                placeholder?.let { placeholder(placeholder) }
+                wallpaperId?.let {
+                    placeholderMemoryCacheKey(wallpaperId.toString())
+                }
+                error(placeholder)
             }
         ),
         contentDescription = contentDescription,
