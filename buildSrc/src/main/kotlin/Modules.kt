@@ -13,6 +13,8 @@ object Modules {
     const val DATA = ":datasource:data"
     const val REPOSITORY = ":datasource:repository"
 
+    const val DATASOURCE_SETTINGS = ":datasource_settings"
+
 
     // features
     const val FEATURE_HOME = ":feature_home"

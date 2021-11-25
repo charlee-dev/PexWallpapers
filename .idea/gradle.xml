@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/datasource/data" />
             <option value="$PROJECT_DIR$/datasource/domain" />
             <option value="$PROJECT_DIR$/datasource/repository" />
+            <option value="$PROJECT_DIR$/datasource_settings" />
             <option value="$PROJECT_DIR$/feature_favorites" />
             <option value="$PROJECT_DIR$/feature_home" />
             <option value="$PROJECT_DIR$/feature_preview" />

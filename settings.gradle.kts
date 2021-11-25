@@ -26,6 +26,8 @@ include(
     ":datasource:data",
     ":datasource:repository",
 
+    ":datasource_settings",
+
     ":feature_home",
     ":feature_search",
     ":feature_favorites",
