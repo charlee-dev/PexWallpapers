@@ -4,16 +4,13 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
-import com.adwi.datasource.local.WallpaperDatabase
-import com.adwi.datasource.local.domain.SearchQueryRemoteKey
-import com.adwi.datasource.local.domain.WallpaperEntity
-import com.adwi.datasource.local.domain.toEntity
-import com.adwi.datasource.local.domain.toSearchResult
-import com.adwi.datasource.network.PexService
-import com.adwi.repository.util.keepFavorites
+import com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.SearchQueryRemoteKey
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toEntity
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toSearchResult
+import com.adwi.pexwallpapers.data.wallpapers.network.PexService
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -22,16 +19,16 @@ private const val WALLPAPERS_STARTING_PAGE_INDEX = 1
 @ExperimentalPagingApi
 class SearchNewsRemoteMediator(
     private val searchQuery: String,
-    private val pexService: PexService,
-    private val database: WallpaperDatabase
-) : RemoteMediator<Int, WallpaperEntity>() {
+    private val pexService: com.adwi.pexwallpapers.data.wallpapers.network.PexService,
+    private val database: com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase
+) : RemoteMediator<Int, com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>() {
 
     private val wallpaperDao = database.wallpaperDao()
     private val searchDao = database.searchDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, WallpaperEntity>
+        state: PagingState<Int, com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>
     ): MediatorResult {
 
         val page = when (loadType) {
@@ -73,7 +70,12 @@ class SearchNewsRemoteMediator(
                 database.withTransaction {
                     wallpaperDao.insertWallpapers(searchResultWallpaperEntities)
                     searchDao.insertSearchResults(searchResults)
-                    searchDao.insertRemoteKey(SearchQueryRemoteKey(searchQuery, nextPageKey))
+                    searchDao.insertRemoteKey(
+                        com.adwi.pexwallpapers.data.wallpapers.database.domain.SearchQueryRemoteKey(
+                            searchQuery,
+                            nextPageKey
+                        )
+                    )
                 }
             }
 

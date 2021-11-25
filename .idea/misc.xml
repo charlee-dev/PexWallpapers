@@ -93,7 +93,18 @@
         <entry key="../../../../layout/compose-model-1637862132150.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1637865020120.xml" value="0.9621212121212122" />
         <entry key="../../../../layout/compose-model-1637865458186.xml" value="0.35353535353535354" />
+        <entry key="../../../../layout/compose-model-1637873053252.xml" value="0.7171717171717171" />
+        <entry key="../../../../layout/compose-model-1637873064986.xml" value="0.5904365904365905" />
+        <entry key="../../../../layout/compose-model-1637877204361.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637877261219.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637877273931.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637877289058.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637877291073.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637877308331.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637878072002.xml" value="0.26296296296296295" />
+        <entry key="../../../../layout/compose-model-1637881000099.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/drawable/ic_refresh.xml" value="0.5564814814814815" />
+        <entry key="app/src/main/res/drawable/pex_background.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/xml/file_provider.xml" value="0.6583333333333333" />
         <entry key="components/src/main/res/drawable/baseline_swipe_down_24.xml" value="0.6296296296296297" />
         <entry key="components/src/main/res/drawable/pex_background.xml" value="0.242" />
@@ -104,7 +115,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

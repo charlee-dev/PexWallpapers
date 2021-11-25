@@ -1,6 +1,8 @@
-import commons.addHiltDependenciesBasic
-import commons.addHiltDependenciesExtended
+import commons.*
 import dependencies.Dependencies
+import dependencies.TestDependencies
+import org.gradle.kotlin.dsl.implementation
+import org.gradle.kotlin.dsl.kapt
 
 plugins {
     id(Plugins.ANDROID_APPLICATION)
@@ -8,6 +10,9 @@ plugins {
     kotlin(Plugins.KOTLIN_KAPT)
     id(Plugins.DAGGER_HILT)
 }
+
+val pex_base_url: String by project
+val pex_api_access_key: String by project
 
 android {
     compileSdk = AndroidConfig.compileSdk
@@ -19,10 +24,16 @@ android {
         versionCode = AndroidConfig.versionCode
         versionName = AndroidConfig.versionName
 
-        testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunner = "com.adwi.pexwallpapers.HiltTestRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    buildTypes.forEach {
+        it.buildConfigField("String", "PEX_BASE_URL", pex_base_url)
+        it.buildConfigField("String", "PEX_API_ACCESS_KEY", pex_api_access_key)
     }
 
     buildTypes {
@@ -37,9 +48,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -56,15 +64,10 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.SHARED))
-
-    implementation(project(Modules.FEATURE_HOME))
-    implementation(project(Modules.FEATURE_PREVIEW))
-    implementation(project(Modules.FEATURE_SEARCH))
-    implementation(project(Modules.FEATURE_FAVORITES))
-    implementation(project(Modules.FEATURE_SETTINGS))
-
+    addComposeDependencies()
+    addPersistenceDependencies()
+    addNetworkDependencies()
+    addHelpersDependencies()
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()
 
@@ -76,4 +79,15 @@ dependencies {
     kapt(Dependencies.hiltWorkCompiler)
 
     implementation(Dependencies.accompanistPermissions)
+
+    implementation(TestDependencies.coroutinesTest)
+    implementation(TestDependencies.truth)
+    implementation(TestDependencies.test_runner)
+    implementation(TestDependencies.test_core)
+
+    testImplementation(TestDependencies.hiltTest)
+    kaptTest(TestDependencies.hiltTestCompiler)
+
+    androidTestImplementation(TestDependencies.hiltTest)
+    kaptAndroidTest(TestDependencies.hiltTestCompiler)
 }

@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
-import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.ext.onDispatcher
+import com.adwi.pexwallpapers.ui.base.BaseViewModel
+import com.adwi.pexwallpapers.util.ext.onDispatcher
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.domain.Wallpaper
-import com.adwi.repository.settings.SettingsRepositoryImpl
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import com.adwi.shared.image.ImageTools
 import com.adwi.shared.setter.WallpaperSetter
@@ -18,7 +18,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -28,7 +27,7 @@ class PreviewViewModel
 @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val settingsRepository: SettingsRepositoryImpl,
+    private val settingsDao: com.adwi.pexwallpapers.data.settings.SettingsDao,
     private val imageTools: ImageTools,
     private val sharingTools: SharingTools,
     private val wallpaperSetter: WallpaperSetter,
@@ -65,7 +64,7 @@ class PreviewViewModel
 
     fun downloadWallpaper(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
-            val settings = settingsRepository.getSettings().first()
+            val settings = settingsDao.getSettings().first()
             workTools.createDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
         }
     }

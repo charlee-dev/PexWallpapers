@@ -4,24 +4,24 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.room.withTransaction
-import com.adwi.core.domain.DataState
-import com.adwi.core.util.Constants
-import com.adwi.datasource.local.WallpaperDatabase
+import com.adwi.pexwallpapers.domain.DataState
+import com.adwi.pexwallpapers.util.Constants
+import com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase
 import com.adwi.datasource.local.domain.*
-import com.adwi.datasource.network.PexService
-import com.adwi.datasource.network.domain.toEntity
+import com.adwi.pexwallpapers.data.wallpapers.network.PexService
+import com.adwi.pexwallpapers.data.wallpapers.network.domain.toEntity
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
-import com.adwi.repository.util.keepFavorites
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toCurated
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDaily
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDomain
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDomainList
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toEntity
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toEntityList
 import com.adwi.repository.util.networkBoundResource
-import com.adwi.repository.util.shouldFetch
-import com.adwi.repository.util.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -29,8 +29,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 class WallpaperRepositoryImpl @Inject constructor(
-    private val database: WallpaperDatabase,
-    private val service: PexService
+    private val database: com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase,
+    private val service: com.adwi.pexwallpapers.data.wallpapers.network.PexService
 ) : WallpaperRepository {
 
     private val wallpapersDao = database.wallpaperDao()
@@ -126,8 +126,8 @@ class WallpaperRepositoryImpl @Inject constructor(
             categories
         },
         fetch = {
-            val colorList = mutableListOf<ColorCategoryEntity>()
-            val wallpaperList = mutableListOf<WallpaperEntity>()
+            val colorList = mutableListOf<com.adwi.pexwallpapers.data.wallpapers.database.domain.ColorCategoryEntity>()
+            val wallpaperList = mutableListOf<com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>()
 
             colorNameList.forEach { color ->
                 val response = service.getColor(color)
@@ -138,7 +138,7 @@ class WallpaperRepositoryImpl @Inject constructor(
                     wallpaperList.add(wallpaper)
                 }
 
-                colorList += ColorCategoryEntity(
+                colorList += com.adwi.pexwallpapers.data.wallpapers.database.domain.ColorCategoryEntity(
                     name = color,
                     firstImage = wallpapers[0].src.tiny,
                     secondImage = wallpapers[1].src.tiny,
@@ -199,11 +199,11 @@ class WallpaperRepositoryImpl @Inject constructor(
         }
     )
 
-    override fun getSearch(query: String): Flow<PagingData<WallpaperEntity>> =
+    override fun getSearch(query: String): Flow<PagingData<com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>> =
         Pager(
             config = PagingConfig(
-                pageSize = Constants.PAGING_SIZE,
-                maxSize = Constants.PAGING_MAX_SIZE
+                pageSize = com.adwi.pexwallpapers.util.Constants.PAGING_SIZE,
+                maxSize = com.adwi.pexwallpapers.util.Constants.PAGING_MAX_SIZE
             ),
             remoteMediator = SearchNewsRemoteMediator(query, service, database),
             pagingSourceFactory = { searchDao.getSearchResultWallpaperPaged(query) }

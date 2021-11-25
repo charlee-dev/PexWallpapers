@@ -1,11 +1,16 @@
 <resources>
-    <string name="app_name">Pexie Walls</string>
+    <string name="app_name">Pixie Walls</string>
     <string name="init_class" translatable="false">Initialized</string>
-    <!-- UI -->
+
+    <!-- SCREENS -->
     <string name="wallpapers">Wallpapers</string>
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="preview">Preview</string>
+    <string name="settings">Settings</string>
+
+    <string name="curated">Curated</string>
+
     <string name="could_not_refresh">Could not refresh: %s</string>
     <string name="could_not_load_search_results">Could not load search results: %s</string>
     <string name="unknown_error_occurred">An unknown error occurred</string>
@@ -50,48 +55,6 @@
     <string name="wallpaper_thumbnail">Wallpaper thumbnail</string>
     <string name="photo_by">Photo by:</string>
     <string name="add_to_favorites">Add to favorites</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="download">Download</string>
-    <string name="settings">Settings</string>
-    <string name="notifications">Notifications</string>
-    <string name="privacy_policy">Privacy policy</string>
-    <string name="support">Support</string>
-    <string name="info">Info</string>
-    <string name="about_us">About Us</string>
-    <string name="automation">Automation</string>
-    <string name="data_usage">Data usage</string>
-    <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over Wi-Fi</string>
-    <string name="time_range">Time range: </string>
-    <string name="push_notifications">Push notifications</string>
-    <string name="new_wallpaper_set">New wallpaper set</string>
-    <string name="wallpaper_recomendations">Wallpaper recomendations</string>
-    <string name="auto_change_wallpaper">Auto change wallpaper</string>
-    <string name="change_wallpaper_every">Change wallpaper every:</string>
-    <string name="minutes">Minutes</string>
-    <string name="minute">Minute</string>
-    <string name="hours">Hours</string>
-    <string name="hour">Hour</string>
-    <string name="days">Days</string>
-    <string name="day">Day</string>
-    <string name="weeks">Weeks</string>
-    <string name="set_period">Set period</string>
-    <string name="sign_out">Sign out</string>
-    <string name="reset_settings">Reset settings</string>
-    <string name="slide_next">Slide next</string>
-    <string name="other">Other</string>
 
     <string name="rationale_title">We need permission to read external storage</string>
     <string name="rationale_desc">We require access to read external storage permission to be able to backup your previous wallpaper
@@ -104,12 +67,47 @@
     <string name="restore">Restore</string>
 
     <string name="group_notification_for">This is the % notification group.</string>
-    <string name="auto_change_wallpaper_cannot_be_used_nwithout_storage_permission">Auto change wallpaper cannot be used\nREAD EXTERNAL STORAGE\npermission is required</string>
+    <string name="auto_change_wallpaper_cannot_be_used_without_storage_permission">Auto change wallpaper cannot be used\nREAD EXTERNAL STORAGE\npermission is required</string>
     <string name="fix">Fix</string>
-    <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
     <string name="minimum_one_screen_need_to_be_selected">Minimum one screen need to be selected</string>
     <string name="add_minimum_2_wallpapers_to_favorites">Add minimum 2 wallpapers to favorites</string>
     <string name="home">Home</string>
     <string name="colors">Colors</string>
-    <string name="curated">Curated</string>
+    <string name="loading">Loading</string>
+    <string name="screen_to_change">Screen to change</string>
+    <string name="swipe_down_to_refresh">Swipe down to refresh</string>
+    <string name="automation_saved">Automation saved</string>
+    <string name="daily">Daily</string>
+    <string name="wallpaper">Wallpaper</string>
+
+    <!--    SHARING -->
+    <string name="support_title">Support request Nr.</string>
+    <string name="support_chooser_message">Choose an app</string>
+    <string name="picture_by" formatted="true">Picture by %photographer</string>
+    <string name="choose_an_app">Choose an App</string>
+
+    <!--    NOTIFICATIONS   -->
+    <string name="other">Other</string>
+    <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
+    <string name="auto_wallpapers">Auto wallpapers</string>
+    <string name="new_wallpaper_set">New wallpaper set</string>
+    <string name="just_set_wallpaper_for_you">%appName just set an amazing wallpaper for you \nClick notification to edit favorites list</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="have_some_amazing_wallpapers_for_you">%appName have some amazing wallpapers to offer for you</string>
+    <string name="info">Info</string>
+    <string name="change_wallpaper_every">Change wallpaper every:</string>
+    <string name="notifications">Notifications</string>
+    <string name="default_settings_restored">Default settings restored</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="wallpaper_recommendations">Wallpaper recommendations</string>
+    <string name="automation">Automation</string>
+    <string name="auto_change_wallpaper">Auto change wallpaper</string>
+    <string name="data_usage">Data usage</string>
+    <string name="activate_data_saver">Activate data saver</string>
+    <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over wifi</string>
+    <string name="download_miniatures_only_in_tiny_resolution">Download miniatures only over wifi</string>
+    <string name="auto_change_only_on_wifi">Auto change only on wifi</string>
+    <string name="about_us">About us</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="support">Support</string>
 </resources>

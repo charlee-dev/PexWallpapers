@@ -1,8 +1,3 @@
-import commons.addCoreDependencies
-import commons.addDefaultComposeDependencies
-import commons.addHiltDependenciesBasic
-import commons.addTestDependencies
-
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     kotlin(Plugins.KOTLIN_ANDROID)
@@ -28,13 +23,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true

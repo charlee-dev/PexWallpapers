@@ -1,16 +1,15 @@
 package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.datasource.CoroutineAndroidTestRule
-import com.adwi.datasource.local.WallpaperDatabase
-import com.adwi.datasource.local.domain.toEntity
-import com.adwi.datasource.network.PexService
+import com.adwi.pexwallpapers.CoroutineAndroidTestRule
+import com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.toEntity
+import com.adwi.pexwallpapers.data.wallpapers.network.PexService
 import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -22,10 +21,10 @@ import org.junit.Test
 class WallpaperRepositoryImplTest {
 
     @get:Rule(order = 1)
-    val coroutineScope = CoroutineAndroidTestRule()
+    val coroutineScope = com.adwi.pexwallpapers.CoroutineAndroidTestRule()
 
-    private val database: WallpaperDatabase = mockk()
-    private val service: PexService = mockk()
+    private val database: com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase = mockk()
+    private val service: com.adwi.pexwallpapers.data.wallpapers.network.PexService = mockk()
 
     private lateinit var wallpaperRepository: WallpaperRepository
 

@@ -13,8 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.components.theme.paddingValues
+import com.adwi.pexwallpapers.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.pexwallpapers.components.theme.paddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh

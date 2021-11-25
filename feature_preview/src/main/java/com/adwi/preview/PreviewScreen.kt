@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
-import com.adwi.components.theme.paddingValues
+import com.adwi.pexwallpapers.components.theme.paddingValues
 import com.adwi.composables.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

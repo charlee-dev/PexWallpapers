@@ -1,7 +1,3 @@
-import commons.addCoreDependencies
-import commons.addDefaultComposeDependencies
-import commons.addHiltDependenciesBasic
-import commons.addTestDependencies
 import dependencies.Dependencies
 
 plugins {
@@ -30,13 +26,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         compose = true
     }
@@ -55,6 +44,7 @@ dependencies {
     implementation(project(Modules.COMMON))
     implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.SHARED))
+    implementation(project(Modules.DATASOURCE_SETTINGS))
     api(project(Modules.REPOSITORY))
 
     addCoreDependencies()

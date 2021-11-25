@@ -32,14 +32,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
-import com.adwi.components.PexSurface
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavIndicatorShape
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavigationItemPadding
-import com.adwi.components.theme.Dimensions.BottomBar.TextIconSpacing
-import com.adwi.components.theme.PrimaryLight
-import com.adwi.pexwallpapers.HomeSections
+import com.adwi.pexwallpapers.components.PexSurface
+import com.adwi.pexwallpapers.navigation.HomeSections
+import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavIndicatorShape
+import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
+import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavigationItemPadding
+import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.TextIconSpacing
+import com.adwi.pexwallpapers.ui.theme.PrimaryLight
 import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable

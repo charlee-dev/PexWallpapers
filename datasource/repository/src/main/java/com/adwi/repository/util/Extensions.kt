@@ -1,17 +1,17 @@
 package com.adwi.repository.util
 
-import com.adwi.core.util.Constants.DEFAULT_CATEGORY
-import com.adwi.core.util.Constants.REFRESH_DATA_EVERY
-import com.adwi.datasource.local.domain.WallpaperEntity
-import com.adwi.datasource.network.domain.WallpaperDto
-import com.adwi.datasource.network.domain.toDomain
+import com.adwi.pexwallpapers.util.Constants.DEFAULT_CATEGORY
+import com.adwi.pexwallpapers.util.Constants.REFRESH_DATA_EVERY
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity
+import com.adwi.pexwallpapers.data.wallpapers.network.domain.WallpaperDto
+import com.adwi.pexwallpapers.data.wallpapers.network.domain.toDomain
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
 import java.util.concurrent.TimeUnit
 
-fun List<WallpaperDto>.keepFavorites(
+fun List<com.adwi.pexwallpapers.data.wallpapers.network.domain.WallpaperDto>.keepFavorites(
     categoryName: String = DEFAULT_CATEGORY,
-    favoritesList: List<WallpaperEntity>
+    favoritesList: List<com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>
 ) =
     this.map { wallpaperDto ->
         val isFavorite = favoritesList.any { favoriteWallpaper ->

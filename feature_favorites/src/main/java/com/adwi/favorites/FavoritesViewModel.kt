@@ -1,10 +1,9 @@
 package com.adwi.favorites
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
-import com.adwi.core.base.BaseViewModel
-import com.adwi.core.util.ext.onDispatcher
+import com.adwi.pexwallpapers.ui.base.BaseViewModel
+import com.adwi.pexwallpapers.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -24,9 +24,9 @@ import com.adwi.components.Header
 import com.adwi.components.PexAnimatedHeart
 import com.adwi.components.PexCoilImage
 import com.adwi.components.PexScaffold
-import com.adwi.components.theme.Dimensions
-import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.components.theme.paddingValues
+import com.adwi.pexwallpapers.components.theme.Dimensions
+import com.adwi.pexwallpapers.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.pexwallpapers.components.theme.paddingValues
 import com.adwi.domain.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

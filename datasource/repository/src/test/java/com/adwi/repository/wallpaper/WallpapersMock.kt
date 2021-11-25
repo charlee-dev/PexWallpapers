@@ -1,6 +1,6 @@
 package com.adwi.repository.wallpaper
 
-import com.adwi.datasource.local.domain.CuratedEntity
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.CuratedEntity
 import com.adwi.domain.Wallpaper
 
 object WallpapersMock {
@@ -39,5 +39,6 @@ object WallpapersMock {
 }
 
 object CuratedMock {
-    val first = CuratedEntity(wallpaperId = 2)
+    val first =
+        com.adwi.pexwallpapers.data.wallpapers.database.domain.CuratedEntity(wallpaperId = 2)
 }

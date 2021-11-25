@@ -2,9 +2,9 @@ package com.adwi.repository.wallpaper
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import com.adwi.core.domain.DataState
-import com.adwi.core.util.Constants.DEFAULT_DAILY_CATEGORY
-import com.adwi.datasource.local.domain.WallpaperEntity
+import com.adwi.pexwallpapers.domain.DataState
+import com.adwi.pexwallpapers.util.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity
 import com.adwi.domain.ColorCategory
 import com.adwi.domain.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,7 +40,7 @@ interface WallpaperRepository {
         onFetchRemoteFailed: (Throwable) -> Unit
     ): Flow<DataState<List<Wallpaper>>>
 
-    fun getSearch(query: String): Flow<PagingData<WallpaperEntity>> // TODO("change it for toDomain")
+    fun getSearch(query: String): Flow<PagingData<com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>> // TODO("change it for toDomain")
 
     fun getFavorites(): Flow<List<Wallpaper>>
 

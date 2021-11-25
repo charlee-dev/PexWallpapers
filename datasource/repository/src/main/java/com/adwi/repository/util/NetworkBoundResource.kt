@@ -1,6 +1,5 @@
 package com.adwi.repository.util
 
-import com.adwi.core.domain.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
