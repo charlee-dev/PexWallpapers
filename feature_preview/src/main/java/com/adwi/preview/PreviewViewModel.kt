@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
 import com.adwi.core.base.BaseViewModel
-import com.adwi.core.domain.Event
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
@@ -41,29 +40,7 @@ class PreviewViewModel
 
     init {
         savedStateHandle.get<Int>("wallpaperId")?.let { wallpaperId ->
-            onTriggerEvent(PreviewEvent.GetWallpaperById(wallpaperId))
-        }
-    }
-
-    fun onTriggerEvent(event: PreviewEvent) {
-        when (event) {
-            is PreviewEvent.GetWallpaperById -> getWallpaperById(event.wallpaperId)
-            is PreviewEvent.DownloadWallpaper -> {
-                downloadWallpaper(event.wallpaper)
-                setEvent(Event.ShowSnackBar("Wallpaper saved to gallery"))
-            }
-            is PreviewEvent.GoToPexels -> goToPexels(event.wallpaper)
-            is PreviewEvent.SetWallpaper -> {
-                setWallpaper(
-                    event.imageUrl,
-                    event.setHomeScreen,
-                    event.setLockScreen
-                )
-                setEvent(Event.ShowSnackBar("Wallpaper set"))
-            }
-            is PreviewEvent.ShareWallpaper -> shareWallpaper(event.activity, event.wallpaper)
-            is PreviewEvent.OnFavoriteClick -> onFavoriteClick(event.wallpaper)
-            is PreviewEvent.ShowMessageEvent -> setEvent(event.event)
+            getWallpaperById(wallpaperId)
         }
     }
 
@@ -73,11 +50,11 @@ class PreviewViewModel
         }
     }
 
-    private fun goToPexels(wallpaper: Wallpaper) {
+    fun goToPexels(wallpaper: Wallpaper) {
         sharingTools.openUrlInBrowser(wallpaper.url)
     }
 
-    private fun shareWallpaper(activity: AppCompatActivity, wallpaper: Wallpaper) {
+    fun shareWallpaper(activity: AppCompatActivity, wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val uri = imageTools.fetchRemoteAndSaveLocally(wallpaper.id, wallpaper.imageUrlPortrait)
             uri?.let {
@@ -86,16 +63,16 @@ class PreviewViewModel
         }
     }
 
-    private fun downloadWallpaper(wallpaper: Wallpaper) {
+    fun downloadWallpaper(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val settings = settingsRepository.getSettings().first()
             workTools.createDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
         }
     }
 
-    private fun setWallpaper(imageURL: String, setHomeScreen: Boolean, setLockScreen: Boolean) {
+    fun setWallpaper(imageUrl: String, setHomeScreen: Boolean, setLockScreen: Boolean) {
         onDispatcher(ioDispatcher) {
-            val bitmap = imageTools.getBitmapFromRemote(imageURL)
+            val bitmap = imageTools.getBitmapFromRemote(imageUrl)
 
             bitmap?.let {
                 wallpaperSetter.setWallpaper(
@@ -107,7 +84,7 @@ class PreviewViewModel
         }
     }
 
-    private fun onFavoriteClick(wallpaper: Wallpaper) {
+    fun onFavoriteClick(wallpaper: Wallpaper) {
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {

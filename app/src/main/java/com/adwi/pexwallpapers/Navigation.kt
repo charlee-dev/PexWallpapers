@@ -18,16 +18,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.favorites.FavoritesEvent
 import com.adwi.favorites.FavoritesScreen
 import com.adwi.favorites.FavoritesViewModel
-import com.adwi.home.HomeEvent
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
 import com.adwi.home.SettingsViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
-import com.adwi.search.SearchEvents
 import com.adwi.search.SearchScreen
 import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
@@ -49,8 +46,9 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalFoundationApi
 fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
-    onCategoryClick: () -> Unit,
+    onCategoryClick: (String, NavBackStackEntry) -> Unit,
     onSetWallpaperClick: (Int, NavBackStackEntry) -> Unit,
+    navigateToSearch: () -> Unit,
     upPress: () -> Unit
 ) {
     navigation(
@@ -59,7 +57,8 @@ fun NavGraphBuilder.myNavGraph(
     ) {
         addHomeGraph(
             onWallpaperClick = onWallpaperClick,
-            onCategoryClick = onCategoryClick
+            onCategoryClick = onCategoryClick,
+            navigateToSearch = navigateToSearch
         )
     }
 
@@ -72,29 +71,44 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         PreviewScreen(
             viewModel = viewModel,
-            onTriggerEvent = viewModel::onTriggerEvent,
-            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
+//            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )
     }
 
     composable(
-        route = "${MainDestinations.SET_WALLPAPER_ROUTE}/{${MainDestinations.WALLPAPER_ID_KEY}}",
-        arguments = listOf(navArgument(MainDestinations.WALLPAPER_ID_KEY) {
-            type = NavType.IntType
+        route = "${MainDestinations.SEARCH_ROUTE}/{${MainDestinations.SEARCH_QUERY}}",
+        arguments = listOf(navArgument(MainDestinations.SEARCH_QUERY) {
+            type = NavType.StringType
         })
     ) { backStackEntry ->
+        val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
+
+        viewModel.restoreSavedQuery()
+
+        SearchScreen(
+            viewModel = viewModel,
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+        )
+    }
+
+//    composable(
+//        route = "${MainDestinations.SET_WALLPAPER_ROUTE}/{${MainDestinations.WALLPAPER_ID_KEY}}",
+//        arguments = listOf(navArgument(MainDestinations.WALLPAPER_ID_KEY) {
+//            type = NavType.IntType
+//        })
+//    ) { backStackEntry ->
 
 //        val viewModel = hiltViewModel<SetWallpaperViewModel>(backStackEntry)
-        val arguments = requireNotNull(backStackEntry.arguments)
-        val wallpaperId = arguments.getInt(MainDestinations.WALLPAPER_ID_KEY)
+//        val arguments = requireNotNull(backStackEntry.arguments)
+//        val wallpaperId = arguments.getInt(MainDestinations.WALLPAPER_ID_KEY)
 
 //        SetWallpaperScreen(
 //            viewModel = viewModel,
 //            wallpaperId = wallpaperId,
 //            upPress = upPress
 //        )
-    }
+//    }
 }
 
 @ExperimentalPermissionsApi
@@ -108,65 +122,35 @@ fun NavGraphBuilder.myNavGraph(
 @ExperimentalComposeUiApi
 fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
-    onCategoryClick: () -> Unit
+    onCategoryClick: (String, NavBackStackEntry) -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
-        viewModel.onTriggerEvent(HomeEvent.OnStart)
+        viewModel.onStart()
         HomeScreen(
             viewModel = viewModel,
-            onTriggerEvent = viewModel::onTriggerEvent,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
-            onCategoryClick = onCategoryClick
+            onCategoryClick = { query -> onCategoryClick(query, backStackEntry) },
+            navigateToSearch = navigateToSearch
         )
     }
-    composable(
-        route = HomeSections.SEARCH.route,
-        enterTransition = { initial, _ ->
-            when (initial.destination.route) {
-                HomeSections.FAVORITES.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        },
-        exitTransition = { _, target ->
-            when (target.destination.route) {
-                HomeSections.FAVORITES.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        }
-    ) { backStackEntry ->
+    composable(HomeSections.SEARCH.route) { backStackEntry ->
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
-        viewModel.onTriggerEvent(SearchEvents.RestoreLastQuery)
+        viewModel.restoreSavedQuery()
 
         SearchScreen(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
-    composable(
-        route = HomeSections.FAVORITES.route,
-        enterTransition = { initial, _ ->
-            when (initial.destination.route) {
-                HomeSections.SETTINGS.route -> slideInHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        },
-        exitTransition = { _, target ->
-            when (target.destination.route) {
-                HomeSections.SETTINGS.route -> slideOutHorizontallyWithFade(SHORT_DURATION)
-                else -> null
-            }
-        }
-    ) { backStackEntry ->
+    composable(HomeSections.FAVORITES.route) { backStackEntry ->
         val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
-        viewModel.onTriggerEvent(FavoritesEvent.GetFavorites)
+        viewModel.getFavorites()
         FavoritesScreen(
             viewModel = viewModel,
-            onTriggerEvent = viewModel::onTriggerEvent,
-            onSearchClick = onCategoryClick, // onCategoryClick navigates to Search only
+            onSearchClick = navigateToSearch,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
@@ -175,7 +159,6 @@ fun NavGraphBuilder.addHomeGraph(
 
         SettingsScreen(
             viewModel = viewModel,
-            onTriggerEvent = viewModel::onTriggerEvent
         )
     }
 }

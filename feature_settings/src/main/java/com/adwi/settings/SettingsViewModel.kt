@@ -9,7 +9,6 @@ import com.adwi.domain.Settings
 import com.adwi.domain.Wallpaper
 import com.adwi.repository.settings.SettingsRepositoryImpl
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
-import com.adwi.settings.SettingsEvent
 import com.adwi.shared.image.ImageTools
 import com.adwi.shared.sharing.SharingTools
 import com.adwi.shared.util.Constants.WORK_AUTO_WALLPAPER
@@ -44,65 +43,8 @@ class SettingsViewModel
     val minutes = MutableStateFlow(1)
 
     init {
-        onTriggerEvent(SettingsEvent.GetSettings)
-        onTriggerEvent(SettingsEvent.GetFavorites)
-    }
-
-    fun onTriggerEvent(event: SettingsEvent) {
-        when (event) {
-            SettingsEvent.GetSettings -> getSettings()
-
-            SettingsEvent.GetFavorites -> getFavorites()
-
-            SettingsEvent.ContactSupport -> contactSupport()
-
-            is SettingsEvent.ResetSettings -> {
-                resetSettings()
-                getSettings()
-            }
-
-            is SettingsEvent.UpdatePushNotifications -> {
-                updatePushNotifications(event.checked)
-            }
-            is SettingsEvent.UpdateAutoChangeWallpaper -> {
-                updateAutoChangeWallpaper(event.checked)
-                if (!event.checked) {
-                    cancelWorks(WORK_AUTO_WALLPAPER)
-                }
-            }
-            is SettingsEvent.UpdateNewWallpaperSet -> {
-                updateNewWallpaperSet(event.checked)
-            }
-            is SettingsEvent.UpdateWallpaperRecommendations -> {
-                updateWallpaperRecommendations(event.checked)
-            }
-
-            is SettingsEvent.UpdateAutoHome -> {
-                updateAutoHome(event.checked)
-            }
-            is SettingsEvent.UpdateAutoLock -> {
-                updateAutoLock(event.checked)
-            }
-            is SettingsEvent.UpdateChangeDurationSelected -> {
-                updateChangeDurationSelected(event.durationSelected)
-            }
-            is SettingsEvent.UpdateChangeDurationValue -> {
-                updateChangeDurationValue(event.durationValue)
-            }
-
-            is SettingsEvent.UpdateDownloadOverWiFi -> {
-                updateDownloadOverWiFi(event.checked)
-            }
-            is SettingsEvent.SetDays -> setDays(event.value)
-
-            is SettingsEvent.SetHours -> setHours(event.value)
-
-            is SettingsEvent.SetMinutes -> setMinutes(event.value)
-
-            SettingsEvent.SaveSettings -> saveSettings()
-
-            is SettingsEvent.ShowMessageEvent -> setEvent(event.event)
-        }
+        getSettings()
+        getFavorites()
     }
 
     private fun getSettings() {
@@ -119,23 +61,23 @@ class SettingsViewModel
         }
     }
 
-    private fun updatePushNotifications(checked: Boolean) {
+    fun updatePushNotifications(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updatePushNotifications(checked) }
     }
 
-    private fun updateNewWallpaperSet(checked: Boolean) {
+    fun updateNewWallpaperSet(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateNewWallpaperSet(checked) }
     }
 
-    private fun updateWallpaperRecommendations(checked: Boolean) {
+    fun updateWallpaperRecommendations(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateWallpaperRecommendations(checked) }
     }
 
-    private fun updateAutoChangeWallpaper(checked: Boolean) {
+    fun updateAutoChangeWallpaper(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateAutoChangeWallpaper(checked) }
     }
 
-    private fun updateChangeDurationSelected(durationSelected: Duration) {
+    fun updateChangeDurationSelected(durationSelected: Duration) {
         onDispatcher(ioDispatcher) {
             settingsRepository.updateChangeDurationSelected(
                 durationSelected
@@ -143,46 +85,54 @@ class SettingsViewModel
         }
     }
 
-    private fun updateChangeDurationValue(durationValue: Float) {
+    fun updateChangeDurationValue(durationValue: Float) {
         onDispatcher(ioDispatcher) { settingsRepository.updateChangeDurationValue(durationValue) }
     }
 
-    private fun updateDownloadOverWiFi(checked: Boolean) {
+    fun updateDownloadOverWiFi(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateDownloadOverWiFi(checked) }
     }
 
-    private fun updateAutoHome(checked: Boolean) {
+    fun updateAutoHome(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateAutoHome(checked) }
     }
 
-    private fun updateAutoLock(checked: Boolean) {
+    fun updateAutoLock(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsRepository.updateAutoLock(checked) }
     }
 
-    private fun resetSettings() {
+    fun resetSettings() {
         onDispatcher(ioDispatcher) { settingsRepository.resetAllSettings() }
     }
 
-    private fun setDays(value: Int) {
+    fun setDays(value: Int) {
         onDispatcher(ioDispatcher) {
             days.value = value
         }
     }
 
-    private fun setHours(value: Int) {
+    fun setHours(value: Int) {
         onDispatcher(ioDispatcher) {
             hours.value = value
         }
     }
 
-    private fun setMinutes(value: Int) {
+    fun setMinutes(value: Int) {
         onDispatcher(ioDispatcher) {
             minutes.value = value
         }
     }
 
-    private fun contactSupport() {
+    fun contactSupport() {
         sharingTools.contactSupport()
+    }
+
+    fun aboutUs() {
+        setSnackBar("Not implemented yet")
+    }
+
+    fun privacyPolicy() {
+        setSnackBar("Not implemented yet")
     }
 
     private fun cancelWorks(workTag: String) {
@@ -190,7 +140,7 @@ class SettingsViewModel
         imageTools.deleteAllBackups()
     }
 
-    private fun saveSettings() {
+    fun saveAutomation() {
         onDispatcher(ioDispatcher) {
             if (settings.value.autoChangeWallpaper && favorites.value.isNotEmpty()) {
                 val delay = getDelay(

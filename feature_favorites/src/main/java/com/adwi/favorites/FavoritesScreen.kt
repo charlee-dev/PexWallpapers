@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -35,7 +37,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
-    onTriggerEvent: (FavoritesEvent) -> Unit,
     onSearchClick: () -> Unit,
     onWallpaperClick: (Int) -> Unit,
 ) {
@@ -73,16 +74,12 @@ fun FavoritesScreen(
                 verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
             ) {
                 items(items = wallpapers, itemContent = { wallpaper ->
-                    var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
 
                     WallpaperItemVertical(
                         wallpaper = wallpaper,
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                        onLongPress = { item ->
-                            isHeartEnabled = !isHeartEnabled
-                            onTriggerEvent(FavoritesEvent.OnFavoriteClick(item))
-                        },
-                        isHeartEnabled = isHeartEnabled
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        isHeartEnabled = wallpaper.isFavorite
                     )
                 })
 

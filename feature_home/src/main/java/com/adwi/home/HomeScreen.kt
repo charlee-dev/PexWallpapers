@@ -21,7 +21,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -31,9 +30,9 @@ import timber.log.Timber
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    onTriggerEvent: (HomeEvent) -> Unit,
     onWallpaperClick: (Int) -> Unit,
-    onCategoryClick: () -> Unit
+    onCategoryClick: (String) -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     val daily by viewModel.daily.collectAsState(null)
     val colors by viewModel.colors.collectAsState(null)
@@ -66,7 +65,7 @@ fun HomeScreen(
     ) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { onTriggerEvent(HomeEvent.ManualRefresh) }
+            onRefresh = { viewModel.manualRefresh() }
         ) {
             LazyColumn(
                 state = homeListState,
@@ -79,7 +78,7 @@ fun HomeScreen(
                 item {
                     Header(
                         title = stringResource(id = R.string.home),
-                        onActionClick = onCategoryClick,
+                        onActionClick = navigateToSearch,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = paddingValues)
@@ -93,9 +92,7 @@ fun HomeScreen(
                                 .padding(vertical = paddingValues / 2),
                             dailyList = list,
                             onWallpaperClick = { id -> onWallpaperClick(id) },
-                            onLongPress = { wallpaper ->
-                                onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
-                            }
+                            onLongPress = { viewModel.onFavoriteClick(it) }
                         )
                     }
                 }
@@ -105,10 +102,7 @@ fun HomeScreen(
                             panelTitle = stringResource(id = R.string.colors),
                             listState = colorsListState,
                             colors = list,
-                            onCategoryClick = { categoryName ->
-                                onTriggerEvent(HomeEvent.SetCategory(categoryName))
-                                onCategoryClick()
-                            }
+                            onCategoryClick = { onCategoryClick(it) }
                         )
                     }
                 }
@@ -116,18 +110,12 @@ fun HomeScreen(
                     curated?.let { list ->
                         val categoryName = stringResource(id = R.string.curated)
                         WallpaperListHorizontalPanel(
-                            categoryName = categoryName,
+                            panelName = categoryName,
                             wallpapers = list,
                             listState = curatedListState,
                             onWallpaperClick = { id -> onWallpaperClick(id) },
-                            onLongPress = { wallpaper ->
-                                Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                                onTriggerEvent(HomeEvent.OnFavoriteClick(wallpaper))
-                            },
-                            onShowMoreClick = {
-                                onTriggerEvent(HomeEvent.SetCategory(categoryName))
-                                onCategoryClick()
-                            }
+                            onLongPress = { viewModel.onFavoriteClick(it) },
+                            onShowMoreClick = navigateToSearch
                         )
                     }
                 }

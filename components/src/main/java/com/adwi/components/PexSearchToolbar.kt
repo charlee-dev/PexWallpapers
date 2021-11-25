@@ -31,7 +31,7 @@ import com.adwi.components.theme.paddingValues
 fun PexSearchToolbar(
     modifier: Modifier = Modifier,
     query: String,
-    onHeroNameChanged: (String) -> Unit,
+    onQueryChanged: (String) -> Unit,
     onExecuteSearch: () -> Unit,
     onShowFilterDialog: () -> Unit,
     elevation: Dp = 10.dp,
@@ -57,8 +57,7 @@ fun PexSearchToolbar(
                     .padding(start = paddingValues, bottom = paddingValues / 2),
                 value = query,
                 onValueChange = {
-                    onHeroNameChanged(it)
-                    onExecuteSearch()
+                    onQueryChanged(it)
                 },
                 label = { Text(text = "Search") },
                 keyboardOptions = KeyboardOptions(
@@ -106,7 +105,7 @@ private fun SearchToolbarPreview() {
         val text = remember { mutableStateOf("PexWalls") }
         PexSearchToolbar(
             query = text.value,
-            onHeroNameChanged = { text.value = it },
+            onQueryChanged = { text.value = it },
             onExecuteSearch = { },
             onShowFilterDialog = {}
         )

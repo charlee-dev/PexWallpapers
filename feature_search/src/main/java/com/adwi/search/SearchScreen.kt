@@ -33,7 +33,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
@@ -47,6 +46,8 @@ fun SearchScreen(
     onWallpaperClick: (Int) -> Unit
 ) {
     val wallpapers = viewModel.searchResults
+
+    val currentQuery by viewModel.currentQuery.collectAsState()
 
     val query = remember { mutableStateOf("") }
 
@@ -83,18 +84,13 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize(),
                     wallpapers = wallpapers,
                     onWallpaperClick = onWallpaperClick,
-                    onLongPress = { wallpaper ->
-                        Timber.tag("HomeScreen").d("${wallpaper.id} - long")
-                        viewModel.onTriggerEvent(SearchEvents.OnFavoriteClick(wallpaper))
-                    }
+                    onLongPress = { viewModel.onFavoriteClick(it) }
                 )
             }
             PexSearchToolbar(
                 query = query.value,
-                onHeroNameChanged = { newQuery ->
-                    query.value = newQuery
-                },
-                onExecuteSearch = { viewModel.onTriggerEvent(SearchEvents.OnSearchQuerySubmit(query.value)) },
+                onQueryChanged = { query.value = it },
+                onExecuteSearch = { viewModel.onSearchQuerySubmit(query.value) },
                 onShowFilterDialog = {},
                 modifier = Modifier
                     .padding(horizontal = paddingValues)
@@ -131,7 +127,6 @@ fun WallpaperListPaged(
         items(lazyWallpaperItems.itemCount) { index ->
             lazyWallpaperItems[index]?.let {
                 val wallpaper = it.toDomain()
-                var isHeartEnabled by remember { mutableStateOf(wallpaper.isFavorite) }
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -141,7 +136,6 @@ fun WallpaperListPaged(
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },
                                 onLongPress = {
-                                    isHeartEnabled = !isHeartEnabled
                                     onLongPress(wallpaper)
                                 }
                             )
@@ -155,7 +149,7 @@ fun WallpaperListPaged(
                             modifier = Modifier.fillMaxSize()
                         )
                         PexAnimatedHeart(
-                            state = isHeartEnabled,
+                            state = wallpaper.isFavorite,
                             size = 64.dp,
                             speed = 1.5f,
                             modifier = Modifier.align(Alignment.TopEnd)

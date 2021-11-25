@@ -65,10 +65,9 @@ fun PexApp(
                     myNavGraph(
                         upPress = appState::upPress,
                         onWallpaperClick = appState::navigateToPreview,
-                        onCategoryClick = {
-                            appState.navigateToBottomBarRoute(HomeSections.SEARCH.route)
-                        },
-                        onSetWallpaperClick = appState::navigateToSetWallpaper
+                        onCategoryClick = appState::navigateToCategory,
+                        onSetWallpaperClick = appState::navigateToSetWallpaper,
+                        navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) }
                     )
                 }
             }

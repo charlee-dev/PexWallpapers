@@ -31,7 +31,6 @@ import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
-import com.adwi.core.domain.Event
 import com.adwi.home.SettingsViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -46,10 +45,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel,
-    onTriggerEvent: (SettingsEvent) -> Unit
-//    onWallpaperClick: (Int) -> Unit,
-//    onCategoryClick: () -> Unit,
+    viewModel: SettingsViewModel
 ) {
     val settings by viewModel.settings.collectAsState()
     val days by viewModel.days.collectAsState()
@@ -58,8 +54,6 @@ fun SettingsScreen(
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
-
-
 
     PexScaffold(
         viewModel = viewModel,
@@ -79,11 +73,8 @@ fun SettingsScreen(
                     icon = Icons.Outlined.Settings,
                     actionIcon = Icons.Outlined.Refresh,
                     onActionClick = {
-                        onTriggerEvent(
-                            SettingsEvent.ResetSettings(
-                                context.getString(R.string.default_settings_restored)
-                            )
-                        )
+                        viewModel.resetSettings()
+                        viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
                     }
                 )
             }
@@ -93,23 +84,17 @@ fun SettingsScreen(
                     panelName = stringResource(id = R.string.notifications),
                     mainName = stringResource(id = R.string.push_notifications),
                     checked = settings.pushNotifications,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdatePushNotifications(it)) }
+                    onCheckedChange = { viewModel.updatePushNotifications(it) }
                 ) {
                     SwitchRow(
                         name = stringResource(id = R.string.new_wallpaper_set),
                         checked = settings.newWallpaperSet,
-                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                        onCheckedChange = { viewModel.updateNewWallpaperSet(it) }
                     )
                     SwitchRow(
                         name = stringResource(id = R.string.wallpaper_recomendations),
                         checked = settings.wallpaperRecommendations,
-                        onCheckedChange = {
-                            onTriggerEvent(
-                                SettingsEvent.UpdateWallpaperRecommendations(
-                                    it
-                                )
-                            )
-                        }
+                        onCheckedChange = { viewModel.updateWallpaperRecommendations(it) }
                     )
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                 }
@@ -120,7 +105,7 @@ fun SettingsScreen(
                     panelName = stringResource(id = R.string.automation),
                     mainName = stringResource(id = R.string.auto_change_wallpaper),
                     checked = settings.autoChangeWallpaper,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoChangeWallpaper(it)) }
+                    onCheckedChange = { viewModel.updateAutoChangeWallpaper(it) }
                 ) {
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     Text(
@@ -130,11 +115,13 @@ fun SettingsScreen(
                     CheckBoxRow(
                         name = stringResource(id = R.string.home_screen),
                         checked = settings.autoHome,
-                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoHome(it)) })
+                        onCheckedChange = { viewModel.updateAutoHome(it) }
+                    )
                     CheckBoxRow(
                         name = stringResource(id = R.string.lock_screen),
                         checked = settings.autoLock,
-                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateAutoLock(it)) })
+                        onCheckedChange = { viewModel.updateAutoLock(it) }
+                    )
                     Spacer(modifier = Modifier.size(paddingValues))
                     Text(
                         text = stringResource(id = R.string.change_wallpaper_every),
@@ -146,22 +133,16 @@ fun SettingsScreen(
                         days = days,
                         hours = hours,
                         minutes = minutes,
-                        onDaysChange = { onTriggerEvent(SettingsEvent.SetDays(it)) },
-                        onHourChange = { onTriggerEvent(SettingsEvent.SetHours(it)) },
-                        onMinutesChange = { onTriggerEvent(SettingsEvent.SetMinutes(it)) }
+                        onDaysChange = { viewModel.setDays(it) },
+                        onHourChange = { viewModel.setHours(it) },
+                        onMinutesChange = { viewModel.setMinutes(it) }
                     )
                     Spacer(modifier = Modifier.size(paddingValues))
                     SaveButton(
                         modifier = Modifier,
                         onClick = {
-                            onTriggerEvent(SettingsEvent.SaveSettings)
-                            onTriggerEvent(
-                                SettingsEvent.ShowMessageEvent(
-                                    Event.ShowSnackBar(
-                                        context.getString(com.adwi.composables.R.string.automation_saved)
-                                    )
-                                )
-                            )
+                            viewModel.saveAutomation()
+                            viewModel.setSnackBar(context.getString(com.adwi.composables.R.string.automation_saved))
                         }
                     )
                 }
@@ -172,34 +153,22 @@ fun SettingsScreen(
                     panelName = stringResource(id = R.string.data_usage),
                     mainName = stringResource(id = R.string.activate_data_saver),
                     checked = settings.downloadOverWiFi,
-                    onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateDownloadOverWiFi(it)) }
+                    onCheckedChange = { viewModel.updateDownloadOverWiFi(it) }
                 ) {
                     SwitchRow(
                         name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
                         checked = settings.newWallpaperSet,
-                        onCheckedChange = { onTriggerEvent(SettingsEvent.UpdateNewWallpaperSet(it)) }
+                        onCheckedChange = { viewModel.updateNewWallpaperSet(it) }
                     )
                     SwitchRow(
                         name = stringResource(id = R.string.download_miniatures_only_in_tiny_resolution),
                         checked = settings.wallpaperRecommendations,
-                        onCheckedChange = {
-                            onTriggerEvent(
-                                SettingsEvent.UpdateWallpaperRecommendations(
-                                    it
-                                )
-                            )
-                        }
+                        onCheckedChange = { viewModel.updateWallpaperRecommendations(it) }
                     )
                     SwitchRow(
                         name = stringResource(id = R.string.auto_change_only_on_wifi),
                         checked = settings.wallpaperRecommendations,
-                        onCheckedChange = {
-                            onTriggerEvent(
-                                SettingsEvent.UpdateWallpaperRecommendations(
-                                    it
-                                )
-                            )
-                        }
+                        onCheckedChange = { viewModel.updateWallpaperRecommendations(it) }
                     )
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                 }
@@ -207,35 +176,17 @@ fun SettingsScreen(
             item {
                 Column(Modifier.padding(top = paddingValues)) {
                     InfoRow(
-                        onClick = {
-                            onTriggerEvent(
-                                SettingsEvent.ShowMessageEvent(
-                                    Event.ShowSnackBar("Not implemented yet")
-                                )
-                            )
-                        },
+                        onClick = { viewModel.aboutUs() },
                         title = stringResource(id = R.string.about_us),
                         icon = Icons.Outlined.QuestionAnswer
                     )
                     InfoRow(
-                        onClick = {
-                            onTriggerEvent(
-                                SettingsEvent.ShowMessageEvent(
-                                    Event.ShowSnackBar("Not implemented yet")
-                                )
-                            )
-                        },
+                        onClick = { viewModel.privacyPolicy() },
                         title = stringResource(id = R.string.privacy_policy),
                         icon = Icons.Outlined.Security
                     )
                     InfoRow(
-                        onClick = {
-                            onTriggerEvent(
-                                SettingsEvent.ShowMessageEvent(
-                                    Event.ShowSnackBar("Not implemented yet")
-                                )
-                            )
-                        },
+                        onClick = { viewModel.contactSupport() },
                         title = stringResource(id = R.string.support),
                         icon = Icons.Outlined.Mail
                     )
@@ -662,7 +613,7 @@ private fun InfoRow(
                 modifier = Modifier.padding(paddingValues / 2),
                 backgroundColor = MaterialTheme.colors.primary
             ) {
-                Box() {
+                Box {
                     Icon(
                         imageVector = icon,
                         tint = MaterialTheme.colors.primaryVariant,

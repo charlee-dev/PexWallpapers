@@ -20,9 +20,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.paddingValues
 import com.adwi.composables.R
-import com.adwi.core.domain.Event
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
@@ -31,8 +29,7 @@ import timber.log.Timber
 @Composable
 fun PreviewScreen(
     viewModel: PreviewViewModel,
-    onTriggerEvent: (PreviewEvent) -> Unit,
-    onSetWallpaperClick: (Int) -> Unit,
+//    onSetWallpaperClick: (Int) -> Unit,
     upPress: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState(null)
@@ -63,10 +60,7 @@ fun PreviewScreen(
                         .padding(horizontal = paddingValues)
                         .padding(vertical = paddingValues / 2)
                         .weight(1f),
-                    onLongPress = {
-                        onTriggerEvent(PreviewEvent.OnFavoriteClick(it))
-                        Timber.d(it.isFavorite.toString())
-                    },
+                    onLongPress = { viewModel.onFavoriteClick(it) },
                     isHeartEnabled = it.isFavorite
                 )
                 Text(
@@ -77,29 +71,23 @@ fun PreviewScreen(
                 )
                 ImageActionButtons(
                     modifier = Modifier.fillMaxWidth(),
-                    onUrlClick = { onTriggerEvent(PreviewEvent.GoToPexels(it)) },
+                    onUrlClick = { viewModel.goToPexels(it) },
                     onSaveClick = {
-                        onTriggerEvent(PreviewEvent.DownloadWallpaper(it))
-                        onTriggerEvent(
-                            PreviewEvent.ShowMessageEvent(
-                                Event.ShowSnackBar(
-                                    context.getString(R.string.automation_saved)
-                                )
-                            )
+                        viewModel.downloadWallpaper(it)
+                        viewModel.setSnackBar(
+                            context.getString(R.string.automation_saved)
                         )
                     },
-                    onFavoriteClick = { onTriggerEvent(PreviewEvent.OnFavoriteClick(it)) },
+                    onFavoriteClick = { viewModel.onFavoriteClick(it) },
                     isFavorite = it.isFavorite
                 )
                 PexButton(
                     onClick = {
 //                    onSetWallpaperClick(wallpaper.id)
-                        onTriggerEvent(
-                            PreviewEvent.SetWallpaper(
-                                imageUrl = it.imageUrlPortrait,
-                                setHomeScreen = true,
-                                setLockScreen = false
-                            )
+                        viewModel.setWallpaper(
+                            imageUrl = it.imageUrlPortrait,
+                            setHomeScreen = true,
+                            setLockScreen = false
                         )
                     },
                     text = stringResource(id = R.string.set_wallpaper),

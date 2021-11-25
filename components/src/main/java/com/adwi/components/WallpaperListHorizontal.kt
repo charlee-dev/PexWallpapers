@@ -33,14 +33,14 @@ fun WallpaperListHorizontalPanel(
     modifier: Modifier = Modifier,
     wallpapers: DataState<List<Wallpaper>>,
     listState: LazyListState = rememberLazyListState(),
-    categoryName: String = "",
+    panelName: String = "",
     onWallpaperClick: (Int) -> Unit,
     onShowMoreClick: () -> Unit,
     onLongPress: (Wallpaper) -> Unit
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         CategoryPanel(
-            categoryName = categoryName,
+            categoryName = panelName,
             onShowMoreClick = onShowMoreClick,
             showMore = true,
             modifier = Modifier.padding(horizontal = paddingValues)

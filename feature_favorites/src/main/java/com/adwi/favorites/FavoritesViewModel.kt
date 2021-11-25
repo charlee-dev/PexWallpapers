@@ -26,20 +26,9 @@ class FavoritesViewModel @ExperimentalPagingApi
     val wallpapers = getFavorites()
         .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
-    fun onTriggerEvent(event: FavoritesEvent) {
-        when (event) {
-            FavoritesEvent.GetFavorites -> getFavorites()
+    fun getFavorites() = wallpaperRepository.getFavorites()
 
-            is FavoritesEvent.OnFavoriteClick -> {
-                doFavorite(event.wallpaper)
-                getFavorites()
-            }
-        }
-    }
-
-    private fun getFavorites() = wallpaperRepository.getFavorites()
-
-    private fun doFavorite(wallpaper: Wallpaper) {
+    fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)

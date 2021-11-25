@@ -66,9 +66,9 @@ abstract class BaseViewModel : ViewModel() {
         _toastMessage.value = message
     }
 
-    private fun setSnackBar(message: String) {
-        _snackBarMessage.value = message
-    }
+     fun setSnackBar(message: String) {
+         _snackBarMessage.value = message
+     }
 
     fun setIsRefreshing(refresh: Boolean) {
         _isRefreshing.value = refresh

@@ -18,6 +18,8 @@ object MainDestinations {
     const val WALLPAPER_PREVIEW_ROUTE = "wallpaper_preview"
     const val SET_WALLPAPER_ROUTE = "set_wallpaper"
     const val WALLPAPER_ID_KEY = "wallpaperId"
+    const val SEARCH_ROUTE = "search_route"
+    const val SEARCH_QUERY = "query"
 }
 
 @ExperimentalAnimationApi
@@ -92,6 +94,12 @@ class PexAppState(
     fun navigateToSetWallpaper(wallpaperId: Int, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.SET_WALLPAPER_ROUTE}/$wallpaperId")
+        }
+    }
+
+    fun navigateToCategory(categoryName: String, from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate("${MainDestinations.SEARCH_ROUTE}/$categoryName")
         }
     }
 }

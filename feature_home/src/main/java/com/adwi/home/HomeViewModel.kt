@@ -1,5 +1,6 @@
 package com.adwi.home
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
@@ -8,7 +9,6 @@ import com.adwi.core.domain.DataState
 import com.adwi.core.domain.Refresh
 import com.adwi.core.util.ext.onDispatcher
 import com.adwi.domain.Wallpaper
-import com.adwi.repository.settings.SettingsRepositoryImpl
 import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val settingsRepository: SettingsRepositoryImpl,
+    private val savedStateHandle: SavedStateHandle,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -42,16 +42,6 @@ class HomeViewModel @Inject constructor(
 
     init {
         deleteOldNonFavoriteWallpapers()
-    }
-
-    fun onTriggerEvent(event: HomeEvent) {
-        when (event) {
-            HomeEvent.OnStart -> onStart()
-            HomeEvent.ManualRefresh -> onManualRefresh()
-            is HomeEvent.ShowMessageEvent -> setEvent(event.event)
-            is HomeEvent.SetCategory -> setCategory(event.categoryName)
-            is HomeEvent.OnFavoriteClick -> onFavoriteClick(event.wallpaper)
-        }
     }
 
     private fun getDaily(refresh: Boolean) =
@@ -88,22 +78,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onStart() {
+    fun onStart() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.NORMAL)
         setIsRefreshing(false)
     }
 
-    private fun onManualRefresh() {
+    fun manualRefresh() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.FORCE)
     }
 
-    private fun setCategory(categoryName: String) {
-        onDispatcher(ioDispatcher) {
-            settingsRepository.updateLastQuery(categoryName)
-        }
-    }
+//     fun setCategory(categoryName: String) {
+//        Timber.tag(tag).d("save currentQuery = $categoryName")
+//            savedStateHandle["query"] = categoryName
+//
+////        onDispatcher(ioDispatcher) {
+////            settingsRepository.updateLastQuery(categoryName)
+////        }
+//    }
 
-    private fun onFavoriteClick(wallpaper: Wallpaper) {
+    fun onFavoriteClick(wallpaper: Wallpaper) {
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
