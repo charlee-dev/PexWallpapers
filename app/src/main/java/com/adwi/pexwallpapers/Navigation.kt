@@ -22,12 +22,12 @@ import com.adwi.favorites.FavoritesScreen
 import com.adwi.favorites.FavoritesViewModel
 import com.adwi.home.HomeScreen
 import com.adwi.home.HomeViewModel
-import com.adwi.home.SettingsViewModel
 import com.adwi.preview.PreviewScreen
 import com.adwi.preview.PreviewViewModel
 import com.adwi.search.SearchScreen
 import com.adwi.search.SearchViewModel
 import com.adwi.settings.SettingsScreen
+import com.adwi.settings.SettingsViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -47,7 +47,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    onSetWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     navigateToSearch: () -> Unit,
     upPress: () -> Unit
 ) {
@@ -71,7 +70,6 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         PreviewScreen(
             viewModel = viewModel,
-//            onSetWallpaperClick = { id -> onSetWallpaperClick(id, backStackEntry) },
             upPress = upPress
         )
     }
@@ -91,24 +89,6 @@ fun NavGraphBuilder.myNavGraph(
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
-
-//    composable(
-//        route = "${MainDestinations.SET_WALLPAPER_ROUTE}/{${MainDestinations.WALLPAPER_ID_KEY}}",
-//        arguments = listOf(navArgument(MainDestinations.WALLPAPER_ID_KEY) {
-//            type = NavType.IntType
-//        })
-//    ) { backStackEntry ->
-
-//        val viewModel = hiltViewModel<SetWallpaperViewModel>(backStackEntry)
-//        val arguments = requireNotNull(backStackEntry.arguments)
-//        val wallpaperId = arguments.getInt(MainDestinations.WALLPAPER_ID_KEY)
-
-//        SetWallpaperScreen(
-//            viewModel = viewModel,
-//            wallpaperId = wallpaperId,
-//            upPress = upPress
-//        )
-//    }
 }
 
 @ExperimentalPermissionsApi

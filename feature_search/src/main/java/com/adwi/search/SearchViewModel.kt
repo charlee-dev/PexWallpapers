@@ -23,7 +23,6 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepository,
     private val savedStateHandle: SavedStateHandle,
-//    private val logger: Logger,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 

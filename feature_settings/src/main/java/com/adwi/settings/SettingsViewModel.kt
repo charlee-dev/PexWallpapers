@@ -1,4 +1,4 @@
-package com.adwi.home
+package com.adwi.settings
 
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher

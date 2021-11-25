@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
@@ -29,12 +28,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PreviewScreen(
     viewModel: PreviewViewModel,
-//    onSetWallpaperClick: (Int) -> Unit,
     upPress: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState(null)
-
-    val context = LocalContext.current
 
     PexScaffold(
         viewModel = viewModel
@@ -71,13 +67,8 @@ fun PreviewScreen(
                 )
                 ImageActionButtons(
                     modifier = Modifier.fillMaxWidth(),
-                    onUrlClick = { viewModel.goToPexels(it) },
-                    onSaveClick = {
-                        viewModel.downloadWallpaper(it)
-                        viewModel.setSnackBar(
-                            context.getString(R.string.automation_saved)
-                        )
-                    },
+                    onGoToUrlClick = { viewModel.goToPexels(it.url) },
+                    onDownloadClick = { viewModel.downloadWallpaper(it) },
                     onFavoriteClick = { viewModel.onFavoriteClick(it) },
                     isFavorite = it.isFavorite
                 )

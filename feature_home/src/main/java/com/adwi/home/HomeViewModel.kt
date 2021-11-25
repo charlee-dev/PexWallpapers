@@ -1,6 +1,5 @@
 package com.adwi.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.core.IoDispatcher
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val savedStateHandle: SavedStateHandle,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -86,15 +84,6 @@ class HomeViewModel @Inject constructor(
     fun manualRefresh() {
         setRefreshTriggerIfCurrentlyNotLoading(Refresh.FORCE)
     }
-
-//     fun setCategory(categoryName: String) {
-//        Timber.tag(tag).d("save currentQuery = $categoryName")
-//            savedStateHandle["query"] = categoryName
-//
-////        onDispatcher(ioDispatcher) {
-////            settingsRepository.updateLastQuery(categoryName)
-////        }
-//    }
 
     fun onFavoriteClick(wallpaper: Wallpaper) {
         val isFavorite = wallpaper.isFavorite

@@ -50,8 +50,8 @@ class PreviewViewModel
         }
     }
 
-    fun goToPexels(wallpaper: Wallpaper) {
-        sharingTools.openUrlInBrowser(wallpaper.url)
+    fun goToPexels(url: String) {
+        sharingTools.openUrlInBrowser(url)
     }
 
     fun shareWallpaper(activity: AppCompatActivity, wallpaper: Wallpaper) {

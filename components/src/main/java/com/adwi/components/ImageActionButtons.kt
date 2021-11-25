@@ -22,8 +22,8 @@ import com.adwi.components.theme.paddingValues
 @Composable
 fun ImageActionButtons(
     modifier: Modifier = Modifier,
-    onUrlClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    onGoToUrlClick: () -> Unit,
+    onDownloadClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     isFavorite: Boolean
 ) {
@@ -39,11 +39,11 @@ fun ImageActionButtons(
     ) {
         ActionButton(
             icon = Icons.Outlined.Link,
-            modifier = Modifier.clickable { onUrlClick() }
+            modifier = Modifier.clickable { onGoToUrlClick() }
         )
         ActionButton(
             icon = Icons.Outlined.Save,
-            modifier = Modifier.clickable { onSaveClick() }
+            modifier = Modifier.clickable { onDownloadClick() }
         )
         if (isFavorite) {
             ActionButton(
@@ -87,8 +87,8 @@ fun ActionButton(
 fun ImageActionButtonsPreview() {
     MaterialTheme {
         ImageActionButtons(
-            onUrlClick = {},
-            onSaveClick = {},
+            onGoToUrlClick = {},
+            onDownloadClick = {},
             onFavoriteClick = {},
             isFavorite = true
         )

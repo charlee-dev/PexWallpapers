@@ -13,6 +13,8 @@
       <module name="PexWallpapers.data" target="11" />
       <module name="PexWallpapers.datasource.data" target="11" />
       <module name="PexWallpapers.datasource.repository" target="11" />
+      <module name="PexWallpapers.datasource.wallpapers.data" target="11" />
+      <module name="PexWallpapers.datasource.wallpapers.repository" target="11" />
       <module name="PexWallpapers.feature-home" target="11" />
       <module name="PexWallpapers.feature_favorites" target="11" />
       <module name="PexWallpapers.feature_home" target="11" />
