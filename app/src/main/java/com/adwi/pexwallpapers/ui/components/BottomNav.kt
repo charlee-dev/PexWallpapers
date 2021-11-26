@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
@@ -38,7 +37,6 @@ import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavIndicatorSh
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavigationItemPadding
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.TextIconSpacing
-import com.adwi.pexwallpapers.ui.theme.PrimaryLight
 import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
@@ -46,7 +44,7 @@ fun PexBottomBar(
     tabs: Array<HomeSections>,
     currentRoute: String,
     navigateToRoute: (String) -> Unit,
-    backgroundColor: Color = PrimaryLight,
+    backgroundColor: Color = MaterialTheme.colors.surface,
     animationColor: Color = MaterialTheme.colors.surface,
     selectedColor: Color = MaterialTheme.colors.primary,
     notSelectedColor: Color = MaterialTheme.colors.primary,
@@ -101,8 +99,8 @@ fun PexBottomBar(
                     onSelected = { navigateToRoute(section.route) },
                     animSpec = springSpec,
                     modifier = BottomNavigationItemPadding
-//                        .neumorphicPotShape()
-                        .clip(BottomNavIndicatorShape)
+                        .neumorphicPotShape()
+//                        .clip(BottomNavIndicatorShape)
                 )
             }
         }
