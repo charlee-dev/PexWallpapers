@@ -1,6 +1,6 @@
 package com.adwi.pexwallpapers.data.wallpapers.repository.util
 
-import com.adwi.pexwallpapers.util.domain.DataState
+import com.adwi.pexwallpapers.model.state.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

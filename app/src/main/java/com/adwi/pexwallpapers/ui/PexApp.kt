@@ -77,9 +77,6 @@ fun PexApp(
                         onGoToUrlClick = { uriHandler.openUri(it) },
                         onShareClick = { viewModel.shareWallpaper(it) },
                         onDownloadClick = { viewModel.downloadWallpaper(it) },
-                        onSetWallpaperClick = { url, home, lock ->
-                            viewModel.setWallpaper(url, home, lock)
-                        },
                         onAboutUsClick = {
                             TODO("add about us section")
                         },
@@ -88,8 +85,7 @@ fun PexApp(
                         },
                         onContactSupportClick = {
                             TODO("add  section")
-                        },
-                        onSaveAutomationClick = { viewModel.saveAutomation(it) },
+                        }
                     )
                 }
             }

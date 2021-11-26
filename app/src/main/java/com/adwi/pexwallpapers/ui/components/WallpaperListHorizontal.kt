@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
-import com.adwi.pexwallpapers.util.domain.DataState
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -95,6 +95,7 @@ private fun WallpaperListHorizontal(
                 onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                 onLongPress = { onLongPress(wallpaper) },
                 isHeartEnabled = wallpaper.isFavorite,
+                modifier = Modifier.neumorphicPunched()
             )
         })
     }

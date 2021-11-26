@@ -17,6 +17,10 @@ val PrimaryDark = Color(0xFFFE9C8A)
 val PrimaryMedium = Color(0xFFFDD7D2)
 val PrimaryLight = Color(0xFFFEDED4)
 
+// Shadow
+val PrimaryShadowLight = Color(0xFFFCE8E2)
+val PrimaryShadowDark = Color(0xFFFFD2C4)
+
 val AccentDark = Color(0xFF4F295D)
 val AccentMedium = Color(0xFF775782)
 val AccentLight = Color(0xFFA67FB3)

@@ -25,9 +25,9 @@ import androidx.compose.ui.util.lerp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.theme.PrimaryDark
 import com.adwi.pexwallpapers.ui.theme.paddingValues
-import com.adwi.pexwallpapers.util.domain.DataState
 import com.google.accompanist.pager.*
 import com.valentinilk.shimmer.shimmer
 import kotlin.math.absoluteValue
@@ -80,6 +80,7 @@ fun DailyWallpaper(
                         backgroundColor = MaterialTheme.colors.primary,
                         modifier = Modifier
                             .height(width)
+                            .neumorphicPunched()
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onLongPress = { onLongPress(wallpaper) },

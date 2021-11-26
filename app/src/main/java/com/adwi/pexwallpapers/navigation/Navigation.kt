@@ -46,11 +46,9 @@ fun NavGraphBuilder.myNavGraph(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Long) -> Unit,
     onGoToUrlClick: (String) -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -62,8 +60,7 @@ fun NavGraphBuilder.myNavGraph(
             navigateToSearch = navigateToSearch,
             onAboutUsClick = onAboutUsClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
-            onContactSupportClick = onContactSupportClick,
-            onSaveAutomationClick = onSaveAutomationClick
+            onContactSupportClick = onContactSupportClick
         )
     }
 
@@ -79,8 +76,7 @@ fun NavGraphBuilder.myNavGraph(
             upPress = upPress,
             onGoToUrlClick = onGoToUrlClick,
             onShareClick = onShareClick,
-            onDownloadClick = onDownloadClick,
-            onSetWallpaperClick = onSetWallpaperClick
+            onDownloadClick = onDownloadClick
         )
     }
 
@@ -117,7 +113,6 @@ fun NavGraphBuilder.addHomeGraph(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Long) -> Unit,
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
@@ -155,8 +150,7 @@ fun NavGraphBuilder.addHomeGraph(
             viewModel = viewModel,
             onAboutUsClick = onAboutUsClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
-            onContactSupportClick = onContactSupportClick,
-            onSaveAutomationClick = onSaveAutomationClick
+            onContactSupportClick = onContactSupportClick
         )
     }
 }

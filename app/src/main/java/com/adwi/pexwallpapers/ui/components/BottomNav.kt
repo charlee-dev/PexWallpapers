@@ -101,6 +101,7 @@ fun PexBottomBar(
                     onSelected = { navigateToRoute(section.route) },
                     animSpec = springSpec,
                     modifier = BottomNavigationItemPadding
+//                        .neumorphicPotShape()
                         .clip(BottomNavIndicatorShape)
                 )
             }

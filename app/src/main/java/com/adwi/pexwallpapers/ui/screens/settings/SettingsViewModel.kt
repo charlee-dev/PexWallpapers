@@ -6,14 +6,21 @@ import com.adwi.datasource_settings.domain.Settings
 import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.data.settings.model.toDomain
 import com.adwi.pexwallpapers.data.settings.model.toEntity
+import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.di.IoDispatcher
+import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.shared.image.ImageTools
+import com.adwi.pexwallpapers.shared.work.WorkTools
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
+import com.adwi.pexwallpapers.util.Constants
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -24,14 +31,23 @@ import javax.inject.Inject
 class SettingsViewModel
 @Inject constructor(
     private val settingsDao: SettingsDao,
+    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val workTools: WorkTools,
+    private val imageTools: ImageTools,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
+    private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
+    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
+    private val _days = MutableStateFlow(0)
+    private val _hours = MutableStateFlow(0)
+    private val _minutes = MutableStateFlow(1)
 
-    val days = MutableStateFlow(0)
-    val hours = MutableStateFlow(0)
-    val minutes = MutableStateFlow(1)
+    val settings = _settings.asStateFlow()
+    val saveState = _saveState.asStateFlow()
+    val days = _days.asStateFlow()
+    val hours = _hours.asStateFlow()
+    val minutes = _minutes.asStateFlow()
 
     init {
         getSettings()
@@ -40,7 +56,7 @@ class SettingsViewModel
     private fun getSettings() {
         onDispatcher(ioDispatcher) {
             settingsDao.getSettings().collect {
-                settings.value = it.toDomain()
+                _settings.value = it.toDomain()
 //                formatDelayTimeInMilliSeconds(it.durationValue)
             }
         }
@@ -90,19 +106,19 @@ class SettingsViewModel
 
     fun setDays(value: Int) {
         onDispatcher(ioDispatcher) {
-            days.value = value
+            _days.value = value
         }
     }
 
     fun setHours(value: Int) {
         onDispatcher(ioDispatcher) {
-            hours.value = value
+            _hours.value = value
         }
     }
 
     fun setMinutes(value: Int) {
         onDispatcher(ioDispatcher) {
-            minutes.value = value
+            _minutes.value = value
         }
     }
 
@@ -128,5 +144,29 @@ class SettingsViewModel
         Timber.tag(tag).d(
             "formatDelayTimeInMilliSeconds \nDays = $days \nHours = $hours \nMinutes = $minutes"
         )
+    }
+
+    fun saveAutomation(delay: Long) {
+        onDispatcher(ioDispatcher) {
+
+            val favorites = getFavorites()
+
+            if (favorites.isNotEmpty()) {
+                workTools.setupAutoChangeWallpaperWorks(
+                    favorites = favorites,
+                    timeValue = delay
+                )
+                Timber.tag(tag).d("saveSettings - Delay = $delay")
+            } else {
+                cancelWorks(Constants.WORK_AUTO_WALLPAPER)
+            }
+        }
+    }
+
+    private suspend fun getFavorites() = wallpaperRepository.getFavorites().first()
+
+    private fun cancelWorks(workTag: String) {
+        workTools.cancelWorks(workTag)
+        imageTools.deleteAllBackups()
     }
 }

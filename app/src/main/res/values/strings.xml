@@ -110,4 +110,7 @@
     <string name="about_us">About us</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="support">Support</string>
+    <string name="error">Error</string>
+    <string name="wallpaper_has_been_set">Wallpaper has been set</string>
+    <string name="done">Done</string>
 </resources>

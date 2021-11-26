@@ -79,7 +79,9 @@ dependencies {
     kapt(Dependencies.hiltWorkCompiler)
 
     implementation(Dependencies.accompanistPermissions)
+    implementation("me.nikhilchaudhari:composeNeumorphism:1.0.0-alpha02")
 
+    // Test
     implementation(TestDependencies.coroutinesTest)
     implementation(TestDependencies.truth)
     implementation(TestDependencies.test_runner)

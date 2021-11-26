@@ -1,17 +1,25 @@
 package com.adwi.pexwallpapers.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.adwi.pexwallpapers.ui.theme.paddingValues
+import com.adwi.pexwallpapers.R
+import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.ui.theme.AccentMedium
 
 @Composable
 fun ButtonRoundedTop(
@@ -36,51 +44,94 @@ fun ButtonRoundedTop(
 }
 
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun PexButton(
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null,
+    state: Result = Result.Idle,
     text: String,
+    loadingText: String = stringResource(id = R.string.loading),
+    successText: String = stringResource(id = R.string.done),
+    errorText: String = stringResource(id = R.string.error),
     shape: Shape = MaterialTheme.shapes.large,
-    enabled: Boolean = true,
+    elevation: Dp = 6.dp,
     backgroundColor: Color = MaterialTheme.colors.primaryVariant,
-    contentColor: Color = MaterialTheme.colors.onSurface,
     textColor: Color = MaterialTheme.colors.primary,
     onClick: () -> Unit = {}
 ) {
-    Button(
-        enabled = enabled,
-        onClick = { onClick() },
-        shape = shape,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = backgroundColor,
-            contentColor = contentColor
-        ),
-        modifier = modifier
-    ) {
-        if (icon != null) {
-            Icon(
-                imageVector = Icons.Outlined.Add,
-                contentDescription = null,
-                tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
+    val transition = updateTransition(targetState = state, label = "Button state")
+
+    val bgColor by transition.animateColor(
+        label = "Card background color"
+    ) { result ->
+        when (result) {
+            is Result.Error -> Color.Red
+            Result.Idle -> backgroundColor
+            Result.Loading -> textColor
+            Result.Success -> AccentMedium
         }
-        Text(
-            text = text.uppercase(),
-            modifier = Modifier.padding(
-                start = if (icon == null) paddingValues else 0.dp,
-                end = paddingValues,
-                top = paddingValues / 2,
-                bottom = paddingValues / 2
-            ),
-            color = textColor
-        )
+    }
+
+    val titleColor by transition.animateColor(
+        label = "Card background color"
+    ) { result ->
+        when (result) {
+            is Result.Error -> Color.White
+            Result.Idle -> textColor
+            Result.Loading -> backgroundColor
+            Result.Success -> Color.White
+        }
+    }
+
+    val buttonElevation by transition.animateDp(
+        label = "Card background color"
+    ) { result ->
+        when (result) {
+            Result.Loading -> 0.dp
+            Result.Success -> elevation / 2
+            else -> elevation
+        }
+    }
+
+    Surface(
+        onClick = onClick,
+        enabled = state is Result.Idle,
+        shape = shape,
+        modifier = modifier,
+        color = bgColor,
+        elevation = buttonElevation
+    ) {
+        AnimatedContent(
+            targetState = state,
+            transitionSpec = {
+                if (targetState == Result.Idle) {
+                    slideInVertically(initialOffsetY = { height -> height }) + fadeIn() with
+                            slideOutVertically(targetOffsetY = { height -> -height }) + fadeOut()
+                } else {
+                    slideInVertically(initialOffsetY = { height -> -height }) + fadeIn() with
+                            slideOutVertically(targetOffsetY = { height -> height }) + fadeOut()
+                }.using(SizeTransform(clip = false))
+            },
+            modifier = Modifier.fillMaxSize()
+        ) { targetState ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = when (targetState) {
+                        is Result.Error -> errorText
+                        Result.Idle -> text
+                        Result.Loading -> loadingText
+                        Result.Success -> successText
+                    }.uppercase(),
+                    color = titleColor,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 @Preview(showBackground = true)

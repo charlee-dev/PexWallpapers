@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -27,8 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
+import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.CategoryPanel
 import com.adwi.pexwallpapers.ui.components.Header
+import com.adwi.pexwallpapers.ui.components.PexButton
 import com.adwi.pexwallpapers.ui.components.PexScaffold
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
@@ -49,8 +52,7 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
-    onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Long) -> Unit,
+    onContactSupportClick: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
     val days by viewModel.days.collectAsState()
@@ -154,8 +156,11 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.size(paddingValues))
                     SaveButton(
-                        modifier = Modifier,
-                        onClick = { onSaveAutomationClick(viewModel.getDelay()) }
+                        modifier = Modifier
+//                            .padding(paddingValues)
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        onClick = { viewModel.saveAutomation(viewModel.getDelay()) },
                     )
                 }
             }
@@ -208,11 +213,13 @@ fun SettingsScreen(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalPermissionsApi
 @ExperimentalMaterialApi
 @Composable
 private fun SaveButton(
     modifier: Modifier = Modifier,
+    state: Result = Result.Idle,
     onClick: () -> Unit
 ) {
     var doNotShowRationale by rememberSaveable { mutableStateOf(false) }
@@ -223,21 +230,15 @@ private fun SaveButton(
 
     when {
         readPermissionState.hasPermission -> {
-            Surface(
+            PexButton(
+                state = state,
                 onClick = onClick,
-                modifier = modifier.fillMaxWidth(),
-                color = MaterialTheme.colors.primaryVariant
-            ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        text = "Save",
-                        color = MaterialTheme.colors.primary,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(paddingValues)
-                    )
-                }
-            }
+                shape = RectangleShape,
+                text = stringResource(id = R.string.save),
+                successText = stringResource(id = R.string.automation_saved),
+                modifier = modifier
+            )
+
         }
         readPermissionState.shouldShowRationale ||
                 !readPermissionState.permissionRequested -> {

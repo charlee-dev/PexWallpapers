@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.util.domain
+package com.adwi.pexwallpapers.model.state
 
 sealed class Event {
     data class ShowErrorMessage(val error: Throwable) : Event()

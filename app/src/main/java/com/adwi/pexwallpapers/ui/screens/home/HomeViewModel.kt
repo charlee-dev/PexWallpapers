@@ -5,9 +5,9 @@ import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.di.IoDispatcher
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
-import com.adwi.pexwallpapers.util.domain.DataState
-import com.adwi.pexwallpapers.util.domain.Refresh
+import com.adwi.pexwallpapers.util.Refresh
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

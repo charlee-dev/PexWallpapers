@@ -1,9 +1,10 @@
 package com.adwi.pexwallpapers.ui.screens.preview
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateInt
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -14,14 +15,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -32,10 +36,10 @@ fun PreviewScreen(
     onGoToUrlClick: (String) -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
     upPress: () -> Unit,
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
+    val saveState by viewModel.saveState.collectAsState()
 
     PexScaffold(
         viewModel = viewModel
@@ -76,18 +80,41 @@ fun PreviewScreen(
                     onFavoriteClick = { viewModel.onFavoriteClick(it) },
                     isFavorite = it.isFavorite
                 )
+
+                val transition = updateTransition(targetState = saveState, label = "Button state")
+
+                val roundedEdgeSize by transition.animateInt(
+                    label = "Card background color"
+                ) { result ->
+                    when (result) {
+                        Result.Loading -> 80
+                        Result.Success -> 90
+                        else -> 100
+                    }
+                }
+
+                val roundedTopShape =
+                    RoundedCornerShape(
+                        topStartPercent = roundedEdgeSize,
+                        topEndPercent = roundedEdgeSize
+                    )
+
                 PexButton(
+                    state = saveState,
                     onClick = {
-                        onSetWallpaperClick(
-                            it.imageUrlPortrait,
-                            true,
-                            false
+                        viewModel.setWallpaper(
+                            imageUrl = it.imageUrlPortrait,
+                            setHomeScreen = true,
+                            setLockScreen = false
                         )
                     },
                     text = stringResource(id = R.string.set_wallpaper),
+                    successText = stringResource(id = R.string.wallpaper_has_been_set),
+                    shape = roundedTopShape,
                     modifier = Modifier
-                        .padding(paddingValues)
+                        .padding(top = paddingValues)
                         .fillMaxWidth()
+                        .height(56.dp)
                 )
             }
         }

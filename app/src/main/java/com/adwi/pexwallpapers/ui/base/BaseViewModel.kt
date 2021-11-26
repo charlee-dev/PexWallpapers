@@ -2,8 +2,8 @@ package com.adwi.pexwallpapers.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adwi.pexwallpapers.util.domain.Event
-import com.adwi.pexwallpapers.util.domain.Refresh
+import com.adwi.pexwallpapers.model.state.Event
+import com.adwi.pexwallpapers.util.Refresh
 import com.adwi.pexwallpapers.util.ext.exhaustive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

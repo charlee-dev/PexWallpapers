@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.ColorCategory
+import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
-import com.adwi.pexwallpapers.util.domain.DataState
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -63,7 +63,7 @@ fun CategoryListHorizontalPanel(
                 CategoryListHorizontal(
                     categoryList = list,
                     onCategoryClick = onCategoryClick,
-                    listState = listState
+                    listState = listState,
                 )
             }
         }
@@ -95,7 +95,7 @@ fun CategoryListHorizontal(
                 image2 = category.secondImage,
                 image3 = category.thirdImage,
                 image4 = category.forthImage,
-                onCategoryClick = { onCategoryClick(category.name) }
+                onCategoryClick = { onCategoryClick(category.name) },
             )
         })
     }
@@ -124,7 +124,9 @@ private fun CategoryItem(
             elevation = elevation,
             shape = shape,
             backgroundColor = MaterialTheme.colors.primary,
-            modifier = modifier.size(100.dp)
+            modifier = modifier
+                .size(100.dp)
+                .neumorphicPunched()
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(

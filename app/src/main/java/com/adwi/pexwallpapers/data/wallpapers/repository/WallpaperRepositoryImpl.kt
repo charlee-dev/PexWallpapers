@@ -15,8 +15,8 @@ import com.adwi.pexwallpapers.data.wallpapers.repository.util.shouldFetch
 import com.adwi.pexwallpapers.data.wallpapers.repository.util.shouldFetchColors
 import com.adwi.pexwallpapers.model.ColorCategory
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.util.Constants
-import com.adwi.pexwallpapers.util.domain.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
