@@ -59,7 +59,7 @@ fun Header(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = stringResource(id = R.string.search),
-                    tint = MaterialTheme.colors.onBackground,
+                    tint = MaterialTheme.colors.primary,
                     modifier = Modifier
                 )
             }

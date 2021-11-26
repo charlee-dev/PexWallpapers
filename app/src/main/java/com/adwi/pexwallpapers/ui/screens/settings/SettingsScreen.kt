@@ -290,7 +290,7 @@ private fun SettingPanel(
         if (state) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
     }
     val textColor by transition.animateColor(label = "Card text color") { state ->
-        if (state) MaterialTheme.colors.surface else MaterialTheme.colors.onSurface
+        if (state) MaterialTheme.colors.secondary else MaterialTheme.colors.onBackground
     }
     val switchEnabledColor by transition.animateColor(label = "Card enabled switch color") { state ->
         if (state) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.primary
@@ -344,7 +344,7 @@ private fun SwitchRow(
     name: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    textColor: Color = MaterialTheme.colors.onSurface,
+    textColor: Color = MaterialTheme.colors.onBackground,
     switchEnabledColor: Color = MaterialTheme.colors.primary,
     switchDisabledColor: Color = MaterialTheme.colors.secondary,
     backgroundColor: Color = MaterialTheme.colors.surface,
@@ -444,7 +444,7 @@ private fun CheckBoxRow(
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colors.secondary,
                     checkmarkColor = MaterialTheme.colors.primary
-                )
+                ),
             )
             Text(
                 text = name,
@@ -632,7 +632,7 @@ private fun InfoRow(
                 Box {
                     Icon(
                         imageVector = icon,
-                        tint = MaterialTheme.colors.primaryVariant,
+                        tint = MaterialTheme.colors.secondary,
                         contentDescription = title,
                         modifier = Modifier
                             .padding(paddingValues / 2)

@@ -42,10 +42,11 @@ fun PexSearchToolbar(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Card(
-        elevation = elevation,
+//        elevation = elevation,
         shape = shape,
         modifier = modifier
             .fillMaxWidth()
+            .neumorphicPunched()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -78,7 +79,7 @@ fun PexSearchToolbar(
                     )
                 },
                 textStyle = TextStyle(color = contentColor),
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundColor),
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                 maxLines = 1
             )
             IconButton(

@@ -131,7 +131,7 @@ fun DailyWallpaper(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .background(PrimaryDark)
+                                        .background(MaterialTheme.colors.secondary)
                                 ) {
                                     Column(
                                         modifier = Modifier
@@ -139,11 +139,13 @@ fun DailyWallpaper(
                                     ) {
                                         Text(
                                             text = stringResource(R.string.daily),
-                                            fontSize = 24.sp
+                                            fontSize = 24.sp,
+                                            color = MaterialTheme.colors.onBackground
                                         )
                                         Text(
                                             text = stringResource(R.string.wallpaper),
-                                            fontSize = 24.sp
+                                            fontSize = 24.sp,
+                                            color = MaterialTheme.colors.onBackground
                                         )
                                     }
                                 }

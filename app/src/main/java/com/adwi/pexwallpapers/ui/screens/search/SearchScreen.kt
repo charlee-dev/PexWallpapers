@@ -22,10 +22,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDomain
 import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.ui.components.PexAnimatedHeart
-import com.adwi.pexwallpapers.ui.components.PexCoilImage
-import com.adwi.pexwallpapers.ui.components.PexScaffold
-import com.adwi.pexwallpapers.ui.components.PexSearchToolbar
+import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -131,6 +128,7 @@ fun WallpaperListPaged(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                         .height((wallpaper.height / 2.5).dp)
+                        .neumorphicPunched()
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },
@@ -139,7 +137,7 @@ fun WallpaperListPaged(
                                 }
                             )
                         },
-                    elevation = 10.dp,
+//                    elevation = 10.dp,
                     shape = MaterialTheme.shapes.large
                 ) {
                     Box() {

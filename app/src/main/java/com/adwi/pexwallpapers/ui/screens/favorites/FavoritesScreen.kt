@@ -22,10 +22,7 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.ui.components.Header
-import com.adwi.pexwallpapers.ui.components.PexAnimatedHeart
-import com.adwi.pexwallpapers.ui.components.PexCoilImage
-import com.adwi.pexwallpapers.ui.components.PexScaffold
+import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.paddingValues
@@ -70,6 +67,7 @@ fun FavoritesScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
+                    top = paddingValues / 2,
                     bottom = BottomNavHeight + paddingValues
                 ),
                 verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
@@ -80,7 +78,8 @@ fun FavoritesScreen(
                         wallpaper = wallpaper,
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
-                        isHeartEnabled = wallpaper.isFavorite
+                        isHeartEnabled = wallpaper.isFavorite,
+                        modifier = Modifier.neumorphicPunched()
                     )
                 })
 
