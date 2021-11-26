@@ -18,7 +18,7 @@ import me.nikhilchaudhari.library.shapes.Punched
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicPunched(
     neuInsets: NeuInsets = NeuInsets(),
-    neuShape: NeuShape = Punched.Rounded(),
+    neuShape: NeuShape = Punched.Rounded(30.dp),
     lightShadowColor: Color = PrimaryShadowLight,
     darkShadowColor: Color = PrimaryShadowDark,
     strokeWidth: Dp = 6.dp,
@@ -37,7 +37,7 @@ fun Modifier.neumorphicPunched(
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicPresssed(
     neuInsets: NeuInsets = NeuInsets(),
-    neuShape: NeuShape = Pressed.Rounded(),
+    neuShape: NeuShape = Pressed.Rounded(30.dp),
     lightShadowColor: Color = PrimaryShadowLight,
     darkShadowColor: Color = PrimaryShadowDark,
     strokeWidth: Dp = 6.dp,
@@ -56,7 +56,7 @@ fun Modifier.neumorphicPresssed(
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicPotShape(
     neuInsets: NeuInsets = NeuInsets(),
-    neuShape: NeuShape = Pot.Rounded(),
+    neuShape: NeuShape = Pot.Rounded(30.dp),
     lightShadowColor: Color = PrimaryShadowLight,
     darkShadowColor: Color = PrimaryShadowDark,
     strokeWidth: Dp = 6.dp,

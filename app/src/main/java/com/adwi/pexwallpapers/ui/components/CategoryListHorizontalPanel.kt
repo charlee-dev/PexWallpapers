@@ -30,6 +30,7 @@ import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
+import me.nikhilchaudhari.library.shapes.Punched
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -121,12 +122,12 @@ private fun CategoryItem(
     ) {
         Card(
             onClick = onCategoryClick,
-            elevation = elevation,
+//            elevation = elevation,
             shape = shape,
             backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier
                 .size(100.dp)
-                .neumorphicPunched()
+                .neumorphicPunched(neuShape = Punched.Rounded(10.dp))
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(

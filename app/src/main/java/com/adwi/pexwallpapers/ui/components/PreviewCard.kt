@@ -22,10 +22,11 @@ fun PreviewCard(
     shape: Shape = MaterialTheme.shapes.large,
 ) {
     Card(
-        elevation = elevation,
+//        elevation = elevation,
         shape = shape,
         modifier = modifier
             .fillMaxSize()
+            .neumorphicPunched()
     ) {
         PexCoilImage(
             imageUrl = wallpaper.imageUrlPortrait,

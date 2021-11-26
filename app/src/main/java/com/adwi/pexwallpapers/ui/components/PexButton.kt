@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.theme.AccentMedium
+import me.nikhilchaudhari.library.shapes.Punched
 
 @Composable
 fun ButtonRoundedTop(
@@ -98,9 +99,11 @@ fun PexButton(
         onClick = onClick,
         enabled = state is Result.Idle,
         shape = shape,
-        modifier = modifier,
+        modifier = modifier.neumorphicPunched(
+            neuShape = Punched.Rounded(60.dp)
+        ),
         color = bgColor,
-        elevation = buttonElevation
+//        elevation = buttonElevation
     ) {
         AnimatedContent(
             targetState = state,

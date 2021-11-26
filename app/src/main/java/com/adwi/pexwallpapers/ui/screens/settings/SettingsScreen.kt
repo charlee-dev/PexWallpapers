@@ -29,16 +29,14 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.state.Result
-import com.adwi.pexwallpapers.ui.components.CategoryPanel
-import com.adwi.pexwallpapers.ui.components.Header
-import com.adwi.pexwallpapers.ui.components.PexButton
-import com.adwi.pexwallpapers.ui.components.PexScaffold
+import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import me.nikhilchaudhari.library.shapes.Punched
 
 @ExperimentalPermissionsApi
 @ExperimentalComposeUiApi
@@ -304,8 +302,9 @@ private fun SettingPanel(
         CategoryPanel(categoryName = panelName)
     }
     Card(
-        elevation = elevation,
-        shape = shape
+//        elevation = elevation,
+        shape = shape,
+        modifier = Modifier.neumorphicPunched()
     ) {
         Column(
             Modifier
@@ -569,9 +568,11 @@ private fun AnimatedCounter(
             color = MaterialTheme.colors.primary
         ),
         shape = RoundedCornerShape(percent = 20),
-        modifier = modifier.size(40.dp),
+        modifier = modifier
+            .size(40.dp)
+            .neumorphicPunched(neuShape = Punched.Rounded(10.dp)),
         color = MaterialTheme.colors.primary,
-        elevation = 4.dp
+//        elevation = 4.dp
     ) {
         Row(
             Modifier.fillMaxSize(),
@@ -622,8 +623,10 @@ private fun InfoRow(
         ) {
             Card(
                 shape = RoundedCornerShape(30),
-                elevation = 6.dp,
-                modifier = Modifier.padding(paddingValues / 2),
+//                elevation = 6.dp,
+                modifier = Modifier
+                    .padding(paddingValues / 2)
+                    .neumorphicPunched(neuShape = Punched.Rounded(10.dp)),
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Box {

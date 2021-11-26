@@ -25,6 +25,7 @@ import com.adwi.pexwallpapers.model.state.DataState
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
+import me.nikhilchaudhari.library.shapes.Punched
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -95,7 +96,7 @@ private fun WallpaperListHorizontal(
                 onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                 onLongPress = { onLongPress(wallpaper) },
                 isHeartEnabled = wallpaper.isFavorite,
-                modifier = Modifier.neumorphicPunched()
+                modifier = Modifier.neumorphicPunched(neuShape = Punched.Rounded(10.dp))
             )
         })
     }
@@ -118,7 +119,7 @@ private fun WallpaperItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            elevation = elevation,
+//            elevation = elevation,
             shape = shape,
             backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier

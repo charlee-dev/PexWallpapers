@@ -75,7 +75,7 @@ fun DailyWallpaper(
                     visible = !list.isNullOrEmpty()
                 ) {
                     Card(
-                        elevation = elevation,
+//                        elevation = elevation,
                         shape = shape,
                         backgroundColor = MaterialTheme.colors.primary,
                         modifier = Modifier
