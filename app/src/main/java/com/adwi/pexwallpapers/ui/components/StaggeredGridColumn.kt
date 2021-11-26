@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.components
+package com.adwi.pexwallpapers.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

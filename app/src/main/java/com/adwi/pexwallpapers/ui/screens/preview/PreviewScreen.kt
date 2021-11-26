@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.components.*
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -35,7 +35,7 @@ fun PreviewScreen(
     onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
     upPress: () -> Unit,
 ) {
-    val wallpaper by viewModel.wallpaper.collectAsState(null)
+    val wallpaper by viewModel.wallpaper.collectAsState()
 
     PexScaffold(
         viewModel = viewModel
@@ -55,14 +55,11 @@ fun PreviewScreen(
             )
             wallpaper?.let {
                 PreviewCard(
-                    imageUrl = it.imageUrlPortrait,
-                    wallpaperId = it.id,
+                    wallpaper = it,
                     modifier = Modifier
                         .padding(horizontal = paddingValues)
                         .padding(vertical = paddingValues / 2)
-                        .weight(1f),
-                    onLongPress = { viewModel.onFavoriteClick(it) },
-                    isHeartEnabled = it.isFavorite
+                        .weight(1f)
                 )
                 Text(
                     modifier = Modifier

@@ -20,7 +20,6 @@ import com.adwi.pexwallpapers.util.domain.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
@@ -209,17 +208,18 @@ class WallpaperRepositoryImpl @Inject constructor(
             pagingSourceFactory = { searchDao.getSearchResultWallpaperPaged(query) }
         ).flow
 
-    override fun getWallpaperById(id: Int): Flow<Wallpaper> = flow {
-        val entity = wallpapersDao.getWallpaperById(id)
-        val wallpaper = entity.toDomain()
-        emit(wallpaper)
-    }
+    override fun getWallpaperById(id: Int): Flow<Wallpaper> =
+        wallpapersDao.getWallpaperById(id).map { it.toDomain() }
 
     override fun getFavorites(): Flow<List<Wallpaper>> =
         wallpapersDao.getAllFavorites().map { it.toDomainList() }
 
     override suspend fun updateWallpaper(wallpaper: Wallpaper) {
         wallpapersDao.updateWallpaper(wallpaper.toEntity())
+    }
+
+    override suspend fun updateWallpaperIsFavorite(id: Int, isFavorite: Boolean) {
+        wallpapersDao.updateWallpaperIsFavorite(id, isFavorite)
     }
 
     override suspend fun deleteNonFavoriteWallpapersOlderThan(timestampInMillis: Long) =

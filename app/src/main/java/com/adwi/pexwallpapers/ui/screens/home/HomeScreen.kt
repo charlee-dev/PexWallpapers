@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.components.*
+import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi

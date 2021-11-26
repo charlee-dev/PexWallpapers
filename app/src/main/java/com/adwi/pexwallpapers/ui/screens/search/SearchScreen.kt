@@ -20,12 +20,12 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.components.PexAnimatedHeart
-import com.adwi.pexwallpapers.components.PexCoilImage
-import com.adwi.pexwallpapers.components.PexScaffold
-import com.adwi.pexwallpapers.components.PexSearchToolbar
 import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDomain
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.ui.components.PexAnimatedHeart
+import com.adwi.pexwallpapers.ui.components.PexCoilImage
+import com.adwi.pexwallpapers.ui.components.PexScaffold
+import com.adwi.pexwallpapers.ui.components.PexSearchToolbar
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

@@ -11,7 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -24,7 +26,8 @@ class PreviewViewModel
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
+    private val _wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
+    val wallpaper = _wallpaper.asStateFlow()
 
     init {
         savedStateHandle.get<Int>("wallpaperId")?.let { wallpaperId ->
@@ -34,15 +37,22 @@ class PreviewViewModel
 
     private fun getWallpaperById(id: Int) {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getWallpaperById(id).collect { wallpaper.value = it }
+            wallpaperRepository.getWallpaperById(id).collect { _wallpaper.value = it }
         }
     }
 
+//    fun onFavoriteClick(wallpaper: Wallpaper) {
+//        val isFavorite = wallpaper.isFavorite
+//        wallpaper.isFavorite = !isFavorite
+//        onDispatcher(ioDispatcher) {
+//            wallpaperRepository.updateWallpaper(wallpaper)
+//        }
+//    }
+
     fun onFavoriteClick(wallpaper: Wallpaper) {
-        val isFavorite = wallpaper.isFavorite
-        wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaper(wallpaper)
+            wallpaperRepository.updateWallpaperIsFavorite(wallpaper.id, !wallpaper.isFavorite)
+            Timber.d("${!wallpaper.isFavorite}")
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.components.test
+package com.adwi.pexwallpapers.ui.components.test
 
 const val TAG_HERO_SEARCH_BAR = "TAG_HERO_SEARCH_BAR"
 const val TAG_HERO_NAME = "TAG_HERO_NAME"

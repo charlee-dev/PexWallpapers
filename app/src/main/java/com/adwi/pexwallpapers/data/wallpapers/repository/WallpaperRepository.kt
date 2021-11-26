@@ -51,4 +51,6 @@ interface WallpaperRepository {
     fun getWallpaperById(id: Int): Flow<Wallpaper>
 
     suspend fun updateWallpaper(wallpaper: Wallpaper)
+
+    suspend fun updateWallpaperIsFavorite(id: Int, isFavorite: Boolean)
 }

@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.components.PexScaffold
-import com.adwi.pexwallpapers.components.PexSnackBarHost
 import com.adwi.pexwallpapers.navigation.HomeSections
 import com.adwi.pexwallpapers.navigation.MainDestinations
 import com.adwi.pexwallpapers.navigation.myNavGraph
 import com.adwi.pexwallpapers.navigation.rememberMyAppState
 import com.adwi.pexwallpapers.ui.components.PexBottomBar
+import com.adwi.pexwallpapers.ui.components.PexScaffold
+import com.adwi.pexwallpapers.ui.components.PexSnackBarHost
 import com.adwi.pexwallpapers.ui.screens.main.MainViewModel
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.google.accompanist.insets.ProvideWindowInsets

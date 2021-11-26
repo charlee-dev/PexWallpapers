@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.components
+package com.adwi.pexwallpapers.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn

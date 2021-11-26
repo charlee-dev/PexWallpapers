@@ -1,5 +1,7 @@
-package com.adwi.pexwallpapers.components
+package com.adwi.pexwallpapers.ui.components
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -8,8 +10,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -25,11 +31,11 @@ fun ImageActionButtons(
     onFavoriteClick: () -> Unit,
     isFavorite: Boolean
 ) {
-//    val favoriteTransition = updateTransition(targetState = isFavorite, label = "Card")
-//
-//    val tintColor by favoriteTransition.animateColor(label = "Favorite icon color") { state ->
-//        if (state) Color.Red else MaterialTheme.colors.primary
-//    }
+    val favoriteTransition = updateTransition(targetState = isFavorite, label = "Card")
+
+    val tintColor by favoriteTransition.animateColor(label = "Favorite icon color") { state ->
+        if (state) Color.Red else MaterialTheme.colors.primary
+    }
 
     Row(
         modifier = modifier,
@@ -47,20 +53,11 @@ fun ImageActionButtons(
             icon = Icons.Outlined.Share,
             modifier = Modifier.clickable { onShareClick() }
         )
-        if (isFavorite) {
-            ActionButton(
-                icon = Icons.Outlined.Favorite,
-                modifier = Modifier.clickable { onFavoriteClick() },
-//            tint = tintColor
-            )
-        } else {
-            ActionButton(
-                icon = Icons.Outlined.Bookmark,
-                modifier = Modifier.clickable { onFavoriteClick() },
-//            tint = tintColor
-            )
-        }
-
+        ActionButton(
+            icon = Icons.Outlined.Favorite,
+            modifier = Modifier.clickable { onFavoriteClick() },
+            tint = tintColor
+        )
     }
 }
 

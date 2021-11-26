@@ -15,15 +15,17 @@ interface WallpapersDao {
     fun getAllWallpapers(): Flow<List<WallpaperEntity>>
 
     @Query("SELECT * FROM wallpaper_table WHERE id = :wallpaperId")
-    suspend fun getWallpaperById(wallpaperId: Int): WallpaperEntity
+    fun getWallpaperById(wallpaperId: Int): Flow<WallpaperEntity>
 
     @Query("SELECT * FROM wallpaper_table WHERE categoryName = :categoryName")
     fun getWallpapersOfCategory(categoryName: String): Flow<List<WallpaperEntity>>
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWallpaper(wallpaper: WallpaperEntity)
 
     // Favorites
+    @Query("UPDATE wallpaper_table SET isFavorite = :isFavorite WHERE id = :id")
+    suspend fun updateWallpaperIsFavorite(id: Int, isFavorite: Boolean)
 
     @Query("SELECT * FROM wallpaper_table WHERE isFavorite = 1")
     fun getAllFavorites(): Flow<List<WallpaperEntity>>

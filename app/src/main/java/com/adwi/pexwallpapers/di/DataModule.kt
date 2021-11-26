@@ -106,10 +106,10 @@ object DataModule {
     @Singleton
     @Provides
     fun provideHttpClient(
-//        loggingInterceptor: HttpLoggingInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor,
         networkInterceptor: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()
-//        .addInterceptor(loggingInterceptor)
+        .addInterceptor(loggingInterceptor)
         .addNetworkInterceptor(networkInterceptor)
         .readTimeout(15, TimeUnit.SECONDS)
         .connectTimeout(15, TimeUnit.SECONDS)
