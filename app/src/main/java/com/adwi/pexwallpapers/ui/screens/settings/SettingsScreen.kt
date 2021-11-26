@@ -1,5 +1,6 @@
 package com.adwi.pexwallpapers.ui.screens.settings
 
+import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
@@ -45,7 +46,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
+    onAboutUsClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Long) -> Unit,
 ) {
     val settings by viewModel.settings.collectAsState()
     val days by viewModel.days.collectAsState()
@@ -54,6 +59,16 @@ fun SettingsScreen(
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+
+    val subject =
+        "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
+
+    val chooserMessage = context.getString(R.string.support_chooser_message)
+
+    val intent = Intent(Intent.ACTION_SENDTO).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        putExtra(Intent.EXTRA_SUBJECT, subject)
+    }
 
     PexScaffold(
         viewModel = viewModel,
@@ -140,10 +155,7 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.size(paddingValues))
                     SaveButton(
                         modifier = Modifier,
-                        onClick = {
-                            viewModel.saveAutomation()
-                            viewModel.setSnackBar(context.getString(R.string.automation_saved))
-                        }
+                        onClick = { onSaveAutomationClick(viewModel.getDelay()) }
                     )
                 }
             }
@@ -176,17 +188,17 @@ fun SettingsScreen(
             item {
                 Column(Modifier.padding(top = paddingValues)) {
                     InfoRow(
-                        onClick = { viewModel.aboutUs() },
+                        onClick = onAboutUsClick,
                         title = stringResource(id = R.string.about_us),
                         icon = Icons.Outlined.QuestionAnswer
                     )
                     InfoRow(
-                        onClick = { viewModel.privacyPolicy() },
+                        onClick = onPrivacyPolicyClick,
                         title = stringResource(id = R.string.privacy_policy),
                         icon = Icons.Outlined.Security
                     )
                     InfoRow(
-                        onClick = { viewModel.contactSupport() },
+                        onClick = onContactSupportClick,
                         title = stringResource(id = R.string.support),
                         icon = Icons.Outlined.Mail
                     )

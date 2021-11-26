@@ -8,10 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Bookmark
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Link
-import androidx.compose.material.icons.outlined.Save
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +20,7 @@ import com.adwi.pexwallpapers.ui.theme.paddingValues
 fun ImageActionButtons(
     modifier: Modifier = Modifier,
     onGoToUrlClick: () -> Unit,
+    onShareClick: () -> Unit,
     onDownloadClick: () -> Unit,
     onFavoriteClick: () -> Unit,
     isFavorite: Boolean
@@ -44,6 +42,10 @@ fun ImageActionButtons(
         ActionButton(
             icon = Icons.Outlined.Save,
             modifier = Modifier.clickable { onDownloadClick() }
+        )
+        ActionButton(
+            icon = Icons.Outlined.Share,
+            modifier = Modifier.clickable { onShareClick() }
         )
         if (isFavorite) {
             ActionButton(
@@ -88,6 +90,7 @@ fun ImageActionButtonsPreview() {
     MaterialTheme {
         ImageActionButtons(
             onGoToUrlClick = {},
+            onShareClick = {},
             onDownloadClick = {},
             onFavoriteClick = {},
             isFavorite = true

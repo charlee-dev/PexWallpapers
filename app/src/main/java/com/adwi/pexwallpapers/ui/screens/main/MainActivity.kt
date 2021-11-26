@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.ui.main
+package com.adwi.pexwallpapers.ui.screens.main
 
 import android.os.Bundle
 import android.widget.Toast

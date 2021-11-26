@@ -4,6 +4,7 @@ import android.app.WallpaperManager
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.WorkManager
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.shared.image.ImageTools
 import com.adwi.pexwallpapers.shared.notifications.NotificationTools
 import com.adwi.pexwallpapers.shared.setter.WallpaperSetter
@@ -21,13 +22,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object SharedModule {
 
+//    @Singleton
+//    @Provides
+//    fun provideLogger() = Logger()
+
     @ExperimentalCoroutinesApi
     @ExperimentalPagingApi
     @Singleton
     @Provides
     fun provideWorkTools(
-        workManager: WorkManager
-    ) = WorkTools(workManager)
+        workManager: WorkManager,
+        settingsDao: SettingsDao
+    ) = WorkTools(workManager, settingsDao)
 
     @Singleton
     @Provides

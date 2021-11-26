@@ -6,6 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.components.PexScaffold
@@ -15,7 +16,7 @@ import com.adwi.pexwallpapers.navigation.MainDestinations
 import com.adwi.pexwallpapers.navigation.myNavGraph
 import com.adwi.pexwallpapers.navigation.rememberMyAppState
 import com.adwi.pexwallpapers.ui.components.PexBottomBar
-import com.adwi.pexwallpapers.ui.main.MainViewModel
+import com.adwi.pexwallpapers.ui.screens.main.MainViewModel
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -36,11 +37,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
 fun PexApp(
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
 ) {
     ProvideWindowInsets {
         PexWallpapersTheme() {
+
             val appState = rememberMyAppState()
+            val uriHandler = LocalUriHandler.current
 
             PexScaffold(
                 viewModel = viewModel,
@@ -70,7 +73,23 @@ fun PexApp(
                         upPress = appState::upPress,
                         onWallpaperClick = appState::navigateToPreview,
                         onCategoryClick = appState::navigateToCategory,
-                        navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) }
+                        navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) },
+                        onGoToUrlClick = { uriHandler.openUri(it) },
+                        onShareClick = { viewModel.shareWallpaper(it) },
+                        onDownloadClick = { viewModel.downloadWallpaper(it) },
+                        onSetWallpaperClick = { url, home, lock ->
+                            viewModel.setWallpaper(url, home, lock)
+                        },
+                        onAboutUsClick = {
+                            TODO("add about us section")
+                        },
+                        onPrivacyPolicyClick = {
+                            TODO("add privacy policy section")
+                        },
+                        onContactSupportClick = {
+                            TODO("add  section")
+                        },
+                        onSaveAutomationClick = { viewModel.saveAutomation(it) },
                     )
                 }
             }

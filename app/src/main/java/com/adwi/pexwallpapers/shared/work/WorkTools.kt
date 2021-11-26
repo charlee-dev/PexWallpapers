@@ -2,6 +2,7 @@ package com.adwi.pexwallpapers.shared.work
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.*
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.shared.work.works.AutoChangeWallpaperWork
 import com.adwi.pexwallpapers.shared.work.works.DownloadWallpaperWork
@@ -27,7 +28,8 @@ private const val minutesWorkTimes = 3
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 class WorkTools @Inject constructor(
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val settingsDao: SettingsDao
 ) {
 
     fun cancelWorks(workTag: String) {
@@ -54,14 +56,19 @@ class WorkTools @Inject constructor(
         Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
     }
 
-    fun createDownloadWallpaperWork(wallpaper: Wallpaper, wifiOnly: Boolean): UUID {
+    fun createDownloadWallpaperWork(wallpaper: Wallpaper, downloadOverWiFi: Boolean): UUID {
         Timber.tag(TAG).d("downloadWallpaperWork")
 
-        val constraints = if (wifiOnly) {
+        val constraints = if (downloadOverWiFi) {
+            Timber.tag(TAG)
+                .d("Download will start when you connect to WiFi \nYou can change this in Settings")
             Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build()
+
         } else {
+            Timber.tag(TAG)
+                .d("Starting download")
             Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
@@ -85,11 +92,6 @@ class WorkTools @Inject constructor(
             ExistingWorkPolicy.KEEP,
             work
         )
-
-        if (wifiOnly) {
-            Timber.tag(TAG)
-                .d("Download will start when you connect to WiFi \nYou can change this in Settings")
-        }
 
         Timber.tag(TAG)
             .d("Created work: \nwallpaperId = ${wallpaper.id}")

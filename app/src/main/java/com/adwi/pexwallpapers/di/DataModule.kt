@@ -3,8 +3,13 @@ package com.adwi.pexwallpapers.di
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.data.settings.SettingsDatabase
 import com.adwi.pexwallpapers.data.wallpapers.database.WallpaperDatabase
+import com.adwi.pexwallpapers.data.wallpapers.database.dao.CategoryDao
+import com.adwi.pexwallpapers.data.wallpapers.database.dao.DailyDao
+import com.adwi.pexwallpapers.data.wallpapers.database.dao.SearchDao
+import com.adwi.pexwallpapers.data.wallpapers.database.dao.WallpapersDao
 import com.adwi.pexwallpapers.data.wallpapers.network.PexService
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepository
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
@@ -32,7 +37,7 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideSettingsDatabase(@ApplicationContext context: Context) =
+    fun provideSettingsDatabase(@ApplicationContext context: Context): SettingsDatabase =
         Room
             .databaseBuilder(
                 context,
@@ -44,12 +49,12 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideSettingsDao(settingsDatabase: SettingsDatabase) =
+    fun provideSettingsDao(settingsDatabase: SettingsDatabase): SettingsDao =
         settingsDatabase.settingsDao()
 
     @Provides
     @Singleton
-    fun provideWallpaperDatabase(@ApplicationContext context: Context) =
+    fun provideWallpaperDatabase(@ApplicationContext context: Context): WallpaperDatabase =
         Room
             .databaseBuilder(
                 context,
@@ -60,22 +65,22 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideWallpaperDao(wallpaperDatabase: WallpaperDatabase) =
+    fun provideWallpaperDao(wallpaperDatabase: WallpaperDatabase): WallpapersDao =
         wallpaperDatabase.wallpaperDao()
 
     @Provides
     @Singleton
-    fun provideDailyDao(wallpaperDatabase: WallpaperDatabase) =
+    fun provideDailyDao(wallpaperDatabase: WallpaperDatabase): DailyDao =
         wallpaperDatabase.dailyDao()
 
     @Provides
     @Singleton
-    fun provideCategoryDao(wallpaperDatabase: WallpaperDatabase) =
+    fun provideCategoryDao(wallpaperDatabase: WallpaperDatabase): CategoryDao =
         wallpaperDatabase.categoryDao()
 
     @Provides
     @Singleton
-    fun provideSearchDao(wallpaperDatabase: WallpaperDatabase) =
+    fun provideSearchDao(wallpaperDatabase: WallpaperDatabase): SearchDao =
         wallpaperDatabase.searchDao()
 
     @Singleton

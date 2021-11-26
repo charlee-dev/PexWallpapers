@@ -18,6 +18,7 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.components.*
+import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -28,7 +29,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PreviewScreen(
     viewModel: PreviewViewModel,
-    upPress: () -> Unit
+    onGoToUrlClick: (String) -> Unit,
+    onShareClick: (Wallpaper) -> Unit,
+    onDownloadClick: (Wallpaper) -> Unit,
+    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
+    upPress: () -> Unit,
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState(null)
 
@@ -65,20 +70,21 @@ fun PreviewScreen(
                         .padding(paddingValues / 2),
                     text = stringResource(id = R.string.photo_by, it.photographer)
                 )
+
                 ImageActionButtons(
                     modifier = Modifier.fillMaxWidth(),
-                    onGoToUrlClick = { viewModel.goToPexels(it.url) },
-                    onDownloadClick = { viewModel.downloadWallpaper(it) },
+                    onGoToUrlClick = { onGoToUrlClick(it.url) },
+                    onShareClick = { onShareClick(it) },
+                    onDownloadClick = { onDownloadClick(it) },
                     onFavoriteClick = { viewModel.onFavoriteClick(it) },
                     isFavorite = it.isFavorite
                 )
                 PexButton(
                     onClick = {
-//                    onSetWallpaperClick(wallpaper.id)
-                        viewModel.setWallpaper(
-                            imageUrl = it.imageUrlPortrait,
-                            setHomeScreen = true,
-                            setLockScreen = false
+                        onSetWallpaperClick(
+                            it.imageUrlPortrait,
+                            true,
+                            false
                         )
                     },
                     text = stringResource(id = R.string.set_wallpaper),

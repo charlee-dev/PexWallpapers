@@ -6,22 +6,16 @@ import com.adwi.datasource_settings.domain.Settings
 import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.data.settings.model.toDomain
 import com.adwi.pexwallpapers.data.settings.model.toEntity
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.di.IoDispatcher
-import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.shared.image.ImageTools
-import com.adwi.pexwallpapers.shared.sharing.SharingTools
-import com.adwi.pexwallpapers.shared.work.WorkTools
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
-import com.adwi.pexwallpapers.util.Constants.WORK_AUTO_WALLPAPER
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -30,15 +24,10 @@ import javax.inject.Inject
 class SettingsViewModel
 @Inject constructor(
     private val settingsDao: SettingsDao,
-    private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val workTools: WorkTools,
-    private val sharingTools: SharingTools,
-    private val imageTools: ImageTools,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
     val settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
-    private val favorites: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(emptyList())
 
     val days = MutableStateFlow(0)
     val hours = MutableStateFlow(0)
@@ -46,20 +35,14 @@ class SettingsViewModel
 
     init {
         getSettings()
-        getFavorites()
     }
 
     private fun getSettings() {
         onDispatcher(ioDispatcher) {
             settingsDao.getSettings().collect {
                 settings.value = it.toDomain()
+//                formatDelayTimeInMilliSeconds(it.durationValue)
             }
-        }
-    }
-
-    private fun getFavorites() {
-        onDispatcher(ioDispatcher) {
-            favorites.value = wallpaperRepository.getFavorites().first()
         }
     }
 
@@ -123,47 +106,27 @@ class SettingsViewModel
         }
     }
 
-    fun contactSupport() {
-        sharingTools.contactSupport()
-    }
+    fun getDelay(): Long {
 
-    fun aboutUs() {
-        setSnackBar("Not implemented yet")
-    }
+        val days = days.value
+        val hours = hours.value
+        val minutes = minutes.value
 
-    fun privacyPolicy() {
-        setSnackBar("Not implemented yet")
-    }
-
-    private fun cancelWorks(workTag: String) {
-        workTools.cancelWorks(workTag)
-        imageTools.deleteAllBackups()
-    }
-
-    fun saveAutomation() {
-        onDispatcher(ioDispatcher) {
-            if (settings.value.autoChangeWallpaper && favorites.value.isNotEmpty()) {
-                val delay = getDelay(
-                    days = days.value,
-                    hours = hours.value,
-                    minutes = minutes.value
-                )
-                workTools.setupAutoChangeWallpaperWorks(
-                    favorites = favorites.value,
-                    timeValue = delay
-                )
-                Timber.tag(TAG).d("saveSettings - Delay = $delay")
-            } else {
-                cancelWorks(WORK_AUTO_WALLPAPER)
-            }
-        }
-    }
-
-    private fun getDelay(days: Int, hours: Int, minutes: Int): Long {
         val hour = 60
         val day = 24 * hour.toLong()
+
         return (day * days) + (hour * hours) + minutes
     }
-}
 
-private const val TAG = "SettingsViewModel"
+    fun formatDelayTimeInMilliSeconds(milliSeconds: Long) {
+        val days = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
+        val hours = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
+        setDays(days)
+        setHours(hours)
+        setMinutes(minutes)
+        Timber.tag(tag).d(
+            "formatDelayTimeInMilliSeconds \nDays = $days \nHours = $hours \nMinutes = $minutes"
+        )
+    }
+}

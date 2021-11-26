@@ -1,6 +1,5 @@
 package com.adwi.pexwallpapers.shared.sharing
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -16,26 +15,25 @@ class SharingTools @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    fun openUrlInBrowser(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            data = Uri.parse(url)
-        }
+//    fun openUrlInBrowser(url: String) {
+//        val intent = Intent(Intent.ACTION_VIEW).apply {
+//            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            data = Uri.parse(url)
+//        }
+//
+//        startActivity(context, intent, null)
+//    }
+//
+fun contactSupport() {
+    val email = SUPPORT_EMAIL
+    val subject =
+        "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
+    val chooserMessage = context.getString(R.string.support_chooser_message)
 
-        startActivity(context, intent, null)
-    }
-
-
-    fun contactSupport() {
-        val email = SUPPORT_EMAIL
-        val subject =
-            "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
-        val chooserMessage = context.getString(R.string.support_chooser_message)
-
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            data = Uri.parse(email)
-            putExtra(Intent.EXTRA_SUBJECT, subject)
+    val intent = Intent(Intent.ACTION_SENDTO).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        data = Uri.parse(email)
+        putExtra(Intent.EXTRA_SUBJECT, subject)
         }
 
         startActivity(context, Intent.createChooser(intent, chooserMessage), null)
@@ -43,7 +41,6 @@ class SharingTools @Inject constructor(
 
 
     fun shareImage(
-        activity: Activity,
         uri: Uri,
         photographersName: String
     ) {
@@ -61,7 +58,7 @@ class SharingTools @Inject constructor(
         }
 
         startActivity(
-            activity,
+            context,
             Intent.createChooser(intent, chooserMessage),
             null
         )

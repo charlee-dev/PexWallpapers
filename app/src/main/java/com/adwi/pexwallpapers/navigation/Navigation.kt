@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.ui.screens.favorites.FavoritesScreen
 import com.adwi.pexwallpapers.ui.screens.favorites.FavoritesViewModel
 import com.adwi.pexwallpapers.ui.screens.home.HomeScreen
@@ -41,7 +42,15 @@ fun NavGraphBuilder.myNavGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
     navigateToSearch: () -> Unit,
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    onAboutUsClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Long) -> Unit,
+    onGoToUrlClick: (String) -> Unit,
+    onShareClick: (Wallpaper) -> Unit,
+    onDownloadClick: (Wallpaper) -> Unit,
+    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -50,7 +59,11 @@ fun NavGraphBuilder.myNavGraph(
         addHomeGraph(
             onWallpaperClick = onWallpaperClick,
             onCategoryClick = onCategoryClick,
-            navigateToSearch = navigateToSearch
+            navigateToSearch = navigateToSearch,
+            onAboutUsClick = onAboutUsClick,
+            onPrivacyPolicyClick = onPrivacyPolicyClick,
+            onContactSupportClick = onContactSupportClick,
+            onSaveAutomationClick = onSaveAutomationClick
         )
     }
 
@@ -63,7 +76,11 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         PreviewScreen(
             viewModel = viewModel,
-            upPress = upPress
+            upPress = upPress,
+            onGoToUrlClick = onGoToUrlClick,
+            onShareClick = onShareClick,
+            onDownloadClick = onDownloadClick,
+            onSetWallpaperClick = onSetWallpaperClick
         )
     }
 
@@ -96,7 +113,11 @@ fun NavGraphBuilder.myNavGraph(
 fun NavGraphBuilder.addHomeGraph(
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    navigateToSearch: () -> Unit
+    navigateToSearch: () -> Unit,
+    onAboutUsClick: () -> Unit,
+    onPrivacyPolicyClick: () -> Unit,
+    onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Long) -> Unit,
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
@@ -132,6 +153,10 @@ fun NavGraphBuilder.addHomeGraph(
 
         SettingsScreen(
             viewModel = viewModel,
+            onAboutUsClick = onAboutUsClick,
+            onPrivacyPolicyClick = onPrivacyPolicyClick,
+            onContactSupportClick = onContactSupportClick,
+            onSaveAutomationClick = onSaveAutomationClick
         )
     }
 }

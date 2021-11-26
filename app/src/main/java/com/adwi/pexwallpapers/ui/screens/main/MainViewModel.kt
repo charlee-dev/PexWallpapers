@@ -1,63 +1,68 @@
-package com.adwi.preview
+package com.adwi.pexwallpapers.ui.screens.main
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.core.IoDispatcher
-import com.adwi.pexwallpapers.ui.base.BaseViewModel
-import com.adwi.pexwallpapers.util.ext.onDispatcher
 import com.adwi.pexwallpapers.data.settings.SettingsDao
-import com.adwi.domain.Wallpaper
-import com.adwi.repository.wallpaper.WallpaperRepositoryImpl
-import com.adwi.shared.image.ImageTools
-import com.adwi.shared.setter.WallpaperSetter
-import com.adwi.shared.sharing.SharingTools
-import com.adwi.shared.work.WorkTools
+import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
+import com.adwi.pexwallpapers.di.IoDispatcher
+import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.shared.image.ImageTools
+import com.adwi.pexwallpapers.shared.setter.WallpaperSetter
+import com.adwi.pexwallpapers.shared.sharing.SharingTools
+import com.adwi.pexwallpapers.shared.work.WorkTools
+import com.adwi.pexwallpapers.ui.base.BaseViewModel
+import com.adwi.pexwallpapers.util.Constants.WORK_AUTO_WALLPAPER
+import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @HiltViewModel
-class PreviewViewModel
+class MainViewModel @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val settingsDao: com.adwi.pexwallpapers.data.settings.SettingsDao,
+    private val settingsDao: SettingsDao,
+    private val workTools: WorkTools,
     private val imageTools: ImageTools,
     private val sharingTools: SharingTools,
     private val wallpaperSetter: WallpaperSetter,
-    private val workTools: WorkTools,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
-
-    init {
-        savedStateHandle.get<Int>("wallpaperId")?.let { wallpaperId ->
-            getWallpaperById(wallpaperId)
-        }
-    }
-
-    private fun getWallpaperById(id: Int) {
+    fun saveAutomation(delay: Long) {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getWallpaperById(id).collect { wallpaper.value = it }
+
+            val favorites = getFavorites()
+
+            if (favorites.isNotEmpty()) {
+                workTools.setupAutoChangeWallpaperWorks(
+                    favorites = favorites,
+                    timeValue = delay
+                )
+                Timber.tag(tag).d("saveSettings - Delay = $delay")
+            } else {
+                cancelWorks(WORK_AUTO_WALLPAPER)
+            }
         }
     }
 
-    fun goToPexels(url: String) {
-        sharingTools.openUrlInBrowser(url)
+    private suspend fun getFavorites() = wallpaperRepository.getFavorites().first()
+
+    private fun cancelWorks(workTag: String) {
+        workTools.cancelWorks(workTag)
+        imageTools.deleteAllBackups()
     }
 
-    fun shareWallpaper(activity: AppCompatActivity, wallpaper: Wallpaper) {
+    fun shareWallpaper(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val uri = imageTools.fetchRemoteAndSaveLocally(wallpaper.id, wallpaper.imageUrlPortrait)
             uri?.let {
-                sharingTools.shareImage(activity, uri, wallpaper.photographer)
+                sharingTools.shareImage(uri, wallpaper.photographer)
             }
         }
     }
@@ -80,14 +85,6 @@ class PreviewViewModel
                     setLockScreen = setLockScreen
                 )
             }
-        }
-    }
-
-    fun onFavoriteClick(wallpaper: Wallpaper) {
-        val isFavorite = wallpaper.isFavorite
-        wallpaper.isFavorite = !isFavorite
-        onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaper(wallpaper)
         }
     }
 }
