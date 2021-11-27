@@ -45,7 +45,7 @@ fun ShimmerErrorMessage(
                     .align(Alignment.Center)
                     .shimmer()
                     .padding(bottom = paddingValues)
-                    .coloredShadow()
+                    .neumorphicShadow()
             ) {
                 Box(modifier = Modifier.background(backgroundColor)) {
                     LoadingErrorText(

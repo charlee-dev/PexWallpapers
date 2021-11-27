@@ -45,7 +45,7 @@ fun PexSearchToolbar(
         shape = shape,
         modifier = modifier
             .fillMaxWidth()
-            .coloredShadow(),
+            .neumorphicShadow(),
         backgroundColor = backgroundColor
     ) {
         Row(

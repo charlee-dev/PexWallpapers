@@ -95,7 +95,7 @@ private fun WallpaperListHorizontal(
                 onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                 onLongPress = { onLongPress(wallpaper) },
                 isHeartEnabled = wallpaper.isFavorite,
-                modifier = Modifier.coloredShadow(cornerRadius = 10.dp)
+                modifier = Modifier.neumorphicShadow(cornerRadius = 10.dp)
             )
         })
     }

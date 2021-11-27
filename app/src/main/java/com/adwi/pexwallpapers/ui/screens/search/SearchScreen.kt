@@ -164,7 +164,7 @@ fun WallpaperListPaged(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                         .height((wallpaper.height / 2.5).dp)
-                        .coloredShadow()
+                        .neumorphicShadow()
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },

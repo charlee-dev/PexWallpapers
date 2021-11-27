@@ -303,7 +303,7 @@ private fun SettingPanel(
     Card(
 //        elevation = elevation,
         shape = shape,
-        modifier = Modifier.coloredShadow()
+        modifier = Modifier.neumorphicShadow()
     ) {
         Column(
             Modifier
@@ -569,7 +569,7 @@ private fun AnimatedCounter(
         shape = RoundedCornerShape(percent = 20),
         modifier = modifier
             .size(40.dp)
-            .coloredShadow(
+            .neumorphicShadow(
                 cornerRadius = 10.dp,
                 offset = 5.dp
             ),
@@ -628,7 +628,7 @@ private fun InfoRow(
 //                elevation = 6.dp,
                 modifier = Modifier
                     .padding(paddingValues / 2)
-                    .coloredShadow(
+                    .neumorphicShadow(
                         cornerRadius = 10.dp,
                         offset = 5.dp
                     ),

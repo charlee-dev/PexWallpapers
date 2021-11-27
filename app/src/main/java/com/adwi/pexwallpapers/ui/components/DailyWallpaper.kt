@@ -106,7 +106,7 @@ fun DailyWallpaper(
                                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                 )
                             }
-                            .coloredShadow()
+                            .neumorphicShadow()
                     ) {
                         Box {
                             PexCoilImage(

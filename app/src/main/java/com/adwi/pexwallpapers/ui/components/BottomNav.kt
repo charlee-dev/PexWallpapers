@@ -58,9 +58,7 @@ fun PexBottomBar(
     PexSurface(
         color = backgroundColor,
         contentColor = animationColor,
-//        modifier = Modifier.neumorphicPunched(
-//            neuShape = Punched.Rounded(0.dp)
-//        )
+        modifier = Modifier.neumorphicShadow(offset = 0.dp, cornerRadius = 0.dp)
     ) {
         val springSpec = SpringSpec<Float>(
             stiffness = 800f,

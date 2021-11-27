@@ -126,7 +126,7 @@ private fun CategoryItem(
             backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier
                 .size(100.dp)
-                .coloredShadow(cornerRadius = 10.dp)
+                .neumorphicShadow(cornerRadius = 10.dp)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(

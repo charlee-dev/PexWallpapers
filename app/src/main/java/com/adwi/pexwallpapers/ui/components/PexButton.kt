@@ -87,7 +87,7 @@ fun PexButton(
         onClick = onClick,
         enabled = state is Result.Idle,
         shape = shape,
-        modifier = modifier,
+        modifier = modifier.neumorphicShadow(offset = 0.dp),
         color = bgColor,
     ) {
         AnimatedContent(
