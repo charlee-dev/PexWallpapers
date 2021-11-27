@@ -39,7 +39,6 @@ import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavLabelTransf
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavigationItemPadding
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.TextIconSpacing
 import com.google.accompanist.insets.navigationBarsPadding
-import me.nikhilchaudhari.library.shapes.Punched
 
 @Composable
 fun PexBottomBar(
@@ -59,9 +58,9 @@ fun PexBottomBar(
     PexSurface(
         color = backgroundColor,
         contentColor = animationColor,
-        modifier = Modifier.neumorphicPunched(
-            neuShape = Punched.Rounded(0.dp)
-        )
+//        modifier = Modifier.neumorphicPunched(
+//            neuShape = Punched.Rounded(0.dp)
+//        )
     ) {
         val springSpec = SpringSpec<Float>(
             stiffness = 800f,

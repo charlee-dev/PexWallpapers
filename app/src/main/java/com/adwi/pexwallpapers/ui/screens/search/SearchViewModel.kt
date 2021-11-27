@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import timber.log.Timber
 import javax.inject.Inject
@@ -26,23 +27,23 @@ class SearchViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
-    val currentQuery = MutableStateFlow<String>("")
+    private val _currentQuery = MutableStateFlow("")
+    private var _newQueryInProgress = false
+    private var _pendingScrollToTopAfterNewQuery = false
 
-    var newQueryInProgress = false
-    var pendingScrollToTopAfterNewQuery = false
+    val currentQuery = _currentQuery.asStateFlow()
+    val newQueryInProgress = _newQueryInProgress
+    val pendingScrollToTopAfterNewQuery = _pendingScrollToTopAfterNewQuery
+
 
     val searchResults = currentQuery.flatMapLatest { query ->
         wallpaperRepository.getSearch(query)
     }.cachedIn(viewModelScope)
 
-    init {
-//        restoreLastQuery()
-    }
-
     fun onSearchQuerySubmit(query: String) {
-        currentQuery.value = query
-        newQueryInProgress = true
-        pendingScrollToTopAfterNewQuery = true
+        _currentQuery.value = query
+        _newQueryInProgress = true
+        _pendingScrollToTopAfterNewQuery = true
         setQuery(currentQuery.value)
     }
 
@@ -54,7 +55,7 @@ class SearchViewModel @Inject constructor(
     fun restoreSavedQuery() {
         val query = savedStateHandle.get<String>("query")
         query?.let {
-            currentQuery.value = query
+            _currentQuery.value = query
         }
         Timber.tag(tag).d("restore currentQuery = $query")
     }

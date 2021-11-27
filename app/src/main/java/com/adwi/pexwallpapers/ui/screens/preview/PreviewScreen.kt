@@ -6,6 +6,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
@@ -22,6 +23,7 @@ import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.*
+import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -65,13 +67,24 @@ fun PreviewScreen(
                         .padding(vertical = paddingValues / 2)
                         .weight(1f)
                 )
-                Text(
+                Row(
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(paddingValues / 2),
-                    text = stringResource(id = R.string.photo_by, it.photographer)
-                )
-
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = paddingValues / 2),
+                        text = stringResource(id = R.string.photo_by),
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = Dimensions.small),
+                        text = it.photographer,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
                 ImageActionButtons(
                     modifier = Modifier.fillMaxWidth(),
                     onGoToUrlClick = { onGoToUrlClick(it.url) },
