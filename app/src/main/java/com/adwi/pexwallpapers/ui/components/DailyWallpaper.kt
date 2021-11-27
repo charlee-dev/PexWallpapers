@@ -80,7 +80,7 @@ fun DailyWallpaper(
                         backgroundColor = MaterialTheme.colors.primary,
                         modifier = Modifier
                             .height(width)
-                            .neumorphicPunched()
+//                            .neumorphicPunched()
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onLongPress = { onLongPress(wallpaper) },
@@ -106,6 +106,7 @@ fun DailyWallpaper(
                                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                 )
                             }
+                            .coloredShadow()
                     ) {
                         Box {
                             PexCoilImage(

@@ -45,7 +45,7 @@ fun ShimmerRow(
                             .padding(paddingValues / 2)
                             .size(100.dp)
                             .shimmer()
-                            .neumorphicPunched(),
+                            .coloredShadow(),
                         shape = shape,
                         backgroundColor = backgroundColor,
                         content = {}

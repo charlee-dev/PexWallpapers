@@ -36,7 +36,6 @@ import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import me.nikhilchaudhari.library.shapes.Punched
 
 @ExperimentalPermissionsApi
 @ExperimentalComposeUiApi
@@ -304,7 +303,7 @@ private fun SettingPanel(
     Card(
 //        elevation = elevation,
         shape = shape,
-        modifier = Modifier.neumorphicPunched()
+        modifier = Modifier.coloredShadow()
     ) {
         Column(
             Modifier
@@ -570,7 +569,10 @@ private fun AnimatedCounter(
         shape = RoundedCornerShape(percent = 20),
         modifier = modifier
             .size(40.dp)
-            .neumorphicPunched(neuShape = Punched.Rounded(10.dp)),
+            .coloredShadow(
+                cornerRadius = 10.dp,
+                offset = 5.dp
+            ),
         color = MaterialTheme.colors.primary,
 //        elevation = 4.dp
     ) {
@@ -626,7 +628,10 @@ private fun InfoRow(
 //                elevation = 6.dp,
                 modifier = Modifier
                     .padding(paddingValues / 2)
-                    .neumorphicPunched(neuShape = Punched.Rounded(10.dp)),
+                    .coloredShadow(
+                        cornerRadius = 10.dp,
+                        offset = 5.dp
+                    ),
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Box {

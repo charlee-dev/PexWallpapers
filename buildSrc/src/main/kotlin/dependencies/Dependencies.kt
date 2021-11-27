@@ -92,7 +92,6 @@ object Dependencies {
         "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
     const val accompanistPermissions =
         "com.google.accompanist:accompanist-permissions:${Versions.accompanist}"
-    const val neumorphism = "me.nikhilchaudhari:composeNeumorphism:${Versions.neumorphism}"
 }
 
 object TestDependencies {

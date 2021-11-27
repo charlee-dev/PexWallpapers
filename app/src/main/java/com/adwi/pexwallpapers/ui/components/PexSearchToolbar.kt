@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -46,7 +45,7 @@ fun PexSearchToolbar(
         shape = shape,
         modifier = modifier
             .fillMaxWidth()
-            .neumorphicPunched(),
+            .coloredShadow(),
         backgroundColor = backgroundColor
     ) {
         Row(
@@ -56,21 +55,7 @@ fun PexSearchToolbar(
             TextField(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = paddingValues, bottom = paddingValues / 2)
-                    .onFocusChanged { focusState ->
-                        when {
-                            focusState.isFocused ->
-                                println("I'm focused!")
-                            focusState.hasFocus ->
-                                println("A child of mine has focus!")
-                            focusState.isCaptured -> println("I'm captured!")
-                            !focusState.isFocused ->
-                                println("I'm not focused!")
-                            !focusState.hasFocus ->
-                                println("A child of mine has no focus!")
-                            !focusState.isCaptured -> println("I'm not captured!")
-                        }
-                    },
+                    .padding(start = paddingValues, bottom = paddingValues / 2),
                 value = query,
                 onValueChange = {
                     onQueryChanged(it)

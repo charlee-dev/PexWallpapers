@@ -28,13 +28,8 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _currentQuery = MutableStateFlow("")
-    private var _newQueryInProgress = false
-    private var _pendingScrollToTopAfterNewQuery = false
 
     val currentQuery = _currentQuery.asStateFlow()
-    val newQueryInProgress = _newQueryInProgress
-    val pendingScrollToTopAfterNewQuery = _pendingScrollToTopAfterNewQuery
-
 
     val searchResults = currentQuery.flatMapLatest { query ->
         wallpaperRepository.getSearch(query)
@@ -42,8 +37,8 @@ class SearchViewModel @Inject constructor(
 
     fun onSearchQuerySubmit(query: String) {
         _currentQuery.value = query
-        _newQueryInProgress = true
-        _pendingScrollToTopAfterNewQuery = true
+        _isRefreshing.value = true
+        _pendingScrollToTopAfterRefresh.value = true
         setQuery(currentQuery.value)
     }
 
@@ -56,6 +51,8 @@ class SearchViewModel @Inject constructor(
         val query = savedStateHandle.get<String>("query")
         query?.let {
             _currentQuery.value = query
+            _pendingScrollToTopAfterRefresh.value = true
+            _isRefreshing.value = false
         }
         Timber.tag(tag).d("restore currentQuery = $query")
     }

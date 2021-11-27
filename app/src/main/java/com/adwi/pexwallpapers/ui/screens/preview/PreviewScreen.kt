@@ -1,8 +1,6 @@
 package com.adwi.pexwallpapers.ui.screens.preview
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.animateInt
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,7 +19,6 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.paddingValues
@@ -94,24 +91,6 @@ fun PreviewScreen(
                     isFavorite = it.isFavorite
                 )
 
-                val transition = updateTransition(targetState = saveState, label = "Button state")
-
-                val roundedEdgeSize by transition.animateInt(
-                    label = "Card background color"
-                ) { result ->
-                    when (result) {
-                        Result.Loading -> 80
-                        Result.Success -> 90
-                        else -> 100
-                    }
-                }
-
-                val roundedTopShape =
-                    RoundedCornerShape(
-                        topStartPercent = roundedEdgeSize,
-                        topEndPercent = roundedEdgeSize
-                    )
-
                 PexButton(
                     state = saveState,
                     onClick = {
@@ -123,7 +102,10 @@ fun PreviewScreen(
                     },
                     text = stringResource(id = R.string.set_wallpaper),
                     successText = stringResource(id = R.string.wallpaper_has_been_set),
-                    shape = roundedTopShape,
+                    shape = RoundedCornerShape(
+                        topStartPercent = 100,
+                        topEndPercent = 100
+                    ),
                     modifier = Modifier
                         .padding(top = paddingValues)
                         .fillMaxWidth()

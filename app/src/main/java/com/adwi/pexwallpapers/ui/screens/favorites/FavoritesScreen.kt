@@ -79,7 +79,7 @@ fun FavoritesScreen(
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,
-                        modifier = Modifier.neumorphicPunched()
+                        modifier = Modifier.coloredShadow()
                     )
                 })
 

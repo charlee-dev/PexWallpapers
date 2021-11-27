@@ -26,7 +26,7 @@ fun PreviewCard(
         shape = shape,
         modifier = modifier
             .fillMaxSize()
-            .neumorphicPunched()
+            .coloredShadow()
     ) {
         PexCoilImage(
             imageUrl = wallpaper.imageUrlPortrait,

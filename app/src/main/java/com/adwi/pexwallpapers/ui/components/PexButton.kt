@@ -1,7 +1,6 @@
 package com.adwi.pexwallpapers.ui.components
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.theme.AccentMedium
-import me.nikhilchaudhari.library.shapes.Punched
 
 @Composable
 fun ButtonRoundedTop(
@@ -85,25 +83,12 @@ fun PexButton(
         }
     }
 
-    val buttonElevation by transition.animateDp(
-        label = "Card background color"
-    ) { result ->
-        when (result) {
-            Result.Loading -> 0.dp
-            Result.Success -> elevation / 2
-            else -> elevation
-        }
-    }
-
     Surface(
         onClick = onClick,
         enabled = state is Result.Idle,
         shape = shape,
-        modifier = modifier.neumorphicPunched(
-            neuShape = Punched.Rounded(60.dp)
-        ),
+        modifier = modifier,
         color = bgColor,
-//        elevation = buttonElevation
     ) {
         AnimatedContent(
             targetState = state,
@@ -141,7 +126,7 @@ fun PexButton(
 private fun PexButtonPreview() {
     Column {
         PexButton(
-            text = "Add barber"
+            text = "Save"
         )
     }
 }

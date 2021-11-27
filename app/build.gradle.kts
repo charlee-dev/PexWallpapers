@@ -79,7 +79,6 @@ dependencies {
     kapt(Dependencies.hiltWorkCompiler)
 
     implementation(Dependencies.accompanistPermissions)
-    implementation(Dependencies.neumorphism)
 
     // Test
     implementation(TestDependencies.coroutinesTest)

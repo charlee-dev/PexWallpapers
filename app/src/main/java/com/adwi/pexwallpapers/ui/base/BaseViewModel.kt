@@ -8,7 +8,7 @@ import com.adwi.pexwallpapers.util.ext.exhaustive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -18,22 +18,20 @@ abstract class BaseViewModel : ViewModel() {
 
     val tag: String = javaClass.simpleName
 
-    private val _snackBarMessage = MutableStateFlow("")
-    val snackBarMessage: StateFlow<String> get() = _snackBarMessage
+    protected var _pendingScrollToTopAfterRefresh = MutableStateFlow(false)
+    protected var _isRefreshing = MutableStateFlow(false)
+    protected val _snackBarMessage = MutableStateFlow("")
+    protected val _toastMessage = MutableStateFlow("")
 
-    private val _toastMessage = MutableStateFlow("")
-    val toastMessage: StateFlow<String> get() = _toastMessage
+    val pendingScrollToTopAfterRefresh = _pendingScrollToTopAfterRefresh.asStateFlow()
+    val isRefreshing = _isRefreshing.asStateFlow()
+    val snackBarMessage = _snackBarMessage.asStateFlow()
+    val toastMessage = _toastMessage.asStateFlow()
 
-    private val eventChannel = Channel<Event>()
+    protected val eventChannel = Channel<Event>()
+    protected val refreshTriggerChannel = Channel<Refresh>()
+
     private val events = eventChannel.receiveAsFlow()
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
-
-    private var _pendingScrollToTopAfterRefresh = MutableStateFlow(false)
-    val pendingScrollToTopAfterRefresh: StateFlow<Boolean> get() = _pendingScrollToTopAfterRefresh
-
-    private val refreshTriggerChannel = Channel<Refresh>()
     val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
 
     init {
@@ -66,9 +64,9 @@ abstract class BaseViewModel : ViewModel() {
         _toastMessage.value = message
     }
 
-     fun setSnackBar(message: String) {
-         _snackBarMessage.value = message
-     }
+    fun setSnackBar(message: String) {
+        _snackBarMessage.value = message
+    }
 
     fun setIsRefreshing(refresh: Boolean) {
         _isRefreshing.value = refresh

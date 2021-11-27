@@ -10,13 +10,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
@@ -28,7 +32,6 @@ import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
@@ -43,19 +46,19 @@ fun SearchScreen(
 ) {
     val wallpapers = viewModel.searchResults.collectAsLazyPagingItems()
     val currentQuery by viewModel.currentQuery.collectAsState()
-    val pendingScrollToTop =
-        remember { mutableStateOf(viewModel.pendingScrollToTopAfterRefresh.value) }
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
+
+    if (wallpapers.loadState.refresh == LoadState.Loading) {
+        viewModel.setIsRefreshing(true)
+    }
 
     val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    if (pendingScrollToTop.value) {
-        LaunchedEffect(true) {
-            coroutineScope.launch {
-                listState.animateScrollToItem(0)
-            }
-        }
+    LaunchedEffect(pendingScrollToTopAfterRefresh && wallpapers.loadState.refresh != LoadState.Loading) {
+        listState.animateScrollToItem(0)
+        viewModel.setPendingScrollToTopAfterRefresh(false)
     }
 
     PexScaffold(
@@ -63,8 +66,8 @@ fun SearchScreen(
         scaffoldState = scaffoldState
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            val showRefresh = false
-            val swipeRefreshState = rememberSwipeRefreshState(showRefresh)
+            val swipeRefreshState =
+                rememberSwipeRefreshState(isRefreshing && wallpapers.itemCount == 0)
 
             PexSearchToolbar(
                 query = currentQuery,
@@ -92,7 +95,7 @@ fun SearchScreen(
                     )
                 }
             }
-            NothingHereYetMessage(visible = currentQuery.isEmpty() && !viewModel.newQueryInProgress)
+            NothingHereYetMessage(visible = currentQuery.isEmpty())
         }
     }
 }
@@ -161,7 +164,7 @@ fun WallpaperListPaged(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                         .height((wallpaper.height / 2.5).dp)
-                        .neumorphicPunched()
+                        .coloredShadow()
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },
@@ -170,7 +173,7 @@ fun WallpaperListPaged(
                                 }
                             )
                         },
-//                    elevation = 10.dp,
+//                    elevation = 20.dp,
                     shape = MaterialTheme.shapes.large
                 ) {
                     Box() {
