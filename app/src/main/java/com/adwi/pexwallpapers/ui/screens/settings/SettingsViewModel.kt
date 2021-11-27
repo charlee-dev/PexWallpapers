@@ -156,6 +156,7 @@ class SettingsViewModel
                     favorites = favorites,
                     timeValue = delay
                 )
+                setSnackBar("Wallpaper will change in ${hours.value} hours and ${minutes.value} minutes")
                 Timber.tag(tag).d("saveSettings - Delay = $delay")
             } else {
                 cancelWorks(Constants.WORK_AUTO_WALLPAPER)

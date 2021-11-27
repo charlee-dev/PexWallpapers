@@ -6,6 +6,8 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -279,6 +281,9 @@ private fun SettingPanel(
     shape: Shape = MaterialTheme.shapes.large,
     content: @Composable () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     val transition = updateTransition(targetState = checked, label = "Card")
 
     val elevation by transition.animateDp(label = "Card elevation") { state ->
@@ -303,7 +308,7 @@ private fun SettingPanel(
     Card(
 //        elevation = elevation,
         shape = shape,
-        modifier = Modifier.neumorphicShadow()
+        modifier = Modifier.neumorphicShadow(pressed = isPressed)
     ) {
         Column(
             Modifier
@@ -571,7 +576,7 @@ private fun AnimatedCounter(
             .size(40.dp)
             .neumorphicShadow(
                 cornerRadius = 10.dp,
-                offset = 5.dp
+                offset = (-5).dp
             ),
         color = MaterialTheme.colors.primary,
 //        elevation = 4.dp
@@ -613,6 +618,9 @@ private fun InfoRow(
     title: String,
     icon: ImageVector
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -629,8 +637,9 @@ private fun InfoRow(
                 modifier = Modifier
                     .padding(paddingValues / 2)
                     .neumorphicShadow(
+                        pressed = isPressed,
                         cornerRadius = 10.dp,
-                        offset = 5.dp
+                        offset = (-5).dp
                     ),
                 backgroundColor = MaterialTheme.colors.primary
             ) {

@@ -1,6 +1,9 @@
 package com.adwi.pexwallpapers.ui.screens.preview
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.*
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,12 +16,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.paddingValues
@@ -57,13 +62,48 @@ fun PreviewScreen(
                 actionIcon = null
             )
             wallpaper?.let {
-                PreviewCard(
-                    wallpaper = it,
-                    modifier = Modifier
-                        .padding(horizontal = paddingValues)
-                        .padding(vertical = paddingValues / 2)
-                        .weight(1f)
+                val infiniteTransition = rememberInfiniteTransition()
+
+                val scaleLoading by infiniteTransition.animateFloat(
+                    initialValue = 1f,
+                    targetValue = 1.02f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(500, easing = LinearOutSlowInEasing),
+                        repeatMode = RepeatMode.Reverse
+                    )
                 )
+
+                val scale = if (saveState == Result.Loading) scaleLoading else 1f
+
+                Box(modifier = Modifier.weight(1f)) {
+//                    PreviewCard(
+//                        wallpaper = it,
+//                        modifier = Modifier
+//                            .padding(horizontal = paddingValues)
+//                            .padding(vertical = paddingValues / 2)
+//                    )
+                    PreviewCard(
+                        wallpaper = it,
+                        modifier = Modifier
+                            .padding(horizontal = paddingValues)
+                            .padding(vertical = paddingValues / 2)
+                            .graphicsLayer(
+                                scaleX = scale,
+                                scaleY = scale
+                            )
+                    )
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = saveState is Result.Success,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        PexLottieAnimatedView(
+                            res = R.raw.completed,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -86,7 +126,10 @@ fun PreviewScreen(
                     modifier = Modifier.fillMaxWidth(),
                     onGoToUrlClick = { onGoToUrlClick(it.url) },
                     onShareClick = { onShareClick(it) },
-                    onDownloadClick = { onDownloadClick(it) },
+                    onDownloadClick = {
+                        onDownloadClick(it)
+                        viewModel.setSnackBar("Saved to gallery")
+                    },
                     onFavoriteClick = { viewModel.onFavoriteClick(it) },
                     isFavorite = it.isFavorite
                 )

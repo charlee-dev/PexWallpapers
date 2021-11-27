@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -79,10 +82,9 @@ fun FavoritesScreen(
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,
-                        modifier = Modifier.neumorphicShadow()
+                        modifier = Modifier
                     )
                 })
-
             }
         }
     }
@@ -100,6 +102,9 @@ private fun WallpaperItemVertical(
     onLongPress: (Wallpaper) -> Unit,
     isHeartEnabled: Boolean
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     Card(
         elevation = elevation,
         shape = shape,
@@ -112,6 +117,7 @@ private fun WallpaperItemVertical(
                     onLongPress = { onLongPress(wallpaper) },
                 )
             }
+            .neumorphicShadow(pressed = isPressed)
     ) {
         Box {
             PexCoilImage(

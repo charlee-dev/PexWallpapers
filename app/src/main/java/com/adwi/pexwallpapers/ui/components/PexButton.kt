@@ -2,19 +2,21 @@ package com.adwi.pexwallpapers.ui.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.state.Result
@@ -54,11 +56,13 @@ fun PexButton(
     successText: String = stringResource(id = R.string.done),
     errorText: String = stringResource(id = R.string.error),
     shape: Shape = MaterialTheme.shapes.large,
-    elevation: Dp = 6.dp,
     backgroundColor: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.primary,
     onClick: () -> Unit = {}
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     val transition = updateTransition(targetState = state, label = "Button state")
 
     val bgColor by transition.animateColor(
@@ -87,7 +91,10 @@ fun PexButton(
         onClick = onClick,
         enabled = state is Result.Idle,
         shape = shape,
-        modifier = modifier.neumorphicShadow(offset = 0.dp),
+        modifier = modifier.neumorphicShadow(
+            offset = 0.dp,
+            pressed = isPressed
+        ),
         color = bgColor,
     ) {
         AnimatedContent(

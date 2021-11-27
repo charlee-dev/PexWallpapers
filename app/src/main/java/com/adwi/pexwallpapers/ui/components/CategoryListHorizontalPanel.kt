@@ -2,6 +2,8 @@ package com.adwi.pexwallpapers.ui.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -13,6 +15,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -21,13 +25,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.model.ColorCategory
 import com.adwi.pexwallpapers.model.state.DataState
-import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 
@@ -106,7 +108,6 @@ fun CategoryListHorizontal(
 @Composable
 private fun CategoryItem(
     modifier: Modifier = Modifier,
-    elevation: Dp = Dimensions.small,
     shape: Shape = MaterialTheme.shapes.small,
     categoryName: String,
     image1: String,
@@ -115,18 +116,25 @@ private fun CategoryItem(
     image4: String,
     onCategoryClick: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
             onClick = onCategoryClick,
-//            elevation = elevation,
             shape = shape,
             backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier
                 .size(100.dp)
-                .neumorphicShadow(cornerRadius = 10.dp)
+                .neumorphicShadow(
+                    pressed = isPressed,
+                    cornerRadius = 10.dp,
+                    offset = (-5).dp
+                ),
+            interactionSource = interactionSource
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(

@@ -5,12 +5,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,11 +44,13 @@ fun DailyWallpaper(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
     dailyList: DataState<List<Wallpaper>>,
-    elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
     BoxWithConstraints(
         modifier = modifier
     ) {
@@ -75,12 +81,10 @@ fun DailyWallpaper(
                     visible = !list.isNullOrEmpty()
                 ) {
                     Card(
-//                        elevation = elevation,
                         shape = shape,
                         backgroundColor = MaterialTheme.colors.primary,
                         modifier = Modifier
                             .height(width)
-//                            .neumorphicPunched()
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onLongPress = { onLongPress(wallpaper) },
@@ -106,7 +110,7 @@ fun DailyWallpaper(
                                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                 )
                             }
-                            .neumorphicShadow()
+                            .neumorphicShadow(pressed = isPressed)
                     ) {
                         Box {
                             PexCoilImage(

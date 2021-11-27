@@ -1,17 +1,15 @@
 package com.adwi.pexwallpapers.navigation
 
-import android.content.res.Resources
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import kotlinx.coroutines.CoroutineScope
 
 object MainDestinations {
     const val HOME_ROUTE = "home"
@@ -25,20 +23,16 @@ object MainDestinations {
 @Composable
 fun rememberMyAppState(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    navController: NavHostController = rememberAnimatedNavController(),
-    resources: Resources = resources(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
+    navController: NavHostController = rememberAnimatedNavController()
 ) =
-    remember(scaffoldState, navController, resources, coroutineScope) {
-        PexAppState(scaffoldState, navController, resources, coroutineScope)
+    remember(scaffoldState, navController) {
+        PexAppState(scaffoldState, navController)
     }
 
 @Stable
 class PexAppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
-    private val resources: Resources,
-    coroutineScope: CoroutineScope
 ) {
     // ----------------------------------------------------------
     // BottomBar state source of truth
@@ -52,7 +46,6 @@ class PexAppState(
     val shouldShowBottomBar: Boolean
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
-
     // ----------------------------------------------------------
     // Navigation state source of truth
     // ----------------------------------------------------------
@@ -75,8 +68,6 @@ class PexAppState(
             navController.navigate(route) {
                 launchSingleTop = true
                 restoreState = true
-                // Pop up backstack to the first destination and save state. This makes going back
-                // to the start destination when pressing back in any other bottom tab.
                 popUpTo(findStartDestination(navController.graph).id) {
                     saveState = true
                 }
@@ -95,11 +86,4 @@ class PexAppState(
             navController.navigate("${MainDestinations.SEARCH_ROUTE}/$categoryName")
         }
     }
-}
-
-@Composable
-@ReadOnlyComposable
-private fun resources(): Resources {
-    LocalConfiguration.current
-    return LocalContext.current.resources
 }
