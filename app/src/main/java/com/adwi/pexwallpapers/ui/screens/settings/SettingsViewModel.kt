@@ -1,5 +1,6 @@
 package com.adwi.pexwallpapers.ui.screens.settings
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.datasource_settings.domain.Duration
 import com.adwi.datasource_settings.domain.Settings
@@ -9,11 +10,12 @@ import com.adwi.pexwallpapers.data.settings.model.toEntity
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.di.IoDispatcher
 import com.adwi.pexwallpapers.model.state.Result
-import com.adwi.pexwallpapers.shared.image.ImageTools
-import com.adwi.pexwallpapers.shared.work.WorkTools
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.Constants
+import com.adwi.pexwallpapers.util.deleteAllBackups
 import com.adwi.pexwallpapers.util.ext.onDispatcher
+import com.adwi.pexwallpapers.work.workCancelWorks
+import com.adwi.pexwallpapers.work.workSetupAutoChangeWallpaperWorks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,8 +34,6 @@ class SettingsViewModel
 @Inject constructor(
     private val settingsDao: SettingsDao,
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val workTools: WorkTools,
-    private val imageTools: ImageTools,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -146,28 +146,28 @@ class SettingsViewModel
         )
     }
 
-    fun saveAutomation(delay: Long) {
+    fun saveAutomation(context: Context) {
         onDispatcher(ioDispatcher) {
 
             val favorites = getFavorites()
 
             if (favorites.isNotEmpty()) {
-                workTools.setupAutoChangeWallpaperWorks(
+                context.workSetupAutoChangeWallpaperWorks(
                     favorites = favorites,
-                    timeValue = delay
+                    timeValue = getDelay()
                 )
                 setSnackBar("Wallpaper will change in ${hours.value} hours and ${minutes.value} minutes")
-                Timber.tag(tag).d("saveSettings - Delay = $delay")
+                Timber.tag(tag).d("saveSettings - Delay = ${getDelay()}")
             } else {
-                cancelWorks(Constants.WORK_AUTO_WALLPAPER)
+                cancelWorks(context, Constants.WORK_AUTO_WALLPAPER)
             }
         }
     }
 
     private suspend fun getFavorites() = wallpaperRepository.getFavorites().first()
 
-    private fun cancelWorks(workTag: String) {
-        workTools.cancelWorks(workTag)
-        imageTools.deleteAllBackups()
+    private fun cancelWorks(context: Context, workTag: String) {
+        context.workCancelWorks(workTag)
+        context.deleteAllBackups()
     }
 }

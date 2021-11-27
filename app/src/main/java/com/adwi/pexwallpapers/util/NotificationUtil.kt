@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.shared.notifications
+package com.adwi.pexwallpapers.util
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -9,45 +9,31 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.hardware.camera2.params.RggbChannelVector.RED
+import android.hardware.camera2.params.RggbChannelVector
 import android.media.AudioAttributes
-import android.media.RingtoneManager.TYPE_NOTIFICATION
-import android.media.RingtoneManager.getDefaultUri
+import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.shared.notifications.receivers.ActionRestoreReceiver
-import com.adwi.pexwallpapers.shared.notifications.receivers.OnDismissReceiver
-import com.adwi.pexwallpapers.util.Constants.ACTION_AUTO
-import com.adwi.pexwallpapers.util.Constants.CHANNEL_AUTO
-import com.adwi.pexwallpapers.util.Constants.CHANNEL_INFO
-import com.adwi.pexwallpapers.util.Constants.CHANNEL_RECOMMENDATIONS
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.adwi.pexwallpapers.util.receivers.ActionRestoreReceiver
+import com.adwi.pexwallpapers.util.receivers.OnDismissReceiver
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
-/**
- * Defines notification channels
- */
 enum class Channel {
     AUTO_WALLPAPER,
     RECOMMENDATIONS,
     INFO
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalPagingApi
-@SuppressLint("NewApi")
-class NotificationTools @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+object NotificationUtil {
+
     private lateinit var channelId: String
 
     private val wallpaperGroupId = "wallpaper_group"
     private val appGroupId = "app_group"
 
-    fun setupNotifications() {
+    fun setupNotifications(context: Context) {
 //        if (runningOOrLater) {
 
         val wallpaperGroupName = context.getString(R.string.wallpapers)
@@ -68,13 +54,13 @@ class NotificationTools @Inject constructor(
                 appGroupName
             )
         )
-        createNotificationChannel(Channel.AUTO_WALLPAPER)
-        createNotificationChannel(Channel.RECOMMENDATIONS)
-        createNotificationChannel(Channel.INFO)
+        createNotificationChannel(context, Channel.AUTO_WALLPAPER)
+        createNotificationChannel(context, Channel.RECOMMENDATIONS)
+        createNotificationChannel(context, Channel.INFO)
 //        }
     }
 
-    private fun createNotificationChannel(channel: Channel) {
+    private fun createNotificationChannel(context: Context, channel: Channel) {
 //        if (runningOOrLater) {
         var name = ""
         var importance = 0
@@ -83,28 +69,28 @@ class NotificationTools @Inject constructor(
         when (channel) {
             Channel.AUTO_WALLPAPER -> {
                 val channelName = context.getString(R.string.auto_wallpapers)
-                channelId = CHANNEL_AUTO
+                channelId = Constants.CHANNEL_AUTO
                 name = channelName
                 importance = NotificationManager.IMPORTANCE_DEFAULT
                 channelGroup = wallpaperGroupId
             }
             Channel.RECOMMENDATIONS -> {
                 val channelName = context.getString(R.string.recommendations)
-                channelId = CHANNEL_RECOMMENDATIONS
+                channelId = Constants.CHANNEL_RECOMMENDATIONS
                 name = channelName
                 importance = NotificationManager.IMPORTANCE_DEFAULT
                 channelGroup = wallpaperGroupId
             }
             Channel.INFO -> {
                 val channelName = context.getString(R.string.info)
-                channelId = CHANNEL_INFO
+                channelId = Constants.CHANNEL_INFO
                 name = channelName
                 importance = NotificationManager.IMPORTANCE_HIGH
                 channelGroup = appGroupId
             }
         }
 
-        val ringtoneManager = getDefaultUri(TYPE_NOTIFICATION)
+        val ringtoneManager = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val audioAttributes =
             AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
@@ -113,7 +99,7 @@ class NotificationTools @Inject constructor(
         notificationChannel.apply {
             group = channelGroup
             enableLights(true)
-            lightColor = RED
+            lightColor = RggbChannelVector.RED
             enableVibration(true)
             vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
             setSound(ringtoneManager, audioAttributes)
@@ -126,8 +112,11 @@ class NotificationTools @Inject constructor(
     }
 
 
+    @ExperimentalCoroutinesApi
+    @ExperimentalPagingApi
     @SuppressLint("UnspecifiedImmutableFlag")
     fun sendNotification(
+        context: Context,
         id: Int,
         channelId: Channel,
         bitmap: Bitmap,
@@ -153,15 +142,15 @@ class NotificationTools @Inject constructor(
 //                    .setDestination(R.id.favoritesFragment)
 //                    .createPendingIntent()
 
-                val dismissPendingIntent = getPendingIntent(
+                val dismissPendingIntent = getPendingIntent(context,
                     Intent(context, OnDismissReceiver::class.java).apply {
-                        putExtra(ACTION_AUTO, wallpaperId.toString())
+                        putExtra(Constants.ACTION_AUTO, wallpaperId.toString())
                     }
                 )
 
-                val restorePendingIntent = getPendingIntent(
+                val restorePendingIntent = getPendingIntent(context,
                     Intent(context, ActionRestoreReceiver::class.java).apply {
-                        putExtra(ACTION_AUTO, wallpaperId.toString())
+                        putExtra(Constants.ACTION_AUTO, wallpaperId.toString())
                     }
                 )
 
@@ -221,7 +210,7 @@ class NotificationTools @Inject constructor(
         }
     }
 
-    private fun getPendingIntent(intent: Intent): PendingIntent {
+    private fun getPendingIntent(context: Context, intent: Intent): PendingIntent {
         val runningSOrLater =
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
 

@@ -1,12 +1,13 @@
-package com.adwi.pexwallpapers.shared.work.works
+package com.adwi.pexwallpapers.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.adwi.pexwallpapers.shared.image.ImageTools
-import com.adwi.pexwallpapers.shared.setter.WallpaperSetter
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_ID
+import com.adwi.pexwallpapers.util.deleteBackupBitmap
+import com.adwi.pexwallpapers.util.restoreBackup
+import com.adwi.pexwallpapers.util.setAsWallpaper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
@@ -16,10 +17,8 @@ private const val TAG = "DownloadWallpaperWork"
 
 @HiltWorker
 class RestoreWallpaperWork @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
-    private val imageTools: ImageTools,
-    private val wallpaperSetter: WallpaperSetter
+    @Assisted private val context: Context,
+    @Assisted params: WorkerParameters
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
@@ -28,18 +27,17 @@ class RestoreWallpaperWork @AssistedInject constructor(
             val wallpaperId = inputData.getString(WALLPAPER_ID)
 
             wallpaperId?.let {
-
-                val bitmap = imageTools.restoreBackup(wallpaperId)
+                val bitmap = context.restoreBackup(wallpaperId)
 
                 bitmap?.let {
-                    wallpaperSetter.setWallpaper(
+                    context.setAsWallpaper(
                         bitmap = bitmap,
                         setHomeScreen = true,
                         setLockScreen = false
                     )
                 }
 
-                imageTools.deleteBackupBitmap(wallpaperId)
+                context.deleteBackupBitmap(wallpaperId)
             }
 
             Timber.tag(TAG).d("doWork - success")

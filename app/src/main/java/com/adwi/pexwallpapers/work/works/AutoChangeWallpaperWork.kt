@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.shared.work.works
+package com.adwi.pexwallpapers.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -7,12 +7,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepository
 import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.shared.image.ImageTools
-import com.adwi.pexwallpapers.shared.notifications.Channel
-import com.adwi.pexwallpapers.shared.notifications.NotificationTools
-import com.adwi.pexwallpapers.shared.setter.WallpaperSetter
+import com.adwi.pexwallpapers.util.*
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_ID
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -29,10 +27,7 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
     private val wallpaperRepository: WallpaperRepository,
-    private val settingsDao: com.adwi.pexwallpapers.data.settings.SettingsDao,
-    private val notificationTools: NotificationTools,
-    private val imageTools: ImageTools,
-    private val wallpaperSetter: WallpaperSetter
+    private val settingsDao: SettingsDao,
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
@@ -43,25 +38,26 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
             val wallpaper: Wallpaper = wallpaperRepository.getWallpaperById(wallpaperId).first()
             val settings = settingsDao.getSettings().first()
 
-            val backupImage = wallpaperSetter.getCurrentWallpaperForBackup()
+            val backupImage = context.getCurrentWallpaperForBackup()
 
             // Save backup locally
-            imageTools.backupImageToLocal(wallpaperId, backupImage)
+            context.backupImageToLocal(wallpaperId, backupImage)
 
             // Fetch bitmap using Coil
-            val bitmap = imageTools.getBitmapFromRemote(wallpaper.imageUrlPortrait)
+            val bitmap = context.getBitmapFromRemote(wallpaper.imageUrlPortrait)
 
             // Set wallpaper
             if (bitmap != null) {
 
-                wallpaperSetter.setWallpaper(
+                context.setAsWallpaper(
                     bitmap = bitmap,
                     setHomeScreen = settings.autoHome,
                     setLockScreen = settings.autoLock
                 )
 
                 if (settings.autoChangeWallpaper) {
-                    notificationTools.sendNotification(
+                    NotificationUtil.sendNotification(
+                        context = context,
                         channelId = Channel.AUTO_WALLPAPER,
                         bitmap = bitmap,
                         id = wallpaperId,

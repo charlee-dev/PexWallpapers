@@ -1,13 +1,13 @@
-package com.adwi.pexwallpapers.shared.work.works
+package com.adwi.pexwallpapers.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import com.adwi.pexwallpapers.shared.image.ImageTools
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_IMAGE_URL
+import com.adwi.pexwallpapers.util.fetchRemoteAndSaveToGallery
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
@@ -17,9 +17,8 @@ private const val TAG = "DownloadWallpaperWork"
 
 @HiltWorker
 class DownloadWallpaperWork @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
-    private val imageTools: ImageTools
+    @Assisted private val context: Context,
+    @Assisted params: WorkerParameters
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -38,7 +37,7 @@ class DownloadWallpaperWork @AssistedInject constructor(
 
             // Save backup locally
             wallpaperImageUrl?.let {
-                imageTools.fetchRemoteAndSaveToGallery(wallpaperId, wallpaperImageUrl)
+                context.fetchRemoteAndSaveToGallery(wallpaperId, wallpaperImageUrl)
             }
 
             Timber.tag(TAG).d("doWork - success")

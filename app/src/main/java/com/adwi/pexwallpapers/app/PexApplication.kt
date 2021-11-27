@@ -5,7 +5,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.Configuration
 import com.adwi.pexwallpapers.BuildConfig
-import com.adwi.pexwallpapers.shared.notifications.NotificationTools
+import com.adwi.pexwallpapers.util.NotificationUtil
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -20,8 +20,6 @@ class PexApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
-    @Inject
-    lateinit var notificationTools: NotificationTools
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
@@ -35,6 +33,6 @@ class PexApplication : Application(), Configuration.Provider {
             Timber.plant(Timber.DebugTree())
         }
 
-        notificationTools.setupNotifications()
+        NotificationUtil.setupNotifications(this)
     }
 }

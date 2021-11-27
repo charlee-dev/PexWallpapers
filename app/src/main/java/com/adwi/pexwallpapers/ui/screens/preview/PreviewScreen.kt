@@ -17,12 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.model.state.Result
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions
@@ -37,13 +38,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PreviewScreen(
     viewModel: PreviewViewModel,
-    onGoToUrlClick: (String) -> Unit,
-    onShareClick: (Wallpaper) -> Unit,
-    onDownloadClick: (Wallpaper) -> Unit,
     upPress: () -> Unit,
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
+
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
 
     PexScaffold(
         viewModel = viewModel
@@ -124,10 +125,10 @@ fun PreviewScreen(
                 }
                 ImageActionButtons(
                     modifier = Modifier.fillMaxWidth(),
-                    onGoToUrlClick = { onGoToUrlClick(it.url) },
-                    onShareClick = { onShareClick(it) },
+                    onGoToUrlClick = { uriHandler.openUri(it.url) },
+                    onShareClick = { viewModel.shareWallpaper(context, it) },
                     onDownloadClick = {
-                        onDownloadClick(it)
+                        viewModel.downloadWallpaper(context, it)
                         viewModel.setSnackBar("Saved to gallery")
                     },
                     onFavoriteClick = { viewModel.onFavoriteClick(it) },
@@ -138,6 +139,7 @@ fun PreviewScreen(
                     state = saveState,
                     onClick = {
                         viewModel.setWallpaper(
+                            context = context,
                             imageUrl = it.imageUrlPortrait,
                             setHomeScreen = true,
                             setLockScreen = false

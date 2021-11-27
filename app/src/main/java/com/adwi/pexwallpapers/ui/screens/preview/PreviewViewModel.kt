@@ -1,15 +1,20 @@
 package com.adwi.pexwallpapers.ui.screens.preview
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
+import com.adwi.pexwallpapers.data.settings.SettingsDao
 import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.di.IoDispatcher
 import com.adwi.pexwallpapers.model.Wallpaper
 import com.adwi.pexwallpapers.model.state.Result
-import com.adwi.pexwallpapers.shared.image.ImageTools
-import com.adwi.pexwallpapers.shared.setter.WallpaperSetter
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.ext.onDispatcher
+import com.adwi.pexwallpapers.util.fetchRemoteAndSaveLocally
+import com.adwi.pexwallpapers.util.getBitmapFromRemote
+import com.adwi.pexwallpapers.util.setAsWallpaper
+import com.adwi.pexwallpapers.util.shareImage
+import com.adwi.pexwallpapers.work.workCreateDownloadWallpaperWork
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,8 +33,7 @@ class PreviewViewModel
 @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val wallpaperRepository: WallpaperRepositoryImpl,
-    private val wallpaperSetter: WallpaperSetter,
-    private val imageTools: ImageTools,
+    private val settingsDao: SettingsDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -58,12 +63,17 @@ class PreviewViewModel
         }
     }
 
-    fun setWallpaper(imageUrl: String, setHomeScreen: Boolean, setLockScreen: Boolean) {
+    fun setWallpaper(
+        context: Context,
+        imageUrl: String,
+        setHomeScreen: Boolean,
+        setLockScreen: Boolean
+    ) {
         onDispatcher(ioDispatcher) {
-            val bitmap = imageTools.getBitmapFromRemote(imageUrl)
+            val bitmap = context.getBitmapFromRemote(imageUrl)
 
             bitmap?.let {
-                wallpaperSetter.setWallpaper(
+                context.setAsWallpaper(
                     bitmap = bitmap,
                     setHomeScreen = setHomeScreen,
                     setLockScreen = setLockScreen
@@ -75,6 +85,22 @@ class PreviewViewModel
                     }
                 }
             }
+        }
+    }
+
+    fun shareWallpaper(context: Context, wallpaper: Wallpaper) {
+        onDispatcher(ioDispatcher) {
+            val uri = context.fetchRemoteAndSaveLocally(wallpaper.id, wallpaper.imageUrlPortrait)
+            uri?.let {
+                context.shareImage(uri, wallpaper.photographer)
+            }
+        }
+    }
+
+    fun downloadWallpaper(context: Context, wallpaper: Wallpaper) {
+        onDispatcher(ioDispatcher) {
+            val settings = settingsDao.getSettings().first()
+            context.workCreateDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
         }
     }
 }

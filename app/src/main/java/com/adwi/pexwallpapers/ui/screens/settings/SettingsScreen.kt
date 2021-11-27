@@ -159,7 +159,7 @@ fun SettingsScreen(
 //                            .padding(paddingValues)
                             .fillMaxWidth()
                             .height(56.dp),
-                        onClick = { viewModel.saveAutomation(viewModel.getDelay()) },
+                        onClick = { viewModel.saveAutomation(context) },
                     )
                 }
             }

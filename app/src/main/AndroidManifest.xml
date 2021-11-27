@@ -44,10 +44,10 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
         <receiver
-            android:name="com.adwi.pexwallpapers.shared.notifications.receivers.ActionRestoreReceiver"
+            android:name="com.adwi.pexwallpapers.util.receivers.ActionRestoreReceiver"
             android:exported="false" />
         <receiver
-            android:name="com.adwi.pexwallpapers.shared.notifications.receivers.OnDismissReceiver"
+            android:name="com.adwi.pexwallpapers.util.receivers.OnDismissReceiver"
             android:exported="false" />
     </application>
 

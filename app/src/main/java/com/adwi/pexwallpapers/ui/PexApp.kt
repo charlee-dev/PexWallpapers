@@ -6,7 +6,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.navigation.HomeSections
@@ -43,7 +42,7 @@ fun PexApp(
         PexWallpapersTheme() {
 
             val appState = rememberMyAppState()
-            val uriHandler = LocalUriHandler.current
+
 
             PexScaffold(
                 viewModel = viewModel,
@@ -74,9 +73,6 @@ fun PexApp(
                         onWallpaperClick = appState::navigateToPreview,
                         onCategoryClick = appState::navigateToCategory,
                         navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) },
-                        onGoToUrlClick = { uriHandler.openUri(it) },
-                        onShareClick = { viewModel.shareWallpaper(it) },
-                        onDownloadClick = { viewModel.downloadWallpaper(it) },
                         onAboutUsClick = {
                             TODO("add about us section")
                         },
