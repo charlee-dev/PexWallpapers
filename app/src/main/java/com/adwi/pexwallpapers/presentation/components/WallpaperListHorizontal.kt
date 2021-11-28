@@ -1,5 +1,6 @@
 package com.adwi.pexwallpapers.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -161,15 +162,42 @@ private fun WallpaperItem(
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light")
 @Composable
-private fun WallpaperListPanelPreview() {
-    PexWallpapersTheme {
-        WallpaperItem(
-            onLongPress = {},
-            onWallpaperClick = {},
-            wallpaper = Wallpaper.defaultDaily,
-            isHeartEnabled = true
-        )
+private fun WallpaperListPanelPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            WallpaperItem(
+                onLongPress = {},
+                onWallpaperClick = {},
+                wallpaper = Wallpaper.defaultDaily,
+                isHeartEnabled = true
+            )
+        }
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun WallpaperListPanelPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            WallpaperItem(
+                onLongPress = {},
+                onWallpaperClick = {},
+                wallpaper = Wallpaper.defaultDaily,
+                isHeartEnabled = true
+            )
+        }
     }
 }

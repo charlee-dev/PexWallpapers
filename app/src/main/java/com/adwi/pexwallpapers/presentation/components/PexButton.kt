@@ -2,12 +2,14 @@ package com.adwi.pexwallpapers.presentation.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -21,29 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.domain.state.Result
 import com.adwi.pexwallpapers.presentation.theme.AccentMedium
-
-@Composable
-fun ButtonRoundedTop(
-    modifier: Modifier = Modifier,
-    onSetWallpaperClick: () -> Unit,
-    text: String,
-    backgroundColor: Color = MaterialTheme.colors.surface,
-    contentColor: Color = MaterialTheme.colors.onSurface
-) {
-    Button(
-        onClick = onSetWallpaperClick,
-        shape = MaterialTheme.shapes.medium,
-        modifier = modifier,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = backgroundColor,
-            contentColor = contentColor
-        )
-
-    ) {
-        Text(text = text)
-    }
-}
-
+import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
+import com.adwi.pexwallpapers.presentation.theme.paddingValues
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -126,14 +107,78 @@ fun PexButton(
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalMaterialApi
+@ExperimentalAnimationApi
+@Preview(showBackground = true, name = "Light")
 @Composable
-@Preview(showBackground = true)
-private fun PexButtonPreview() {
-    Column {
-        PexButton(
-            text = "Save"
-        )
+private fun PexButtonPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Idle
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Loading
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Success
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Error(stringResource(id = R.string.unknown_error_occurred))
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@ExperimentalAnimationApi
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun PexButtonPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Idle
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Loading
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Success
+            )
+            Spacer(modifier = Modifier.size(paddingValues))
+            PexButton(
+                text = stringResource(id = R.string.save),
+                modifier = Modifier.height(42.dp),
+                state = Result.Error(stringResource(id = R.string.unknown_error_occurred))
+            )
+        }
     }
 }

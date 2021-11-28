@@ -1,6 +1,7 @@
 package com.adwi.pexwallpapers.presentation.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -181,29 +182,80 @@ private fun CategoryItem(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light")
 @Composable
-private fun CategoryTitlePreview() {
-    PexWallpapersTheme {
-        CategoryTitle(
-            name = "Colors"
-        )
+private fun CategoryTitlePreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            CategoryTitle(
+                name = "Colors"
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun CategoryTitlePreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            CategoryTitle(
+                name = "Colors"
+            )
+        }
     }
 }
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light")
 @Composable
-private fun CategoryItemPreview() {
-    PexWallpapersTheme() {
-        CategoryItem(
-            categoryName = ColorCategory.mock.name,
-            image1 = ColorCategory.mock.firstImage,
-            image2 = ColorCategory.mock.secondImage,
-            image3 = ColorCategory.mock.thirdImage,
-            image4 = ColorCategory.mock.forthImage,
-            onCategoryClick = {}
-        )
+private fun CategoryItemPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            CategoryItem(
+                categoryName = ColorCategory.mock.name,
+                image1 = ColorCategory.mock.firstImage,
+                image2 = ColorCategory.mock.secondImage,
+                image3 = ColorCategory.mock.thirdImage,
+                image4 = ColorCategory.mock.forthImage,
+                onCategoryClick = {}
+            )
+        }
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun CategoryItemPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            CategoryItem(
+                categoryName = ColorCategory.mock.name,
+                image1 = ColorCategory.mock.firstImage,
+                image2 = ColorCategory.mock.secondImage,
+                image3 = ColorCategory.mock.thirdImage,
+                image4 = ColorCategory.mock.forthImage,
+                onCategoryClick = {}
+            )
+        }
     }
 }

@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import com.valentinilk.shimmer.shimmer
 
@@ -59,6 +61,36 @@ fun ShimmerErrorMessage(
                 }
             }
 
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Preview(showBackground = true, name = "Light")
+@Composable
+private fun ShimmerErrorMessagePreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ShimmerErrorMessage(visible = true)
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun ShimmerErrorMessagePreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ShimmerErrorMessage(visible = true)
         }
     }
 }

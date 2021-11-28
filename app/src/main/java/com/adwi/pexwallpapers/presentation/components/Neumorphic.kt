@@ -3,7 +3,14 @@ package com.adwi.pexwallpapers.presentation.components
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -11,12 +18,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.adwi.pexwallpapers.presentation.theme.Neutral3
-import com.adwi.pexwallpapers.presentation.theme.Neutral5
-import com.adwi.pexwallpapers.presentation.theme.PrimaryShadowDark
-import com.adwi.pexwallpapers.presentation.theme.PrimaryShadowLight
+import com.adwi.pexwallpapers.presentation.theme.*
 
 /*
 * to capture pressed state add:
@@ -103,6 +108,50 @@ fun Modifier.neumorphicShadow(
                 cornerRadius.toPx(),
                 cornerRadius.toPx(),
                 paint
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Light")
+@Composable
+private fun NeumorphicPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            Card(
+                shape = MaterialTheme.shapes.large,
+                backgroundColor = MaterialTheme.colors.surface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .neumorphicShadow(),
+                content = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun NeumorphicPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            Card(
+                shape = MaterialTheme.shapes.large,
+                backgroundColor = MaterialTheme.colors.surface,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .neumorphicShadow(),
+                content = {}
             )
         }
     }

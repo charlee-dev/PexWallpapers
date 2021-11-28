@@ -30,14 +30,14 @@ import kotlinx.coroutines.launch
 @ExperimentalPagingApi
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel,
+    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: (String) -> Unit,
     navigateToSearch: () -> Unit
 ) {
-    val daily by viewModel.daily.collectAsState(null)
-    val colors by viewModel.colors.collectAsState(null)
-    val curated by viewModel.curated.collectAsState(null)
+    val daily by viewModel.daily.collectAsState()
+    val colors by viewModel.colors.collectAsState()
+    val curated by viewModel.curated.collectAsState()
     val lowRes = viewModel.lowRes
 
     val isRefreshing by viewModel.isRefreshing.collectAsState()

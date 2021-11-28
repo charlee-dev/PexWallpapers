@@ -2,8 +2,10 @@ package com.adwi.pexwallpapers.presentation.components
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
 
 @Composable
@@ -81,16 +84,43 @@ fun ActionButton(
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview(showBackground = true, name = "Light")
 @Composable
-fun ImageActionButtonsPreview() {
-    MaterialTheme {
-        ImageActionButtons(
-            onGoToUrlClick = {},
-            onShareClick = {},
-            onDownloadClick = {},
-            onFavoriteClick = {},
-            isFavorite = true
-        )
+private fun ImageActionButtonsPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ImageActionButtons(
+                onGoToUrlClick = {},
+                onShareClick = {},
+                onDownloadClick = {},
+                onFavoriteClick = {},
+                isFavorite = true
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun ImageActionButtonsPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ImageActionButtons(
+                onGoToUrlClick = {},
+                onShareClick = {},
+                onDownloadClick = {},
+                onFavoriteClick = {},
+                isFavorite = true
+            )
+        }
     }
 }

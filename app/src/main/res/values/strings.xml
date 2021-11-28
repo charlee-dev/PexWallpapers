@@ -113,4 +113,17 @@
     <string name="error">Error</string>
     <string name="wallpaper_has_been_set">Wallpaper has been set</string>
     <string name="done">Done</string>
+    <string name="low_res_description">Wallpaper preview will be still in quality resolution</string>
+    <string name="download_over_wifi_description">Wallpapers will wait in the queue for WiFi</string>
+    <string name="change_wallpaper_every_description">WARNING: Frequent wallpaper change may cause device\'s battery drain</string>
+    <string name="request_permission">Request permission</string>
+    <string name="dont_show_rationale_again">Don\'t show rationale again</string>
+    <string name="external_storage_rationale">Read External Storage is important for this app. Please grant the permission.</string>
+    <string name="external_storage_denied">Read External Storage permission denied. See this FAQ with information about why we need this permission. Please, grant us access on the Settings screen.</string>
+    <string name="feature_not_available">Feature not available</string>
+    <string name="new_wallpaper_set_description">Shows only if automation is set</string>
+    <string name="show_more">Show more</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+    <string name="filter">Filter</string>
 </resources>

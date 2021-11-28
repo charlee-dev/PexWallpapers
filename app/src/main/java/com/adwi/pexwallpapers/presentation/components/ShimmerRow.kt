@@ -3,6 +3,7 @@ package com.adwi.pexwallpapers.presentation.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Card
@@ -11,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.presentation.theme.Dimensions
+import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import com.valentinilk.shimmer.shimmer
 
@@ -52,6 +55,34 @@ fun ShimmerRow(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Light")
+@Composable
+private fun ShimmerRowPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ShimmerRow(visible = true)
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun ShimmerRowPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        Box(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .padding(paddingValues)
+        ) {
+            ShimmerRow(visible = true)
         }
     }
 }

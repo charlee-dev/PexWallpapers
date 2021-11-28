@@ -38,6 +38,7 @@ import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavI
 import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
 import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavigationItemPadding
 import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.TextIconSpacing
+import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
@@ -288,12 +289,27 @@ private fun PexBottomNavIndicator(
 }
 
 @ExperimentalMaterialApi
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light")
 @Composable
-private fun PexBottomNavPreview() {
-    PexBottomBar(
-        tabs = HomeSections.values(),
-        currentRoute = "home/home",
-        navigateToRoute = { }
-    )
+private fun PexBottomNavPreviewLight() {
+    PexWallpapersTheme(darkTheme = false) {
+        PexBottomBar(
+            tabs = HomeSections.values(),
+            currentRoute = "home/home",
+            navigateToRoute = { }
+        )
+    }
+}
+
+@ExperimentalMaterialApi
+@Preview(showBackground = true, name = "Dark")
+@Composable
+private fun PexBottomNavPreviewDark() {
+    PexWallpapersTheme(darkTheme = true) {
+        PexBottomBar(
+            tabs = HomeSections.values(),
+            currentRoute = "home/home",
+            navigateToRoute = { }
+        )
+    }
 }
