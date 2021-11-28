@@ -6,7 +6,7 @@ import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
 import com.adwi.pexwallpapers.domain.model.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.state.DataState
-import com.adwi.pexwallpapers.util.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.pexwallpapers.presentation.util.Constants.DEFAULT_DAILY_CATEGORY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 

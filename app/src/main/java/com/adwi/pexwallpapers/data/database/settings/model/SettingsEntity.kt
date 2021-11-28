@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.adwi.pexwallpapers.domain.model.Duration
 import com.adwi.pexwallpapers.domain.model.Settings
-import com.adwi.pexwallpapers.util.Constants.DEFAULT_QUERY
+import com.adwi.pexwallpapers.presentation.util.Constants.DEFAULT_QUERY
 
 @Entity(tableName = "settings_table")
 data class SettingsEntity(

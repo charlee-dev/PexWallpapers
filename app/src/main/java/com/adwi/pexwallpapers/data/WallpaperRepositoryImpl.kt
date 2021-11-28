@@ -13,12 +13,9 @@ import com.adwi.pexwallpapers.data.network.domain.toEntity
 import com.adwi.pexwallpapers.domain.model.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.repository.WallpaperRepository
-import com.adwi.pexwallpapers.domain.repository.util.keepFavorites
-import com.adwi.pexwallpapers.domain.repository.util.networkBoundResource
-import com.adwi.pexwallpapers.domain.repository.util.shouldFetch
-import com.adwi.pexwallpapers.domain.repository.util.shouldFetchColors
+import com.adwi.pexwallpapers.domain.repository.networkBoundResource
 import com.adwi.pexwallpapers.domain.state.DataState
-import com.adwi.pexwallpapers.util.Constants
+import com.adwi.pexwallpapers.presentation.util.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

@@ -2,7 +2,7 @@ package com.adwi.pexwallpapers.data.network.domain
 
 import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.util.Constants.DEFAULT_CATEGORY
+import com.adwi.pexwallpapers.presentation.util.Constants.DEFAULT_CATEGORY
 import com.google.gson.annotations.SerializedName
 
 data class WallpaperDto(

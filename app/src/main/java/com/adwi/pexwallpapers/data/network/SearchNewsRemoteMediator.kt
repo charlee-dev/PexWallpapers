@@ -10,7 +10,7 @@ import com.adwi.pexwallpapers.data.database.wallpapers.domain.SearchQueryRemoteK
 import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
 import com.adwi.pexwallpapers.data.database.wallpapers.domain.toEntity
 import com.adwi.pexwallpapers.data.database.wallpapers.domain.toSearchResult
-import com.adwi.pexwallpapers.domain.repository.util.keepFavorites
+import com.adwi.pexwallpapers.data.keepFavorites
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException

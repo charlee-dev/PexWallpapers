@@ -1,11 +1,11 @@
 package com.adwi.pexwallpapers.data.network
 
 import com.adwi.pexwallpapers.data.network.domain.WallpaperResponse
-import com.adwi.pexwallpapers.util.Constants.COLORS_PAGE_SIZE
-import com.adwi.pexwallpapers.util.Constants.CURATED_PAGE_SIZE
-import com.adwi.pexwallpapers.util.Constants.DAILY_PAGE_SIZE
-import com.adwi.pexwallpapers.util.Constants.DEFAULT_DAILY_CATEGORY
-import com.adwi.pexwallpapers.util.Constants.PAGING_PAGE_SIZE
+import com.adwi.pexwallpapers.presentation.util.Constants.COLORS_PAGE_SIZE
+import com.adwi.pexwallpapers.presentation.util.Constants.CURATED_PAGE_SIZE
+import com.adwi.pexwallpapers.presentation.util.Constants.DAILY_PAGE_SIZE
+import com.adwi.pexwallpapers.presentation.util.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.pexwallpapers.presentation.util.Constants.PAGING_PAGE_SIZE
 import retrofit2.http.GET
 import retrofit2.http.Query
 

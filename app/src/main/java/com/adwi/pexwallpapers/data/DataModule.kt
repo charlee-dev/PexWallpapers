@@ -12,7 +12,7 @@ import com.adwi.pexwallpapers.data.database.wallpapers.dao.SearchDao
 import com.adwi.pexwallpapers.data.database.wallpapers.dao.WallpapersDao
 import com.adwi.pexwallpapers.data.network.PexService
 import com.adwi.pexwallpapers.domain.repository.WallpaperRepository
-import com.adwi.pexwallpapers.util.Constants
+import com.adwi.pexwallpapers.presentation.util.Constants
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
