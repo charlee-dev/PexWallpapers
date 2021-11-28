@@ -137,6 +137,7 @@ fun NavGraphBuilder.addHomeGraph(
     composable(HomeSections.SETTINGS.route) { backStackEntry ->
         val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
 
+        viewModel.getSettings()
         SettingsScreen(
             viewModel = viewModel,
             onAboutUsClick = onAboutUsClick,

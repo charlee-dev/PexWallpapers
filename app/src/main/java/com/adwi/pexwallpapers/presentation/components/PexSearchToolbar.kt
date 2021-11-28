@@ -22,7 +22,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
 
@@ -33,7 +32,6 @@ fun PexSearchToolbar(
     query: String,
     onQueryChanged: (String) -> Unit,
     onShowFilterDialog: () -> Unit,
-    elevation: Dp = 10.dp,
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.primary
@@ -45,7 +43,7 @@ fun PexSearchToolbar(
         shape = shape,
         modifier = modifier
             .fillMaxWidth()
-            .neumorphicShadow(),
+            .neumorphicShadow(offset = (-5).dp),
         backgroundColor = backgroundColor
     ) {
         Row(

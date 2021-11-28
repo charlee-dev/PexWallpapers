@@ -105,7 +105,7 @@
     <string name="data_usage">Data usage</string>
     <string name="activate_data_saver">Activate data saver</string>
     <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over wifi</string>
-    <string name="download_miniatures_only_in_tiny_resolution">Download miniatures only over wifi</string>
+    <string name="download_miniatures_low_quality">Download miniatures in lower resolution</string>
     <string name="auto_change_only_on_wifi">Auto change only on wifi</string>
     <string name="about_us">About us</string>
     <string name="privacy_policy">Privacy policy</string>

@@ -59,8 +59,8 @@ fun SettingsScreen(
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
-    val subject =
-        "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
+//    val subject =
+//        "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
 
 //    val chooserMessage = context.getString(R.string.support_chooser_message)
 //
@@ -147,14 +147,13 @@ fun SettingsScreen(
                         days = days,
                         hours = hours,
                         minutes = minutes,
-                        onDaysChange = { viewModel.setDays(it) },
-                        onHourChange = { viewModel.setHours(it) },
-                        onMinutesChange = { viewModel.setMinutes(it) }
+                        onDaysChange = { viewModel.updateDuration(d = it) },
+                        onHourChange = { viewModel.updateDuration(h = it) },
+                        onMinutesChange = { viewModel.updateDuration(m = it) }
                     )
                     Spacer(modifier = Modifier.size(paddingValues))
                     SaveButton(
                         modifier = Modifier
-//                            .padding(paddingValues)
                             .fillMaxWidth()
                             .height(56.dp),
                         onClick = { viewModel.saveAutomation(context) },
@@ -166,23 +165,23 @@ fun SettingsScreen(
                     modifier = Modifier,
                     panelName = stringResource(id = R.string.data_usage),
                     mainName = stringResource(id = R.string.activate_data_saver),
-                    checked = settings.downloadOverWiFi,
-                    onCheckedChange = { viewModel.updateDownloadOverWiFi(it) }
+                    checked = settings.activateDataSaver,
+                    onCheckedChange = { viewModel.updateActivateDataSaver(it) }
                 ) {
                     SwitchRow(
                         name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
-                        checked = settings.newWallpaperSet,
-                        onCheckedChange = { viewModel.updateNewWallpaperSet(it) }
+                        checked = settings.downloadWallpapersOverWiFi,
+                        onCheckedChange = { viewModel.updateDownloadWallpapersOverWiFi(it) }
                     )
                     SwitchRow(
-                        name = stringResource(id = R.string.download_miniatures_only_in_tiny_resolution),
-                        checked = settings.wallpaperRecommendations,
-                        onCheckedChange = { viewModel.updateWallpaperRecommendations(it) }
+                        name = stringResource(id = R.string.download_miniatures_low_quality),
+                        checked = settings.lowResMiniatures,
+                        onCheckedChange = { viewModel.updateDownloadMiniaturesLowQuality(it) }
                     )
                     SwitchRow(
                         name = stringResource(id = R.string.auto_change_only_on_wifi),
-                        checked = settings.wallpaperRecommendations,
-                        onCheckedChange = { viewModel.updateWallpaperRecommendations(it) }
+                        checked = settings.autoChangeOverWiFi,
+                        onCheckedChange = { viewModel.updateAutoChangeOverWiFi(it) }
                     )
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                 }

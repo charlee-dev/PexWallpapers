@@ -4,22 +4,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.adwi.pexwallpapers.data.database.settings.model.SettingsEntity
-import com.adwi.pexwallpapers.domain.model.Duration
+import com.adwi.pexwallpapers.data.database.settings.model.Settings
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SettingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSettings(setting: SettingsEntity)
+    suspend fun insertSettings(setting: Settings)
 
     @Query("SELECT * FROM settings_table")
-    fun getSettings(): Flow<SettingsEntity>
+    fun getSettings(): Flow<Settings>
 
-    @Query("UPDATE settings_table SET lastQuery = :query")
-    suspend fun updateLastQuery(query: String)
-
+    // Notifications
     @Query("UPDATE settings_table SET pushNotifications = :enabled")
     suspend fun updatePushNotifications(enabled: Boolean)
 
@@ -29,21 +26,29 @@ interface SettingsDao {
     @Query("UPDATE settings_table SET wallpaperRecommendations = :enabled")
     suspend fun updateWallpaperRecommendations(enabled: Boolean)
 
+    // Automation
     @Query("UPDATE settings_table SET autoChangeWallpaper = :enabled")
     suspend fun updateAutoChangeWallpaper(enabled: Boolean)
-
-    @Query("UPDATE settings_table SET downloadOverWiFi = :enabled")
-    suspend fun updateDownloadOverWiFi(enabled: Boolean)
-
-    @Query("UPDATE settings_table SET durationSelected = :durationSelected")
-    suspend fun updateChangeDurationSelected(durationSelected: Duration)
-
-    @Query("UPDATE settings_table SET durationValue = :durationValue")
-    suspend fun updateChangeDurationValue(durationValue: Float)
 
     @Query("UPDATE settings_table SET autoHome = :enabled")
     suspend fun updateAutoHome(enabled: Boolean)
 
     @Query("UPDATE settings_table SET autoLock = :enabled")
     suspend fun updateAutoLock(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET duration = :durationValue")
+    suspend fun updateDuration(durationValue: Int)
+
+    // Data saver
+    @Query("UPDATE settings_table SET activateDataSaver = :enabled")
+    suspend fun updateActivateDataSaver(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET downloadWallpapersOverWiFi = :enabled")
+    suspend fun updateDownloadWallpapersOverWiFi(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET lowResMiniatures = :enabled")
+    suspend fun updateDownloadMiniaturesLowQuality(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET autoChangeOverWiFi = :enabled")
+    suspend fun updateAutoChangeOverWiFi(enabled: Boolean)
 }

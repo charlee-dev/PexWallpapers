@@ -4,11 +4,8 @@ import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.data.database.settings.SettingsDao
-import com.adwi.pexwallpapers.data.database.settings.model.toDomain
-import com.adwi.pexwallpapers.data.database.settings.model.toEntity
-import com.adwi.pexwallpapers.domain.model.Duration
-import com.adwi.pexwallpapers.domain.model.Settings
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.data.database.settings.model.Settings
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.presentation.IoDispatcher
 import com.adwi.pexwallpapers.presentation.base.BaseViewModel
 import com.adwi.pexwallpapers.presentation.util.Constants
@@ -24,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -37,30 +35,40 @@ class SettingsViewModel
 ) : BaseViewModel() {
 
     private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
-    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
+
+    //    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
     private val _days = MutableStateFlow(0)
     private val _hours = MutableStateFlow(0)
     private val _minutes = MutableStateFlow(1)
 
     val settings = _settings.asStateFlow()
-    val saveState = _saveState.asStateFlow()
+
+    //    val saveState = _saveState.asStateFlow()
     val days = _days.asStateFlow()
     val hours = _hours.asStateFlow()
     val minutes = _minutes.asStateFlow()
 
-    init {
-        getSettings()
-    }
-
-    private fun getSettings() {
+    fun getSettings() {
         onDispatcher(ioDispatcher) {
             settingsDao.getSettings().collect {
-                _settings.value = it.toDomain()
-//                formatDelayTimeInMilliSeconds(it.durationValue)
+                _settings.value = it
+                setDelayFromMillis(it.duration.toLong())
             }
         }
     }
 
+    private fun setDelayFromMillis(milliSeconds: Long) {
+
+        _minutes.value = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
+        _hours.value = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
+        _days.value = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
+
+        Timber.tag(tag).d(
+            "formatDelayTimeInMilliSeconds \nDays = ${days.value} \nHours = ${hours.value} \nMinutes = ${minutes.value}"
+        )
+    }
+
+    // Notifications
     fun updatePushNotifications(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsDao.updatePushNotifications(checked) }
     }
@@ -73,22 +81,9 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsDao.updateWallpaperRecommendations(checked) }
     }
 
+    // Automation
     fun updateAutoChangeWallpaper(checked: Boolean) {
         onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeWallpaper(checked) }
-    }
-
-    fun updateChangeDurationSelected(durationSelected: Duration) {
-        onDispatcher(ioDispatcher) {
-            settingsDao.updateChangeDurationSelected(durationSelected)
-        }
-    }
-
-    fun updateChangeDurationValue(durationValue: Float) {
-        onDispatcher(ioDispatcher) { settingsDao.updateChangeDurationValue(durationValue) }
-    }
-
-    fun updateDownloadOverWiFi(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateDownloadOverWiFi(checked) }
     }
 
     fun updateAutoHome(checked: Boolean) {
@@ -99,51 +94,48 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsDao.updateAutoLock(checked) }
     }
 
-    fun resetSettings() {
-        onDispatcher(ioDispatcher) { settingsDao.insertSettings(Settings.default.toEntity()) }
-    }
-
-    fun setDays(value: Int) {
+    fun updateDuration(
+        m: Int = minutes.value,
+        h: Int = hours.value,
+        d: Int = days.value
+    ) {
         onDispatcher(ioDispatcher) {
-            _days.value = value
+            val duration = getDelay(m, h, d)
+            settingsDao.updateDuration(duration)
         }
     }
 
-    fun setHours(value: Int) {
-        onDispatcher(ioDispatcher) {
-            _hours.value = value
-        }
-    }
-
-    fun setMinutes(value: Int) {
-        onDispatcher(ioDispatcher) {
-            _minutes.value = value
-        }
-    }
-
-    private fun getDelay(): Long {
-
-        val days = days.value
-        val hours = hours.value
-        val minutes = minutes.value
-
+    private fun getDelay(
+        minutes: Int,
+        hours: Int,
+        days: Int
+    ): Int {
         val hour = 60
-        val day = 24 * hour.toLong()
+        val day = 24 * hour
 
         return (day * days) + (hour * hours) + minutes
     }
 
-//    fun formatDelayTimeInMilliSeconds(milliSeconds: Long) {
-//        val days = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
-//        val hours = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
-//        val minutes = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
-//        setDays(days)
-//        setHours(hours)
-//        setMinutes(minutes)
-//        Timber.tag(tag).d(
-//            "formatDelayTimeInMilliSeconds \nDays = $days \nHours = $hours \nMinutes = $minutes"
-//        )
-//    }
+    // Data saver
+    fun updateActivateDataSaver(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateActivateDataSaver(checked) }
+    }
+
+    fun updateDownloadWallpapersOverWiFi(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateDownloadWallpapersOverWiFi(checked) }
+    }
+
+    fun updateDownloadMiniaturesLowQuality(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateDownloadMiniaturesLowQuality(checked) }
+    }
+
+    fun updateAutoChangeOverWiFi(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeOverWiFi(checked) }
+    }
+
+    fun resetSettings() {
+        onDispatcher(ioDispatcher) { settingsDao.insertSettings(Settings.default) }
+    }
 
     fun saveAutomation(context: Context) {
         onDispatcher(ioDispatcher) {
@@ -151,19 +143,21 @@ class SettingsViewModel
             val favorites = getFavorites()
 
             if (favorites.isNotEmpty()) {
-                context.workSetupAutoChangeWallpaperWorks(
-                    favorites = favorites,
-                    timeValue = getDelay()
-                )
-                setSnackBar("Wallpaper will change in ${hours.value} hours and ${minutes.value} minutes")
-                Timber.tag(tag).d("saveSettings - Delay = ${getDelay()}")
+                settings.value.let {
+                    context.workSetupAutoChangeWallpaperWorks(
+                        favorites = favorites,
+                        timeValue = it.duration.toLong()
+                    )
+                    setSnackBar("Wallpaper will change in ${hours.value} hours and ${minutes.value} minutes")
+                    Timber.tag(tag).d("saveSettings - Delay = ${settings.value.duration}")
+                }
             } else {
                 cancelWorks(context, Constants.WORK_AUTO_WALLPAPER)
             }
         }
     }
 
-    private suspend fun getFavorites() = wallpaperRepository.getFavorites().first()
+    private suspend fun getFavorites(): List<Wallpaper> = wallpaperRepository.getFavorites().first()
 
     private fun cancelWorks(context: Context, workTag: String) {
         context.workCancelWorks(workTag)

@@ -51,12 +51,15 @@ fun Context.workCreateRestoreWallpaperWork(wallpaperId: String) {
     Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
 }
 
-fun Context.workCreateDownloadWallpaperWork(wallpaper: Wallpaper, downloadOverWiFi: Boolean): UUID {
-    Timber.tag(TAG).d("downloadWallpaperWork")
+fun Context.workCreateDownloadWallpaperWork(
+    wallpaper: Wallpaper,
+    downloadWallpaperOverWiFi: Boolean
+): UUID {
+    Timber.tag(TAG).d("workCreateDownloadWallpaperWork")
 
-    val constraints = if (downloadOverWiFi) {
+    val constraints = if (downloadWallpaperOverWiFi) {
         Timber.tag(TAG)
-            .d("Download will start when you connect to WiFi \nYou can change this in Settings")
+            .d("Download will start when you connect to WiFi")
         Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
             .build()

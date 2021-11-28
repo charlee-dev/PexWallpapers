@@ -3,13 +3,10 @@ package com.adwi.pexwallpapers.data.database.settings
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.adwi.pexwallpapers.data.database.settings.model.Converters
-import com.adwi.pexwallpapers.data.database.settings.model.SettingsEntity
+import com.adwi.pexwallpapers.data.database.settings.model.Settings
 
-@TypeConverters(Converters::class)
 @Database(
-    entities = [SettingsEntity::class],
+    entities = [Settings::class],
     version = 1,
     exportSchema = false
 )

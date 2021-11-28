@@ -100,7 +100,7 @@ class PreviewViewModel
     fun downloadWallpaper(context: Context, wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val settings = settingsDao.getSettings().first()
-            context.workCreateDownloadWallpaperWork(wallpaper, settings.downloadOverWiFi)
+            context.workCreateDownloadWallpaperWork(wallpaper, settings.downloadWallpapersOverWiFi)
         }
     }
 }
