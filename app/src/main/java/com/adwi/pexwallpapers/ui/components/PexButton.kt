@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.domain.state.Result
 import com.adwi.pexwallpapers.ui.theme.AccentMedium
 
 @Composable

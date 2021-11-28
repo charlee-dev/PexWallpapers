@@ -7,9 +7,9 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adwi.pexwallpapers.data.settings.SettingsDao
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepository
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.domain.repository.WallpaperRepository
 import com.adwi.pexwallpapers.util.*
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_ID
 import dagger.assisted.Assisted

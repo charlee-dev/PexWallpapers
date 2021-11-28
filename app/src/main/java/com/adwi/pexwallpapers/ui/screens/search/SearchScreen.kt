@@ -23,9 +23,9 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity
-import com.adwi.pexwallpapers.data.wallpapers.database.domain.toDomain
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
+import com.adwi.pexwallpapers.data.database.wallpapers.domain.toDomain
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -177,7 +177,7 @@ fun WallpaperListPaged(
 //                    elevation = 20.dp,
                     shape = MaterialTheme.shapes.large
                 ) {
-                    Box() {
+                    Box {
                         PexCoilImage(
                             imageUrl = wallpaper.imageUrlPortrait,
                             modifier = Modifier.fillMaxSize()

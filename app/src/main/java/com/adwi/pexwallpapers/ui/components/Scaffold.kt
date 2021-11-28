@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import com.adwi.pexwallpapers.model.state.Event
+import com.adwi.pexwallpapers.domain.state.Event
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.ui.theme.Neutral3
 

@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight

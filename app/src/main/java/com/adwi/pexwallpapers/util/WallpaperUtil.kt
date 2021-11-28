@@ -5,7 +5,7 @@ import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
-import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.domain.state.Result
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -3,7 +3,7 @@ package com.adwi.pexwallpapers.work
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.*
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.util.Constants.WALLPAPER_IMAGE_URL
 import com.adwi.pexwallpapers.util.Constants.WORK_AUTO_WALLPAPER
@@ -21,7 +21,8 @@ import java.util.concurrent.TimeUnit
 
 
 private const val TAG = "WorkTools"
-private const val timeSpeeding = 30
+
+//private const val timeSpeeding = 30
 private const val minutesWorkTimes = 3
 
 fun Context.workCancelWorks(workTag: String) {

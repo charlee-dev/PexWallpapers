@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi

@@ -2,7 +2,9 @@ package com.adwi.pexwallpapers.data.wallpapers.database
 
 import androidx.test.filters.SmallTest
 import com.adwi.pexwallpapers.CoroutineAndroidTestRule
-import com.adwi.pexwallpapers.data.wallpapers.database.dao.WallpapersDao
+import com.adwi.pexwallpapers.data.database.wallpapers.WallpaperDatabase
+import com.adwi.pexwallpapers.data.database.wallpapers.dao.WallpapersDao
+import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
 import com.adwi.pexwallpapers.data.wallpapers.database.entity.CuratedWallpaperMock
 import com.adwi.pexwallpapers.data.wallpapers.database.entity.WallpaperMockAndroid
 import com.google.common.truth.Truth
@@ -127,7 +129,7 @@ class WallpaperDaoTest {
             wallpaperDao.deleteAllCuratedWallpapers()
 
             val actual = wallpaperDao.getAllCuratedWallpapers().first()
-            val expected = emptyList<com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity>()
+            val expected = emptyList<WallpaperEntity>()
             Truth.assertThat(actual).isEqualTo(expected)
         }
 }

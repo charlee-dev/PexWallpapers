@@ -2,14 +2,14 @@ package com.adwi.pexwallpapers.ui.screens.settings
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.datasource_settings.domain.Duration
-import com.adwi.datasource_settings.domain.Settings
-import com.adwi.pexwallpapers.data.settings.SettingsDao
-import com.adwi.pexwallpapers.data.settings.model.toDomain
-import com.adwi.pexwallpapers.data.settings.model.toEntity
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
-import com.adwi.pexwallpapers.di.IoDispatcher
-import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
+import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.pexwallpapers.data.database.settings.model.toDomain
+import com.adwi.pexwallpapers.data.database.settings.model.toEntity
+import com.adwi.pexwallpapers.domain.model.Duration
+import com.adwi.pexwallpapers.domain.model.Settings
+import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.ui.IoDispatcher
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.Constants
 import com.adwi.pexwallpapers.util.deleteAllBackups
@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -122,7 +121,7 @@ class SettingsViewModel
         }
     }
 
-    fun getDelay(): Long {
+    private fun getDelay(): Long {
 
         val days = days.value
         val hours = hours.value
@@ -134,17 +133,17 @@ class SettingsViewModel
         return (day * days) + (hour * hours) + minutes
     }
 
-    fun formatDelayTimeInMilliSeconds(milliSeconds: Long) {
-        val days = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
-        val hours = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
-        setDays(days)
-        setHours(hours)
-        setMinutes(minutes)
-        Timber.tag(tag).d(
-            "formatDelayTimeInMilliSeconds \nDays = $days \nHours = $hours \nMinutes = $minutes"
-        )
-    }
+//    fun formatDelayTimeInMilliSeconds(milliSeconds: Long) {
+//        val days = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
+//        val hours = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
+//        val minutes = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
+//        setDays(days)
+//        setHours(hours)
+//        setMinutes(minutes)
+//        Timber.tag(tag).d(
+//            "formatDelayTimeInMilliSeconds \nDays = $days \nHours = $hours \nMinutes = $minutes"
+//        )
+//    }
 
     fun saveAutomation(context: Context) {
         onDispatcher(ioDispatcher) {

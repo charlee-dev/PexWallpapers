@@ -3,11 +3,11 @@ package com.adwi.pexwallpapers.ui.screens.preview
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.pexwallpapers.data.settings.SettingsDao
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
-import com.adwi.pexwallpapers.di.IoDispatcher
-import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
+import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.ui.IoDispatcher
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import com.adwi.pexwallpapers.util.fetchRemoteAndSaveLocally

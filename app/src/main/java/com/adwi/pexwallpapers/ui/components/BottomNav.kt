@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
-import com.adwi.pexwallpapers.navigation.HomeSections
+import com.adwi.pexwallpapers.ui.navigation.HomeSections
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavIndicatorShape
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin

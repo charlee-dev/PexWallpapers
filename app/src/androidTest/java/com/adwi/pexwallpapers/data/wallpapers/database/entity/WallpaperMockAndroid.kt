@@ -1,6 +1,6 @@
 package com.adwi.pexwallpapers.data.wallpapers.database.entity
 
-import com.adwi.pexwallpapers.data.wallpapers.database.domain.WallpaperEntity
+import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
 
 object WallpaperMockAndroid {
 

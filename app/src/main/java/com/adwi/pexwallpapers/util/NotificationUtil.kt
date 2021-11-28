@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory
 import android.hardware.camera2.params.RggbChannelVector
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.paging.ExperimentalPagingApi
@@ -19,6 +20,9 @@ import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.util.receivers.ActionRestoreReceiver
 import com.adwi.pexwallpapers.util.receivers.OnDismissReceiver
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+private const val wallpaperGroupId = "wallpaper_group"
+private const val appGroupId = "app_group"
 
 enum class Channel {
     AUTO_WALLPAPER,
@@ -30,12 +34,7 @@ object NotificationUtil {
 
     private lateinit var channelId: String
 
-    private val wallpaperGroupId = "wallpaper_group"
-    private val appGroupId = "app_group"
-
     fun setupNotifications(context: Context) {
-//        if (runningOOrLater) {
-
         val wallpaperGroupName = context.getString(R.string.wallpapers)
         val appGroupName = context.getString(R.string.other)
 
@@ -57,11 +56,9 @@ object NotificationUtil {
         createNotificationChannel(context, Channel.AUTO_WALLPAPER)
         createNotificationChannel(context, Channel.RECOMMENDATIONS)
         createNotificationChannel(context, Channel.INFO)
-//        }
     }
 
     private fun createNotificationChannel(context: Context, channel: Channel) {
-//        if (runningOOrLater) {
         var name = ""
         var importance = 0
         val channelGroup: String
@@ -108,7 +105,6 @@ object NotificationUtil {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(notificationChannel)
-//        }
     }
 
 
@@ -211,11 +207,12 @@ object NotificationUtil {
     }
 
     private fun getPendingIntent(context: Context, intent: Intent): PendingIntent {
-        val runningSOrLater =
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
 
-        val pendingIntentFlag = if (runningSOrLater)
-            PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT
+        val pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_ONE_SHOT
+        }
 
         return PendingIntent.getBroadcast(context, 1, intent, pendingIntentFlag)
     }

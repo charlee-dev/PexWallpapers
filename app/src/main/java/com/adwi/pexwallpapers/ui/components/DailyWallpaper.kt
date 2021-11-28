@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.Wallpaper
-import com.adwi.pexwallpapers.model.state.DataState
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.domain.state.DataState
 import com.adwi.pexwallpapers.ui.theme.PrimaryDark
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 import com.google.accompanist.pager.*

@@ -1,8 +1,6 @@
 package com.adwi.pexwallpapers.ui.screens.settings
 
-import android.content.Intent
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -30,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.state.Result
+import com.adwi.pexwallpapers.domain.state.Result
 import com.adwi.pexwallpapers.ui.components.*
 import com.adwi.pexwallpapers.ui.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
@@ -64,12 +62,12 @@ fun SettingsScreen(
     val subject =
         "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
 
-    val chooserMessage = context.getString(R.string.support_chooser_message)
-
-    val intent = Intent(Intent.ACTION_SENDTO).apply {
-        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        putExtra(Intent.EXTRA_SUBJECT, subject)
-    }
+//    val chooserMessage = context.getString(R.string.support_chooser_message)
+//
+//    val intent = Intent(Intent.ACTION_SENDTO).apply {
+//        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        putExtra(Intent.EXTRA_SUBJECT, subject)
+//    }
 
     PexScaffold(
         viewModel = viewModel,
@@ -285,10 +283,6 @@ private fun SettingPanel(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val transition = updateTransition(targetState = checked, label = "Card")
-
-    val elevation by transition.animateDp(label = "Card elevation") { state ->
-        if (state) 10.dp else 2.dp
-    }
 
     val backgroundColor by transition.animateColor(label = "Card background color") { state ->
         if (state) MaterialTheme.colors.primary else MaterialTheme.colors.secondary

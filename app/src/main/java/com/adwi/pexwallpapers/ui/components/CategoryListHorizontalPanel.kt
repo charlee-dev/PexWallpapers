@@ -28,8 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.model.ColorCategory
-import com.adwi.pexwallpapers.model.state.DataState
+import com.adwi.pexwallpapers.domain.model.ColorCategory
+import com.adwi.pexwallpapers.domain.state.DataState
 import com.adwi.pexwallpapers.ui.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.ui.theme.paddingValues
 

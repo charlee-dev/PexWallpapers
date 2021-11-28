@@ -2,9 +2,9 @@ package com.adwi.pexwallpapers.ui.screens.favorites
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepositoryImpl
-import com.adwi.pexwallpapers.di.IoDispatcher
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.ui.IoDispatcher
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel

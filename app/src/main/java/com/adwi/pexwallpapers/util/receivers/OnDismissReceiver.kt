@@ -16,9 +16,7 @@ class OnDismissReceiver : BroadcastReceiver() {
         val wallpaperId = intent?.getStringExtra(ACTION_AUTO)
         Toast.makeText(context, "OnDismissReceiver TEST $wallpaperId", Toast.LENGTH_SHORT).show()
         wallpaperId?.let {
-            if (context != null) {
-                context.deleteBackupBitmap(wallpaperId)
-            }
+            context?.deleteBackupBitmap(wallpaperId)
             Timber.tag("OnDismissReceiver").d("backup $wallpaperId deleted")
             Toast.makeText(context, "backup $wallpaperId deleted", Toast.LENGTH_SHORT).show()
         }

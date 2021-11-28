@@ -1,6 +1,6 @@
 package com.adwi.pexwallpapers.data.wallpapers.database.entity
 
-import com.adwi.pexwallpapers.data.wallpapers.database.domain.CuratedEntity
+import com.adwi.pexwallpapers.data.database.wallpapers.domain.CuratedEntity
 
 object CuratedWallpaperMock {
 

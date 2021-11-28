@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
-import com.adwi.pexwallpapers.data.wallpapers.repository.WallpaperRepository
-import com.adwi.pexwallpapers.di.IoDispatcher
-import com.adwi.pexwallpapers.model.Wallpaper
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.domain.repository.WallpaperRepository
+import com.adwi.pexwallpapers.ui.IoDispatcher
 import com.adwi.pexwallpapers.ui.base.BaseViewModel
 import com.adwi.pexwallpapers.util.ext.onDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,8 +37,8 @@ class SearchViewModel @Inject constructor(
 
     fun onSearchQuerySubmit(query: String) {
         _currentQuery.value = query
-        _isRefreshing.value = true
-        _pendingScrollToTopAfterRefresh.value = true
+        setPendingScrollToTopAfterRefresh(true)
+        setIsRefreshing(true)
         setQuery(currentQuery.value)
     }
 
@@ -51,8 +51,8 @@ class SearchViewModel @Inject constructor(
         val query = savedStateHandle.get<String>("query")
         query?.let {
             _currentQuery.value = query
-            _pendingScrollToTopAfterRefresh.value = true
-            _isRefreshing.value = false
+            setPendingScrollToTopAfterRefresh(true)
+            setIsRefreshing(false)
         }
         Timber.tag(tag).d("restore currentQuery = $query")
     }

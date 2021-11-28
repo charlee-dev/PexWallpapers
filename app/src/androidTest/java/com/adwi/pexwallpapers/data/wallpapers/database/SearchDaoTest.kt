@@ -2,8 +2,9 @@ package com.adwi.pexwallpapers.data.wallpapers.database
 
 import androidx.test.filters.SmallTest
 import com.adwi.pexwallpapers.CoroutineAndroidTestRule
-import com.adwi.pexwallpapers.data.wallpapers.database.dao.SearchDao
-import com.adwi.pexwallpapers.data.wallpapers.database.dao.WallpapersDao
+import com.adwi.pexwallpapers.data.database.wallpapers.WallpaperDatabase
+import com.adwi.pexwallpapers.data.database.wallpapers.dao.SearchDao
+import com.adwi.pexwallpapers.data.database.wallpapers.dao.WallpapersDao
 import com.adwi.pexwallpapers.data.wallpapers.database.entity.SearchMock
 import com.adwi.pexwallpapers.data.wallpapers.database.entity.WallpaperMockAndroid
 import com.google.common.truth.Truth.assertThat

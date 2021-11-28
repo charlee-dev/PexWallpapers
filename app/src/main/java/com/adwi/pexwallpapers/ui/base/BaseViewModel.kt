@@ -2,8 +2,7 @@ package com.adwi.pexwallpapers.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adwi.pexwallpapers.model.state.Event
-import com.adwi.pexwallpapers.util.Refresh
+import com.adwi.pexwallpapers.domain.state.Event
 import com.adwi.pexwallpapers.util.ext.exhaustive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -18,18 +17,18 @@ abstract class BaseViewModel : ViewModel() {
 
     val tag: String = javaClass.simpleName
 
-    protected var _pendingScrollToTopAfterRefresh = MutableStateFlow(false)
-    protected var _isRefreshing = MutableStateFlow(false)
-    protected val _snackBarMessage = MutableStateFlow("")
-    protected val _toastMessage = MutableStateFlow("")
+    private var _pendingScrollToTopAfterRefresh = MutableStateFlow(false)
+    private var _isRefreshing = MutableStateFlow(false)
+    private val _snackBarMessage = MutableStateFlow("")
+    private val _toastMessage = MutableStateFlow("")
 
     val pendingScrollToTopAfterRefresh = _pendingScrollToTopAfterRefresh.asStateFlow()
     val isRefreshing = _isRefreshing.asStateFlow()
     val snackBarMessage = _snackBarMessage.asStateFlow()
     val toastMessage = _toastMessage.asStateFlow()
 
-    protected val eventChannel = Channel<Event>()
-    protected val refreshTriggerChannel = Channel<Refresh>()
+    private val eventChannel = Channel<Event>()
+    private val refreshTriggerChannel = Channel<Refresh>()
 
     private val events = eventChannel.receiveAsFlow()
     val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
@@ -95,4 +94,8 @@ abstract class BaseViewModel : ViewModel() {
         setIsRefreshing(false)
         setEvent(Event.ShowErrorMessage(throwable))
     }
+}
+
+enum class Refresh {
+    FORCE, NORMAL
 }
