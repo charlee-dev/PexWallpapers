@@ -46,7 +46,8 @@ fun DailyWallpaper(
     dailyList: DataState<List<Wallpaper>>,
     shape: Shape = MaterialTheme.shapes.large,
     onWallpaperClick: (Int) -> Unit,
-    onLongPress: (Wallpaper) -> Unit
+    onLongPress: (Wallpaper) -> Unit,
+    lowRes: Boolean = false
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -114,7 +115,7 @@ fun DailyWallpaper(
                     ) {
                         Box {
                             PexCoilImage(
-                                imageUrl = wallpaper.imageUrlLandscape,
+                                imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlLandscape,
                                 wallpaperId = wallpaper.id,
                                 isSquare = true,
                                 modifier = Modifier

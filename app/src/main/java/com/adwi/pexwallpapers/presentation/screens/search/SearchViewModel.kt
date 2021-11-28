@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
+import com.adwi.pexwallpapers.data.database.settings.SettingsDao
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.repository.WallpaperRepository
 import com.adwi.pexwallpapers.presentation.IoDispatcher
@@ -14,6 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepository,
+    private val settingsDao: SettingsDao,
     private val savedStateHandle: SavedStateHandle,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
@@ -35,11 +38,20 @@ class SearchViewModel @Inject constructor(
         wallpaperRepository.getSearch(query)
     }.cachedIn(viewModelScope)
 
+    var lowRes = false
+
     fun onSearchQuerySubmit(query: String) {
         _currentQuery.value = query
         setPendingScrollToTopAfterRefresh(true)
         setIsRefreshing(true)
         setQuery(currentQuery.value)
+    }
+
+    fun getDataSaverSettings() {
+        onDispatcher(ioDispatcher) {
+            val settings = settingsDao.getSettings().first()
+            lowRes = settings.lowResMiniatures
+        }
     }
 
     private fun setQuery(query: String) {

@@ -107,7 +107,10 @@ fun NavGraphBuilder.addHomeGraph(
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
+
         viewModel.onStart()
+        viewModel.getDataSaverSettings()
+
         HomeScreen(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
@@ -119,6 +122,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
         viewModel.restoreSavedQuery()
+        viewModel.getDataSaverSettings()
 
         SearchScreen(
             viewModel = viewModel,
@@ -127,7 +131,10 @@ fun NavGraphBuilder.addHomeGraph(
     }
     composable(HomeSections.FAVORITES.route) { backStackEntry ->
         val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
+
         viewModel.getFavorites()
+        viewModel.getDataSaverSettings()
+
         FavoritesScreen(
             viewModel = viewModel,
             onSearchClick = navigateToSearch,

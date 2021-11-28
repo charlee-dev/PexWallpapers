@@ -42,6 +42,7 @@ fun FavoritesScreen(
     onWallpaperClick: (Int) -> Unit,
 ) {
     val wallpapers by viewModel.wallpapers.collectAsState()
+    val lowRes = viewModel.lowRes
 
     val scaffoldState = rememberScaffoldState()
 
@@ -82,7 +83,8 @@ fun FavoritesScreen(
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,
-                        modifier = Modifier
+                        modifier = Modifier,
+                        lowRes = lowRes
                     )
                 })
             }
@@ -100,7 +102,8 @@ private fun WallpaperItemVertical(
     wallpaper: Wallpaper,
     onWallpaperClick: (Int) -> Unit = {},
     onLongPress: (Wallpaper) -> Unit,
-    isHeartEnabled: Boolean
+    isHeartEnabled: Boolean,
+    lowRes: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -121,7 +124,7 @@ private fun WallpaperItemVertical(
     ) {
         Box {
             PexCoilImage(
-                imageUrl = wallpaper.imageUrlLandscape,
+                imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlLandscape,
                 modifier = Modifier.fillMaxSize()
             )
             PexAnimatedHeart(

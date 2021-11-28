@@ -38,6 +38,7 @@ fun HomeScreen(
     val daily by viewModel.daily.collectAsState(null)
     val colors by viewModel.colors.collectAsState(null)
     val curated by viewModel.curated.collectAsState(null)
+    val lowRes = viewModel.lowRes
 
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
@@ -93,7 +94,8 @@ fun HomeScreen(
                                 .padding(vertical = paddingValues / 2),
                             dailyList = list,
                             onWallpaperClick = { id -> onWallpaperClick(id) },
-                            onLongPress = { viewModel.onFavoriteClick(it) }
+                            onLongPress = { viewModel.onFavoriteClick(it) },
+                            lowRes = lowRes
                         )
                     }
                 }

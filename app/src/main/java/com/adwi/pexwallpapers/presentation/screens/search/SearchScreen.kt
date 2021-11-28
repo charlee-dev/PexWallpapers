@@ -47,6 +47,7 @@ fun SearchScreen(
     val currentQuery by viewModel.currentQuery.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
+    val lowRes = viewModel.lowRes
 
     if (wallpapers.loadState.refresh == LoadState.Loading) {
         viewModel.setIsRefreshing(true)
@@ -90,7 +91,8 @@ fun SearchScreen(
                         modifier = Modifier.fillMaxSize(),
                         wallpapers = wallpapers,
                         onWallpaperClick = onWallpaperClick,
-                        onLongPress = { viewModel.onFavoriteClick(it) }
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        lowRes = lowRes
                     )
                 }
             }
@@ -143,7 +145,8 @@ fun WallpaperListPaged(
     wallpapers: LazyPagingItems<WallpaperEntity>,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit,
-    state: LazyListState = rememberLazyListState()
+    state: LazyListState = rememberLazyListState(),
+    lowRes: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -179,7 +182,7 @@ fun WallpaperListPaged(
                 ) {
                     Box {
                         PexCoilImage(
-                            imageUrl = wallpaper.imageUrlPortrait,
+                            imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlPortrait,
                             modifier = Modifier.fillMaxSize()
                         )
                         PexAnimatedHeart(

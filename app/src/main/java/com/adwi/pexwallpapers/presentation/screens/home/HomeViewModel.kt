@@ -3,6 +3,7 @@ package com.adwi.pexwallpapers.presentation.screens.home
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
+import com.adwi.pexwallpapers.data.database.settings.SettingsDao
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.state.DataState
 import com.adwi.pexwallpapers.presentation.IoDispatcher
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import java.util.concurrent.TimeUnit
@@ -23,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val settingsDao: SettingsDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -37,6 +40,8 @@ class HomeViewModel @Inject constructor(
     val curated = refreshTrigger.flatMapLatest { refresh ->
         getCurated(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    var lowRes = false
 
     init {
         deleteOldNonFavoriteWallpapers()
@@ -63,6 +68,13 @@ class HomeViewModel @Inject constructor(
             onFetchSuccess = { onFetchSuccess() },
             onFetchRemoteFailed = { onFetchFailed(it) }
         )
+
+    fun getDataSaverSettings() {
+        onDispatcher(ioDispatcher) {
+            val settings = settingsDao.getSettings().first()
+            lowRes = settings.lowResMiniatures
+        }
+    }
 
     private fun setRefreshTriggerIfCurrentlyNotLoading(refresh: Refresh) {
         if (curated.value !is DataState.Loading) {
