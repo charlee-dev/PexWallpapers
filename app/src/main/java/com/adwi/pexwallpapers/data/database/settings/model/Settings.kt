@@ -15,7 +15,9 @@ data class Settings(
     val autoChangeWallpaper: Boolean = false,
     val autoHome: Boolean = true,
     val autoLock: Boolean = false,
-    val duration: Int = 1,
+    val minutes: Int = 15,
+    val hours: Int = 3,
+    val days: Int = 0,
 
     val activateDataSaver: Boolean = false,
     val downloadWallpapersOverWiFi: Boolean = false,
@@ -33,7 +35,9 @@ data class Settings(
             autoChangeWallpaper = false,
             autoHome = true,
             autoLock = false,
-            duration = 1,
+            minutes = 15,
+            hours = 3,
+            days = 0,
 
             activateDataSaver = false,
             downloadWallpapersOverWiFi = false,

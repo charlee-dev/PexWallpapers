@@ -6,7 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.data.database.settings.SettingsDao
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.IoDispatcher
 import com.adwi.pexwallpapers.presentation.base.BaseViewModel
 import com.adwi.pexwallpapers.presentation.util.ext.onDispatcher
@@ -38,7 +38,7 @@ class PreviewViewModel
 ) : BaseViewModel() {
 
     private val _wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
-    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
+    private val _saveState: MutableStateFlow<Resource> = MutableStateFlow(Resource.Idle)
 
     val wallpaper = _wallpaper.asStateFlow()
     val saveState = _saveState.asStateFlow()
@@ -79,9 +79,9 @@ class PreviewViewModel
                     setLockScreen = setLockScreen
                 ).collect { result ->
                     _saveState.value = result
-                    if (result is Result.Success || result is Result.Error) {
+                    if (result is Resource.Success || result is Resource.Error) {
                         delay(2000)
-                        _saveState.value = Result.Idle
+                        _saveState.value = Resource.Idle
                     }
                 }
             }

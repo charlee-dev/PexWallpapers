@@ -36,8 +36,14 @@ interface SettingsDao {
     @Query("UPDATE settings_table SET autoLock = :enabled")
     suspend fun updateAutoLock(enabled: Boolean)
 
-    @Query("UPDATE settings_table SET duration = :durationValue")
-    suspend fun updateDuration(durationValue: Int)
+    @Query("UPDATE settings_table SET minutes = :minutesValue")
+    suspend fun updateMinutes(minutesValue: Int)
+
+    @Query("UPDATE settings_table SET hours = :hoursValue")
+    suspend fun updateHours(hoursValue: Int)
+
+    @Query("UPDATE settings_table SET days = :daysValue")
+    suspend fun updateDays(daysValue: Int)
 
     // Data saver
     @Query("UPDATE settings_table SET activateDataSaver = :enabled")

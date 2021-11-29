@@ -6,13 +6,12 @@ import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
 import com.adwi.pexwallpapers.data.database.settings.SettingsDao
 import com.adwi.pexwallpapers.data.database.settings.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.IoDispatcher
 import com.adwi.pexwallpapers.presentation.base.BaseViewModel
-import com.adwi.pexwallpapers.presentation.util.Constants
-import com.adwi.pexwallpapers.presentation.util.deleteAllBackups
 import com.adwi.pexwallpapers.presentation.util.ext.onDispatcher
-import com.adwi.pexwallpapers.presentation.work.workCancelWorks
-import com.adwi.pexwallpapers.presentation.work.workSetupAutoChangeWallpaperWorks
+import com.adwi.pexwallpapers.presentation.work.cancelAutoChangeWorks
+import com.adwi.pexwallpapers.presentation.work.createAutoWork
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,7 +20,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -35,37 +33,17 @@ class SettingsViewModel
 ) : BaseViewModel() {
 
     private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
-
     //    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
-    private val _days = MutableStateFlow(0)
-    private val _hours = MutableStateFlow(0)
-    private val _minutes = MutableStateFlow(1)
 
     val settings = _settings.asStateFlow()
-
     //    val saveState = _saveState.asStateFlow()
-    val days = _days.asStateFlow()
-    val hours = _hours.asStateFlow()
-    val minutes = _minutes.asStateFlow()
 
     fun getSettings() {
         onDispatcher(ioDispatcher) {
             settingsDao.getSettings().collect {
                 _settings.value = it
-                setDelayFromMillis(it.duration.toLong())
             }
         }
-    }
-
-    private fun setDelayFromMillis(milliSeconds: Long) {
-
-        _minutes.value = TimeUnit.MILLISECONDS.toMinutes(milliSeconds).toInt() % 60
-        _hours.value = TimeUnit.MILLISECONDS.toHours(milliSeconds).toInt() % 24
-        _days.value = TimeUnit.MILLISECONDS.toDays(milliSeconds).toInt()
-
-        Timber.tag(tag).d(
-            "formatDelayTimeInMilliSeconds \nDays = ${days.value} \nHours = ${hours.value} \nMinutes = ${minutes.value}"
-        )
     }
 
     // Notifications
@@ -82,8 +60,11 @@ class SettingsViewModel
     }
 
     // Automation
-    fun updateAutoChangeWallpaper(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeWallpaper(checked) }
+    fun updateAutoChangeWallpaper(context: Context, checked: Boolean) {
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateAutoChangeWallpaper(checked)
+            if (!checked) cancelAutoChangeWorks(context)
+        }
     }
 
     fun updateAutoHome(checked: Boolean) {
@@ -94,26 +75,33 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsDao.updateAutoLock(checked) }
     }
 
-    fun updateDuration(
-        m: Int = minutes.value,
-        h: Int = hours.value,
-        d: Int = days.value
-    ) {
+    fun updateMinutes(value: Int) {
         onDispatcher(ioDispatcher) {
-            val duration = getDelay(m, h, d)
-            settingsDao.updateDuration(duration)
+            settingsDao.updateMinutes(value)
         }
     }
 
-    private fun getDelay(
-        minutes: Int,
-        hours: Int,
-        days: Int
-    ): Int {
+    fun updateHours(value: Int) {
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateHours(value)
+        }
+    }
+
+    fun updateDays(value: Int) {
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateDays(value)
+        }
+    }
+
+    private fun getTotalMinutesFromPeriods(
+        minutes: Int = settings.value.minutes,
+        hours: Int = settings.value.hours,
+        days: Int = settings.value.days
+    ): Long {
         val hour = 60
         val day = 24 * hour
 
-        return (day * days) + (hour * hours) + minutes
+        return (day * days) + (hour * hours) + minutes.toLong()
     }
 
     // Data saver
@@ -140,27 +128,58 @@ class SettingsViewModel
     fun saveAutomation(context: Context) {
         onDispatcher(ioDispatcher) {
 
-            val favorites = getFavorites()
+            context.validateBeforeSaveAutomation(
+                favorites = getFavorites()
+            ) { list ->
 
-            if (favorites.isNotEmpty()) {
-                settings.value.let {
-                    context.workSetupAutoChangeWallpaperWorks(
-                        favorites = favorites,
-                        timeValue = it.duration.toLong()
-                    )
-                    setSnackBar("Wallpaper will change in ${hours.value} hours and ${minutes.value} minutes")
-                    Timber.tag(tag).d("saveSettings - Delay = ${settings.value.duration}")
+                val result = context.createAutoWork(
+                    delay = getTotalMinutesFromPeriods(),
+                    favorites = list,
+                )
+
+                when (result) {
+                    is Resource.Error -> {
+                        setSnackBar(result.message ?: "Some tasks failed")
+                        Timber.tag(tag).d(result.message ?: "Some tasks failed")
+                    }
+                    is Resource.Loading -> {
+                        Timber.tag(tag).d("saveAutomation - Loading = ${result.progress}")
+                    }
+                    is Resource.Success -> {
+                        Timber.tag(tag).d("saveAutomation - Success")
+                        setSnackBar("Automation saved")
+                    }
+                    else -> {
+                        // Idle
+                    }
                 }
-            } else {
-                cancelWorks(context, Constants.WORK_AUTO_WALLPAPER)
+
+                setSnackBar("Wallpaper will change in ${settings.value.hours} hours and ${settings.value.minutes} minutes")
+                Timber.tag(tag).d("saveSettings - Delay = ${getTotalMinutesFromPeriods()}")
             }
         }
     }
 
-    private suspend fun getFavorites(): List<Wallpaper> = wallpaperRepository.getFavorites().first()
+    private fun Context.validateBeforeSaveAutomation(
+        favorites: List<Wallpaper>,
+        content: (List<Wallpaper>) -> Unit
+    ) {
+        if (favorites.isEmpty()) {
+            cancelAutoChangeWorks(this)
+            setSnackBar("You didn't add any wallpapers to favorites yet")
+        } else {
+            if (!settings.value.autoHome && !settings.value.autoLock) {
+                setSnackBar("Choose minimum one screen to change wallpaper")
+            } else {
+                content(favorites)
+            }
+        }
+    }
 
-    private fun cancelWorks(context: Context, workTag: String) {
-        context.workCancelWorks(workTag)
-        context.deleteAllBackups()
+    private suspend fun getFavorites(): List<Wallpaper> =
+        wallpaperRepository.getFavorites().first()
+
+    fun cancelAutoChangeWorks(context: Context) {
+        context.cancelAutoChangeWorks()
     }
 }

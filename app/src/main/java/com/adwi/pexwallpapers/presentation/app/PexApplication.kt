@@ -1,11 +1,12 @@
 package com.adwi.pexwallpapers.presentation.app
 
 import android.app.Application
+import android.app.NotificationManager
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.Configuration
 import com.adwi.pexwallpapers.BuildConfig
-import com.adwi.pexwallpapers.presentation.util.NotificationUtil
+import com.adwi.pexwallpapers.presentation.util.createNotificationChannel
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
@@ -20,6 +21,8 @@ class PexApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
+    @Inject
+    lateinit var notificationManager: NotificationManager
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
@@ -33,6 +36,6 @@ class PexApplication : Application(), Configuration.Provider {
             Timber.plant(Timber.DebugTree())
         }
 
-        NotificationUtil.setupNotifications(this)
+        createNotificationChannel(notificationManager)
     }
 }

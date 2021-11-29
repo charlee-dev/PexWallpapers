@@ -41,9 +41,6 @@ fun SettingsScreen(
     onContactSupportClick: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
-    val days by viewModel.days.collectAsState()
-    val hours by viewModel.hours.collectAsState()
-    val minutes by viewModel.minutes.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
@@ -109,7 +106,7 @@ fun SettingsScreen(
                     panelName = stringResource(id = R.string.automation),
                     mainName = stringResource(id = R.string.auto_change_wallpaper),
                     checked = settings.autoChangeWallpaper,
-                    onCheckedChange = { viewModel.updateAutoChangeWallpaper(it) }
+                    onCheckedChange = { viewModel.updateAutoChangeWallpaper(context, it) }
                 ) {
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     Text(
@@ -135,15 +132,16 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     DurationPicker(
                         modifier = Modifier,
-                        days = days,
-                        hours = hours,
-                        minutes = minutes,
-                        onDaysChange = { viewModel.updateDuration(d = it) },
-                        onHourChange = { viewModel.updateDuration(h = it) },
-                        onMinutesChange = { viewModel.updateDuration(m = it) }
+                        days = settings.days,
+                        hours = settings.hours,
+                        minutes = settings.minutes,
+                        onDaysChange = { viewModel.updateDays(it) },
+                        onHourChange = { viewModel.updateHours(it) },
+                        onMinutesChange = { viewModel.updateMinutes(it) }
                     )
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
                     OptionTip(text = stringResource(R.string.change_wallpaper_every_description))
-                    Spacer(modifier = Modifier.size(paddingValues))
+                    Spacer(modifier = Modifier.size(paddingValues / 2))
                     SaveButton(
                         modifier = Modifier
                             .fillMaxWidth()

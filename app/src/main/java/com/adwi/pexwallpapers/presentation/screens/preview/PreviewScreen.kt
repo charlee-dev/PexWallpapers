@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.components.*
 import com.adwi.pexwallpapers.presentation.theme.Dimensions
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
@@ -74,7 +74,7 @@ fun PreviewScreen(
                     )
                 )
 
-                val scale = if (saveState == Result.Loading) scaleLoading else 1f
+                val scale = if (saveState == Resource.Loading()) scaleLoading else 1f
 
                 Box(modifier = Modifier.weight(1f)) {
 //                    PreviewCard(
@@ -94,7 +94,7 @@ fun PreviewScreen(
                             )
                     )
                     androidx.compose.animation.AnimatedVisibility(
-                        visible = saveState is Result.Success,
+                        visible = saveState is Resource.Success,
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {

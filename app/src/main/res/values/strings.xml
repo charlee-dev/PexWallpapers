@@ -89,9 +89,9 @@
     <!--    NOTIFICATIONS   -->
     <string name="other">Other</string>
     <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
-    <string name="auto_wallpapers">Auto wallpapers</string>
+
     <string name="new_wallpaper_set">New wallpaper set</string>
-    <string name="just_set_wallpaper_for_you">%appName just set an amazing wallpaper for you \nClick notification to edit favorites list</string>
+    <string name="just_set_wallpaper_for_you">PexWallpapers just set an amazing wallpaper for you \nClick notification to edit favorites list</string>
     <string name="recommendations">Recommendations</string>
     <string name="have_some_amazing_wallpapers_for_you">%appName have some amazing wallpapers to offer for you</string>
     <string name="info">Info</string>
@@ -126,4 +126,8 @@
     <string name="up">Up</string>
     <string name="down">Down</string>
     <string name="filter">Filter</string>
+
+    <!--    Notification channel    -->
+    <string name="auto_wallpapers">Auto wallpapers</string>
+    <string name="channel_id_auto_wallpapers">pex_auto_wallpapers</string>
 </resources>

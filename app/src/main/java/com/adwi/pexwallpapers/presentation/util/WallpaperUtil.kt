@@ -5,7 +5,7 @@ import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.domain.state.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,40 +16,40 @@ fun Context.setAsWallpaper(
     bitmap: Bitmap,
     setHomeScreen: Boolean,
     setLockScreen: Boolean
-): Flow<Result> =
+): Flow<Resource> =
     flow {
         try {
             val wallpaperManager = WallpaperManager.getInstance(this@setAsWallpaper)
-            emit(Result.Loading)
+            emit(Resource.Loading())
             delay(1000)
             if (setHomeScreen) emit(wallpaperManager.setHomeScreenWallpaper(bitmap))
             if (setLockScreen) emit(wallpaperManager.setLockScreenWallpaper(bitmap))
         } catch (ex: IOException) {
             Timber.tag(TAG)
                 .d("Exception: ${ex.printStackTrace()}")
-            emit(Result.Error(message = ex.localizedMessage))
+            emit(Resource.Error(message = ex.localizedMessage))
         }
     }
 
-private fun WallpaperManager.setHomeScreenWallpaper(bitmap: Bitmap): Result =
+private fun WallpaperManager.setHomeScreenWallpaper(bitmap: Bitmap): Resource =
     try {
         this.setBitmap(bitmap)
-        Result.Success
+        Resource.Success()
     } catch (e: Exception) {
         Timber.tag(TAG).d(e.printStackTrace().toString())
-        Result.Error(e.localizedMessage)
+        Resource.Error(e.localizedMessage)
     }
 
 
-private fun WallpaperManager.setLockScreenWallpaper(bitmap: Bitmap): Result =
+private fun WallpaperManager.setLockScreenWallpaper(bitmap: Bitmap): Resource =
     try {
         this.setBitmap(
             bitmap, null, true, WallpaperManager.FLAG_LOCK
         )
-        Result.Success
+        Resource.Success()
     } catch (e: Exception) {
         Timber.tag(TAG).d(e.printStackTrace().toString())
-        Result.Error(e.localizedMessage)
+        Resource.Error(e.localizedMessage)
     }
 
 @SuppressLint("MissingPermission")

@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.theme.AccentMedium
 import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
@@ -31,7 +31,7 @@ import com.adwi.pexwallpapers.presentation.theme.paddingValues
 @Composable
 fun PexButton(
     modifier: Modifier = Modifier,
-    state: Result = Result.Idle,
+    state: Resource = Resource.Idle,
     text: String,
     loadingText: String = stringResource(id = R.string.loading),
     successText: String = stringResource(id = R.string.done),
@@ -50,10 +50,10 @@ fun PexButton(
         label = "Card background color"
     ) { result ->
         when (result) {
-            is Result.Error -> Color.Red
-            Result.Idle -> backgroundColor
-            Result.Loading -> textColor
-            Result.Success -> AccentMedium
+            is Resource.Error -> Color.Red
+            Resource.Idle -> backgroundColor
+            is Resource.Loading -> textColor
+            is Resource.Success -> AccentMedium
         }
     }
 
@@ -61,16 +61,16 @@ fun PexButton(
         label = "Card background color"
     ) { result ->
         when (result) {
-            is Result.Error -> Color.White
-            Result.Idle -> textColor
-            Result.Loading -> backgroundColor
-            Result.Success -> Color.White
+            is Resource.Error -> Color.White
+            Resource.Idle -> textColor
+            is Resource.Loading -> backgroundColor
+            is Resource.Success -> Color.White
         }
     }
 
     Surface(
         onClick = onClick,
-        enabled = state is Result.Idle,
+        enabled = state is Resource.Idle,
         shape = shape,
         modifier = modifier.neumorphicShadow(
             offset = 0.dp,
@@ -81,7 +81,7 @@ fun PexButton(
         AnimatedContent(
             targetState = state,
             transitionSpec = {
-                if (targetState == Result.Idle) {
+                if (targetState == Resource.Idle) {
                     slideInVertically(initialOffsetY = { height -> height }) + fadeIn() with
                             slideOutVertically(targetOffsetY = { height -> -height }) + fadeOut()
                 } else {
@@ -94,10 +94,10 @@ fun PexButton(
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = when (targetState) {
-                        is Result.Error -> errorText
-                        Result.Idle -> text
-                        Result.Loading -> loadingText
-                        Result.Success -> successText
+                        is Resource.Error -> errorText
+                        Resource.Idle -> text
+                        is Resource.Loading -> loadingText
+                        is Resource.Success -> successText
                     }.uppercase(),
                     color = titleColor,
                     modifier = Modifier.align(Alignment.Center)
@@ -121,25 +121,25 @@ private fun PexButtonPreviewLight() {
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Idle
+                state = Resource.Idle
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Loading
+                state = Resource.Loading()
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Success
+                state = Resource.Success()
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Error(stringResource(id = R.string.unknown_error_occurred))
+                state = Resource.Error(stringResource(id = R.string.unknown_error_occurred))
             )
         }
     }
@@ -159,25 +159,25 @@ private fun PexButtonPreviewDark() {
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Idle
+                state = Resource.Idle
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Loading
+                state = Resource.Loading()
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Success
+                state = Resource.Success()
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = stringResource(id = R.string.save),
                 modifier = Modifier.height(42.dp),
-                state = Result.Error(stringResource(id = R.string.unknown_error_occurred))
+                state = Resource.Error(stringResource(id = R.string.unknown_error_occurred))
             )
         }
     }

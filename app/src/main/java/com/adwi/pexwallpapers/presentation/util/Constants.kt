@@ -63,10 +63,6 @@ object Constants {
     const val APP_GROUP_ID = "app_group"
     const val ACTION_AUTO = "action_auto"
 
-    const val CHANNEL_AUTO = "pex_auto_wallpaper"
-    const val CHANNEL_RECOMMENDATIONS = "pex_recommendations"
-    const val CHANNEL_INFO = "pex_info"
-
     const val NOTIFICATION_WORK = "appName_notification_work"
     const val RESTORE_AUTO_WALLPAPER = "restore_auto_wallpaper"
 

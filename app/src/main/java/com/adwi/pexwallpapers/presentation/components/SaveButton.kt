@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.domain.state.Result
+import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -29,7 +29,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 @Composable
 fun SaveButton(
     modifier: Modifier = Modifier,
-    state: Result = Result.Idle,
+    state: Resource = Resource.Idle,
     onClick: () -> Unit
 ) {
     var doNotShowRationale by rememberSaveable {

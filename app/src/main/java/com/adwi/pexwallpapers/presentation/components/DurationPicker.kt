@@ -81,8 +81,8 @@ fun DurationPicker(
             TimeUnitItem(
                 count = minutes,
                 range = minutesMax,
-                onUpClick = { onMinutesChange(minutes + 1) },
-                onDownClick = { onMinutesChange(minutes - 1) },
+                onUpClick = { onMinutesChange(minutes + 15) },
+                onDownClick = { onMinutesChange(minutes - 15) },
                 modifier = Modifier.align(Alignment.Center)
 
             )
