@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.adwi.pexwallpapers.domain.state.DataState
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -19,29 +20,59 @@ import java.io.OutputStream
 
 
 suspend fun Context.fetchRemoteAndSaveLocally(id: Int, url: String): Uri? {
-    val bitmap = getBitmapFromRemote(url)
-    val uri = bitmap?.let { backupImageToLocal(id, bitmap) }
+
+    // Fetch remote
+    val bitmapResult = handleGetBitmapFromRemoteResult(url)
+
+    // Save locally
+    val uri = bitmapResult?.let { backupImageToLocal(id, it) }
+
     Timber.tag(TAG).d("fetchRemoteAndSaveLocally - $uri")
     return uri
 }
 
 suspend fun Context.fetchRemoteAndSaveToGallery(id: Int, url: String): Uri? {
-    val bitmap = getBitmapFromRemote(url)
-    val uri = bitmap?.let { saveImageToGallery(id, bitmap) }
+
+    // Fetch remote
+    val bitmapResult = handleGetBitmapFromRemoteResult(url)
+
+    // Save to gallery
+    val uri = bitmapResult?.let { saveImageToGallery(id, it) }
+
     Timber.tag(TAG).d("fetchRemoteAndSaveToGallery - $uri")
     return uri
 }
 
-suspend fun Context.getBitmapFromRemote(imageUrl: String): Bitmap? {
-    val loader = ImageLoader(this)
+suspend fun Context.handleGetBitmapFromRemoteResult(imageUrl: String) =
+    when (val result = getBitmapFromRemote(imageUrl)) {
+        is DataState.Error -> {
+            Timber.tag(TAG).d(result.error?.localizedMessage ?: "Cant fetch from remote")
+            null
+        }
+        is DataState.Loading -> {
+            null
+        }
+        is DataState.Success -> {
+            result.data
+        }
+    }
 
-    val request = ImageRequest.Builder(this)
-        .data(imageUrl)
-        .allowHardware(false) // Disable hardware bitmaps.
-        .build()
+private suspend fun Context.getBitmapFromRemote(imageUrl: String): DataState<Bitmap?> {
+    return try {
+        val loader = ImageLoader(this)
 
-    val drawable = (loader.execute(request) as SuccessResult).drawable
-    return (drawable as BitmapDrawable).bitmap
+        val request = ImageRequest.Builder(this)
+            .data(imageUrl)
+            .allowHardware(false) // Disable hardware bitmaps.
+            .build()
+
+        val drawable = (loader.execute(request) as SuccessResult).drawable
+        val bitmap = (drawable as BitmapDrawable).bitmap
+        DataState.Success(bitmap)
+    } catch (e: Throwable) {
+        Timber.tag(TAG).d(e.localizedMessage)
+        DataState.Error(e)
+    }
 }
 
 fun Context.getBitmapFromLocal(wallpaperId: Int): Bitmap? {

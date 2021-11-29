@@ -18,7 +18,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,11 +31,18 @@ class SettingsViewModel
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
+
     private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
+    private val _favorites: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(listOf())
     //    private val _saveState: MutableStateFlow<Result> = MutableStateFlow(Result.Idle)
 
     val settings = _settings.asStateFlow()
+    val favorites = _favorites.asStateFlow()
     //    val saveState = _saveState.asStateFlow()
+
+    init {
+        getFavorites()
+    }
 
     fun getSettings() {
         onDispatcher(ioDispatcher) {
@@ -129,7 +135,7 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) {
 
             context.validateBeforeSaveAutomation(
-                favorites = getFavorites()
+                favorites = favorites.value
             ) { list ->
 
                 val result = context.createAutoWork(
@@ -164,9 +170,9 @@ class SettingsViewModel
         favorites: List<Wallpaper>,
         content: (List<Wallpaper>) -> Unit
     ) {
-        if (favorites.isEmpty()) {
+        if (favorites.size < 2) {
             cancelAutoChangeWorks(this)
-            setSnackBar("You didn't add any wallpapers to favorites yet")
+            setSnackBar("Add minimum two wallpapers to favorites")
         } else {
             if (!settings.value.autoHome && !settings.value.autoLock) {
                 setSnackBar("Choose minimum one screen to change wallpaper")
@@ -176,8 +182,13 @@ class SettingsViewModel
         }
     }
 
-    private suspend fun getFavorites(): List<Wallpaper> =
-        wallpaperRepository.getFavorites().first()
+    fun getFavorites() {
+        onDispatcher(ioDispatcher) {
+            wallpaperRepository.getFavorites().collect {
+                _favorites.value = it
+            }
+        }
+    }
 
     fun cancelAutoChangeWorks(context: Context) {
         context.cancelAutoChangeWorks()

@@ -1,6 +1,9 @@
 package com.adwi.pexwallpapers.presentation.screens.settings
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -41,6 +45,7 @@ fun SettingsScreen(
     onContactSupportClick: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
+    val favorites by viewModel.favorites.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
@@ -114,6 +119,16 @@ fun SettingsScreen(
                         modifier = Modifier.padding(horizontal = paddingValues)
                     )
                     OptionTip(text = "Minimum one of screens need to be chosen")
+                    AnimatedVisibility(
+                        visible = !settings.autoHome && !settings.autoLock,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        OptionTip(
+                            text = "Choose minimum one screen to change wallpaper",
+                            color = Color.Red
+                        )
+                    }
                     CheckBoxRow(
                         name = stringResource(id = R.string.home_screen),
                         checked = settings.autoHome,
@@ -142,7 +157,19 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     OptionTip(text = stringResource(R.string.change_wallpaper_every_description))
                     Spacer(modifier = Modifier.size(paddingValues / 2))
+                    AnimatedVisibility(
+                        visible = favorites.size < 2,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Spacer(modifier = Modifier.size(paddingValues / 2))
+                        OptionTip(
+                            text = "Add minimum two wallpapers to favorites",
+                            color = Color.Red
+                        )
+                    }
                     SaveButton(
+                        enabled = (favorites.size > 1 && !(settings.autoHome && settings.autoLock)),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -204,12 +231,13 @@ fun SettingsScreen(
 @Composable
 private fun OptionTip(
     modifier: Modifier = Modifier,
-    text: String
+    text: String,
+    color: Color = MaterialTheme.colors.onBackground
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.caption,
-        color = MaterialTheme.colors.onBackground,
+        color = color,
         modifier = modifier
             .padding(horizontal = paddingValues)
             .padding(end = paddingValues, bottom = paddingValues / 2)

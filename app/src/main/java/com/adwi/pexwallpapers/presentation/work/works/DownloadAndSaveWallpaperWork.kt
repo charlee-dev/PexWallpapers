@@ -4,45 +4,35 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_IMAGE_URL
 import com.adwi.pexwallpapers.presentation.util.fetchRemoteAndSaveToGallery
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.delay
 import timber.log.Timber
 
 private const val TAG = "DownloadWallpaperWork"
 
 @HiltWorker
-class DownloadWallpaperWork @AssistedInject constructor(
+class DownloadAndSaveWallpaperWork @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters
 ) : CoroutineWorker(context, params) {
 
-    companion object {
-        const val Progress = "Progress"
-        private const val delayDuration = 1L
-    }
-
     override suspend fun doWork(): Result {
         return try {
-            val firstUpdate = workDataOf(Progress to 0)
-            val lastUpdate = workDataOf(Progress to 100)
-            setProgress(firstUpdate)
+
             // Get arguments
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
             val wallpaperImageUrl = inputData.getString(WALLPAPER_IMAGE_URL)
 
-            // Save backup locally
+            // Save to gallery
             wallpaperImageUrl?.let {
                 context.fetchRemoteAndSaveToGallery(wallpaperId, wallpaperImageUrl)
             }
 
-            Timber.tag(TAG).d("doWork - success")
-            delay(delayDuration)
-            setProgress(lastUpdate)
+            Timber.tag(TAG).d("DownloadAndSaveWallpaperWork - success")
+
             Result.success()
         } catch (ex: Exception) {
             Timber.tag(TAG).d(ex.toString())

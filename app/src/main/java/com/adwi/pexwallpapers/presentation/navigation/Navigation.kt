@@ -145,6 +145,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
 
         viewModel.getSettings()
+//        viewModel.getFavorites()
         SettingsScreen(
             viewModel = viewModel,
             onAboutUsClick = onAboutUsClick,

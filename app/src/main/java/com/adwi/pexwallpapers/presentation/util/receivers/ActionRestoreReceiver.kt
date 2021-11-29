@@ -23,7 +23,7 @@ class ActionRestoreReceiver : BroadcastReceiver() {
 
         wallpaperId?.let {
             context?.run {
-                this.workCreateRestoreWallpaperWork(wallpaperId)
+                this.workCreateRestoreWallpaperWork(wallpaperId.toInt())
 
                 val notificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

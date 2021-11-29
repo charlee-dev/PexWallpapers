@@ -6,19 +6,17 @@ import androidx.work.*
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
-import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_IMAGE_URL
 import com.adwi.pexwallpapers.presentation.util.Constants.WORK_AUTO_WALLPAPER
-import com.adwi.pexwallpapers.presentation.util.Constants.WORK_AUTO_WALLPAPER_NAME
+import com.adwi.pexwallpapers.presentation.util.Constants.WORK_BACKUP_WALLPAPER
 import com.adwi.pexwallpapers.presentation.util.Constants.WORK_DOWNLOAD_WALLPAPER
 import com.adwi.pexwallpapers.presentation.util.Constants.WORK_RESTORE_WALLPAPER
-import com.adwi.pexwallpapers.presentation.util.Constants.WORK_RESTORE_WALLPAPER_NAME
 import com.adwi.pexwallpapers.presentation.util.deleteAllBackups
 import com.adwi.pexwallpapers.presentation.work.works.AutoChangeWallpaperWork
-import com.adwi.pexwallpapers.presentation.work.works.DownloadWallpaperWork
+import com.adwi.pexwallpapers.presentation.work.works.BackupCurrentWallpaperWork
+import com.adwi.pexwallpapers.presentation.work.works.DownloadAndSaveWallpaperWork
 import com.adwi.pexwallpapers.presentation.work.works.RestoreWallpaperWork
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -36,10 +34,10 @@ fun Context.createAutoWork(delay: Long, favorites: List<Wallpaper>): Resource {
             Timber.tag(TAG).d("createAutoWork - setting $index")
 
             val repeatInterval = delay * favorites.size
-            val initialDelay = index * delay
+            val initialDelay = (index + 1) * delay
 
             val workResult = workCreateAutoChangeWallpaperWork(
-                workName = "${index}_${WORK_AUTO_WALLPAPER_NAME}_${wallpaper.id}",
+                workName = "${index}_${WORK_AUTO_WALLPAPER}_${wallpaper.id}",
                 wallpaper = wallpaper,
                 repeatInterval = repeatInterval,
                 initialDelay = initialDelay
@@ -61,88 +59,6 @@ fun Context.createAutoWork(delay: Long, favorites: List<Wallpaper>): Resource {
     }
 }
 
-
-private const val numberOfWorkCycles = 3
-
-fun Context.cancelAutoChangeWorks() {
-
-    WorkManager.getInstance(this)
-        .cancelAllWorkByTag(WORK_AUTO_WALLPAPER)
-
-    deleteAllBackups()
-
-    Timber.tag(TAG).d("cancelAutoChangeWorks")
-}
-
-// Restore wallpaper from notification
-fun Context.workCreateRestoreWallpaperWork(wallpaperId: String) {
-    val builder = Data.Builder()
-        .putString(WALLPAPER_ID, wallpaperId)
-        .build()
-
-    val work = OneTimeWorkRequestBuilder<RestoreWallpaperWork>()
-        .setInputData(builder)
-        .addTag(WORK_RESTORE_WALLPAPER)
-        .build()
-
-    WorkManager.getInstance(this)
-        .enqueueUniqueWork(
-            WORK_RESTORE_WALLPAPER_NAME + wallpaperId,
-            ExistingWorkPolicy.KEEP,
-            work
-        )
-
-    Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
-}
-
-// Download wallpaper
-fun Context.workCreateDownloadWallpaperWork(
-    wallpaper: Wallpaper,
-    downloadWallpaperOverWiFi: Boolean
-): UUID {
-    Timber.tag(TAG).d("workCreateDownloadWallpaperWork")
-
-    val constraints = if (downloadWallpaperOverWiFi) {
-        Timber.tag(TAG)
-            .d("Download will start when you connect to WiFi")
-        Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
-            .build()
-
-    } else {
-        Timber.tag(TAG)
-            .d("Starting download")
-        Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-    }
-
-    val builder = Data.Builder()
-        .putInt(WALLPAPER_ID, wallpaper.id)
-        .putString(WALLPAPER_IMAGE_URL, wallpaper.imageUrlPortrait)
-        .build()
-
-    val workTag = "$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}"
-
-    val work = OneTimeWorkRequestBuilder<DownloadWallpaperWork>()
-        .setInputData(builder)
-        .setConstraints(constraints)
-        .addTag(workTag) // TODO()
-        .build()
-
-    WorkManager.getInstance(this)
-        .enqueueUniqueWork(
-            WORK_AUTO_WALLPAPER_NAME + wallpaper.id,
-            ExistingWorkPolicy.KEEP,
-            work
-        )
-
-    Timber.tag(TAG)
-        .d("Created work: \nwallpaperId = ${wallpaper.id}")
-
-    return work.id
-}
-
 // Auto change wallpaper
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
@@ -161,7 +77,7 @@ private fun Context.workCreateAutoChangeWallpaperWork(
             repeatInterval = repeatInterval,
             repeatIntervalTimeUnit = TimeUnit.MINUTES
         )
-            .setInputData(createDataForAutoChangeWallpaperWorker(wallpaper))
+            .setInputData(createWorkDataWithWallpaperId(wallpaper.id))
             .setInitialDelay(initialDelay, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .addTag(WORK_AUTO_WALLPAPER)
@@ -175,18 +91,92 @@ private fun Context.workCreateAutoChangeWallpaperWork(
             )
 
         Timber.tag(TAG)
-            .d("Created work: \nwallpaperId = ${wallpaper.id}, \ndelay = $repeatInterval min")
+            .d("Created workCreateAutoChangeWallpaperWork: \nwallpaperId = ${wallpaper.id}, \nrepeat = $repeatInterval min \ndelay = $initialDelay")
         return Resource.Success()
     } catch (e: Exception) {
-        return Resource.Error(message = e.localizedMessage)
+        return Resource.Error(e.localizedMessage)
     }
 }
 
-private fun createDataForAutoChangeWallpaperWorker(wallpaper: Wallpaper): Data {
+fun Context.cancelAutoChangeWorks() {
+
+    WorkManager.getInstance(this)
+        .cancelAllWorkByTag(WORK_AUTO_WALLPAPER)
+
+    deleteAllBackups()
+
+    Timber.tag(TAG).d("cancelAutoChangeWorks")
+}
+
+fun Context.workBackupCurrentWallpaper(wallpaperId: Int) {
+
+    val backup = OneTimeWorkRequestBuilder<BackupCurrentWallpaperWork>()
+        .setInputData(createWorkDataWithWallpaperId(wallpaperId))
+        .addTag("$WORK_BACKUP_WALLPAPER${wallpaperId}")
+        .build()
+
+    WorkManager.getInstance(this)
+        .enqueueUniqueWork(
+            WORK_RESTORE_WALLPAPER + wallpaperId,
+            ExistingWorkPolicy.KEEP,
+            backup
+        )
+
+    Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
+}
+
+// Restore wallpaper from notification
+fun Context.workCreateRestoreWallpaperWork(wallpaperId: Int) {
+
+    val work = OneTimeWorkRequestBuilder<RestoreWallpaperWork>()
+        .setInputData(createWorkDataWithWallpaperId(wallpaperId))
+        .addTag(WORK_RESTORE_WALLPAPER)
+        .build()
+
+    WorkManager.getInstance(this)
+        .enqueueUniqueWork(
+            WORK_RESTORE_WALLPAPER + wallpaperId,
+            ExistingWorkPolicy.KEEP,
+            work
+        )
+
+    Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
+}
+
+// Download wallpaper with backup
+fun Context.workCreateDownloadWallpaperWork(
+    wallpaper: Wallpaper,
+    downloadWallpaperOverWiFi: Boolean
+) {
+    val networkType = if (downloadWallpaperOverWiFi)
+        NetworkType.UNMETERED else NetworkType.CONNECTED
+
+    Timber.tag(TAG).d("Network type - $networkType")
+
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(networkType)
+        .build()
+
+    val downloadAndSave = OneTimeWorkRequestBuilder<DownloadAndSaveWallpaperWork>()
+        .setInputData(createWorkDataWithWallpaperId(wallpaper.id))
+        .setConstraints(constraints)
+        .addTag("$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}")
+        .build()
+
+    WorkManager.getInstance(this)
+        .enqueueUniqueWork(
+            WORK_DOWNLOAD_WALLPAPER + wallpaper.id,
+            ExistingWorkPolicy.KEEP,
+            downloadAndSave
+        )
+
+    Timber.tag(TAG).d("Created workCreateDownloadWallpaperWork: \nwallpaperId = ${wallpaper.id}")
+}
+
+private fun createWorkDataWithWallpaperId(wallpaperId: Int): Data {
     val builder = Data.Builder()
-    builder.putInt(WALLPAPER_ID, wallpaper.id)
-    Timber.tag(TAG)
-        .d("createDataForAutoChangeWallpaperWorker \nimageUrl = ${wallpaper.imageUrlPortrait} \nwallpaperId = ${wallpaper.id}")
+    builder.putInt(WALLPAPER_ID, wallpaperId)
+    Timber.tag(TAG).d("createDataForAutoChangeWallpaperWorker \nwallpaperId = $wallpaperId")
     return builder.build()
 }
 

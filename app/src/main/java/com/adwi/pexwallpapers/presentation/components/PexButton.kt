@@ -32,6 +32,7 @@ import com.adwi.pexwallpapers.presentation.theme.paddingValues
 fun PexButton(
     modifier: Modifier = Modifier,
     state: Resource = Resource.Idle,
+    enabled: Boolean = true,
     text: String,
     loadingText: String = stringResource(id = R.string.loading),
     successText: String = stringResource(id = R.string.done),
@@ -70,7 +71,7 @@ fun PexButton(
 
     Surface(
         onClick = onClick,
-        enabled = state is Resource.Idle,
+        enabled = state is Resource.Idle && enabled,
         shape = shape,
         modifier = modifier.neumorphicShadow(
             offset = 0.dp,

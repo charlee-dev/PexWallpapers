@@ -5,6 +5,7 @@ import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
+import com.adwi.pexwallpapers.domain.state.DataState
 import com.adwi.pexwallpapers.domain.state.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +32,17 @@ fun Context.setAsWallpaper(
         }
     }
 
+fun Context.setBitmapAsWallpaper(
+    bitmap: Bitmap,
+    setHomeScreen: Boolean,
+    setLockScreen: Boolean
+) {
+    val wallpaperManager = WallpaperManager.getInstance(this)
+    if (setHomeScreen) wallpaperManager.setHomeScreenWallpaper(bitmap)
+    if (setLockScreen) wallpaperManager.setLockScreenWallpaper(bitmap)
+}
+
+
 private fun WallpaperManager.setHomeScreenWallpaper(bitmap: Bitmap): Resource =
     try {
         this.setBitmap(bitmap)
@@ -54,12 +66,17 @@ private fun WallpaperManager.setLockScreenWallpaper(bitmap: Bitmap): Resource =
 
 @SuppressLint("MissingPermission")
 
-fun Context.getCurrentWallpaperForBackup(): Bitmap {
-    val wallpaperManager = WallpaperManager.getInstance(this)
+fun Context.getCurrentWallpaperForBackup(): DataState<Bitmap> {
+    return try {
+        val wallpaperManager = WallpaperManager.getInstance(this)
+        val currentWallpaper = wallpaperManager
+            .drawable
+            .toBitmap()
 
-    return wallpaperManager
-        .drawable
-        .toBitmap()
+        DataState.Success(currentWallpaper)
+    } catch (t: Throwable) {
+        DataState.Error(t)
+    }
 }
 
 private const val TAG = "WallpaperUtil"

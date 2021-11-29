@@ -30,6 +30,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun SaveButton(
     modifier: Modifier = Modifier,
     state: Resource = Resource.Idle,
+    enabled: Boolean,
     onClick: () -> Unit
 ) {
     var doNotShowRationale by rememberSaveable {
@@ -44,6 +45,7 @@ fun SaveButton(
         readPermissionState.hasPermission -> {
             PexButton(
                 state = state,
+                enabled = enabled,
                 onClick = onClick,
                 shape = RectangleShape,
                 text = stringResource(id = R.string.save),

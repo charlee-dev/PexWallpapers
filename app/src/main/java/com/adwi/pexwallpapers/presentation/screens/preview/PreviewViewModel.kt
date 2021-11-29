@@ -11,7 +11,7 @@ import com.adwi.pexwallpapers.presentation.IoDispatcher
 import com.adwi.pexwallpapers.presentation.base.BaseViewModel
 import com.adwi.pexwallpapers.presentation.util.ext.onDispatcher
 import com.adwi.pexwallpapers.presentation.util.fetchRemoteAndSaveLocally
-import com.adwi.pexwallpapers.presentation.util.getBitmapFromRemote
+import com.adwi.pexwallpapers.presentation.util.handleGetBitmapFromRemoteResult
 import com.adwi.pexwallpapers.presentation.util.setAsWallpaper
 import com.adwi.pexwallpapers.presentation.util.shareImage
 import com.adwi.pexwallpapers.presentation.work.workCreateDownloadWallpaperWork
@@ -70,7 +70,7 @@ class PreviewViewModel
         setLockScreen: Boolean
     ) {
         onDispatcher(ioDispatcher) {
-            val bitmap = context.getBitmapFromRemote(imageUrl)
+            val bitmap = context.handleGetBitmapFromRemoteResult(imageUrl)
 
             bitmap?.let {
                 context.setAsWallpaper(
