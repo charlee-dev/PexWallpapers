@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.feature_settings.presentation.SettingsScreen
 import com.adwi.feature_settings.presentation.SettingsViewModel
 import com.adwi.pexwallpapers.presentation.screens.favorites.FavoritesScreen
@@ -43,6 +44,8 @@ fun NavGraphBuilder.myNavGraph(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Settings) -> Unit,
+    cancelWorks: () -> Unit
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -54,7 +57,9 @@ fun NavGraphBuilder.myNavGraph(
             navigateToSearch = navigateToSearch,
             onAboutUsClick = onAboutUsClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
-            onContactSupportClick = onContactSupportClick
+            onContactSupportClick = onContactSupportClick,
+            onSaveAutomationClick = onSaveAutomationClick,
+            cancelWorks = cancelWorks
         )
     }
 
@@ -104,6 +109,8 @@ fun NavGraphBuilder.addHomeGraph(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Settings) -> Unit,
+    cancelWorks: () -> Unit
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
@@ -150,7 +157,9 @@ fun NavGraphBuilder.addHomeGraph(
             viewModel = viewModel,
             onAboutUsClick = onAboutUsClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
-            onContactSupportClick = onContactSupportClick
+            onContactSupportClick = onContactSupportClick,
+            onSaveAutomationClick = onSaveAutomationClick,
+            cancelWorks = cancelWorks
         )
     }
 }

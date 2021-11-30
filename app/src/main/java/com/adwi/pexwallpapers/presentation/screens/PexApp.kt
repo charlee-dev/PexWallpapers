@@ -12,6 +12,7 @@ import com.adwi.components.PexBottomBar
 import com.adwi.components.PexScaffold
 import com.adwi.components.PexSnackBarHost
 import com.adwi.components.theme.PexWallpapersTheme
+import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.presentation.main.MainViewModel
 import com.adwi.pexwallpapers.presentation.navigation.HomeSections
 import com.adwi.pexwallpapers.presentation.navigation.MainDestinations
@@ -37,6 +38,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun PexApp(
     viewModel: MainViewModel,
+    onSaveAutomationClick: (Settings) -> Unit,
+    cancelWorks: () -> Unit
 ) {
     ProvideWindowInsets {
         PexWallpapersTheme {
@@ -81,7 +84,9 @@ fun PexApp(
                         },
                         onContactSupportClick = {
                             TODO("add  section")
-                        }
+                        },
+                        onSaveAutomationClick = onSaveAutomationClick,
+                        cancelWorks = cancelWorks
                     )
                 }
             }

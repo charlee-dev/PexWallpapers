@@ -29,6 +29,7 @@ import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_settings.R
+import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.feature_settings.presentation.components.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,23 +46,14 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
-    onContactSupportClick: () -> Unit
+    onContactSupportClick: () -> Unit,
+    onSaveAutomationClick: (Settings) -> Unit,
+    cancelWorks: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
-    val favorites by viewModel.favorites.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
-
-//    val subject =
-//        "${context.getString(R.string.support_title)} 12345678" // TODO(implement support messaging)
-
-//    val chooserMessage = context.getString(R.string.support_chooser_message)
-//
-//    val intent = Intent(Intent.ACTION_SENDTO).apply {
-//        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        putExtra(Intent.EXTRA_SUBJECT, subject)
-//    }
 
     PexScaffold(
         viewModel = viewModel,
@@ -114,7 +106,12 @@ fun SettingsScreen(
                     panelName = stringResource(id = R.string.automation),
                     mainName = stringResource(id = R.string.auto_change_wallpaper),
                     checked = settings.autoChangeWallpaper,
-                    onCheckedChange = { viewModel.updateAutoChangeWallpaper(context, it) }
+                    onCheckedChange = { checked ->
+                        viewModel.updateAutoChangeWallpaper(checked)
+                        if (!checked) {
+                            cancelWorks()
+                        }
+                    }
                 ) {
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     Text(
@@ -160,23 +157,12 @@ fun SettingsScreen(
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     OptionTip(text = stringResource(R.string.change_wallpaper_every_description))
                     Spacer(modifier = Modifier.size(paddingValues / 2))
-                    AnimatedVisibility(
-                        visible = favorites.size < 2,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        Spacer(modifier = Modifier.size(paddingValues / 2))
-                        OptionTip(
-                            text = "Add minimum two wallpapers to favorites",
-                            color = Color.Red
-                        )
-                    }
                     SaveButton(
-                        enabled = (favorites.size > 1 && !(settings.autoHome && settings.autoLock)),
+                        enabled = !settings.autoHome && !settings.autoLock,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                        onClick = { viewModel.saveAutomation(context) },
+                        onClick = { onSaveAutomationClick(settings) },
                     )
                 }
             }
