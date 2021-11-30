@@ -23,11 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.components.*
+import com.adwi.components.theme.Dimensions
+import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.domain.state.Resource
-import com.adwi.pexwallpapers.presentation.components.*
-import com.adwi.pexwallpapers.presentation.theme.Dimensions
-import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalAnimationApi
@@ -74,15 +73,9 @@ fun PreviewScreen(
                     )
                 )
 
-                val scale = if (saveState == Resource.Loading()) scaleLoading else 1f
+                val scale = if (saveState == com.adwi.core.Resource.Loading()) scaleLoading else 1f
 
                 Box(modifier = Modifier.weight(1f)) {
-//                    PreviewCard(
-//                        wallpaper = it,
-//                        modifier = Modifier
-//                            .padding(horizontal = paddingValues)
-//                            .padding(vertical = paddingValues / 2)
-//                    )
                     PreviewCard(
                         wallpaper = it,
                         modifier = Modifier
@@ -94,7 +87,7 @@ fun PreviewScreen(
                             )
                     )
                     androidx.compose.animation.AnimatedVisibility(
-                        visible = saveState is Resource.Success,
+                        visible = saveState is com.adwi.core.Resource.Success,
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
@@ -146,7 +139,9 @@ fun PreviewScreen(
                         )
                     },
                     text = stringResource(id = R.string.set_wallpaper),
-                    successText = stringResource(id = R.string.wallpaper_has_been_set),
+                    loadingText = stringResource(R.string.loading),
+                    errorText = stringResource(R.string.error),
+                    successText = stringResource(R.string.wallpaper_has_been_set),
                     shape = RoundedCornerShape(
                         topStartPercent = 100,
                         topEndPercent = 100

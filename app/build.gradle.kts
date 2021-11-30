@@ -11,9 +11,6 @@ plugins {
     id(Plugins.DAGGER_HILT)
 }
 
-val pex_base_url: String by project
-val pex_api_access_key: String by project
-
 android {
     compileSdk = AndroidConfig.compileSdk
 
@@ -29,11 +26,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    buildTypes.forEach {
-        it.buildConfigField("String", "PEX_BASE_URL", pex_base_url)
-        it.buildConfigField("String", "PEX_API_ACCESS_KEY", pex_api_access_key)
     }
 
     buildTypes {
@@ -64,9 +56,16 @@ android {
 
 dependencies {
 
+    implementation(project(Modules.COMPONENTS))
+    implementation(project(Modules.CORE))
+    implementation(project(Modules.COMMON))
+    implementation(project(Modules.DOMAIN))
+    implementation(project(Modules.REPOSITORY))
+    implementation(project(Modules.DATA))
+
+    implementation(project(Modules.FEATURE_SETTINGS))
+
     addComposeDependencies()
-    addPersistenceDependencies()
-    addNetworkDependencies()
     addHelpersDependencies()
     addHiltDependenciesBasic()
     addHiltDependenciesExtended()

@@ -1,7 +1,7 @@
 package com.adwi.pexwallpapers.presentation.main
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.pexwallpapers.presentation.base.BaseViewModel
+import com.adwi.components.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject

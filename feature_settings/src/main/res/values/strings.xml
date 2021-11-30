@@ -1,0 +1,46 @@
+<resources>
+    <string name="settings">Settings</string>
+
+    <!--   Notifications  -->
+    <string name="notifications">Notifications</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="new_wallpaper_set">New wallpaper set</string>
+    <string name="wallpaper_recommendations">Wallpaper recommendations</string>
+
+    <!--    Automation  -->
+    <string name="automation">Automation</string>
+    <string name="auto_change_wallpaper">Auto change wallpaper</string>
+    <string name="screen_to_change">Screen to change</string>
+    <string name="home_screen">Home Screen</string>
+    <string name="lock_screen">Lock screen</string>
+    <string name="change_wallpaper_every">Change wallpaper every:</string>
+    <string name="change_wallpaper_every_description">WARNING: Frequent wallpaper change may cause device\'s battery drain</string>
+    <string name="up">Up</string>
+    <string name="down">Down</string>
+    <string name="new_wallpaper_set_description">Shows only if automation is set</string>
+    <string name="save">Save</string>
+
+    <!--    Data usage  -->
+    <string name="data_usage">Data usage</string>
+    <string name="activate_data_saver">Activate data saver</string>
+    <string name="download_wallpapers_only_over_wi_fi">Download wallpapers only over wifi</string>
+    <string name="download_miniatures_low_quality">Download miniatures in lower resolution</string>
+    <string name="auto_change_only_on_wifi">Auto change only on wifi</string>
+
+    <!--    Info    -->
+    <string name="about_us">About us</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="support">Support</string>
+    <string name="low_res_description">Wallpaper preview will be still in quality resolution</string>
+    <string name="download_over_wifi_description">Wallpapers will wait in the queue for WiFi</string>
+
+    <!--    Messages   -->
+    <string name="default_settings_restored">Default settings restored</string>
+    <string name="request_permission">Request permission</string>
+    <string name="dont_show_rationale_again">Don\'t show rationale again</string>
+    <string name="external_storage_rationale">Read External Storage is important for this app. Please grant the permission.</string>
+    <string name="external_storage_denied">Read External Storage permission denied. See this FAQ with information about why we need this permission. Please, grant us access on the Settings screen.</string>
+    <string name="feature_not_available">Feature not available</string>
+    <string name="wallpaper_will_change_in">Wallpaper will change every %1$s %2$s</string>
+    <string name="automation_saved">Automation saved</string>
+</resources>

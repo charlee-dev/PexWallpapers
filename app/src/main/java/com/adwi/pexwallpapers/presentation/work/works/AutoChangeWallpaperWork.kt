@@ -8,7 +8,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.pexwallpapers.presentation.util.Constants
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.presentation.util.handleGetBitmapFromRemoteResult

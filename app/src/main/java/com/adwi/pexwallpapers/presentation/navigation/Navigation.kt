@@ -9,6 +9,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.feature_settings.presentation.SettingsScreen
+import com.adwi.feature_settings.presentation.SettingsViewModel
 import com.adwi.pexwallpapers.presentation.screens.favorites.FavoritesScreen
 import com.adwi.pexwallpapers.presentation.screens.favorites.FavoritesViewModel
 import com.adwi.pexwallpapers.presentation.screens.home.HomeScreen
@@ -17,8 +19,6 @@ import com.adwi.pexwallpapers.presentation.screens.preview.PreviewScreen
 import com.adwi.pexwallpapers.presentation.screens.preview.PreviewViewModel
 import com.adwi.pexwallpapers.presentation.screens.search.SearchScreen
 import com.adwi.pexwallpapers.presentation.screens.search.SearchViewModel
-import com.adwi.pexwallpapers.presentation.screens.settings.SettingsScreen
-import com.adwi.pexwallpapers.presentation.screens.settings.SettingsViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

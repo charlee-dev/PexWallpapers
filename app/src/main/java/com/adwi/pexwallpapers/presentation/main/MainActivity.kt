@@ -12,8 +12,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.presentation.PexApp
-import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
+import com.adwi.components.theme.PexWallpapersTheme
+import com.adwi.pexwallpapers.presentation.screens.PexApp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

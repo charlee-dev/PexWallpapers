@@ -12,7 +12,6 @@ import android.provider.MediaStore
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.adwi.pexwallpapers.domain.state.DataState
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -45,19 +44,19 @@ suspend fun Context.fetchRemoteAndSaveToGallery(id: Int, url: String): Uri? {
 
 suspend fun Context.handleGetBitmapFromRemoteResult(imageUrl: String) =
     when (val result = getBitmapFromRemote(imageUrl)) {
-        is DataState.Error -> {
+        is com.adwi.core.DataState.Error -> {
             Timber.tag(TAG).d(result.error?.localizedMessage ?: "Cant fetch from remote")
             null
         }
-        is DataState.Loading -> {
+        is com.adwi.core.DataState.Loading -> {
             null
         }
-        is DataState.Success -> {
+        is com.adwi.core.DataState.Success -> {
             result.data
         }
     }
 
-private suspend fun Context.getBitmapFromRemote(imageUrl: String): DataState<Bitmap?> {
+private suspend fun Context.getBitmapFromRemote(imageUrl: String): com.adwi.core.DataState<Bitmap?> {
     return try {
         val loader = ImageLoader(this)
 
@@ -68,10 +67,10 @@ private suspend fun Context.getBitmapFromRemote(imageUrl: String): DataState<Bit
 
         val drawable = (loader.execute(request) as SuccessResult).drawable
         val bitmap = (drawable as BitmapDrawable).bitmap
-        DataState.Success(bitmap)
+        com.adwi.core.DataState.Success(bitmap)
     } catch (e: Throwable) {
         Timber.tag(TAG).d(e.localizedMessage)
-        DataState.Error(e)
+        com.adwi.core.DataState.Error(e)
     }
 }
 

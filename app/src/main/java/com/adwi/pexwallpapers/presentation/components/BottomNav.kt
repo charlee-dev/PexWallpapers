@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.components
+package com.adwi.components
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.animateColorAsState
@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
+import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.components.theme.Dimensions.BottomBar.BottomNavIndicatorShape
+import com.adwi.components.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
+import com.adwi.components.theme.Dimensions.BottomBar.BottomNavigationItemPadding
+import com.adwi.components.theme.Dimensions.BottomBar.TextIconSpacing
+import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.navigation.HomeSections
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavIndicatorShape
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavigationItemPadding
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.TextIconSpacing
-import com.adwi.pexwallpapers.presentation.theme.PexWallpapersTheme
 import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable

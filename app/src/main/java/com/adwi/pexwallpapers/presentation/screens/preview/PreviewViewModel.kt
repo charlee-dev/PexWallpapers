@@ -3,18 +3,17 @@ package com.adwi.pexwallpapers.presentation.screens.preview
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
-import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.components.IoDispatcher
+import com.adwi.components.base.BaseViewModel
+import com.adwi.components.ext.onDispatcher
+import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.domain.state.Resource
-import com.adwi.pexwallpapers.presentation.IoDispatcher
-import com.adwi.pexwallpapers.presentation.base.BaseViewModel
-import com.adwi.pexwallpapers.presentation.util.ext.onDispatcher
 import com.adwi.pexwallpapers.presentation.util.fetchRemoteAndSaveLocally
 import com.adwi.pexwallpapers.presentation.util.handleGetBitmapFromRemoteResult
 import com.adwi.pexwallpapers.presentation.util.setAsWallpaper
 import com.adwi.pexwallpapers.presentation.util.shareImage
 import com.adwi.pexwallpapers.presentation.work.workCreateDownloadWallpaperWork
+import com.adwi.repository.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,7 +37,7 @@ class PreviewViewModel
 ) : BaseViewModel() {
 
     private val _wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
-    private val _saveState: MutableStateFlow<Resource> = MutableStateFlow(Resource.Idle)
+    private val _saveState: MutableStateFlow<com.adwi.core.Resource> = MutableStateFlow(com.adwi.core.Resource.Idle)
 
     val wallpaper = _wallpaper.asStateFlow()
     val saveState = _saveState.asStateFlow()
@@ -52,7 +51,9 @@ class PreviewViewModel
 
     private fun getWallpaperById(id: Int) {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getWallpaperById(id).collect { _wallpaper.value = it }
+            wallpaperRepository.getWallpaperById(id).collect {
+                _wallpaper.value = it
+            }
         }
     }
 
@@ -79,9 +80,9 @@ class PreviewViewModel
                     setLockScreen = setLockScreen
                 ).collect { result ->
                     _saveState.value = result
-                    if (result is Resource.Success || result is Resource.Error) {
+                    if (result is com.adwi.core.Resource.Success || result is com.adwi.core.Resource.Error) {
                         delay(2000)
-                        _saveState.value = Resource.Idle
+                        _saveState.value = com.adwi.core.Resource.Idle
                     }
                 }
             }

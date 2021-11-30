@@ -2,12 +2,12 @@ package com.adwi.pexwallpapers.presentation.screens.favorites
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.pexwallpapers.data.WallpaperRepositoryImpl
-import com.adwi.pexwallpapers.data.database.settings.SettingsDao
+import com.adwi.components.IoDispatcher
+import com.adwi.components.base.BaseViewModel
+import com.adwi.components.ext.onDispatcher
+import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.presentation.IoDispatcher
-import com.adwi.pexwallpapers.presentation.base.BaseViewModel
-import com.adwi.pexwallpapers.presentation.util.ext.onDispatcher
+import com.adwi.repository.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi

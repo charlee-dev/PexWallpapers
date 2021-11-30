@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.components.*
+import com.adwi.components.theme.Dimensions
+import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.presentation.components.*
-import com.adwi.pexwallpapers.presentation.theme.Dimensions
-import com.adwi.pexwallpapers.presentation.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalPagingApi

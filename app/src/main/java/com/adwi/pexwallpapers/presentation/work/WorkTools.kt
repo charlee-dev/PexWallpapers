@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.*
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.domain.state.Resource
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.presentation.util.Constants.WORK_AUTO_WALLPAPER
 import com.adwi.pexwallpapers.presentation.util.Constants.WORK_BACKUP_WALLPAPER
@@ -22,12 +21,12 @@ import java.util.concurrent.TimeUnit
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
-fun Context.createAutoWork(delay: Long, favorites: List<Wallpaper>): Resource {
+fun Context.createAutoWork(delay: Long, favorites: List<Wallpaper>): com.adwi.core.Resource {
     Timber.tag(TAG).d("createAutoWork Loading")
     return try {
 
         // Keeps record of any failed results
-        val failedResults = mutableListOf<Resource>()
+        val failedResults = mutableListOf<com.adwi.core.Resource>()
 
         // Schedule work for each wallpaper in favorites
         favorites.forEachIndexed { index, wallpaper ->
@@ -43,19 +42,19 @@ fun Context.createAutoWork(delay: Long, favorites: List<Wallpaper>): Resource {
                 initialDelay = initialDelay
             )
 
-            if (workResult == Resource.Error()) {
+            if (workResult == com.adwi.core.Resource.Error()) {
                 failedResults += workResult
             }
         }
 
         return if (failedResults.isNotEmpty()) {
-            Resource.Error("${failedResults.size} tasks failed")
+            com.adwi.core.Resource.Error("${failedResults.size} tasks failed")
         } else {
-            Resource.Success()
+            com.adwi.core.Resource.Success()
         }
     } catch (e: Exception) {
         cancelAutoChangeWorks()
-        Resource.Error(e.localizedMessage)
+        com.adwi.core.Resource.Error(e.localizedMessage)
     }
 }
 
@@ -67,7 +66,7 @@ private fun Context.workCreateAutoChangeWallpaperWork(
     wallpaper: Wallpaper,
     repeatInterval: Long,
     initialDelay: Long
-): Resource {
+): com.adwi.core.Resource {
     try {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -92,9 +91,9 @@ private fun Context.workCreateAutoChangeWallpaperWork(
 
         Timber.tag(TAG)
             .d("Created workCreateAutoChangeWallpaperWork: \nwallpaperId = ${wallpaper.id}, \nrepeat = $repeatInterval min \ndelay = $initialDelay")
-        return Resource.Success()
+        return com.adwi.core.Resource.Success()
     } catch (e: Exception) {
-        return Resource.Error(e.localizedMessage)
+        return com.adwi.core.Resource.Error(e.localizedMessage)
     }
 }
 

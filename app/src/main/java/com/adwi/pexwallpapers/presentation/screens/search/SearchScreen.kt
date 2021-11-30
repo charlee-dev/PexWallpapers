@@ -23,11 +23,11 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.pexwallpapers.data.database.wallpapers.domain.WallpaperEntity
-import com.adwi.pexwallpapers.data.database.wallpapers.domain.toDomain
+import com.adwi.components.*
+import com.adwi.components.theme.paddingValues
+import com.adwi.data.database.domain.WallpaperEntity
+import com.adwi.data.database.domain.toDomain
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.presentation.components.*
-import com.adwi.pexwallpapers.presentation.theme.paddingValues
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi

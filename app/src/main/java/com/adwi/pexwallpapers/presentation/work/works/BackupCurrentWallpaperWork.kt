@@ -6,7 +6,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adwi.pexwallpapers.domain.state.DataState
 import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
 import com.adwi.pexwallpapers.presentation.util.backupImageToLocal
 import com.adwi.pexwallpapers.presentation.util.getCurrentWallpaperForBackup
@@ -31,14 +30,14 @@ class BackupCurrentWallpaperWork @AssistedInject constructor(
 
             // Backup current wallpaper
             when (val backupState = context.getCurrentWallpaperForBackup()) {
-                is DataState.Error -> {
+                is com.adwi.core.DataState.Error -> {
                     Timber.tag(TAG).d("BackupCurrentWallpaperWork FAILURE get current wallpaper")
                     Timber.tag(TAG).d(
                         backupState.error?.localizedMessage ?: "Can't retrieve current wallpaper"
                     )
                     failure()
                 }
-                is DataState.Success -> {
+                is com.adwi.core.DataState.Success -> {
                     backupState.data?.let { bitmap ->
                         // Save backup locally
                         try {
