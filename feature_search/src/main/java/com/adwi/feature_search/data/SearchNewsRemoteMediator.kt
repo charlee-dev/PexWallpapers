@@ -1,4 +1,4 @@
-package com.adwi.repository
+package com.adwi.feature_search.data
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -11,7 +11,7 @@ import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.data.database.domain.toEntity
 import com.adwi.data.database.domain.toSearchResult
 import com.adwi.data.network.PexService
-import com.adwi.repository.util.keepFavorites
+import com.adwi.data.util.keepFavorites
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException

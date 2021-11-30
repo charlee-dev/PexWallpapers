@@ -58,9 +58,8 @@ dependencies {
 
     implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.CORE))
-    implementation(project(Modules.COMMON))
+    implementation(project(Modules.BASE))
     implementation(project(Modules.DOMAIN))
-    implementation(project(Modules.REPOSITORY))
     implementation(project(Modules.DATA))
 
     implementation(project(Modules.FEATURE_HOME))

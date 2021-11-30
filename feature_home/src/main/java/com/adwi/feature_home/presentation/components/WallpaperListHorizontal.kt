@@ -1,4 +1,4 @@
-package com.adwi.feature_home.components
+package com.adwi.feature_home.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures

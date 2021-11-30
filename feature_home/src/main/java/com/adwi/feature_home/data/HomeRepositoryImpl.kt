@@ -1,22 +1,17 @@
-package com.adwi.repository
+package com.adwi.feature_home.data
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.room.withTransaction
 import com.adwi.core.DataState
-import com.adwi.data.Constants
+import com.adwi.core.networkBoundResource
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.database.domain.*
 import com.adwi.data.network.PexService
 import com.adwi.data.network.domain.toEntity
+import com.adwi.data.util.keepFavorites
+import com.adwi.data.util.shouldFetch
+import com.adwi.data.util.shouldFetchColors
 import com.adwi.pexwallpapers.domain.model.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.repository.util.keepFavorites
-import com.adwi.repository.util.networkBoundResource
-import com.adwi.repository.util.shouldFetch
-import com.adwi.repository.util.shouldFetchColors
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -26,14 +21,12 @@ import java.io.IOException
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-@ExperimentalPagingApi
-class WallpaperRepositoryImpl @Inject constructor(
-    private val database: WallpaperDatabase,
-    private val service: PexService
-) : WallpaperRepository {
+class HomeRepositoryImpl @Inject constructor(
+    private val service: PexService,
+    private val database: WallpaperDatabase
+) : HomeRepository {
 
     private val wallpapersDao = database.wallpaperDao()
-    private val searchDao = database.searchDao()
     private val dailyDao = database.dailyDao()
     private val categoryDao = database.categoryDao()
 
@@ -113,6 +106,7 @@ class WallpaperRepositoryImpl @Inject constructor(
             onFetchRemoteFailed(t)
         }
     )
+
 
     override fun getColors(
         forceRefresh: Boolean,
@@ -198,34 +192,12 @@ class WallpaperRepositoryImpl @Inject constructor(
         }
     )
 
-    override fun getSearch(query: String): Flow<PagingData<WallpaperEntity>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = Constants.PAGING_SIZE,
-                maxSize = Constants.PAGING_MAX_SIZE
-            ),
-            remoteMediator = SearchNewsRemoteMediator(query, service, database),
-            pagingSourceFactory = { searchDao.getSearchResultWallpaperPaged(query) }
-        ).flow
-
-    override fun getWallpaperById(id: Int): Flow<Wallpaper> =
-        wallpapersDao.getWallpaperById(id).map { it.toDomain() }
-
-    override fun getFavorites(): Flow<List<Wallpaper>> =
-        wallpapersDao.getAllFavorites().map { it.toDomainList() }
-
     override suspend fun updateWallpaper(wallpaper: Wallpaper) {
         wallpapersDao.updateWallpaper(wallpaper.toEntity())
     }
 
-    override suspend fun updateWallpaperIsFavorite(id: Int, isFavorite: Boolean) {
-        wallpapersDao.updateWallpaperIsFavorite(id, isFavorite)
-    }
-
     override suspend fun deleteNonFavoriteWallpapersOlderThan(timestampInMillis: Long) =
         wallpapersDao.deleteNonFavoriteWallpapersOlderThan(timestampInMillis)
-
-    override suspend fun resetAllFavorites() = wallpapersDao.resetAllFavorites()
 
     private val colorNameList = listOf(
         "Purple",

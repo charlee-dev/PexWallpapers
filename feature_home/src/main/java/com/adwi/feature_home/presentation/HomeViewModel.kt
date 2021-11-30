@@ -1,4 +1,4 @@
-package com.adwi.feature_home
+package com.adwi.feature_home.presentation
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -6,8 +6,8 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.base.Refresh
 import com.adwi.components.ext.onDispatcher
+import com.adwi.feature_home.data.HomeRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.repository.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val repository: HomeRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -44,14 +44,14 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getDaily(refresh: Boolean) =
-        wallpaperRepository.getDaily(
+        repository.getDaily(
             forceRefresh = refresh,
             onFetchSuccess = { onFetchSuccess() },
             onFetchRemoteFailed = { onFetchFailed(it) }
         )
 
     private fun getColors(refresh: Boolean = true) =
-        wallpaperRepository.getColors(
+        repository.getColors(
             forceRefresh = refresh,
             onFetchSuccess = { onFetchSuccess() },
             onFetchRemoteFailed = { onFetchFailed(it) }
@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
 
 
     private fun getCurated(refresh: Boolean = true) =
-        wallpaperRepository.getCurated(
+        repository.getCurated(
             forceRefresh = refresh,
             onFetchSuccess = { onFetchSuccess() },
             onFetchRemoteFailed = { onFetchFailed(it) }
@@ -91,13 +91,13 @@ class HomeViewModel @Inject constructor(
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaper(wallpaper)
+            repository.updateWallpaper(wallpaper)
         }
     }
 
     private fun deleteOldNonFavoriteWallpapers() {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.deleteNonFavoriteWallpapersOlderThan(
+            repository.deleteNonFavoriteWallpapersOlderThan(
                 System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)
             )
         }

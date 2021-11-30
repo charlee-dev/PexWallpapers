@@ -50,9 +50,8 @@ dependencies {
     implementation(project(Modules.CORE))
     implementation(project(Modules.DOMAIN))
     implementation(project(Modules.DATA))
-    implementation(project(Modules.COMMON))
+    implementation(project(Modules.BASE))
     implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.REPOSITORY))
 
     addDefaultComposeDependencies()
     addComposeDependencies()

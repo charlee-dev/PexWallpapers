@@ -49,7 +49,7 @@ dependencies {
 
     implementation(project(Modules.CORE))
     implementation(project(Modules.DOMAIN))
-    implementation(project(Modules.COMMON))
+    implementation(project(Modules.BASE))
     implementation(project(Modules.COMPONENTS))
 
     addDefaultComposeDependencies()

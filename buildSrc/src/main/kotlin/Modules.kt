@@ -4,20 +4,16 @@
 object Modules {
 
     const val APP = ":app"
+    const val BASE = ":base"
     const val COMPONENTS = ":components"
-    const val COMMON = ":common"
     const val CORE = ":core"
-//
-//    // Datasource
-    const val DATASOURCE = ":wallpapers_datasource"
+
+    // Datasource
     const val DOMAIN = ":wallpapers_datasource:domain"
     const val DATA = ":wallpapers_datasource:data"
     const val REPOSITORY = ":wallpapers_datasource:repository"
-//
-//    const val DATASOURCE_SETTINGS = ":datasource_settings"
-//
-//
-//    // features
+
+    // Features
     const val FEATURE_HOME = ":feature_home"
     const val FEATURE_PREVIEW = ":feature_preview"
     const val FEATURE_SEARCH = ":feature_search"

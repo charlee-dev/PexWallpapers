@@ -6,6 +6,8 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
 import com.adwi.core.Resource
+import com.adwi.data.database.dao.WallpapersDao
+import com.adwi.data.database.domain.toDomain
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
@@ -16,7 +18,6 @@ import com.adwi.pexwallpapers.presentation.util.shareImage
 import com.adwi.pexwallpapers.presentation.work.cancelAutoChangeWorks
 import com.adwi.pexwallpapers.presentation.work.createAutoWork
 import com.adwi.pexwallpapers.presentation.work.workCreateDownloadWallpaperWork
-import com.adwi.repository.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,7 +33,7 @@ import javax.inject.Inject
 class MainViewModel @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @Inject constructor(
-    private val wallpaperRepository: WallpaperRepository,
+    private val wallpapersDao: WallpapersDao,
     private val settingsDao: SettingsDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
@@ -126,8 +127,8 @@ class MainViewModel @ExperimentalCoroutinesApi
 
     private fun getFavorites() {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getFavorites().collect {
-                _favorites.value = it
+            wallpapersDao.getAllFavorites().collect { list ->
+                _favorites.value = list.map { wallpaper -> wallpaper.toDomain() }
             }
         }
     }

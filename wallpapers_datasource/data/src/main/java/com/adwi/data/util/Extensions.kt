@@ -1,4 +1,4 @@
-package com.adwi.repository.util
+package com.adwi.data.util
 
 import com.adwi.data.Constants.DEFAULT_CATEGORY
 import com.adwi.data.Constants.REFRESH_DATA_EVERY

@@ -9,10 +9,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.feature_favorites.FavoritesScreen
-import com.adwi.feature_favorites.FavoritesViewModel
-import com.adwi.feature_home.HomeScreen
-import com.adwi.feature_home.HomeViewModel
+import com.adwi.feature_favorites.presentation.FavoritesScreen
+import com.adwi.feature_favorites.presentation.FavoritesViewModel
+import com.adwi.feature_home.presentation.HomeScreen
+import com.adwi.feature_home.presentation.HomeViewModel
 import com.adwi.feature_preview.presentation.PreviewScreen
 import com.adwi.feature_preview.presentation.PreviewViewModel
 import com.adwi.feature_search.presentation.SearchScreen

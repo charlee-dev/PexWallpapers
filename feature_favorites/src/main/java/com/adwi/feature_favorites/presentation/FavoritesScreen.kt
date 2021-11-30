@@ -1,4 +1,4 @@
-package com.adwi.feature_favorites
+package com.adwi.feature_favorites.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -27,6 +27,7 @@ import com.adwi.components.*
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
+import com.adwi.feature_favorites.R
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -78,7 +79,7 @@ fun FavoritesScreen(
                 items(items = wallpapers, itemContent = { wallpaper ->
 
                     WallpaperItemVertical(
-                        wallpaper = wallpaper,
+                        wallpaper = mowallpaper,
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,

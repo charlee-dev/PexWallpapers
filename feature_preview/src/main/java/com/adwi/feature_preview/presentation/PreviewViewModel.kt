@@ -6,8 +6,9 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
 import com.adwi.core.Resource
+import com.adwi.data.database.dao.WallpapersDao
+import com.adwi.data.database.domain.toDomain
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.repository.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +24,7 @@ import javax.inject.Inject
 class PreviewViewModel
 @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val wallpaperdao: WallpapersDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -41,15 +42,15 @@ class PreviewViewModel
 
     private fun getWallpaperById(id: Int) {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.getWallpaperById(id).collect {
-                _wallpaper.value = it
+            wallpaperdao.getWallpaperById(id).collect {
+                _wallpaper.value = it.toDomain()
             }
         }
     }
 
     fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaperIsFavorite(wallpaper.id, !wallpaper.isFavorite)
+            wallpaperdao.updateWallpaperIsFavorite(wallpaper.id, !wallpaper.isFavorite)
             Timber.d("${!wallpaper.isFavorite}")
         }
     }

@@ -7,8 +7,8 @@ import androidx.paging.cachedIn
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
+import com.adwi.feature_search.data.SearchRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.repository.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val wallpaperRepository: WallpaperRepository,
+    private val repository: SearchRepository,
     private val savedStateHandle: SavedStateHandle,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
     val currentQuery = _currentQuery.asStateFlow()
 
     val searchResults = currentQuery.flatMapLatest { query ->
-        wallpaperRepository.getSearch(query)
+        repository.getSearch(query)
     }.cachedIn(viewModelScope)
 
     var lowRes = false
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
         val isFavorite = wallpaper.isFavorite
         wallpaper.isFavorite = !isFavorite
         onDispatcher(ioDispatcher) {
-            wallpaperRepository.updateWallpaper(wallpaper)
+            repository.updateWallpaper(wallpaper)
         }
     }
 }

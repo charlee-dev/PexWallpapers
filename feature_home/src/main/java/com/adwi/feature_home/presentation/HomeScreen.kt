@@ -1,4 +1,4 @@
-package com.adwi.feature_home
+package com.adwi.feature_home.presentation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,9 +16,10 @@ import com.adwi.components.Header
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
-import com.adwi.feature_home.components.CategoryListHorizontalPanel
-import com.adwi.feature_home.components.DailyWallpaper
-import com.adwi.feature_home.components.WallpaperListHorizontalPanel
+import com.adwi.feature_home.R
+import com.adwi.feature_home.presentation.components.CategoryListHorizontalPanel
+import com.adwi.feature_home.presentation.components.DailyWallpaper
+import com.adwi.feature_home.presentation.components.WallpaperListHorizontalPanel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh

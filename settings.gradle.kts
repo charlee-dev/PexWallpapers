@@ -1,19 +1,4 @@
 @file:Suppress("UnstableApiUsage")
-
-include(":feature_preview")
-
-
-include(":feature_favorites")
-
-
-include(":feature_search")
-
-
-include(":feature_home")
-
-
-
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -33,13 +18,16 @@ rootProject.name = "PexWallpapers"
 include(
     ":app",
     ":core",
-    ":common",
+    ":base",
     ":components",
 
     ":wallpapers_datasource",
     ":wallpapers_datasource:data",
     ":wallpapers_datasource:domain",
-    ":wallpapers_datasource:repository",
 
+    ":feature_home",
+    ":feature_search",
+    ":feature_favorites",
     ":feature_settings",
+    ":feature_preview"
 )

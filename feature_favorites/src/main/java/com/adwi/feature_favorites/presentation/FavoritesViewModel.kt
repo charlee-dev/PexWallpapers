@@ -1,12 +1,13 @@
-package com.adwi.feature_favorites
+package com.adwi.feature_favorites.presentation
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
+import com.adwi.data.database.dao.WallpapersDao
+import com.adwi.data.database.domain.toEntity
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.repository.WallpaperRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @ExperimentalPagingApi
 @Inject constructor(
-    private val wallpaperRepository: WallpaperRepositoryImpl,
+    private val wallpaperDao: WallpapersDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -28,13 +29,19 @@ class FavoritesViewModel @ExperimentalPagingApi
 
     var lowRes = false
 
-    fun getFavorites() = wallpaperRepository.getFavorites()
+    fun getFavorites() = wallpaperDao.getAllFavorites()
 
     fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
             val isFavorite = wallpaper.isFavorite
             val newWallpaper = wallpaper.copy(isFavorite = !isFavorite)
-            wallpaperRepository.updateWallpaper(newWallpaper)
+            wallpaperDao.updateWallpaper(newWallpaper.toEntity())
+        }
+    }
+
+    fun resetFavorites() {
+        onDispatcher(ioDispatcher) {
+            wallpaperDao.resetAllFavorites()
         }
     }
 }

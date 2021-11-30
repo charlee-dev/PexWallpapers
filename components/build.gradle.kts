@@ -47,7 +47,7 @@ android {
 dependencies {
 
     implementation(project(Modules.CORE))
-    implementation(project(Modules.COMMON))
+    implementation(project(Modules.BASE))
     implementation(project(Modules.DOMAIN))
 
     addDefaultComposeDependencies()
