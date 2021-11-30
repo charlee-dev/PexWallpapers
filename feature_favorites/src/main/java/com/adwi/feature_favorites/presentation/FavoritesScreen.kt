@@ -79,7 +79,7 @@ fun FavoritesScreen(
                 items(items = wallpapers, itemContent = { wallpaper ->
 
                     WallpaperItemVertical(
-                        wallpaper = mowallpaper,
+                        wallpaper = wallpaper,
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,

@@ -6,12 +6,14 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
 import com.adwi.data.database.dao.WallpapersDao
+import com.adwi.data.database.domain.toDomainList
 import com.adwi.data.database.domain.toEntity
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -29,7 +31,7 @@ class FavoritesViewModel @ExperimentalPagingApi
 
     var lowRes = false
 
-    fun getFavorites() = wallpaperDao.getAllFavorites()
+    fun getFavorites() = wallpaperDao.getAllFavorites().map { it.toDomainList() }
 
     fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
