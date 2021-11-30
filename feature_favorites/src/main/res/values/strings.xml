@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorites">Favorites</string>
+    <string name="no_favorites_yet">No favorites yet</string>
+</resources>

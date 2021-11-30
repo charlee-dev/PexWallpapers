@@ -63,7 +63,11 @@ dependencies {
     implementation(project(Modules.REPOSITORY))
     implementation(project(Modules.DATA))
 
+    implementation(project(Modules.FEATURE_HOME))
+    implementation(project(Modules.FEATURE_SEARCH))
+    implementation(project(Modules.FEATURE_FAVORITES))
     implementation(project(Modules.FEATURE_SETTINGS))
+    implementation(project(Modules.FEATURE_PREVIEW))
 
     addComposeDependencies()
     addHelpersDependencies()

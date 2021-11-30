@@ -48,10 +48,18 @@ class MainActivity : ComponentActivity() {
                 PexWallpapersTheme {
                     PexApp(
                         viewModel = viewModel,
-                        onSaveAutomationClick = { settings ->
-                            viewModel.saveAutomation(this, settings)
-                        },
-                        cancelWorks = { this.cancelAutoChangeWorks() }
+                        onSaveAutomationClick = { viewModel.saveAutomation(this) },
+                        cancelWorks = { this.cancelAutoChangeWorks() },
+                        onShareClick = { viewModel.shareWallpaper(this, it) },
+                        onDownloadClick = { viewModel.downloadWallpaper(this, it) },
+                        onSetWallpaperClick = { url, home, lock ->
+                            viewModel.setWallpaper(
+                                context = this,
+                                imageUrl = url,
+                                setHomeScreen = home,
+                                setLockScreen = lock
+                            )
+                        }
                     )
                 }
             }

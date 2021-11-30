@@ -1,0 +1,9 @@
+<resources>
+    <string name="preview">Preview</string>
+    <string name="loading">Loading</string>
+    <string name="set_wallpaper">Set wallpaper</string>
+    <string name="error">Error</string>
+    <string name="wallpaper_has_been_set">Wallpaper has been set</string>
+    <string name="photo_by">Photo by:</string>
+    <string name="add_to_favorites">Add to favorites</string>
+</resources>

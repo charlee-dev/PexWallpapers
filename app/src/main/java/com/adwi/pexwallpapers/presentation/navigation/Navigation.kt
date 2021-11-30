@@ -9,17 +9,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.feature_favorites.FavoritesScreen
+import com.adwi.feature_favorites.FavoritesViewModel
+import com.adwi.feature_home.HomeScreen
+import com.adwi.feature_home.HomeViewModel
+import com.adwi.feature_preview.presentation.PreviewScreen
+import com.adwi.feature_preview.presentation.PreviewViewModel
+import com.adwi.feature_search.presentation.SearchScreen
+import com.adwi.feature_search.presentation.SearchViewModel
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.feature_settings.presentation.SettingsScreen
 import com.adwi.feature_settings.presentation.SettingsViewModel
-import com.adwi.pexwallpapers.presentation.screens.favorites.FavoritesScreen
-import com.adwi.pexwallpapers.presentation.screens.favorites.FavoritesViewModel
-import com.adwi.pexwallpapers.presentation.screens.home.HomeScreen
-import com.adwi.pexwallpapers.presentation.screens.home.HomeViewModel
-import com.adwi.pexwallpapers.presentation.screens.preview.PreviewScreen
-import com.adwi.pexwallpapers.presentation.screens.preview.PreviewViewModel
-import com.adwi.pexwallpapers.presentation.screens.search.SearchScreen
-import com.adwi.pexwallpapers.presentation.screens.search.SearchViewModel
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -37,6 +38,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalPagingApi
 @ExperimentalFoundationApi
 fun NavGraphBuilder.myNavGraph(
+    settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
     navigateToSearch: () -> Unit,
@@ -44,14 +46,18 @@ fun NavGraphBuilder.myNavGraph(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Settings) -> Unit,
-    cancelWorks: () -> Unit
+    onSaveAutomationClick: () -> Unit,
+    cancelWorks: () -> Unit,
+    onShareClick: (Wallpaper) -> Unit,
+    onDownloadClick: (Wallpaper) -> Unit,
+    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
         startDestination = HomeSections.HOME.route
     ) {
         addHomeGraph(
+            settings = settings,
             onWallpaperClick = onWallpaperClick,
             onCategoryClick = onCategoryClick,
             navigateToSearch = navigateToSearch,
@@ -72,7 +78,10 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
         PreviewScreen(
             viewModel = viewModel,
-            upPress = upPress
+            upPress = upPress,
+            onShareClick = onShareClick,
+            onDownloadClick = onDownloadClick,
+            onSetWallpaperClick = onSetWallpaperClick
         )
     }
 
@@ -103,20 +112,21 @@ fun NavGraphBuilder.myNavGraph(
 @ExperimentalFoundationApi
 @ExperimentalComposeUiApi
 fun NavGraphBuilder.addHomeGraph(
+    settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
     navigateToSearch: () -> Unit,
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Settings) -> Unit,
+    onSaveAutomationClick: () -> Unit,
     cancelWorks: () -> Unit
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
 
         viewModel.onStart()
-        viewModel.getDataSaverSettings()
+        viewModel.lowRes = settings.lowResMiniatures
 
         HomeScreen(
             viewModel = viewModel,
@@ -129,7 +139,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
         viewModel.restoreSavedQuery()
-        viewModel.getDataSaverSettings()
+        viewModel.lowRes = settings.lowResMiniatures
 
         SearchScreen(
             viewModel = viewModel,
@@ -140,7 +150,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
 
         viewModel.getFavorites()
-        viewModel.getDataSaverSettings()
+        viewModel.lowRes = settings.lowResMiniatures
 
         FavoritesScreen(
             viewModel = viewModel,
@@ -152,7 +162,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
 
         viewModel.getSettings()
-//        viewModel.getFavorites()
+
         SettingsScreen(
             viewModel = viewModel,
             onAboutUsClick = onAboutUsClick,

@@ -24,12 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.Header
-import com.adwi.components.InfoRow
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_settings.R
-import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.feature_settings.presentation.components.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,7 +45,7 @@ fun SettingsScreen(
     onAboutUsClick: () -> Unit,
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
-    onSaveAutomationClick: (Settings) -> Unit,
+    onSaveAutomationClick: () -> Unit,
     cancelWorks: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
@@ -162,7 +160,7 @@ fun SettingsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                        onClick = { onSaveAutomationClick(settings) },
+                        onClick = { onSaveAutomationClick() },
                     )
                 }
             }

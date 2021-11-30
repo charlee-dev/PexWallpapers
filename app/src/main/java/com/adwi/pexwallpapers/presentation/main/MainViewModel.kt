@@ -6,10 +6,16 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
 import com.adwi.core.Resource
+import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.presentation.util.fetchRemoteAndSaveLocally
+import com.adwi.pexwallpapers.presentation.util.handleGetBitmapFromRemoteResult
+import com.adwi.pexwallpapers.presentation.util.setAsWallpaper
+import com.adwi.pexwallpapers.presentation.util.shareImage
 import com.adwi.pexwallpapers.presentation.work.cancelAutoChangeWorks
 import com.adwi.pexwallpapers.presentation.work.createAutoWork
+import com.adwi.pexwallpapers.presentation.work.workCreateDownloadWallpaperWork
 import com.adwi.repository.WallpaperRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,29 +33,42 @@ class MainViewModel @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @Inject constructor(
     private val wallpaperRepository: WallpaperRepository,
+    private val settingsDao: SettingsDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
     private val _favorites: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(listOf())
+    private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
+
     val favorites = _favorites.asStateFlow()
+    val settings = _settings.asStateFlow()
 
     init {
         getFavorites()
+        getSettings()
     }
 
-    fun saveAutomation(context: Context, settings: Settings) {
+    private fun getSettings() {
+        onDispatcher(ioDispatcher) {
+            settingsDao.getSettings().collect {
+
+            }
+        }
+    }
+
+    fun saveAutomation(context: Context) {
         onDispatcher(ioDispatcher) {
 
             context.validateBeforeSaveAutomation(
-                settings = settings,
+                settings = settings.value,
                 favorites = favorites.value
             ) { list ->
 
                 val result = context.createAutoWork(
                     delay = getTotalMinutesFromPeriods(
-                        settings.minutes,
-                        settings.hours,
-                        settings.days
+                        settings.value.minutes,
+                        settings.value.hours,
+                        settings.value.days
                     ),
                     favorites = list,
                 )
@@ -110,6 +129,49 @@ class MainViewModel @ExperimentalCoroutinesApi
             wallpaperRepository.getFavorites().collect {
                 _favorites.value = it
             }
+        }
+    }
+
+    fun setWallpaper(
+        context: Context,
+        imageUrl: String,
+        setHomeScreen: Boolean,
+        setLockScreen: Boolean
+    ) {
+        onDispatcher(ioDispatcher) {
+            val bitmap = context.handleGetBitmapFromRemoteResult(imageUrl)
+
+            bitmap?.let {
+                context.setAsWallpaper(
+                    bitmap = bitmap,
+                    setHomeScreen = setHomeScreen,
+                    setLockScreen = setLockScreen
+                ).collect { result ->
+//                    _saveState.value = result
+//                    if (result is Resource.Success || result is Resource.Error) {
+//                        delay(2000)
+//                        _saveState.value = Resource.Idle
+//                    }
+                }
+            }
+        }
+    }
+
+    fun shareWallpaper(context: Context, wallpaper: Wallpaper) {
+        onDispatcher(ioDispatcher) {
+            val uri = context.fetchRemoteAndSaveLocally(wallpaper.id, wallpaper.imageUrlPortrait)
+            uri?.let {
+                context.shareImage(uri, wallpaper.photographer)
+            }
+        }
+    }
+
+    fun downloadWallpaper(context: Context, wallpaper: Wallpaper) {
+        onDispatcher(ioDispatcher) {
+            context.workCreateDownloadWallpaperWork(
+                wallpaper,
+                settings.value.downloadWallpapersOverWiFi
+            )
         }
     }
 }

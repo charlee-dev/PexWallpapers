@@ -1,5 +1,14 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":feature_preview")
+
+
+include(":feature_favorites")
+
+
+include(":feature_search")
+
+
 include(":feature_home")
 
 
