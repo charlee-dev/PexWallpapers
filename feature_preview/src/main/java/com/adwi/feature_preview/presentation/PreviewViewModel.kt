@@ -24,7 +24,7 @@ import javax.inject.Inject
 class PreviewViewModel
 @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val wallpaperdao: WallpapersDao,
+    private val wallpapersDao: WallpapersDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -42,7 +42,7 @@ class PreviewViewModel
 
     private fun getWallpaperById(id: Int) {
         onDispatcher(ioDispatcher) {
-            wallpaperdao.getWallpaperById(id).collect {
+            wallpapersDao.getWallpaperById(id).collect {
                 _wallpaper.value = it.toDomain()
             }
         }
@@ -50,7 +50,7 @@ class PreviewViewModel
 
     fun onFavoriteClick(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
-            wallpaperdao.updateWallpaperIsFavorite(wallpaper.id, !wallpaper.isFavorite)
+            wallpapersDao.updateWallpaperIsFavorite(wallpaper.id, !wallpaper.isFavorite)
             Timber.d("${!wallpaper.isFavorite}")
         }
     }

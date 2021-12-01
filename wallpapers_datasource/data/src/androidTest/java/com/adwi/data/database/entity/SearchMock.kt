@@ -1,6 +1,6 @@
-package com.adwi.pexwallpapers.data.wallpapers.database.entity
+package com.adwi.data.database.entity
 
-import com.adwi.pexwallpapers.data.database.wallpapers.domain.SearchResultEntity
+import com.adwi.data.database.domain.SearchResultEntity
 
 object SearchMock {
 

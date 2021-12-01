@@ -34,8 +34,6 @@ class SearchViewModel @Inject constructor(
         repository.getSearch(query)
     }.cachedIn(viewModelScope)
 
-    var lowRes = false
-
     fun onSearchQuerySubmit(query: String) {
         _currentQuery.value = query
         setPendingScrollToTopAfterRefresh(true)

@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers
+package com.adwi.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

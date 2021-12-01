@@ -32,6 +32,8 @@ abstract class BaseViewModel : ViewModel() {
     private val events = eventChannel.receiveAsFlow()
     val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
 
+    var lowRes = false
+
     init {
         getEvents()
     }

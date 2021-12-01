@@ -19,7 +19,7 @@ android {
         minSdk = AndroidConfig.minSdk
         targetSdk = AndroidConfig.targetSdk
 
-        testInstrumentationRunner = AndroidConfig.TEST_INSTRUMENTATION_RUNNER
+        testInstrumentationRunner = "com.adwi.data.HiltTestRunner"
     }
 
     buildTypes.forEach {

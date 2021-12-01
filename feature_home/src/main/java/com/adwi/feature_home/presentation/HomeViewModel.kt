@@ -37,8 +37,6 @@ class HomeViewModel @Inject constructor(
         getCurated(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    var lowRes = false
-
     init {
         deleteOldNonFavoriteWallpapers()
     }

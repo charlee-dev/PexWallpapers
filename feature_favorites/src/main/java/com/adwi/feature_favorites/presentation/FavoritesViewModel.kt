@@ -29,7 +29,6 @@ class FavoritesViewModel @ExperimentalPagingApi
     val wallpapers = getFavorites()
         .stateIn(viewModelScope, SharingStarted.Lazily, listOf())
 
-    var lowRes = false
 
     fun getFavorites() = wallpaperDao.getAllFavorites().map { it.toDomainList() }
 

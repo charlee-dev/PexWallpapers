@@ -1,10 +1,9 @@
-package com.adwi.pexwallpapers.data.wallpapers.database
+package com.adwi.data.database
 
 import androidx.test.filters.SmallTest
-import com.adwi.pexwallpapers.CoroutineAndroidTestRule
-import com.adwi.pexwallpapers.data.database.wallpapers.WallpaperDatabase
-import com.adwi.pexwallpapers.data.database.wallpapers.dao.CategoryDao
-import com.adwi.pexwallpapers.data.wallpapers.database.entity.CategoryMock
+import com.adwi.data.CoroutineAndroidTestRule
+import com.adwi.data.database.dao.CategoryDao
+import com.adwi.data.database.entity.CategoryMock
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

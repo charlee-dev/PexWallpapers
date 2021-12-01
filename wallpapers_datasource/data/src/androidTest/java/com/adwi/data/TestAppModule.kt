@@ -1,8 +1,8 @@
-package com.adwi.pexwallpapers
+package com.adwi.data
 
 import android.content.Context
 import androidx.room.Room
-import com.adwi.pexwallpapers.data.database.wallpapers.WallpaperDatabase
+import com.adwi.data.database.WallpaperDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
