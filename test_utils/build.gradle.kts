@@ -1,5 +1,3 @@
-import commons.api
-import commons.implementation
 import dependencies.TestDependencies
 
 plugins {
@@ -8,6 +6,6 @@ plugins {
 }
 
 dependencies {
-    implementation(TestDependencies.coroutinesTest)
-    api(TestDependencies.test_runner)
+    testImplementation(TestDependencies.coroutinesTest)
+    testImplementation(TestDependencies.test_runner)
 }

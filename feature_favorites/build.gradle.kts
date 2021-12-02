@@ -40,7 +40,10 @@ android {
     }
     packagingOptions {
         resources {
+            pickFirsts.add("win32-x86/attach_hotspot_windows.dll")
+            pickFirsts.add("win32-x86-64/attach_hotspot_windows.dll")
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//            excludes += "**/attach_hotspot_windows.dll"
         }
     }
 }
@@ -61,12 +64,15 @@ dependencies {
     implementation(Dependencies.coil)
 
     // Test
-    implementation(TestDependencies.coroutinesTest)
-    implementation(TestDependencies.truth)
-    implementation(TestDependencies.test_runner)
-    implementation(TestDependencies.test_core)
-    implementation(TestDependencies.turbine)
-    implementation(TestDependencies.mockk)
+    testImplementation(TestDependencies.coroutinesTest) {
+        // conflicts with mockk due to direct inclusion of byte buddy
+        exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-debug")
+    }
+    testImplementation(TestDependencies.truth)
+    testImplementation(TestDependencies.test_runner)
+    testImplementation(TestDependencies.test_core)
+    testImplementation(TestDependencies.turbine)
+    testImplementation(TestDependencies.mockk)
 
     testImplementation(TestDependencies.hiltTest)
     kaptTest(TestDependencies.hiltTestCompiler)

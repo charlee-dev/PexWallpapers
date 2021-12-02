@@ -60,10 +60,10 @@ dependencies {
     implementation(Dependencies.paging)
 
     // Test
-    implementation(TestDependencies.coroutinesTest)
-    implementation(TestDependencies.truth)
-    implementation(TestDependencies.test_runner)
-    implementation(TestDependencies.test_core)
+    androidTestImplementation(TestDependencies.coroutinesTest)
+    androidTestImplementation(TestDependencies.truth)
+    androidTestImplementation(TestDependencies.test_runner)
+    androidTestImplementation(TestDependencies.test_core)
 
     testImplementation(TestDependencies.hiltTest)
     kaptTest(TestDependencies.hiltTestCompiler)

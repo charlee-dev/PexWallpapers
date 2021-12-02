@@ -11,6 +11,13 @@ buildscript {
         classpath(Build.jUnit5)
         classpath(Build.hilt)
     }
+    configurations {
+        all {
+            exclude("/META-INF/{AL2.0,LGPL2.1}")
+            exclude("**/attach_hotspot_windows.dll")
+            exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-debug")
+        }
+    }
 }
 
 tasks {
