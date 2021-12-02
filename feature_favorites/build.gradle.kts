@@ -47,11 +47,11 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
-    implementation(project(Modules.DOMAIN))
+
     implementation(project(Modules.DATA))
     implementation(project(Modules.BASE))
     implementation(project(Modules.COMPONENTS))
+    implementation(project(Modules.TEST_UTILS))
 
     addDefaultComposeDependencies()
     addComposeDependencies()
@@ -66,6 +66,7 @@ dependencies {
     implementation(TestDependencies.test_runner)
     implementation(TestDependencies.test_core)
     implementation(TestDependencies.turbine)
+    implementation(TestDependencies.mockk)
 
     testImplementation(TestDependencies.hiltTest)
     kaptTest(TestDependencies.hiltTestCompiler)

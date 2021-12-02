@@ -49,8 +49,8 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.CORE))
-    implementation(project(Modules.DOMAIN))
+    api(project(Modules.CORE))
+    api(project(Modules.DOMAIN))
 
     addHiltDependenciesBasic()
     addPersistenceDependencies()

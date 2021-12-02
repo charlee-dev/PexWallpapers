@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/feature_preview" />
             <option value="$PROJECT_DIR$/feature_search" />
             <option value="$PROJECT_DIR$/feature_settings" />
+            <option value="$PROJECT_DIR$/test_utils" />
             <option value="$PROJECT_DIR$/wallpapers_datasource" />
             <option value="$PROJECT_DIR$/wallpapers_datasource/data" />
             <option value="$PROJECT_DIR$/wallpapers_datasource/domain" />

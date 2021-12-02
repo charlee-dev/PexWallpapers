@@ -1,4 +1,4 @@
-package com.adwi.tests
+package com.adwi.test_utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

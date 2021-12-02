@@ -20,6 +20,7 @@ include(
     ":core",
     ":base",
     ":components",
+    ":test_utils",
 
     ":wallpapers_datasource",
     ":wallpapers_datasource:data",

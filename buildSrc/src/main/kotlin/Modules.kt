@@ -7,6 +7,7 @@ object Modules {
     const val BASE = ":base"
     const val COMPONENTS = ":components"
     const val CORE = ":core"
+    const val TEST_UTILS = ":test_utils"
 
     // Datasource
     const val DOMAIN = ":wallpapers_datasource:domain"

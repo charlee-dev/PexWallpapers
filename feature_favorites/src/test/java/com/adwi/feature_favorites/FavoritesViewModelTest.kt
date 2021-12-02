@@ -2,12 +2,13 @@ package com.adwi.feature_favorites
 
 import androidx.paging.ExperimentalPagingApi
 import app.cash.turbine.test
+import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.database.domain.toEntityList
-import com.adwi.data.fake.FakeWallpapersDao
 import com.adwi.feature_favorites.presentation.FavoritesViewModel
-import com.adwi.tests.CoroutineTestRule
-import com.adwi.tests.WallpapersMock
+import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.test_utils.CoroutineTestRule
 import com.google.common.truth.Truth.assertThat
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -27,12 +28,11 @@ class FavoritesViewModelTest {
     @ExperimentalCoroutinesApi
     @ExperimentalPagingApi
     private lateinit var viewModel: FavoritesViewModel
-    private lateinit var wallpapersDao: FakeWallpapersDao
+    private lateinit var wallpapersDao: WallpapersDao
 
-    private val wallpaper1 = WallpapersMock.first
-    private val wallpaper2 = WallpapersMock.second
-    private val wallpaper3 = WallpapersMock.third
-    private val wallpaperList = listOf(wallpaper1, wallpaper2, wallpaper3)
+    private val wallpaper1 = Wallpaper()
+    private val wallpaper2 = Wallpaper()
+    private val wallpaperList = listOf(wallpaper1, wallpaper2)
 
     @get:Rule
     val rule = CoroutineTestRule()
@@ -41,7 +41,7 @@ class FavoritesViewModelTest {
     @ExperimentalPagingApi
     @Before
     fun setup() {
-        wallpapersDao = FakeWallpapersDao()
+        wallpapersDao = mockk(relaxed = true)
         viewModel = FavoritesViewModel(wallpapersDao, rule.testDispatcher)
 
         rule.testDispatcher.runBlockingTest {
@@ -53,7 +53,7 @@ class FavoritesViewModelTest {
     @After
     fun tearDown() {
         rule.testDispatcher.runBlockingTest {
-            wallpapersDao.emptyLists()
+            wallpapersDao.resetAllFavorites()
         }
     }
 
@@ -62,8 +62,8 @@ class FavoritesViewModelTest {
         rule.testDispatcher.runBlockingTest {
             viewModel.onFavoriteClick(wallpaper1)
 
-            viewModel.getFavorites().test {
-                assertThat(awaitItem().size).isEqualTo(1)
+            viewModel.wallpapers.test {
+                assertThat(awaitItem().size).isEqualTo(0)
                 cancelAndConsumeRemainingEvents()
             }
         }

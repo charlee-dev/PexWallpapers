@@ -4,6 +4,7 @@ object Plugins {
     const val ANDROID_DYNAMIC_FEATURE = "com.android.dynamic-feature"
     const val ANDROID_JUNIT_5 = "de.mannodermaus.android-junit5"
 
+    const val KOTLIN = "kotlin"
     const val KOTLIN_ANDROID = "android"
     const val KOTLIN_KAPT = "kapt"
     const val KOTLIN_PARCELIZE = "kotlin-parcelize"
