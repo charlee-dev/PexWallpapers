@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.work.works
+package com.adwi.pexwallpapers.domain.work.works
 
 import android.app.NotificationManager
 import android.content.Context
@@ -9,12 +9,12 @@ import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
 import com.adwi.feature_settings.data.database.SettingsDao
-import com.adwi.pexwallpapers.presentation.util.Constants
-import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
-import com.adwi.pexwallpapers.presentation.util.handleGetBitmapFromRemoteResult
-import com.adwi.pexwallpapers.presentation.util.sendAutoChangeWallpaperNotification
-import com.adwi.pexwallpapers.presentation.util.setBitmapAsWallpaper
-import com.adwi.pexwallpapers.presentation.work.workBackupCurrentWallpaper
+import com.adwi.pexwallpapers.domain.util.Constants
+import com.adwi.pexwallpapers.domain.util.Constants.WALLPAPER_ID
+import com.adwi.pexwallpapers.domain.util.handleGetBitmapFromRemoteResult
+import com.adwi.pexwallpapers.domain.util.sendAutoChangeWallpaperNotification
+import com.adwi.pexwallpapers.domain.util.setBitmapAsWallpaper
+import com.adwi.pexwallpapers.domain.work.workBackupCurrentWallpaper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi

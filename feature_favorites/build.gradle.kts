@@ -65,6 +65,7 @@ dependencies {
     implementation(TestDependencies.truth)
     implementation(TestDependencies.test_runner)
     implementation(TestDependencies.test_core)
+    implementation(TestDependencies.turbine)
 
     testImplementation(TestDependencies.hiltTest)
     kaptTest(TestDependencies.hiltTestCompiler)

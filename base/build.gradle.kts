@@ -1,6 +1,7 @@
 import commons.addHiltDependenciesBasic
 import commons.implementation
 import dependencies.Dependencies
+import dependencies.TestDependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -49,4 +50,8 @@ dependencies {
     implementation(Dependencies.coroutinesCore)
     implementation(Dependencies.timber)
     implementation(Dependencies.lifecycle)
+
+    // Test
+    implementation(TestDependencies.coroutinesTest)
+    implementation(TestDependencies.test_runner)
 }

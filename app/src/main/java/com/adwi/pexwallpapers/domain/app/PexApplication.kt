@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.app
+package com.adwi.pexwallpapers.domain.app
 
 import android.app.Application
 import android.app.NotificationManager
@@ -6,7 +6,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.Configuration
 import com.adwi.pexwallpapers.BuildConfig
-import com.adwi.pexwallpapers.presentation.util.createNotificationChannel
+import com.adwi.pexwallpapers.domain.util.createNotificationChannel
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber

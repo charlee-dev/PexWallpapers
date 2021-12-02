@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.util
+package com.adwi.pexwallpapers.domain.util
 
 import android.os.Build
 import androidx.annotation.RequiresApi

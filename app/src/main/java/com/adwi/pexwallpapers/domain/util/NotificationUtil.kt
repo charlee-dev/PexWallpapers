@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.util
+package com.adwi.pexwallpapers.domain.util
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -13,8 +13,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.presentation.util.receivers.ActionRestoreReceiver
-import com.adwi.pexwallpapers.presentation.util.receivers.OnDismissReceiver
+import com.adwi.pexwallpapers.domain.receivers.ActionRestoreReceiver
+import com.adwi.pexwallpapers.domain.receivers.OnDismissReceiver
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

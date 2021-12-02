@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.util.receivers
+package com.adwi.pexwallpapers.domain.receivers
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -7,8 +7,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.presentation.util.Constants.ACTION_AUTO
-import com.adwi.pexwallpapers.presentation.work.workCreateRestoreWallpaperWork
+import com.adwi.pexwallpapers.domain.util.Constants.ACTION_AUTO
+import com.adwi.pexwallpapers.domain.work.workCreateRestoreWallpaperWork
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber

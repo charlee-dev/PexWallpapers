@@ -1,12 +1,12 @@
-package com.adwi.pexwallpapers.presentation.work.works
+package com.adwi.pexwallpapers.domain.work.works
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_ID
-import com.adwi.pexwallpapers.presentation.util.Constants.WALLPAPER_IMAGE_URL
-import com.adwi.pexwallpapers.presentation.util.fetchRemoteAndSaveToGallery
+import com.adwi.pexwallpapers.domain.util.Constants.WALLPAPER_ID
+import com.adwi.pexwallpapers.domain.util.Constants.WALLPAPER_IMAGE_URL
+import com.adwi.pexwallpapers.domain.util.fetchRemoteAndSaveToGallery
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber

@@ -1,11 +1,11 @@
-package com.adwi.pexwallpapers.presentation.util.receivers
+package com.adwi.pexwallpapers.domain.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import com.adwi.pexwallpapers.presentation.util.Constants.ACTION_AUTO
-import com.adwi.pexwallpapers.presentation.util.deleteBackupBitmap
+import com.adwi.pexwallpapers.domain.util.Constants.ACTION_AUTO
+import com.adwi.pexwallpapers.domain.util.deleteBackupBitmap
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

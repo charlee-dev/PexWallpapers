@@ -20,7 +20,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @HiltViewModel
-class FavoritesViewModel @ExperimentalPagingApi
+class FavoritesViewModel
 @Inject constructor(
     private val wallpaperDao: WallpapersDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher

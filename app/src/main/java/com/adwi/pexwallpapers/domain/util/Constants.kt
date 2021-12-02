@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.util
+package com.adwi.pexwallpapers.domain.util
 
 
 object Constants {
