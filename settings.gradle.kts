@@ -22,6 +22,8 @@ include(
     ":components",
     ":test_utils",
 
+    ":tool_image",
+
     ":wallpapers_datasource",
     ":wallpapers_datasource:data",
     ":wallpapers_datasource:domain",

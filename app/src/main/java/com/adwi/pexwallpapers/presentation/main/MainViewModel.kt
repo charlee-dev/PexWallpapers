@@ -2,6 +2,7 @@ package com.adwi.pexwallpapers.presentation.main
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
+import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
@@ -11,9 +12,6 @@ import com.adwi.data.database.domain.toDomain
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.domain.util.fetchRemoteAndSaveLocally
-import com.adwi.pexwallpapers.domain.util.getBitmapFromRemote
-import com.adwi.pexwallpapers.domain.util.setAsWallpaper
 import com.adwi.pexwallpapers.domain.util.shareImage
 import com.adwi.pexwallpapers.domain.work.cancelAutoChangeWorks
 import com.adwi.pexwallpapers.domain.work.createAutoWork
@@ -35,6 +33,7 @@ class MainViewModel @ExperimentalCoroutinesApi
 @Inject constructor(
     private val wallpapersDao: WallpapersDao,
     private val settingsDao: SettingsDao,
+    private val imageManager: ImageManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -134,25 +133,20 @@ class MainViewModel @ExperimentalCoroutinesApi
     }
 
     fun setWallpaper(
-        context: Context,
         imageUrl: String,
         setHomeScreen: Boolean,
         setLockScreen: Boolean
     ) {
         onDispatcher(ioDispatcher) {
-            val bitmap = context.getBitmapFromRemote(imageUrl)
+            val bitmap = imageManager.getBitmapFromRemote(imageUrl)
 
             bitmap.data?.let {
-                context.setAsWallpaper(
+                imageManager.setWallpaper(
                     bitmap = it,
-                    setHomeScreen = setHomeScreen,
-                    setLockScreen = setLockScreen
-                ).collect { result ->
-//                    _saveState.value = result
-//                    if (result is Resource.Success || result is Resource.Error) {
-//                        delay(2000)
-//                        _saveState.value = Resource.Idle
-//                    }
+                    home = setHomeScreen,
+                    lock = setLockScreen
+                ).message?.let { message ->
+                    Timber.tag(tag).d(message)
                 }
             }
         }
@@ -160,7 +154,13 @@ class MainViewModel @ExperimentalCoroutinesApi
 
     fun shareWallpaper(context: Context, wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
-            val uri = context.fetchRemoteAndSaveLocally(wallpaper.id, wallpaper.imageUrlPortrait)
+            // Fetch
+            val bitmap = imageManager.getBitmapFromRemote(wallpaper.imageUrlPortrait)
+            // Save
+            val uri = bitmap.data?.let {
+                imageManager.saveWallpaperLocally(wallpaper.id, it)
+            }
+            // Share
             uri?.let {
                 context.shareImage(uri, wallpaper.photographer)
             }

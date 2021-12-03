@@ -59,6 +59,7 @@ dependencies {
     implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.BASE))
     implementation(project(Modules.DATA))
+    implementation(project(Modules.TOOL_IMAGE))
 
     implementation(project(Modules.FEATURE_HOME))
     implementation(project(Modules.FEATURE_SEARCH))

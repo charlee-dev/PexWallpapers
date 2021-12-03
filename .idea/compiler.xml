@@ -35,6 +35,7 @@
       <module name="PexWallpapers.shared.work" target="11" />
       <module name="PexWallpapers.test-shared" target="11" />
       <module name="PexWallpapers.test_utils" target="11" />
+      <module name="PexWallpapers.tool_image" target="11" />
       <module name="PexWallpapers.wallpapers_datasource.data" target="11" />
       <module name="PexWallpapers.wallpapers_datasource.repository" target="11" />
     </bytecodeTargetLevel>
