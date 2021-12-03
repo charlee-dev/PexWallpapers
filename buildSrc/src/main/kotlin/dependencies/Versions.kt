@@ -61,6 +61,7 @@ object Versions {
     const val GoogleTruth = "1.0.1"
     const val junit5 = "5.7.2"
     const val mockk = "1.12.0"
+    const val mockito = "4.0.0"
     const val rules = "1.4.0"
     const val junit4 = "4.13.1"
     const val junit4Ktx = "1.1.3"

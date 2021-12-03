@@ -1,6 +1,7 @@
 import commons.addHiltDependenciesBasic
 import commons.implementation
 import dependencies.Dependencies
+import dependencies.TestDependencies
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
@@ -50,5 +51,11 @@ dependencies {
 
     // Test
 //    implementation(TestDependencies.coroutinesTest)
-//    implementation(TestDependencies.test_runner)
+    androidTestImplementation(TestDependencies.test_runner)
+    androidTestImplementation(TestDependencies.junit4Ktx)
+    androidTestImplementation(TestDependencies.junit4)
+    androidTestImplementation(TestDependencies.espresso_core)
+    androidTestImplementation(TestDependencies.truth)
+    androidTestImplementation(TestDependencies.GoogleTruth)
+    androidTestImplementation(TestDependencies.mockito)
 }

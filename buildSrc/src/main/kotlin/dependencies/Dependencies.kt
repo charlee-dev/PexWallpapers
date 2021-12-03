@@ -130,7 +130,7 @@ object TestDependencies {
     const val hiltTestCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
-
+    const val mockito = "org.mockito.kotlin:mockito-kotlin:${Versions.mockito}"
 
     // Work
     const val work = "androidx.work:work-testing:${Versions.work}"
