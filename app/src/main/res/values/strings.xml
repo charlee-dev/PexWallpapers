@@ -60,12 +60,6 @@
     <string name="picture_by" formatted="true">Picture by %photographer</string>
     <string name="choose_an_app">Choose an App</string>
 
-    <!--    NOTIFICATIONS   -->
-    <string name="other">Other</string>
-    <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
-
-    <string name="new_wallpaper_set">New wallpaper set</string>
-    <string name="just_set_wallpaper_for_you">PexWallpapers just set an amazing wallpaper for you \nClick notification to edit favorites list</string>
     <string name="recommendations">Recommendations</string>
     <string name="have_some_amazing_wallpapers_for_you">%appName have some amazing wallpapers to offer for you</string>
     <string name="info">Info</string>

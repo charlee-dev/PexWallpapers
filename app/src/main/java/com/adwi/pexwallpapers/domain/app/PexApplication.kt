@@ -6,7 +6,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.Configuration
 import com.adwi.pexwallpapers.BuildConfig
-import com.adwi.pexwallpapers.domain.util.createNotificationChannel
+import com.adwi.tool_automation.util.createNotificationChannel
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber

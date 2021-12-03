@@ -59,7 +59,9 @@ dependencies {
     implementation(project(Modules.COMPONENTS))
     implementation(project(Modules.BASE))
     implementation(project(Modules.DATA))
+
     implementation(project(Modules.TOOL_IMAGE))
+    implementation(project(Modules.TOOL_AUTOMATION))
 
     implementation(project(Modules.FEATURE_HOME))
     implementation(project(Modules.FEATURE_SEARCH))
@@ -73,7 +75,6 @@ dependencies {
     addHiltDependenciesExtended()
 
     implementation(Dependencies.accompanistNavigationAnimation)
-    implementation(Dependencies.timber)
     implementation(Dependencies.timber)
 
     implementation(Dependencies.workManager)
@@ -89,17 +90,6 @@ dependencies {
     testImplementation(TestDependencies.junit4)
     implementation(TestDependencies.truth)
     implementation(TestDependencies.GoogleTruth)
-
-//    testImplementation(TestDependencies.junit4Ktx)
-//    testImplementation(TestDependencies.test_core)
-
-//    implementation(TestDependencies.coroutinesTest)
-
-//    testImplementation(TestDependencies.hiltTest)
-//    kaptTest(TestDependencies.hiltTestCompiler)
-
-//    androidTestImplementation(TestDependencies.hiltTest)
-//    kaptAndroidTest(TestDependencies.hiltTestCompiler)
 
     testImplementation("org.robolectric:robolectric:4.6")
 

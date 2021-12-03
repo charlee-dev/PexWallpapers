@@ -3,4 +3,5 @@
     package="com.adrianwitaszak.tool_image">
 
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

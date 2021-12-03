@@ -1,20 +1,18 @@
-package com.adwi.pexwallpapers.domain.work.works
+package com.adwi.tool_automation.workers
 
 import android.app.NotificationManager
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker.Result.failure
-import androidx.work.ListenableWorker.Result.success
+import androidx.work.ListenableWorker.Result.*
 import androidx.work.WorkerParameters
+import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.feature_settings.data.database.SettingsDao
-import com.adwi.pexwallpapers.domain.util.Constants
-import com.adwi.pexwallpapers.domain.util.Constants.WALLPAPER_ID
-import com.adwi.pexwallpapers.domain.util.getBitmapFromRemote
-import com.adwi.pexwallpapers.domain.util.sendAutoChangeWallpaperNotification
-import com.adwi.pexwallpapers.domain.util.setBitmapAsWallpaper
-import com.adwi.pexwallpapers.domain.work.workBackupCurrentWallpaper
+import com.adwi.tool_automation.AutomationManager
+import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
+import com.adwi.tool_automation.util.Constants.WALLPAPER_IMAGE_URL
+import com.adwi.tool_automation.util.sendAutoChangeWallpaperNotification
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,6 +27,8 @@ private const val TAG = "AutoChangeWallpaperWork"
 class AutoChangeWallpaperWork @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
+    private val automationManager: AutomationManager,
+    private val imageManager: ImageManager,
     private val settingsDao: SettingsDao,
     private val notificationManager: NotificationManager
 ) : CoroutineWorker(context, params) {
@@ -39,7 +39,7 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
 
             // Get arguments
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
-            val wallpaperImageUrl = inputData.getString(Constants.WALLPAPER_IMAGE_URL)
+            val wallpaperImageUrl = inputData.getString(WALLPAPER_IMAGE_URL)
 
             //Get settings
             val settings = settingsDao.getSettings().first()
@@ -48,19 +48,19 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
             if (!settings.autoChangeOverWiFi) {
 
                 // Backup current wallpaper
-                context.workBackupCurrentWallpaper(wallpaperId)
+                automationManager.backupCurrentWallpaper(wallpaperId)
 
                 // Fetch bitmap using Coil
                 val bitmap = wallpaperImageUrl?.let { imageUrl ->
-                    context.getBitmapFromRemote(imageUrl)
+                    imageManager.getBitmapFromRemote(imageUrl)
                 }
 
                 // Set wallpaper
                 bitmap?.data?.let {
-                    context.setBitmapAsWallpaper(
+                    imageManager.setWallpaper(
                         bitmap = it,
-                        setHomeScreen = settings.autoHome,
-                        setLockScreen = settings.autoLock
+                        home = settings.autoHome,
+                        lock = settings.autoLock
                     )
 
                     // Check autoChangeWallpaper setting
@@ -74,16 +74,14 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
                     } else {
                         Timber.tag(TAG).d("autoChangeWallpaper setting is off")
                     }
-                } ?: run {
-                    Timber.tag(TAG).d("bitmap is null")
-                    failure()
-                }
+                    success()
+                } ?: failure()
             } else {
                 Timber.tag(TAG).d(
                     "AutoChangeWallpaperWork - autoChangeOverWiFi is true"
                 )
+                retry()
             }
-
             Timber.tag(TAG).d("AutoChangeWallpaperWork - success")
             success()
         } catch (ex: Exception) {

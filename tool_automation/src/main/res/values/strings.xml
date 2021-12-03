@@ -1,0 +1,11 @@
+<resources>
+    <!--    NOTIFICATIONS   -->
+    <string name="previous_wallpaper_has_been_restored">Previous wallpaper has been restored</string>
+    <string name="restore">Restore</string>
+    <string name="new_wallpaper_set">New wallpaper set</string>
+    <string name="just_set_wallpaper_for_you">PexWallpapers just set an amazing wallpaper for you \nClick notification to edit favorites list</string>
+
+    <!--    Notification channel    -->
+    <string name="auto_wallpapers">Auto wallpapers</string>
+    <string name="channel_id_auto_wallpapers">pex_auto_wallpapers</string>
+</resources>

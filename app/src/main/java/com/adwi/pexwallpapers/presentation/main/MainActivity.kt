@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
-import com.adwi.pexwallpapers.domain.work.cancelAutoChangeWorks
 import com.adwi.pexwallpapers.presentation.screens.PexApp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -48,13 +47,12 @@ class MainActivity : ComponentActivity() {
                 PexWallpapersTheme {
                     PexApp(
                         viewModel = viewModel,
-                        onSaveAutomationClick = { viewModel.saveAutomation(this) },
-                        cancelWorks = { this.cancelAutoChangeWorks() },
+                        onSaveAutomationClick = { viewModel.saveAutomation() },
+                        cancelWorks = { viewModel.cancelAutoChangeWorks() },
                         onShareClick = { viewModel.shareWallpaper(this, it) },
-                        onDownloadClick = { viewModel.downloadWallpaper(this, it) },
+                        onDownloadClick = { viewModel.downloadWallpaper(it) },
                         onSetWallpaperClick = { url, home, lock ->
                             viewModel.setWallpaper(
-                                context = this,
                                 imageUrl = url,
                                 setHomeScreen = home,
                                 setLockScreen = lock

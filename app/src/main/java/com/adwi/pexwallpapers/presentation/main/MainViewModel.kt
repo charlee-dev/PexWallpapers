@@ -13,9 +13,7 @@ import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.util.shareImage
-import com.adwi.pexwallpapers.domain.work.cancelAutoChangeWorks
-import com.adwi.pexwallpapers.domain.work.createAutoWork
-import com.adwi.pexwallpapers.domain.work.workCreateDownloadWallpaperWork
+import com.adwi.tool_automation.AutomationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,13 +32,13 @@ class MainViewModel @ExperimentalCoroutinesApi
     private val wallpapersDao: WallpapersDao,
     private val settingsDao: SettingsDao,
     private val imageManager: ImageManager,
+    private val automationManager: AutomationManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
     private val _favorites: MutableStateFlow<List<Wallpaper>> = MutableStateFlow(listOf())
     private val _settings: MutableStateFlow<Settings> = MutableStateFlow(Settings())
 
-    val favorites = _favorites.asStateFlow()
     val settings = _settings.asStateFlow()
 
     init {
@@ -56,15 +54,15 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
-    fun saveAutomation(context: Context) {
+    fun saveAutomation() {
         onDispatcher(ioDispatcher) {
 
-            context.validateBeforeSaveAutomation(
+            validateBeforeSaveAutomation(
                 settings = settings.value,
-                favorites = favorites.value
+                favorites = _favorites.value
             ) { list ->
 
-                val result = context.createAutoWork(
+                val result = automationManager.startAutoChangeWallpaperWork(
                     delay = getTotalMinutesFromPeriods(
                         settings.value.minutes,
                         settings.value.hours,
@@ -96,13 +94,13 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
-    private fun Context.validateBeforeSaveAutomation(
+    private fun validateBeforeSaveAutomation(
         settings: Settings,
         favorites: List<Wallpaper>,
         content: (List<Wallpaper>) -> Unit
     ) {
         if (favorites.size < 2) {
-            cancelAutoChangeWorks()
+            automationManager.cancelAutoChangeWorks()
             setSnackBar("Add minimum two wallpapers to favorites")
         } else {
             if (!settings.autoHome && !settings.autoLock) {
@@ -167,12 +165,16 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
-    fun downloadWallpaper(context: Context, wallpaper: Wallpaper) {
+    fun downloadWallpaper(wallpaper: Wallpaper) {
         onDispatcher(ioDispatcher) {
-            context.workCreateDownloadWallpaperWork(
+            automationManager.createDownloadWallpaperWork(
                 wallpaper,
                 settings.value.downloadWallpapersOverWiFi
             )
         }
+    }
+
+    fun cancelAutoChangeWorks() {
+        automationManager.cancelAutoChangeWorks()
     }
 }

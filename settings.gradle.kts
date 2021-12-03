@@ -1,4 +1,6 @@
 @file:Suppress("UnstableApiUsage")
+
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -23,6 +25,7 @@ include(
     ":test_utils",
 
     ":tool_image",
+    ":tool_automation",
 
     ":wallpapers_datasource",
     ":wallpapers_datasource:data",

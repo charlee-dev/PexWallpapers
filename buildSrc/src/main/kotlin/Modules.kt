@@ -10,6 +10,7 @@ object Modules {
     const val TEST_UTILS = ":test_utils"
 
     const val TOOL_IMAGE = ":tool_image"
+    const val TOOL_AUTOMATION = ":tool_automation"
 
     // Datasource
     const val DOMAIN = ":wallpapers_datasource:domain"
