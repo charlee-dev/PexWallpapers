@@ -3,6 +3,7 @@ package com.adwi.tool_automation
 import androidx.work.Data
 import com.adwi.core.Resource
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import java.util.*
 
 interface AutomationManager {
 
@@ -22,7 +23,7 @@ interface AutomationManager {
     fun createDownloadWallpaperWork(
         wallpaper: Wallpaper,
         downloadWallpaperOverWiFi: Boolean
-    )
+    ): UUID
 
     fun createWorkData(wallpaperId: Int): Data
 }

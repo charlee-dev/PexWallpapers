@@ -50,7 +50,6 @@ dependencies {
     implementation(Dependencies.coreKtx)
 
     // Test
-//    implementation(TestDependencies.coroutinesTest)
     androidTestImplementation(TestDependencies.test_runner)
     androidTestImplementation(TestDependencies.junit4Ktx)
     androidTestImplementation(TestDependencies.junit4)

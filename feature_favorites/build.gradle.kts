@@ -40,6 +40,7 @@ android {
     }
     packagingOptions {
         resources {
+            pickFirsts.add("META-INF/licenses/ASM")
             pickFirsts.add("win32-x86/attach_hotspot_windows.dll")
             pickFirsts.add("win32-x86-64/attach_hotspot_windows.dll")
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

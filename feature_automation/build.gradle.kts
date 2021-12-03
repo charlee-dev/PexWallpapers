@@ -35,7 +35,11 @@ android {
     }
     packagingOptions {
         resources {
+            pickFirsts.add("META-INF/licenses/ASM")
+            pickFirsts.add("win32-x86/attach_hotspot_windows.dll")
+            pickFirsts.add("win32-x86-64/attach_hotspot_windows.dll")
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//            excludes += "**/attach_hotspot_windows.dll"
         }
     }
 }
@@ -56,5 +60,13 @@ dependencies {
     implementation(Dependencies.hiltWorkCore)
     kapt(Dependencies.hiltWorkCompiler)
 
-    implementation(TestDependencies.work)
+    // Test
+    androidTestImplementation(TestDependencies.test_runner)
+    androidTestImplementation(TestDependencies.junit4Ktx)
+    androidTestImplementation(TestDependencies.junit4)
+    androidTestImplementation(TestDependencies.espresso_core)
+    androidTestImplementation(TestDependencies.truth)
+    androidTestImplementation(TestDependencies.GoogleTruth)
+    androidTestImplementation(TestDependencies.mockito)
+    androidTestImplementation(TestDependencies.work)
 }

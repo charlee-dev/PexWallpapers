@@ -15,6 +15,7 @@ import com.adwi.tool_automation.workers.BackupCurrentWallpaperWork
 import com.adwi.tool_automation.workers.DownloadAndSaveWallpaperWork
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -117,7 +118,7 @@ class AutomationManagerImpl @Inject constructor(
     override fun createDownloadWallpaperWork(
         wallpaper: Wallpaper,
         downloadWallpaperOverWiFi: Boolean
-    ) {
+    ): UUID {
         val networkType = if (downloadWallpaperOverWiFi)
             NetworkType.UNMETERED else NetworkType.CONNECTED
 
@@ -141,6 +142,7 @@ class AutomationManagerImpl @Inject constructor(
 
         Timber.tag(TAG)
             .d("Created workCreateDownloadWallpaperWork: \nwallpaperId = ${wallpaper.id}")
+        return downloadAndSave.id
     }
 
     override fun createWorkData(wallpaperId: Int): Data =
