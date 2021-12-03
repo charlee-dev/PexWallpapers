@@ -6,6 +6,6 @@ plugins {
 }
 
 dependencies {
-    testImplementation(TestDependencies.coroutinesTest)
-    testImplementation(TestDependencies.test_runner)
+    implementation(TestDependencies.test_runner)
+    implementation(TestDependencies.coroutinesTest)
 }

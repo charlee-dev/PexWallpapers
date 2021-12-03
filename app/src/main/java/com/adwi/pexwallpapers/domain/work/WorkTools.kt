@@ -172,11 +172,11 @@ fun Context.workCreateDownloadWallpaperWork(
     Timber.tag(TAG).d("Created workCreateDownloadWallpaperWork: \nwallpaperId = ${wallpaper.id}")
 }
 
-private fun createWorkDataWithWallpaperId(wallpaperId: Int): Data {
-    val builder = Data.Builder()
-    builder.putInt(WALLPAPER_ID, wallpaperId)
-    Timber.tag(TAG).d("createDataForAutoChangeWallpaperWorker \nwallpaperId = $wallpaperId")
-    return builder.build()
-}
+ fun createWorkDataWithWallpaperId(wallpaperId: Int): Data {
+     val builder = Data.Builder()
+     builder.putInt(WALLPAPER_ID, wallpaperId)
+     Timber.tag(TAG).d("createDataForAutoChangeWallpaperWorker \nwallpaperId = $wallpaperId")
+     return builder.build()
+ }
 
 private const val TAG = "WorkUtil"

@@ -12,7 +12,7 @@ import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.pexwallpapers.domain.util.fetchRemoteAndSaveLocally
-import com.adwi.pexwallpapers.domain.util.handleGetBitmapFromRemoteResult
+import com.adwi.pexwallpapers.domain.util.getBitmapFromRemote
 import com.adwi.pexwallpapers.domain.util.setAsWallpaper
 import com.adwi.pexwallpapers.domain.util.shareImage
 import com.adwi.pexwallpapers.domain.work.cancelAutoChangeWorks
@@ -140,11 +140,11 @@ class MainViewModel @ExperimentalCoroutinesApi
         setLockScreen: Boolean
     ) {
         onDispatcher(ioDispatcher) {
-            val bitmap = context.handleGetBitmapFromRemoteResult(imageUrl)
+            val bitmap = context.getBitmapFromRemote(imageUrl)
 
-            bitmap?.let {
+            bitmap.data?.let {
                 context.setAsWallpaper(
-                    bitmap = bitmap,
+                    bitmap = it,
                     setHomeScreen = setHomeScreen,
                     setLockScreen = setLockScreen
                 ).collect { result ->

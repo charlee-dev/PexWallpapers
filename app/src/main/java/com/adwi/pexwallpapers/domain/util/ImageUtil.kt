@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.adwi.core.DataState
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -19,103 +20,25 @@ import java.io.OutputStream
 
 
 suspend fun Context.fetchRemoteAndSaveLocally(id: Int, url: String): Uri? {
-
     // Fetch remote
-    val bitmapResult = handleGetBitmapFromRemoteResult(url)
-
+    val bitmapResult = getBitmapFromRemote(url)
     // Save locally
-    val uri = bitmapResult?.let { backupImageToLocal(id, it) }
-
+    val uri = bitmapResult.data?.let {
+        backupImageToLocal(id, it)
+    }
     Timber.tag(TAG).d("fetchRemoteAndSaveLocally - $uri")
     return uri
 }
 
 suspend fun Context.fetchRemoteAndSaveToGallery(id: Int, url: String): Uri? {
-
     // Fetch remote
-    val bitmapResult = handleGetBitmapFromRemoteResult(url)
-
+    val bitmapResult = getBitmapFromRemote(url)
     // Save to gallery
-    val uri = bitmapResult?.let { saveImageToGallery(id, it) }
-
+    val uri = bitmapResult.data?.let {
+        saveImageToGallery(id, it)
+    }
     Timber.tag(TAG).d("fetchRemoteAndSaveToGallery - $uri")
     return uri
-}
-
-suspend fun Context.handleGetBitmapFromRemoteResult(imageUrl: String) =
-    when (val result = getBitmapFromRemote(imageUrl)) {
-        is com.adwi.core.DataState.Error -> {
-            Timber.tag(TAG).d(result.error?.localizedMessage ?: "Cant fetch from remote")
-            null
-        }
-        is com.adwi.core.DataState.Loading -> {
-            null
-        }
-        is com.adwi.core.DataState.Success -> {
-            result.data
-        }
-    }
-
-private suspend fun Context.getBitmapFromRemote(imageUrl: String): com.adwi.core.DataState<Bitmap?> {
-    return try {
-        val loader = ImageLoader(this)
-
-        val request = ImageRequest.Builder(this)
-            .data(imageUrl)
-            .allowHardware(false) // Disable hardware bitmaps.
-            .build()
-
-        val drawable = (loader.execute(request) as SuccessResult).drawable
-        val bitmap = (drawable as BitmapDrawable).bitmap
-        com.adwi.core.DataState.Success(bitmap)
-    } catch (e: Throwable) {
-        Timber.tag(TAG).d(e.localizedMessage)
-        com.adwi.core.DataState.Error(e)
-    }
-}
-
-fun Context.getBitmapFromLocal(wallpaperId: Int): Bitmap? {
-    return try {
-        val file = getFileByWallpaperId(wallpaperId.toString())
-        file.decodeBitmap()
-    } catch (e: Exception) {
-        Timber.tag(TAG).d(e.localizedMessage ?: "bitmapFromLocal - Failed")
-        null
-    }
-
-}
-
-fun Context.deleteBackupBitmap(wallpaperId: String) {
-    val file = getFileByWallpaperId(wallpaperId)
-    file.delete()
-    Timber.tag(TAG).d("deleteBackupBitmap - Deleted image $wallpaperId")
-}
-
-fun Context.deleteAllBackups() {
-    val directory = ContextWrapper(this).getDir(Constants.DIR_IMAGES, Context.MODE_PRIVATE)
-
-    directory.let {
-        directory.deleteRecursively()
-        Timber.tag(TAG).d("Deleted directory - images")
-    }
-}
-
-fun Context.backupImageToLocal(wallpaperId: Int, bitmap: Bitmap): Uri? {
-    val file = getFileByWallpaperId(wallpaperId.toString())
-    file.compressStream(bitmap)
-    return file.getUri()
-}
-
-fun Context.restoreBackup(wallpaperId: String): Bitmap? {
-    val file = getFileByWallpaperId(wallpaperId)
-    return file.decodeBitmap()
-}
-
-
-private fun Context.getFileByWallpaperId(wallpaperId: String): File {
-    val directory = ContextWrapper(this).getDir(Constants.DIR_IMAGES, Context.MODE_PRIVATE)
-    val fileName = "${Constants.BACKUP_WALLPAPER}$wallpaperId${Constants.IMAGE_FILE_EXT}"
-    return File(directory, fileName)
 }
 
 // Images saved in sdcard/Pictures/pex_wallpapers/
@@ -151,6 +74,57 @@ private fun Bitmap.saveImageToStream(outputStream: OutputStream?) {
             e.printStackTrace()
         }
     }
+}
+
+suspend fun Context.getBitmapFromRemote(imageUrl: String): DataState<Bitmap?> {
+    return try {
+        val loader = ImageLoader(this)
+        val request = ImageRequest.Builder(this)
+            .data(imageUrl)
+            .allowHardware(false) // Disable hardware bitmaps.
+            .build()
+
+        val drawable = (loader.execute(request) as SuccessResult).drawable
+        val bitmap = (drawable as BitmapDrawable).bitmap
+        DataState.Success(bitmap)
+    } catch (e: Throwable) {
+        Timber.tag(TAG).d(e.localizedMessage)
+        DataState.Error(e)
+    }
+}
+
+fun Context.deleteBackupBitmap(wallpaperId: String) {
+    val file = getFileByWallpaperId(wallpaperId)
+    file.delete()
+    Timber.tag(TAG).d("Deleted image $wallpaperId")
+}
+
+fun Context.deleteAllBackups() {
+    val directory = ContextWrapper(this).getDir(Constants.DIR_IMAGES, Context.MODE_PRIVATE)
+    directory.let {
+        directory.deleteRecursively()
+        Timber.tag(TAG).d("Deleted all backups")
+    }
+}
+
+
+fun Context.backupImageToLocal(wallpaperId: Int, bitmap: Bitmap): Uri? {
+    val file = getFileByWallpaperId(wallpaperId.toString())
+    file.compressStream(bitmap)
+    Timber.tag(TAG).d("Backing up image to local")
+    return file.getUri()
+}
+
+fun Context.restoreBackup(wallpaperId: String): Bitmap? {
+    val file = getFileByWallpaperId(wallpaperId)
+    Timber.tag(TAG).d("Restoring backup")
+    return file.decodeBitmap()
+}
+
+private fun Context.getFileByWallpaperId(wallpaperId: String): File {
+    val directory = ContextWrapper(this).getDir(Constants.DIR_IMAGES, Context.MODE_PRIVATE)
+    val fileName = "${Constants.BACKUP_WALLPAPER}$wallpaperId${Constants.IMAGE_FILE_EXT}"
+    return File(directory, fileName)
 }
 
 internal fun File?.decodeBitmap(): Bitmap? = this?.let {

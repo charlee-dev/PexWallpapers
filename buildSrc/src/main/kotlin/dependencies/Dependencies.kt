@@ -96,6 +96,8 @@ object Dependencies {
 
 object TestDependencies {
     // Core library
+    const val junit4 = "androidx.test.ext:junit:${Versions.junit4Ktx}"
+    const val junit4Ktx = "androidx.test.ext:junit-ktx:${Versions.junit4Ktx}"
     const val test_core = "androidx.test:core:${Versions.test_core}"
     const val arch_core = "androidx.arch.core:core-testing:${Versions.arch_core}"
 
@@ -108,9 +110,7 @@ object TestDependencies {
     const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
 
     // Assertions
-    const val junit = "androidx.test.ext:junit:${Versions.junit}"
     const val kotest = "io.kotest:kotest-assertions-core:${Versions.kotest}"
-
 
     // JUnit5
     const val jupiterApi = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
@@ -119,14 +119,19 @@ object TestDependencies {
     const val jupiterVintageRuntimeOnly =
         "org.junit.vintage:junit-vintage-engine:${Versions.junit5}"
 
-    const val kotlin_junit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
     const val test_runner = "androidx.test:runner:${Versions.test_core}"
+    const val rules = "androidx.test:rules:${Versions.rules}"
+
+    const val kotlin_junit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}"
+    const val truth = "com.google.truth:truth:${Versions.GoogleTruth}"
+    const val GoogleTruth = "androidx.test.ext:truth:${Versions.XTruth}"
 
     const val hiltTest = "com.google.dagger:hilt-android-testing:${Versions.hilt}"
     const val hiltTestCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
 
     const val mockk = "io.mockk:mockk:${Versions.mockk}"
 
-    const val truth = "com.google.truth:truth:${Versions.truth}"
-    const val rules = "androidx.test:rules:${Versions.rules}"
+
+    // Work
+    const val work = "androidx.work:work-testing:${Versions.work}"
 }

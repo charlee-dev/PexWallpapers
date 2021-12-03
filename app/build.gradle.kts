@@ -21,7 +21,7 @@ android {
         versionCode = AndroidConfig.versionCode
         versionName = AndroidConfig.versionName
 
-        testInstrumentationRunner = "com.adwi.pexwallpapers.HiltTestRunner"
+        testInstrumentationRunner = AndroidConfig.ROBOELECTRIC_TEST_RUNNER
 
         vectorDrawables {
             useSupportLibrary = true
@@ -57,9 +57,7 @@ android {
 dependencies {
 
     implementation(project(Modules.COMPONENTS))
-    implementation(project(Modules.CORE))
     implementation(project(Modules.BASE))
-    implementation(project(Modules.DOMAIN))
     implementation(project(Modules.DATA))
 
     implementation(project(Modules.FEATURE_HOME))
@@ -75,6 +73,7 @@ dependencies {
 
     implementation(Dependencies.accompanistNavigationAnimation)
     implementation(Dependencies.timber)
+    implementation(Dependencies.timber)
 
     implementation(Dependencies.workManager)
     implementation(Dependencies.hiltWorkCore)
@@ -83,14 +82,25 @@ dependencies {
     implementation(Dependencies.accompanistPermissions)
 
     // Test
-    implementation(TestDependencies.coroutinesTest)
-    implementation(TestDependencies.truth)
     implementation(TestDependencies.test_runner)
     implementation(TestDependencies.test_core)
 
-    testImplementation(TestDependencies.hiltTest)
-    kaptTest(TestDependencies.hiltTestCompiler)
+    testImplementation(TestDependencies.junit4)
+    implementation(TestDependencies.truth)
+    implementation(TestDependencies.GoogleTruth)
 
-    androidTestImplementation(TestDependencies.hiltTest)
-    kaptAndroidTest(TestDependencies.hiltTestCompiler)
+//    testImplementation(TestDependencies.junit4Ktx)
+//    testImplementation(TestDependencies.test_core)
+
+//    implementation(TestDependencies.coroutinesTest)
+
+//    testImplementation(TestDependencies.hiltTest)
+//    kaptTest(TestDependencies.hiltTestCompiler)
+
+//    androidTestImplementation(TestDependencies.hiltTest)
+//    kaptAndroidTest(TestDependencies.hiltTestCompiler)
+
+    testImplementation("org.robolectric:robolectric:4.6")
+
+    implementation(TestDependencies.work)
 }

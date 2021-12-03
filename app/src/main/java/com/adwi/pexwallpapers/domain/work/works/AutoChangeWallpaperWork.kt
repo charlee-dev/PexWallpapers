@@ -11,7 +11,7 @@ import androidx.work.WorkerParameters
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.pexwallpapers.domain.util.Constants
 import com.adwi.pexwallpapers.domain.util.Constants.WALLPAPER_ID
-import com.adwi.pexwallpapers.domain.util.handleGetBitmapFromRemoteResult
+import com.adwi.pexwallpapers.domain.util.getBitmapFromRemote
 import com.adwi.pexwallpapers.domain.util.sendAutoChangeWallpaperNotification
 import com.adwi.pexwallpapers.domain.util.setBitmapAsWallpaper
 import com.adwi.pexwallpapers.domain.work.workBackupCurrentWallpaper
@@ -52,11 +52,11 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
 
                 // Fetch bitmap using Coil
                 val bitmap = wallpaperImageUrl?.let { imageUrl ->
-                    context.handleGetBitmapFromRemoteResult(imageUrl)
+                    context.getBitmapFromRemote(imageUrl)
                 }
 
                 // Set wallpaper
-                bitmap?.let {
+                bitmap?.data?.let {
                     context.setBitmapAsWallpaper(
                         bitmap = it,
                         setHomeScreen = settings.autoHome,
