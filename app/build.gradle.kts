@@ -60,8 +60,8 @@ dependencies {
     implementation(project(Modules.BASE))
     implementation(project(Modules.DATA))
 
-    implementation(project(Modules.TOOL_IMAGE))
-    implementation(project(Modules.TOOL_AUTOMATION))
+    implementation(project(Modules.FEATURE_IMAGE))
+    implementation(project(Modules.FEATURE_AUTOMATION))
 
     implementation(project(Modules.FEATURE_HOME))
     implementation(project(Modules.FEATURE_SEARCH))

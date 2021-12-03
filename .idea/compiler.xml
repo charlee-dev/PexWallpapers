@@ -16,8 +16,10 @@
       <module name="PexWallpapers.datasource.wallpapers.repository" target="11" />
       <module name="PexWallpapers.datasource_settings" target="11" />
       <module name="PexWallpapers.feature-home" target="11" />
+      <module name="PexWallpapers.feature_automation" target="11" />
       <module name="PexWallpapers.feature_favorites" target="11" />
       <module name="PexWallpapers.feature_home" target="11" />
+      <module name="PexWallpapers.feature_image" target="11" />
       <module name="PexWallpapers.feature_preview" target="11" />
       <module name="PexWallpapers.feature_search" target="11" />
       <module name="PexWallpapers.feature_settings" target="11" />
@@ -35,9 +37,6 @@
       <module name="PexWallpapers.shared.work" target="11" />
       <module name="PexWallpapers.test-shared" target="11" />
       <module name="PexWallpapers.test_utils" target="11" />
-      <module name="PexWallpapers.tool_automation" target="11" />
-      <module name="PexWallpapers.tool_image" target="11" />
-      <module name="PexWallpapers.wallpapers_datasource.data" target="11" />
       <module name="PexWallpapers.wallpapers_datasource.repository" target="11" />
     </bytecodeTargetLevel>
   </component>

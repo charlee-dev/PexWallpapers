@@ -44,7 +44,7 @@ dependencies {
 
     implementation(project(Modules.CORE))
     implementation(project(Modules.DOMAIN))
-    implementation(project(Modules.TOOL_IMAGE))
+    implementation(project(Modules.FEATURE_IMAGE))
     implementation(project(Modules.FEATURE_SETTINGS))
 
     addHiltDependenciesBasic()
