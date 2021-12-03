@@ -18,7 +18,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-
 suspend fun Context.fetchRemoteAndSaveLocally(id: Int, url: String): Uri? {
     // Fetch remote
     val bitmapResult = getBitmapFromRemote(url)
@@ -106,7 +105,6 @@ fun Context.deleteAllBackups() {
         Timber.tag(TAG).d("Deleted all backups")
     }
 }
-
 
 fun Context.backupImageToLocal(wallpaperId: Int, bitmap: Bitmap): Uri? {
     val file = getFileByWallpaperId(wallpaperId.toString())
