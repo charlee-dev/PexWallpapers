@@ -81,13 +81,13 @@ fun PexApp(
                         onCategoryClick = appState::navigateToCategory,
                         navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) },
                         onAboutUsClick = {
-                            TODO("add about us section")
+                            viewModel.aboutUs()
                         },
                         onPrivacyPolicyClick = {
-                            TODO("add privacy policy section")
+                            viewModel.privacyPolicy()
                         },
                         onContactSupportClick = {
-                            TODO("add  section")
+                            viewModel.contactSupport()
                         },
                         onSaveAutomationClick = onSaveAutomationClick,
                         cancelWorks = cancelWorks,

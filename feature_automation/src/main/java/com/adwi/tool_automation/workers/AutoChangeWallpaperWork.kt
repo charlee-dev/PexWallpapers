@@ -5,7 +5,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.CoroutineWorker
-import androidx.work.ListenableWorker.Result.*
+import androidx.work.ListenableWorker.Result.failure
+import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
 import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.feature_settings.data.database.SettingsDao
@@ -75,12 +76,11 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
                         Timber.tag(TAG).d("autoChangeWallpaper setting is off")
                     }
                     success()
-                } ?: failure()
+                }
             } else {
                 Timber.tag(TAG).d(
                     "AutoChangeWallpaperWork - autoChangeOverWiFi is true"
                 )
-                retry()
             }
             Timber.tag(TAG).d("AutoChangeWallpaperWork - success")
             success()

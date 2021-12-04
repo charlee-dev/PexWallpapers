@@ -95,4 +95,5 @@
     <!--    Notification channel    -->
     <string name="auto_wallpapers">Auto wallpapers</string>
     <string name="channel_id_auto_wallpapers">pex_auto_wallpapers</string>
+    <string name="collection_of_your_information">COLLECTION OF YOUR INFORMATION</string>
 </resources>

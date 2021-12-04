@@ -54,6 +54,18 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
+    fun contactSupport() {
+        setSnackBar("contacted support")
+    }
+
+    fun aboutUs() {
+        setSnackBar("about us")
+    }
+
+    fun privacyPolicy() {
+        setSnackBar("Privacy policy")
+    }
+
     fun saveAutomation() {
         Timber.tag(tag).d("saveAutomation")
         onDispatcher(ioDispatcher) {

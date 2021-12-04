@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,12 +49,10 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.settings.collectAsState()
 
-    val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
     PexScaffold(
-        viewModel = viewModel,
-        scaffoldState = scaffoldState
+        viewModel = viewModel
     ) {
         LazyColumn(
             modifier = Modifier

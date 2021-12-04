@@ -63,9 +63,7 @@ fun SettingPanel(
                 SwitchRow(
                     name = mainName,
                     checked = checked,
-                    onCheckedChange = {
-                        onCheckedChange(it)
-                    },
+                    onCheckedChange = { onCheckedChange(it) },
                     modifier = Modifier
                         .background(backgroundColor)
                         .padding(top = paddingValues / 2)

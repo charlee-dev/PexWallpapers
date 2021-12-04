@@ -43,4 +43,7 @@
     <string name="feature_not_available">Feature not available</string>
     <string name="wallpaper_will_change_in">Wallpaper will change every %1$s %2$s</string>
     <string name="automation_saved">Automation saved</string>
+
+    <!--    Privacy policy  -->
+    <string name="show_more">Show more</string>
 </resources>
