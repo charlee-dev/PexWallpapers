@@ -6,6 +6,7 @@ import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.core.Resource
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
+import com.adwi.tool_automation.util.Constants.WALLPAPER_IMAGE_URL
 import com.adwi.tool_automation.util.Constants.WORK_AUTO_WALLPAPER
 import com.adwi.tool_automation.util.Constants.WORK_BACKUP_WALLPAPER
 import com.adwi.tool_automation.util.Constants.WORK_DOWNLOAD_WALLPAPER
@@ -26,6 +27,8 @@ class AutomationManagerImpl @Inject constructor(
     private val workManager: WorkManager
 ) : AutomationManager {
 
+    private val tag = javaClass.name
+
     override fun startAutoChangeWallpaperWork(delay: Long, favorites: List<Wallpaper>): Resource =
         try {
             // Keeps record of any failed results
@@ -33,7 +36,7 @@ class AutomationManagerImpl @Inject constructor(
 
             // Schedule work for each wallpaper in favorites
             favorites.forEachIndexed { index, wallpaper ->
-                Timber.tag(TAG).d("createAutoWork - setting $index")
+                Timber.tag(tag).d("createAutoWork - setting $index")
 
                 val repeatInterval = delay * favorites.size
                 val initialDelay = (index + 1) * delay
@@ -87,7 +90,7 @@ class AutomationManagerImpl @Inject constructor(
             work
         )
 
-        Timber.tag(TAG)
+        Timber.tag(tag)
             .d("Created workCreateAutoChangeWallpaperWork: \nwallpaperId = ${wallpaper.id}, \nrepeat = $repeatInterval min \ndelay = $initialDelay")
         Resource.Success()
     } catch (e: Exception) {
@@ -97,7 +100,7 @@ class AutomationManagerImpl @Inject constructor(
     override fun cancelAutoChangeWorks() {
         workManager.cancelAllWorkByTag(WORK_AUTO_WALLPAPER)
         imageManager.deleteAllBackups()
-        Timber.tag(TAG).d("cancelAutoChangeWorks")
+        Timber.tag(tag).d("cancelAutoChangeWorks")
     }
 
     override fun backupCurrentWallpaper(wallpaperId: Int) {
@@ -112,7 +115,7 @@ class AutomationManagerImpl @Inject constructor(
             backup
         )
 
-        Timber.tag(TAG).d("Created work: \nwallpaperId = $wallpaperId")
+        Timber.tag(tag).d("Created work: \nwallpaperId = $wallpaperId")
     }
 
     override fun createDownloadWallpaperWork(
@@ -122,14 +125,19 @@ class AutomationManagerImpl @Inject constructor(
         val networkType = if (downloadWallpaperOverWiFi)
             NetworkType.UNMETERED else NetworkType.CONNECTED
 
-        Timber.tag(TAG).d("Network type - $networkType")
+        Timber.tag(tag).d("Network type - $networkType")
+
+        val data = Data.Builder()
+            .putInt(WALLPAPER_ID, wallpaper.id)
+            .putString(WALLPAPER_IMAGE_URL, wallpaper.imageUrlPortrait)
+            .build()
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(networkType)
             .build()
 
         val downloadAndSave = OneTimeWorkRequestBuilder<DownloadAndSaveWallpaperWork>()
-            .setInputData(createWorkData(wallpaper.id))
+            .setInputData(data)
             .setConstraints(constraints)
             .addTag("$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}")
             .build()
@@ -140,8 +148,8 @@ class AutomationManagerImpl @Inject constructor(
             downloadAndSave
         )
 
-        Timber.tag(TAG)
-            .d("Created workCreateDownloadWallpaperWork: \nwallpaperId = ${wallpaper.id}")
+        Timber.tag(tag)
+            .d("createDownloadWallpaperWork: \nwallpaperId - ${wallpaper.id} \nuuid - ${downloadAndSave.id}")
         return downloadAndSave.id
     }
 
@@ -150,5 +158,3 @@ class AutomationManagerImpl @Inject constructor(
             .putInt(WALLPAPER_ID, wallpaperId)
             .build()
 }
-
-private const val TAG = "WorkUtil"

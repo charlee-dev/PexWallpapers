@@ -14,6 +14,7 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.adrianwitaszak.tool_image.util.*
+import com.adrianwitaszak.tool_image.util.Constants.DIR_RELATIVE_PATH
 import com.adwi.core.DataState
 import com.adwi.core.Resource
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,35 +28,39 @@ class ImageManagerImpl @Inject constructor(
     private val wallpaperManager: WallpaperManager
 ) : ImageManager {
 
+    private val tag = javaClass.name
+
     override fun saveWallpaperLocally(wallpaperId: Int, bitmap: Bitmap): Uri? {
         val file = getFileByWallpaperId(wallpaperId.toString())
         file.compressStream(bitmap)
-        Timber.tag(TAG).d("Backing up image to local")
+        Timber.tag(tag).d("Backing up image to local")
         return file.getUri()
     }
 
     // Images saved in sdcard/Pictures/pex_wallpapers/
     @SuppressLint("InlinedApi")
     override suspend fun saveWallpaperToGallery(wallpaperId: Int, bitmap: Bitmap): Uri? {
+
         val values = ContentValues()
         values.put(MediaStore.Images.Media.MIME_TYPE, Constants.MIME_TYPE)
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, Constants.DIR_RELATIVE_PATH)
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, DIR_RELATIVE_PATH)
         values.put(MediaStore.Images.Media.IS_PENDING, true)
         values.put(MediaStore.Images.Media.DISPLAY_NAME, "${Constants.DISPLAY_NAME}$wallpaperId")
 
         val uri: Uri? =
             context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
+
         return if (uri != null) {
             bitmap.saveToStream(context, uri)
             values.put(MediaStore.Images.Media.IS_PENDING, false)
             context.contentResolver.update(uri, values, null, null)
+            Timber.tag(tag).d("saveWallpaperToGallery - uri - $uri")
             uri
         } else null
     }
-
 
     override suspend fun getBitmapFromRemote(imageUrl: String): DataState<Bitmap?> {
         return try {
@@ -67,9 +72,10 @@ class ImageManagerImpl @Inject constructor(
 
             val drawable = (loader.execute(request) as SuccessResult).drawable
             val bitmap = (drawable as BitmapDrawable).bitmap
+            Timber.tag(tag).d("DownloadAndSaveWallpaperWork - bitmap from url - $imageUrl")
             DataState.Success(bitmap)
         } catch (e: Throwable) {
-            Timber.tag(TAG).d(e.localizedMessage)
+            Timber.tag(tag).d(e.localizedMessage)
             DataState.Error(e)
         }
     }
@@ -77,20 +83,20 @@ class ImageManagerImpl @Inject constructor(
     override fun deleteBackupBitmap(wallpaperId: String) {
         val file = getFileByWallpaperId(wallpaperId)
         file.delete()
-        Timber.tag(TAG).d("Deleted image $wallpaperId")
+        Timber.tag(tag).d("Deleted image $wallpaperId")
     }
 
     override fun deleteAllBackups() {
         val directory = ContextWrapper(context).getDir(Constants.DIR_IMAGES, Context.MODE_PRIVATE)
         directory.let {
             directory.deleteRecursively()
-            Timber.tag(TAG).d("Deleted all backups")
+            Timber.tag(tag).d("Deleted all backups")
         }
     }
 
     override fun restoreBackup(wallpaperId: String): Bitmap? {
         val file = getFileByWallpaperId(wallpaperId)
-        Timber.tag(TAG).d("Restoring backup")
+        Timber.tag(tag).d("Restoring backup")
         return file.decodeBitmap()
     }
 
@@ -112,7 +118,7 @@ class ImageManagerImpl @Inject constructor(
             }
             Resource.Success()
         } catch (ex: IOException) {
-            Timber.tag(TAG).d("Exception: ${ex.printStackTrace()}")
+            Timber.tag(tag).d("Exception: ${ex.printStackTrace()}")
             Resource.Error(message = ex.localizedMessage)
         }
     }
@@ -129,5 +135,3 @@ class ImageManagerImpl @Inject constructor(
         }
     }
 }
-
-private const val TAG = "ImageTools"

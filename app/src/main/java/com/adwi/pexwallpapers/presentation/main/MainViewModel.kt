@@ -6,7 +6,6 @@ import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
-import com.adwi.core.Resource
 import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.database.domain.toDomain
 import com.adwi.feature_settings.data.database.SettingsDao
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -55,6 +55,7 @@ class MainViewModel @ExperimentalCoroutinesApi
     }
 
     fun saveAutomation() {
+        Timber.tag(tag).d("saveAutomation")
         onDispatcher(ioDispatcher) {
 
             validateBeforeSaveAutomation(
@@ -62,7 +63,7 @@ class MainViewModel @ExperimentalCoroutinesApi
                 favorites = _favorites.value
             ) { list ->
 
-                val result = automationManager.startAutoChangeWallpaperWork(
+                automationManager.startAutoChangeWallpaperWork(
                     delay = getTotalMinutesFromPeriods(
                         settings.value.minutes,
                         settings.value.hours,
@@ -71,24 +72,7 @@ class MainViewModel @ExperimentalCoroutinesApi
                     favorites = list,
                 )
 
-                when (result) {
-                    is Resource.Error -> {
-                        setSnackBar(result.message ?: "Some tasks failed")
-                        Timber.tag(tag).d(result.message ?: "Some tasks failed")
-                    }
-                    is Resource.Loading -> {
-                        Timber.tag(tag).d("saveAutomation - Loading = ${result.progress}")
-                    }
-                    is Resource.Success -> {
-                        Timber.tag(tag).d("saveAutomation - Success")
-                        setSnackBar("Automation saved")
-                    }
-                    else -> {
-                        // Idle
-                    }
-                }
-
-                setSnackBar("Wallpaper will change in $settings.hours hours and $settings.minutes minutes")
+                setSnackBar("Wallpaper will change in ${settings.value.hours} hours and ${settings.value.minutes} minutes")
                 Timber.tag(tag).d("saveSettings - Delay = $settings.delay")
             }
         }
@@ -147,6 +131,7 @@ class MainViewModel @ExperimentalCoroutinesApi
                     Timber.tag(tag).d(message)
                 }
             }
+            setSnackBar("Wallpaper set")
         }
     }
 
@@ -155,23 +140,21 @@ class MainViewModel @ExperimentalCoroutinesApi
             // Fetch
             val bitmap = imageManager.getBitmapFromRemote(wallpaper.imageUrlPortrait)
             // Save
-            val uri = bitmap.data?.let {
-                imageManager.saveWallpaperLocally(wallpaper.id, it)
-            }
-            // Share
-            uri?.let {
-                context.shareImage(uri, wallpaper.photographer)
+            bitmap.data?.let {
+                val uri = imageManager.saveWallpaperLocally(wallpaper.id, it)
+                uri?.let { uri2 ->
+                    context.shareImage(uri2, wallpaper.photographer)
+                }
             }
         }
     }
 
-    fun downloadWallpaper(wallpaper: Wallpaper) {
-        onDispatcher(ioDispatcher) {
-            automationManager.createDownloadWallpaperWork(
-                wallpaper,
-                settings.value.downloadWallpapersOverWiFi
-            )
-        }
+    fun downloadWallpaper(wallpaper: Wallpaper): UUID {
+        setSnackBar("Wallpaper downloaded")
+        return automationManager.createDownloadWallpaperWork(
+            wallpaper,
+            settings.value.downloadWallpapersOverWiFi
+        )
     }
 
     fun cancelAutoChangeWorks() {

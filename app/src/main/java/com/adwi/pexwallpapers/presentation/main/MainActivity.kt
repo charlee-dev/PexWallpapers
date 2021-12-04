@@ -11,6 +11,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.work.WorkManager
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.presentation.screens.PexApp
@@ -21,6 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
+import java.util.*
 
 @ExperimentalPermissionsApi
 @ExperimentalCoilApi
@@ -39,7 +42,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         getToasts()
 
         setContent {
@@ -64,6 +66,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun observeWorkData(id: UUID) {
+        Timber.tag(tag).d("OBSERVER - observeWorkData - $id")
+        WorkManager.getInstance(this)
+            .getWorkInfoByIdLiveData(id)
+            .observe(this, { workInfo ->
+                if (workInfo != null) {
+                    Timber.tag(tag)
+                        .d("OBSERVER - isFinished: \n${workInfo.state.isFinished} \n${workInfo.state.name}")
+                }
+            })
+    }
+
     private fun getToasts() {
         run {
             lifecycleScope.launchWhenStarted {
@@ -74,3 +88,5 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+private const val tag = "MainActivity"

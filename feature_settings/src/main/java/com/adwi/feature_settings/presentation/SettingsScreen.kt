@@ -156,7 +156,7 @@ fun SettingsScreen(
                     OptionTip(text = stringResource(R.string.change_wallpaper_every_description))
                     Spacer(modifier = Modifier.size(paddingValues / 2))
                     SaveButton(
-                        enabled = !settings.autoHome && !settings.autoLock,
+                        enabled = true,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
