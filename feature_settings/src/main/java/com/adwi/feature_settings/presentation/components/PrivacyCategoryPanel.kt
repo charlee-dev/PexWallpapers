@@ -1,12 +1,13 @@
 package com.adwi.feature_settings.presentation.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ReadMore
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -38,8 +39,10 @@ fun PrivacyCategoryPanel(
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(
+                    vertical = paddingValues / 2
+                )
             ) {
                 items(items = privacyItems, itemContent = { item ->
                     PrivacyCategoryItem(
@@ -59,29 +62,32 @@ fun PrivacyCategoryItem(
     description: String
 ) {
     var expanded by remember { mutableStateOf(false) }
-    Surface(
-        onClick = { expanded = !expanded },
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column {
+
+    Column(modifier = Modifier.animateContentSize()) {
+        Surface(
+            onClick = { expanded = !expanded },
+            modifier = Modifier.fillMaxWidth(),
+        ) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = paddingValues / 2),
+                    .padding(vertical = paddingValues / 2, horizontal = paddingValues),
             ) {
                 Text(
                     text = title,
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Icon(
-                    imageVector = Icons.Outlined.ReadMore,
+                    imageVector = Icons.Outlined.ExpandMore,
                     contentDescription = stringResource(id = R.string.show_more)
                 )
             }
-            if (expanded) {
-                Column {
-                    Text(text = description)
-                }
+        }
+        if (expanded) {
+            Column(modifier = Modifier.padding(paddingValues)) {
+                Text(text = description)
             }
         }
     }

@@ -10,6 +10,8 @@
       <module name="PexWallpapers.buildSrc.test" target="11" />
       <module name="PexWallpapers.components" target="11" />
       <module name="PexWallpapers.core" target="11" />
+      <module name="PexWallpapers.core.main" target="11" />
+      <module name="PexWallpapers.core.test" target="11" />
       <module name="PexWallpapers.data" target="11" />
       <module name="PexWallpapers.datasource.repository" target="11" />
       <module name="PexWallpapers.datasource.wallpapers.data" target="11" />
@@ -37,6 +39,8 @@
       <module name="PexWallpapers.shared.work" target="11" />
       <module name="PexWallpapers.test-shared" target="11" />
       <module name="PexWallpapers.test_utils" target="11" />
+      <module name="PexWallpapers.test_utils.main" target="11" />
+      <module name="PexWallpapers.test_utils.test" target="11" />
       <module name="PexWallpapers.wallpapers_datasource.repository" target="11" />
     </bytecodeTargetLevel>
   </component>
