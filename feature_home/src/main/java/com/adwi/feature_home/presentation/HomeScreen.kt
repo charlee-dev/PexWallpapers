@@ -111,6 +111,7 @@ fun HomeScreen(
                     WallpaperListHorizontalPanel(
                         panelName = categoryName,
                         verticalScrollState = homeListState,
+                        horizontalScrollState = curatedListState,
                         wallpapers = list,
                         listState = curatedListState,
                         onWallpaperClick = { id -> onWallpaperClick(id) },

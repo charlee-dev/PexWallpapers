@@ -8,7 +8,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Card
@@ -41,6 +41,7 @@ import com.adwi.pexwallpapers.domain.model.Wallpaper
 fun WallpaperListHorizontalPanel(
     modifier: Modifier = Modifier,
     verticalScrollState: ScrollState,
+    horizontalScrollState: LazyListState,
     wallpapers: DataState<List<Wallpaper>>,
     listState: LazyListState = rememberLazyListState(),
     panelName: String = "",
@@ -68,6 +69,7 @@ fun WallpaperListHorizontalPanel(
             WallpaperListHorizontal(
                 listState = listState,
                 verticalScrollState = verticalScrollState,
+                horizontalScrollState = horizontalScrollState,
                 onWallpaperClick = onWallpaperClick,
                 onLongPress = onLongPress,
                 wallpapers = list
@@ -82,6 +84,7 @@ fun WallpaperListHorizontalPanel(
 private fun WallpaperListHorizontal(
     modifier: Modifier = Modifier,
     verticalScrollState: ScrollState,
+    horizontalScrollState: LazyListState,
     listState: LazyListState = rememberLazyListState(),
     wallpapers: List<Wallpaper>,
     onWallpaperClick: (Int) -> Unit,
@@ -97,8 +100,8 @@ private fun WallpaperListHorizontal(
         ),
         horizontalArrangement = Arrangement.spacedBy(paddingValues)
     ) {
-        items(items = wallpapers, itemContent = { wallpaper ->
-
+        itemsIndexed(items = wallpapers, itemContent = { index, wallpaper ->
+            val offset = horizontalScrollState.firstVisibleItemScrollOffset - (index * 400)
             WallpaperItem(
                 wallpaper = wallpaper,
                 verticalScrollState = verticalScrollState,
