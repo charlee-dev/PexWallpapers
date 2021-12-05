@@ -119,7 +119,7 @@ fun PexExpandableCard(
 @ExperimentalMaterialApi
 @Preview(showBackground = true, name = "Light")
 @Composable
-private fun SettingsPanelPreview() {
+private fun PexExpandableCardPreviewLight() {
     Column {
         PexWallpapersTheme(darkTheme = false) {
             Column(
@@ -139,7 +139,7 @@ private fun SettingsPanelPreview() {
 @ExperimentalMaterialApi
 @Preview(showBackground = true, name = "Dark")
 @Composable
-private fun SettingsPanelPreviewDark() {
+private fun PexExpandableCardPreviewDark() {
     PexWallpapersTheme(darkTheme = true) {
         Column(
             Modifier
