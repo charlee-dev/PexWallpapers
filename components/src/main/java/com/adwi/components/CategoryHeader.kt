@@ -30,8 +30,7 @@ fun CategoryPanel(
     ) {
         CategoryTitle(
             name = categoryName,
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(1f)
         )
         if (showMore) ShowMore(onShowMoreClick = onShowMoreClick)
     }

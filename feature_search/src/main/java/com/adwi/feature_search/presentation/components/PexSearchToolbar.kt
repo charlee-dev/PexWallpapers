@@ -1,10 +1,7 @@
 package com.adwi.feature_search.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -44,23 +41,30 @@ fun PexSearchToolbar(
 
     Card(
         shape = shape,
+        backgroundColor = backgroundColor,
         modifier = modifier
-            .fillMaxWidth()
-            .neumorphicShadow(offset = (-5).dp),
-        backgroundColor = backgroundColor
+            .padding(paddingValues)
+            .height(70.dp)
+            .neumorphicShadow()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = paddingValues / 2)
         ) {
             TextField(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(start = paddingValues, bottom = paddingValues / 2),
-                value = query,
-                onValueChange = {
-                    onQueryChanged(it)
+                    .weight(1f),
+                leadingIcon = {
+                    Icon(
+                        Icons.Filled.Search,
+                        contentDescription = stringResource(id = R.string.search),
+                        tint = contentColor
+                    )
                 },
+                value = query,
+                onValueChange = { onQueryChanged(it) },
                 label = { Text(text = stringResource(id = R.string.search)) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -72,15 +76,12 @@ fun PexSearchToolbar(
                         keyboardController?.hide()
                     }
                 ),
-                leadingIcon = {
-                    Icon(
-                        Icons.Filled.Search,
-                        contentDescription = stringResource(id = R.string.search),
-                        tint = contentColor
-                    )
-                },
                 textStyle = TextStyle(color = contentColor),
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 maxLines = 1,
                 singleLine = true
             )

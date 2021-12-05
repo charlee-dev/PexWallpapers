@@ -49,7 +49,7 @@ fun InfoRow(
                 modifier = Modifier
                     .padding(paddingValues / 2)
                     .neumorphicShadow(
-                        pressed = isPressed,
+                        isPressed = isPressed,
                         cornerRadius = 10.dp,
                         offset = (-5).dp
                     ),

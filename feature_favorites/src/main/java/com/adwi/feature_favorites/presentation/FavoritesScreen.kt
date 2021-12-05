@@ -50,9 +50,7 @@ fun FavoritesScreen(
 
     PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = paddingValues)
+            modifier = Modifier.fillMaxSize()
         ) {
             Header(
                 title = stringResource(id = R.string.favorites),
@@ -75,7 +73,9 @@ fun FavoritesScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
                     top = paddingValues / 2,
-                    bottom = BottomNavHeight + paddingValues
+                    bottom = BottomNavHeight + paddingValues,
+                    start = paddingValues,
+                    end = paddingValues
                 ),
                 verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
             ) {
@@ -123,7 +123,7 @@ private fun WallpaperItemVertical(
                     onLongPress = { onLongPress(wallpaper) },
                 )
             }
-            .neumorphicShadow(pressed = isPressed)
+            .neumorphicShadow(isPressed = isPressed)
     ) {
         Box {
             PexCoilImage(

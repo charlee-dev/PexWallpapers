@@ -17,6 +17,8 @@ object MainDestinations {
     const val WALLPAPER_ID_KEY = "wallpaperId"
     const val SEARCH_ROUTE = "search_route"
     const val SEARCH_QUERY = "query"
+    const val PRIVACY_POLICY = "privacy_policy"
+    const val ABOUT_US = "about_us"
 }
 
 @ExperimentalAnimationApi
@@ -78,6 +80,18 @@ class PexAppState(
     fun navigateToCategory(categoryName: String, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.SEARCH_ROUTE}/$categoryName")
+        }
+    }
+
+    fun navigateToPrivacyPolicy(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.PRIVACY_POLICY)
+        }
+    }
+
+    fun navigateToAboutUs(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.ABOUT_US)
         }
     }
 }

@@ -20,6 +20,7 @@ import com.adwi.feature_search.presentation.SearchViewModel
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.feature_settings.presentation.SettingsScreen
 import com.adwi.feature_settings.presentation.SettingsViewModel
+import com.adwi.feature_settings.presentation.about.PrivacyPolicyScreen
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -41,10 +42,10 @@ fun NavGraphBuilder.myNavGraph(
     settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    navigateToSearch: () -> Unit,
+    navigateToSearch: (NavBackStackEntry) -> Unit,
     upPress: () -> Unit,
-    onAboutUsClick: () -> Unit,
-    onPrivacyPolicyClick: () -> Unit,
+    onAboutUsClick: (NavBackStackEntry) -> Unit,
+    onPrivacyPolicyClick: (NavBackStackEntry) -> Unit,
     onContactSupportClick: () -> Unit,
     onSaveAutomationClick: () -> Unit,
     cancelWorks: () -> Unit,
@@ -68,7 +69,7 @@ fun NavGraphBuilder.myNavGraph(
             cancelWorks = cancelWorks
         )
     }
-
+    // PREVIEW
     composable(
         route = "${MainDestinations.WALLPAPER_PREVIEW_ROUTE}/{${MainDestinations.WALLPAPER_ID_KEY}}",
         arguments = listOf(navArgument(MainDestinations.WALLPAPER_ID_KEY) {
@@ -84,7 +85,7 @@ fun NavGraphBuilder.myNavGraph(
             onSetWallpaperClick = onSetWallpaperClick
         )
     }
-
+    // SEARCH
     composable(
         route = "${MainDestinations.SEARCH_ROUTE}/{${MainDestinations.SEARCH_QUERY}}",
         arguments = listOf(navArgument(MainDestinations.SEARCH_QUERY) {
@@ -99,6 +100,28 @@ fun NavGraphBuilder.myNavGraph(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
+    }
+    // PRIVACY POLICY
+    composable(
+        route = MainDestinations.PRIVACY_POLICY
+    ) { backStackEntry ->
+        val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
+
+        PrivacyPolicyScreen(
+            viewModel = viewModel,
+            upPress = upPress
+        )
+    }
+    // ABOUT
+    composable(
+        route = MainDestinations.ABOUT_US
+    ) { backStackEntry ->
+        val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
+
+//        PrivacyPolicyScreen(
+//            viewModel = viewModel,
+//            upPress = upPress
+//        ) TODO(add About us screen)
     }
 }
 
@@ -115,9 +138,9 @@ fun NavGraphBuilder.addHomeGraph(
     settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    navigateToSearch: () -> Unit,
-    onAboutUsClick: () -> Unit,
-    onPrivacyPolicyClick: () -> Unit,
+    navigateToSearch: (NavBackStackEntry) -> Unit,
+    onAboutUsClick: (NavBackStackEntry) -> Unit,
+    onPrivacyPolicyClick: (NavBackStackEntry) -> Unit,
     onContactSupportClick: () -> Unit,
     onSaveAutomationClick: () -> Unit,
     cancelWorks: () -> Unit
@@ -132,7 +155,7 @@ fun NavGraphBuilder.addHomeGraph(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onCategoryClick = { query -> onCategoryClick(query, backStackEntry) },
-            navigateToSearch = navigateToSearch
+            navigateToSearch = { navigateToSearch(backStackEntry) }
         )
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
@@ -154,7 +177,7 @@ fun NavGraphBuilder.addHomeGraph(
 
         FavoritesScreen(
             viewModel = viewModel,
-            onSearchClick = navigateToSearch,
+            onSearchClick = { navigateToSearch(backStackEntry) },
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
         )
     }
@@ -165,8 +188,8 @@ fun NavGraphBuilder.addHomeGraph(
 
         SettingsScreen(
             viewModel = viewModel,
-            onAboutUsClick = onAboutUsClick,
-            onPrivacyPolicyClick = onPrivacyPolicyClick,
+            onAboutUsClick = { onAboutUsClick(backStackEntry) },
+            onPrivacyPolicyClick = { onPrivacyPolicyClick(backStackEntry) },
             onContactSupportClick = onContactSupportClick,
             onSaveAutomationClick = onSaveAutomationClick,
             cancelWorks = cancelWorks

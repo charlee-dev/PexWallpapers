@@ -1,23 +1,25 @@
 package com.adwi.feature_settings.presentation.about
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.paging.ExperimentalPagingApi
+import com.adwi.components.CategoryPanel
 import com.adwi.components.Header
+import com.adwi.components.PexExpandableCard
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_settings.domain.privacy.privacyCategoryList
 import com.adwi.feature_settings.presentation.SettingsViewModel
-import com.adwi.feature_settings.presentation.components.PrivacyCategoryPanel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalMaterialApi
@@ -25,27 +27,59 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @Composable
 fun PrivacyPolicyScreen(
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
+    upPress: () -> Unit
 ) {
     PexScaffold(viewModel = viewModel) {
-        Column(Modifier.fillMaxSize()) {
-            Header(
-                modifier = Modifier,
-                title = "Privacy policy",
-                icon = Icons.Outlined.PrivacyTip
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxWidth()
-            ) {
-                items(items = privacyCategoryList) { category ->
-                    PrivacyCategoryPanel(
-                        name = category.name,
-                        privacyItems = category.items
-                    )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                Header(
+                    hasUpPress = true,
+                    onUpPress = upPress,
+                    modifier = Modifier,
+                    title = "Privacy policy",
+                    icon = Icons.Outlined.PrivacyTip,
+                    actionIcon = null
+                )
+            }
+            items(items = privacyCategoryList) { category ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = paddingValues),
+                ) {
+                    CategoryPanel(categoryName = category.name)
+                    category.items.forEach { item ->
+                        PexExpandableCard(
+                            modifier = Modifier,
+                            headerText = item.title
+                        ) {
+                            PrivacyItemDescription(
+                                text = item.description,
+                                modifier = Modifier.padding(bottom = paddingValues)
+                            )
+                        }
+                        Spacer(modifier = Modifier.size(paddingValues))
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun PrivacyItemDescription(
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MaterialTheme.colors.onBackground,
+    style: TextStyle = MaterialTheme.typography.subtitle1
+) {
+    Text(
+        text = text,
+        color = color,
+        style = style,
+        modifier = modifier.padding(horizontal = paddingValues)
+    )
 }

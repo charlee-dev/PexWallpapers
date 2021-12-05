@@ -1,4 +1,4 @@
-package com.adwi.feature_settings.presentation.components
+package com.adwi.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

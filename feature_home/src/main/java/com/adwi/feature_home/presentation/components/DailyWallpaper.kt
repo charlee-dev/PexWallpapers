@@ -111,7 +111,7 @@ fun DailyWallpaper(
                                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                 )
                             }
-                            .neumorphicShadow(pressed = isPressed)
+                            .neumorphicShadow(isPressed = isPressed)
                     ) {
                         Box {
                             PexCoilImage(

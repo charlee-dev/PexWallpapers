@@ -1,8 +1,8 @@
 package com.adwi.feature_home.presentation
 
+import androidx.compose.compiler.plugins.kotlin.lower.defaultsBitIndex
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +26,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -47,7 +48,7 @@ fun HomeScreen(
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
 
-    val homeListState = rememberLazyListState()
+    val homeListState = rememberLazyListState(initialFirstVisibleItemIndex = 0)
     val pagerState = rememberPagerState()
     val colorsListState = rememberLazyListState()
     val curatedListState = rememberLazyListState()
@@ -64,6 +65,14 @@ fun HomeScreen(
                 viewModel.setPendingScrollToTopAfterRefresh(false)
             }
         }
+    }
+    val isOnTop = homeListState.firstVisibleItemIndex == 0
+    val elevation by remember { mutableStateOf(!isOnTop) }
+
+    if (elevation) {
+        Timber.tag("Header").d("toolbar is elevated")
+    } else {
+        Timber.tag("Header").d("toolbar is flat")
     }
 
     PexScaffold(
@@ -84,10 +93,7 @@ fun HomeScreen(
                 item {
                     Header(
                         title = stringResource(id = R.string.home),
-                        onActionClick = navigateToSearch,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = paddingValues)
+                        onActionClick = navigateToSearch
                     )
                 }
                 item {
@@ -103,7 +109,7 @@ fun HomeScreen(
                         )
                     }
                 }
-                item {
+                item(defaultsBitIndex(2)) {
                     colors?.let { list ->
                         CategoryListHorizontalPanel(
                             panelTitle = stringResource(id = R.string.colors),
@@ -113,7 +119,7 @@ fun HomeScreen(
                         )
                     }
                 }
-                item {
+                item(defaultsBitIndex(3)) {
                     curated?.let { list ->
                         val categoryName = stringResource(id = R.string.curated)
                         WallpaperListHorizontalPanel(

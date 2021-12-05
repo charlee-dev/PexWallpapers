@@ -1,6 +1,8 @@
 package com.adwi.feature_settings.presentation.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,14 +12,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.adwi.components.CategoryTitle
+import com.adwi.components.R
 import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
-import com.adwi.feature_settings.R
 import com.adwi.feature_settings.domain.privacy.PrivacyItem
 import com.adwi.feature_settings.domain.privacy.privacyCategoryList
 
@@ -63,6 +66,12 @@ fun PrivacyCategoryItem(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
+    val transition = updateTransition(targetState = expanded, label = "Card")
+
+    val iconRotation by transition.animateFloat(label = "Icon") { state ->
+        if (state) 180f else 0f
+    }
+
     Column(modifier = Modifier.animateContentSize()) {
         Surface(
             onClick = { expanded = !expanded },
@@ -81,7 +90,8 @@ fun PrivacyCategoryItem(
                 )
                 Icon(
                     imageVector = Icons.Outlined.ExpandMore,
-                    contentDescription = stringResource(id = R.string.show_more)
+                    contentDescription = stringResource(id = R.string.show_more),
+                    modifier = Modifier.rotate(iconRotation)
                 )
             }
         }

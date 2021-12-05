@@ -83,9 +83,7 @@ fun PexApp(
                         onAboutUsClick = {
                             viewModel.aboutUs()
                         },
-                        onPrivacyPolicyClick = {
-                            viewModel.privacyPolicy()
-                        },
+                        onPrivacyPolicyClick = appState::navigateToPrivacyPolicy,
                         onContactSupportClick = {
                             viewModel.contactSupport()
                         },

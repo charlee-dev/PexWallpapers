@@ -77,10 +77,7 @@ fun SearchScreen(
                 query = currentQuery,
                 onQueryChanged = { viewModel.onSearchQuerySubmit(it) },
                 onShowFilterDialog = {},
-                modifier = Modifier
-                    .padding(horizontal = paddingValues)
-                    .padding(vertical = paddingValues)
-                    .fillMaxWidth()
+//                modifier = Modifier.fillMaxWidth()
             )
             SwipeRefresh(
                 state = swipeRefreshState,
@@ -172,7 +169,7 @@ fun WallpaperListPaged(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                         .height((wallpaper.height / 2.5).dp)
-                        .neumorphicShadow(pressed = isPressed)
+                        .neumorphicShadow(isPressed = isPressed)
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = { onWallpaperClick(wallpaper.id) },

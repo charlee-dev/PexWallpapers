@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -45,7 +44,6 @@ fun PreviewScreen(
     val wallpaper by viewModel.wallpaper.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
 
-    val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
 
     PexScaffold(
@@ -56,10 +54,9 @@ fun PreviewScreen(
                 .fillMaxSize()
         ) {
             Header(
-                modifier = Modifier.padding(
-                    horizontal = paddingValues,
-                    vertical = paddingValues / 2
-                ),
+                hasUpPress = true,
+                onUpPress = upPress,
+                modifier = Modifier,
                 title = stringResource(id = R.string.preview),
                 icon = Icons.Outlined.Image,
                 actionIcon = null

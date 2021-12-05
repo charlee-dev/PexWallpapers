@@ -128,7 +128,7 @@ private fun CategoryItem(
             modifier = modifier
                 .size(100.dp)
                 .neumorphicShadow(
-                    pressed = isPressed,
+                    isPressed = isPressed,
                     cornerRadius = 10.dp,
                     offset = (-5).dp
                 ),

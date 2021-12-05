@@ -35,9 +35,11 @@ import com.adwi.components.theme.*
 
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicShadow(
-    pressed: Boolean = false,
-    lightLightShadow: Color = PrimaryShadowLight,
-    lightDarkShadow: Color = PrimaryShadowDark,
+    isPressed: Boolean = false,
+    topShadowLight: Color = PrimaryShadowLight,
+    topShadowDark: Color = Neutral3,
+    bottomShadowLight: Color = PrimaryShadowDark,
+    bottomShadowDark: Color = Neutral5,
     alpha: Float = .9f,
     cornerRadius: Dp = 30.dp,
     shadowRadius: Dp = 10.dp,
@@ -47,14 +49,21 @@ fun Modifier.neumorphicShadow(
     // Check if dark or light system theme
     val isLightTheme = MaterialTheme.colors.isLight
 
-    val colorTop = if (isLightTheme) lightLightShadow else Neutral3
-    val colorBottom = if (isLightTheme) lightDarkShadow else Neutral5
+    // Colors
+    val colorTop = if (isLightTheme) topShadowLight else topShadowDark
+    val colorBottom = if (isLightTheme) bottomShadowLight else bottomShadowDark
     val darkAlpha = if (isLightTheme) alpha else 0.1f
 
-    // Animate shadow if view is clickable
-    val transition = updateTransition(targetState = pressed, label = "Shadow")
-    val elevation by transition.animateDp(label = "Card elevation") { state ->
-        if (state) 0.dp else offset
+    // Pressed transition
+    val pressed = updateTransition(targetState = isPressed, label = "Shadow")
+    val elevation by pressed.animateDp(label = "Offset") { state ->
+        if (state) offset / 2 else offset
+    }
+    val shadowRadiusAnimated by pressed.animateDp(label = "Shadow") { state ->
+        if (state) 0.dp else shadowRadius
+    }
+    val cornerRadiusAnimated by pressed.animateDp(label = "Corner") { state ->
+        if (state) cornerRadius / 2 else cornerRadius
     }
 
     this.drawBehind {
@@ -73,7 +82,7 @@ fun Modifier.neumorphicShadow(
             val frameworkPaint = paint.asFrameworkPaint()
             frameworkPaint.color = transparentColor
             frameworkPaint.setShadowLayer(
-                shadowRadius.toPx(),
+                shadowRadiusAnimated.toPx(),
                 elevation.toPx(),
                 elevation.toPx(),
                 shadowColorTop
@@ -83,8 +92,8 @@ fun Modifier.neumorphicShadow(
                 0f,
                 this.size.width,
                 this.size.height,
-                cornerRadius.toPx(),
-                cornerRadius.toPx(),
+                cornerRadiusAnimated.toPx(),
+                cornerRadiusAnimated.toPx(),
                 paint
             )
         }
@@ -95,9 +104,9 @@ fun Modifier.neumorphicShadow(
             val frameworkPaint = paint.asFrameworkPaint()
             frameworkPaint.color = transparentColor
             frameworkPaint.setShadowLayer(
-                shadowRadius.toPx(),
-                (-offset).toPx(),
-                (-offset).toPx(),
+                shadowRadiusAnimated.toPx(),
+                (-elevation).toPx(),
+                (-elevation).toPx(),
                 shadowColorBottom
             )
             it.drawRoundRect(
@@ -105,8 +114,8 @@ fun Modifier.neumorphicShadow(
                 0f,
                 this.size.width,
                 this.size.height,
-                cornerRadius.toPx(),
-                cornerRadius.toPx(),
+                cornerRadiusAnimated.toPx(),
+                cornerRadiusAnimated.toPx(),
                 paint
             )
         }

@@ -120,7 +120,7 @@ private fun WallpaperItem(
         modifier = modifier.neumorphicShadow(
             cornerRadius = 10.dp,
             offset = (-5).dp,
-            pressed = isPressed
+            isPressed = isPressed
         ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

@@ -73,7 +73,7 @@ fun PexButton(
         shape = shape,
         modifier = modifier.neumorphicShadow(
             offset = 0.dp,
-            pressed = isPressed
+            isPressed = isPressed
         ),
         color = bgColor,
     ) {
