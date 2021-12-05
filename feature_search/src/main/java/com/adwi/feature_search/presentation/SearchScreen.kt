@@ -77,7 +77,6 @@ fun SearchScreen(
                 query = currentQuery,
                 onQueryChanged = { viewModel.onSearchQuerySubmit(it) },
                 onShowFilterDialog = {},
-//                modifier = Modifier.fillMaxWidth()
             )
             SwipeRefresh(
                 state = swipeRefreshState,
@@ -91,6 +90,7 @@ fun SearchScreen(
                     WallpaperListPaged(
                         modifier = Modifier.fillMaxSize(),
                         wallpapers = wallpapers,
+                        listState = listState,
                         onWallpaperClick = onWallpaperClick,
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         lowRes = lowRes
@@ -146,7 +146,7 @@ fun WallpaperListPaged(
     wallpapers: LazyPagingItems<WallpaperEntity>,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit,
-    state: LazyListState = rememberLazyListState(),
+    listState: LazyListState,
     lowRes: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -154,7 +154,7 @@ fun WallpaperListPaged(
 
     LazyColumn(
         modifier = modifier,
-        state = state,
+        state = listState,
         contentPadding = PaddingValues(
             top = paddingValues,
             bottom = paddingValues * 3

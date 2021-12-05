@@ -7,8 +7,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -47,10 +48,13 @@ fun FavoritesScreen(
     val lowRes = viewModel.lowRes
 
     val scaffoldState = rememberScaffoldState()
+    val scrollState = rememberScrollState()
 
     PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
         ) {
             Header(
                 title = stringResource(id = R.string.favorites),
@@ -58,7 +62,7 @@ fun FavoritesScreen(
                 icon = Icons.Outlined.Favorite,
             )
             AnimatedVisibility(
-                visible = wallpapers.isNullOrEmpty(),
+                visible = wallpapers.isEmpty(),
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
@@ -69,28 +73,19 @@ fun FavoritesScreen(
                     )
                 }
             }
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    top = paddingValues / 2,
-                    bottom = BottomNavHeight + paddingValues,
-                    start = paddingValues,
-                    end = paddingValues
-                ),
-                verticalArrangement = Arrangement.spacedBy(paddingValues / 2)
-            ) {
-                items(items = wallpapers, itemContent = { wallpaper ->
-
-                    WallpaperItemVertical(
-                        wallpaper = wallpaper,
-                        onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                        onLongPress = { viewModel.onFavoriteClick(it) },
-                        isHeartEnabled = wallpaper.isFavorite,
-                        modifier = Modifier,
-                        lowRes = lowRes
-                    )
-                })
+            wallpapers.forEachIndexed { index, wallpaper ->
+                Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))
+                WallpaperItemVertical(
+                    wallpaper = wallpaper,
+                    verticalScrollState = scrollState.value - (index * 800),
+                    onWallpaperClick = { onWallpaperClick(wallpaper.id) },
+                    onLongPress = { viewModel.onFavoriteClick(it) },
+                    isHeartEnabled = wallpaper.isFavorite,
+                    modifier = Modifier.padding(horizontal = paddingValues),
+                    lowRes = lowRes
+                )
             }
+            Spacer(modifier = Modifier.size(BottomNavHeight + paddingValues))
         }
     }
 }
@@ -100,6 +95,7 @@ fun FavoritesScreen(
 @Composable
 private fun WallpaperItemVertical(
     modifier: Modifier = Modifier,
+    verticalScrollState: Int,
     elevation: Dp = Dimensions.small,
     shape: Shape = MaterialTheme.shapes.small,
     wallpaper: Wallpaper,
@@ -117,18 +113,25 @@ private fun WallpaperItemVertical(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
+            .neumorphicShadow(isPressed = isPressed)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { onWallpaperClick(wallpaper.id) },
                     onLongPress = { onLongPress(wallpaper) },
                 )
             }
-            .neumorphicShadow(isPressed = isPressed)
     ) {
         Box {
             PexCoilImage(
                 imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlLandscape,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        val scale = 1.6f
+                        scaleY = scale
+                        scaleX = scale
+                        translationY = (-verticalScrollState) * 0.1f
+                    }
             )
             PexAnimatedHeart(
                 state = isHeartEnabled,

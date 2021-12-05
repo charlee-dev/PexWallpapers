@@ -17,7 +17,8 @@ fun PexCoilImage(
     placeholder: Int = R.drawable.image_placeholder,
     contentDescription: String = "",
     isSquare: Boolean = false,
-    wallpaperId: Int? = null
+    wallpaperId: Int? = null,
+    contentScale: ContentScale = ContentScale.Crop
 ) {
     if (isSquare) modifier.size(200.dp)
     Image(
@@ -31,7 +32,7 @@ fun PexCoilImage(
             }
         ),
         contentDescription = contentDescription,
-        contentScale = ContentScale.Crop,
+        contentScale = contentScale,
         modifier = modifier,
     )
 }

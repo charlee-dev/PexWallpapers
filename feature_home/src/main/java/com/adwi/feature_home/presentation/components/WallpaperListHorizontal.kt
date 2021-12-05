@@ -1,5 +1,6 @@
 package com.adwi.feature_home.presentation.components
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -18,7 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -28,6 +32,7 @@ import com.adwi.components.PexCoilImage
 import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
+import com.adwi.core.DataState
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 
 @ExperimentalCoilApi
@@ -35,7 +40,8 @@ import com.adwi.pexwallpapers.domain.model.Wallpaper
 @Composable
 fun WallpaperListHorizontalPanel(
     modifier: Modifier = Modifier,
-    wallpapers: com.adwi.core.DataState<List<Wallpaper>>,
+    verticalScrollState: ScrollState,
+    wallpapers: DataState<List<Wallpaper>>,
     listState: LazyListState = rememberLazyListState(),
     panelName: String = "",
     onWallpaperClick: (Int) -> Unit,
@@ -61,6 +67,7 @@ fun WallpaperListHorizontalPanel(
         wallpapers.data?.let { list ->
             WallpaperListHorizontal(
                 listState = listState,
+                verticalScrollState = verticalScrollState,
                 onWallpaperClick = onWallpaperClick,
                 onLongPress = onLongPress,
                 wallpapers = list
@@ -74,6 +81,7 @@ fun WallpaperListHorizontalPanel(
 @Composable
 private fun WallpaperListHorizontal(
     modifier: Modifier = Modifier,
+    verticalScrollState: ScrollState,
     listState: LazyListState = rememberLazyListState(),
     wallpapers: List<Wallpaper>,
     onWallpaperClick: (Int) -> Unit,
@@ -93,6 +101,7 @@ private fun WallpaperListHorizontal(
 
             WallpaperItem(
                 wallpaper = wallpaper,
+                verticalScrollState = verticalScrollState,
                 onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                 onLongPress = { onLongPress(wallpaper) },
                 isHeartEnabled = wallpaper.isFavorite,
@@ -107,6 +116,7 @@ private fun WallpaperListHorizontal(
 @Composable
 private fun WallpaperItem(
     modifier: Modifier = Modifier,
+    verticalScrollState: ScrollState,
     shape: Shape = MaterialTheme.shapes.small,
     wallpaper: Wallpaper,
     onWallpaperClick: () -> Unit,
@@ -143,8 +153,15 @@ private fun WallpaperItem(
                     imageUrl = wallpaper.imageUrlTiny,
                     modifier = Modifier
                         .fillMaxSize()
-                        .align(Alignment.Center),
-                    wallpaperId = wallpaper.id
+                        .align(Alignment.Center)
+                        .graphicsLayer {
+                            val scale = 1.6f
+                            scaleY = scale
+                            scaleX = scale
+                            translationY = (-verticalScrollState.value) * 0.1f
+                        },
+                    wallpaperId = wallpaper.id,
+                    contentScale = ContentScale.Crop
                 )
                 PexAnimatedHeart(
                     state = isHeartEnabled,
@@ -171,6 +188,7 @@ private fun WallpaperListPanelPreviewLight() {
         ) {
             WallpaperItem(
                 onLongPress = {},
+                verticalScrollState = rememberScrollState(),
                 onWallpaperClick = {},
                 wallpaper = Wallpaper.defaultDaily,
                 isHeartEnabled = true
@@ -192,6 +210,7 @@ private fun WallpaperListPanelPreviewDark() {
         ) {
             WallpaperItem(
                 onLongPress = {},
+                verticalScrollState = rememberScrollState(),
                 onWallpaperClick = {},
                 wallpaper = Wallpaper.defaultDaily,
                 isHeartEnabled = true

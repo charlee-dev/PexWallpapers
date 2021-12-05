@@ -1,11 +1,11 @@
 package com.adwi.feature_home.presentation
 
-import androidx.compose.compiler.plugins.kotlin.lower.defaultsBitIndex
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -26,7 +26,6 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -48,7 +47,7 @@ fun HomeScreen(
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
 
-    val homeListState = rememberLazyListState(initialFirstVisibleItemIndex = 0)
+    val homeListState = rememberScrollState()
     val pagerState = rememberPagerState()
     val colorsListState = rememberLazyListState()
     val curatedListState = rememberLazyListState()
@@ -58,21 +57,13 @@ fun HomeScreen(
     if (pendingScrollToTopAfterRefresh) {
         LaunchedEffect(pendingScrollToTopAfterRefresh) {
             coroutineScope.launch {
-                homeListState.animateScrollToItem(0)
+                homeListState.animateScrollTo(0)
                 pagerState.animateScrollToPage(0)
                 colorsListState.animateScrollToItem(0)
                 curatedListState.animateScrollToItem(0)
                 viewModel.setPendingScrollToTopAfterRefresh(false)
             }
         }
-    }
-    val isOnTop = homeListState.firstVisibleItemIndex == 0
-    val elevation by remember { mutableStateOf(!isOnTop) }
-
-    if (elevation) {
-        Timber.tag("Header").d("toolbar is elevated")
-    } else {
-        Timber.tag("Header").d("toolbar is flat")
     }
 
     PexScaffold(
@@ -82,55 +73,50 @@ fun HomeScreen(
             state = rememberSwipeRefreshState(isRefreshing),
             onRefresh = { viewModel.manualRefresh() }
         ) {
-            LazyColumn(
-                state = homeListState,
+            Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(
-                    bottom = BottomNavHeight + paddingValues
-                )
+                    .fillMaxSize()
+                    .verticalScroll(state = homeListState)
+                    .padding(
+                        bottom = BottomNavHeight + paddingValues
+                    )
             ) {
-                item {
-                    Header(
-                        title = stringResource(id = R.string.home),
-                        onActionClick = navigateToSearch
+                Header(
+                    title = stringResource(id = R.string.home),
+                    onActionClick = navigateToSearch
+                )
+                daily?.let { list ->
+                    DailyWallpaper(
+                        scrollState = homeListState,
+                        pagerState = pagerState,
+                        modifier = Modifier
+                            .padding(vertical = paddingValues / 2),
+                        dailyList = list,
+                        onWallpaperClick = { id -> onWallpaperClick(id) },
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        lowRes = lowRes
                     )
                 }
-                item {
-                    daily?.let { list ->
-                        DailyWallpaper(
-                            pagerState = pagerState,
-                            modifier = Modifier
-                                .padding(vertical = paddingValues / 2),
-                            dailyList = list,
-                            onWallpaperClick = { id -> onWallpaperClick(id) },
-                            onLongPress = { viewModel.onFavoriteClick(it) },
-                            lowRes = lowRes
-                        )
-                    }
+                colors?.let { list ->
+                    CategoryListHorizontalPanel(
+                        panelTitle = stringResource(id = R.string.colors),
+                        verticalScrollState = homeListState,
+                        listState = colorsListState,
+                        colors = list,
+                        onCategoryClick = { onCategoryClick(it) }
+                    )
                 }
-                item(defaultsBitIndex(2)) {
-                    colors?.let { list ->
-                        CategoryListHorizontalPanel(
-                            panelTitle = stringResource(id = R.string.colors),
-                            listState = colorsListState,
-                            colors = list,
-                            onCategoryClick = { onCategoryClick(it) }
-                        )
-                    }
-                }
-                item(defaultsBitIndex(3)) {
-                    curated?.let { list ->
-                        val categoryName = stringResource(id = R.string.curated)
-                        WallpaperListHorizontalPanel(
-                            panelName = categoryName,
-                            wallpapers = list,
-                            listState = curatedListState,
-                            onWallpaperClick = { id -> onWallpaperClick(id) },
-                            onLongPress = { viewModel.onFavoriteClick(it) },
-                            onShowMoreClick = navigateToSearch
-                        )
-                    }
+                curated?.let { list ->
+                    val categoryName = stringResource(id = R.string.curated)
+                    WallpaperListHorizontalPanel(
+                        panelName = categoryName,
+                        verticalScrollState = homeListState,
+                        wallpapers = list,
+                        listState = curatedListState,
+                        onWallpaperClick = { id -> onWallpaperClick(id) },
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        onShowMoreClick = navigateToSearch
+                    )
                 }
             }
         }

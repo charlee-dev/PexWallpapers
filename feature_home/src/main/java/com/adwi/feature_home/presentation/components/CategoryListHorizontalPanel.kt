@@ -1,6 +1,7 @@
 package com.adwi.feature_home.presentation.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +42,7 @@ import com.adwi.pexwallpapers.domain.model.ColorCategory
 @Composable
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
+    verticalScrollState: ScrollState,
     colors: com.adwi.core.DataState<List<ColorCategory>>,
     listState: LazyListState = rememberLazyListState(),
     panelTitle: String,
@@ -62,6 +65,7 @@ fun CategoryListHorizontalPanel(
             colors.data?.let { list ->
                 CategoryListHorizontal(
                     categoryList = list,
+                    verticalScrollState = verticalScrollState,
                     onCategoryClick = onCategoryClick,
                     listState = listState,
                 )
@@ -75,6 +79,7 @@ fun CategoryListHorizontalPanel(
 @Composable
 fun CategoryListHorizontal(
     modifier: Modifier = Modifier,
+    verticalScrollState: ScrollState,
     listState: LazyListState = rememberLazyListState(),
     categoryList: List<ColorCategory>,
     onCategoryClick: (String) -> Unit
@@ -91,11 +96,9 @@ fun CategoryListHorizontal(
         items(items = categoryList, itemContent = { category ->
             CategoryItem(
                 categoryName = category.name,
-                image1 = category.firstImage,
-                image2 = category.secondImage,
-                image3 = category.thirdImage,
-                image4 = category.forthImage,
-                onCategoryClick = { onCategoryClick(category.name) },
+                verticalScrollState = verticalScrollState,
+                image = category.firstImage,
+                onCategoryClick = { onCategoryClick(category.name) }
             )
         })
     }
@@ -106,12 +109,10 @@ fun CategoryListHorizontal(
 @Composable
 private fun CategoryItem(
     modifier: Modifier = Modifier,
+    verticalScrollState: ScrollState,
     shape: Shape = MaterialTheme.shapes.small,
     categoryName: String,
-    image1: String,
-    image2: String,
-    image3: String,
-    image4: String,
+    image: String,
     onCategoryClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -134,32 +135,17 @@ private fun CategoryItem(
                 ),
             interactionSource = interactionSource
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
                 PexCoilImage(
-                    imageUrl = image1,
+                    imageUrl = image,
                     modifier = Modifier
-                        .fillMaxSize(.5f)
-                        .align(Alignment.TopStart)
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            val scale = 1.6f
+                            scaleY = scale
+                            scaleX = scale
+                            translationY = (-verticalScrollState.value) * 0.1f
+                        }
                 )
-                PexCoilImage(
-                    imageUrl = image2,
-                    modifier = Modifier
-                        .fillMaxSize(.5f)
-                        .align(Alignment.TopEnd)
-                )
-                PexCoilImage(
-                    imageUrl = image3,
-                    modifier = Modifier
-                        .fillMaxSize(.5f)
-                        .align(Alignment.BottomStart)
-                )
-                PexCoilImage(
-                    imageUrl = image4,
-                    modifier = Modifier
-                        .fillMaxSize(.5f)
-                        .align(Alignment.BottomEnd)
-                )
-            }
         }
         Spacer(modifier = Modifier.size(paddingValues / 4))
         Text(
@@ -224,10 +210,8 @@ private fun CategoryItemPreviewLight() {
         ) {
             CategoryItem(
                 categoryName = ColorCategory.mock.name,
-                image1 = ColorCategory.mock.firstImage,
-                image2 = ColorCategory.mock.secondImage,
-                image3 = ColorCategory.mock.thirdImage,
-                image4 = ColorCategory.mock.forthImage,
+                verticalScrollState = rememberScrollState(),
+                image = ColorCategory.mock.firstImage,
                 onCategoryClick = {}
             )
         }
@@ -247,10 +231,8 @@ private fun CategoryItemPreviewDark() {
         ) {
             CategoryItem(
                 categoryName = ColorCategory.mock.name,
-                image1 = ColorCategory.mock.firstImage,
-                image2 = ColorCategory.mock.secondImage,
-                image3 = ColorCategory.mock.thirdImage,
-                image4 = ColorCategory.mock.forthImage,
+                verticalScrollState = rememberScrollState(),
+                image = ColorCategory.mock.firstImage,
                 onCategoryClick = {}
             )
         }

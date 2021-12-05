@@ -3,6 +3,7 @@ package com.adwi.feature_home.presentation.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,6 +43,7 @@ import kotlin.math.absoluteValue
 @Composable
 fun DailyWallpaper(
     modifier: Modifier = Modifier,
+    scrollState: ScrollState,
     pagerState: PagerState = rememberPagerState(),
     dailyList: com.adwi.core.DataState<List<Wallpaper>>,
     shape: Shape = MaterialTheme.shapes.large,
@@ -79,7 +81,7 @@ fun DailyWallpaper(
                 val wallpaper = list[page]
 
                 AnimatedVisibility(
-                    visible = !list.isNullOrEmpty()
+                    visible = list.isNotEmpty()
                 ) {
                     Card(
                         shape = shape,
@@ -104,7 +106,6 @@ fun DailyWallpaper(
                                     scaleX = scale
                                     scaleY = scale
                                 }
-
                                 alpha = lerp(
                                     start = 0.5f,
                                     stop = 1f,
@@ -120,6 +121,12 @@ fun DailyWallpaper(
                                 isSquare = true,
                                 modifier = Modifier
                                     .fillMaxSize()
+                                    .graphicsLayer {
+                                        val scale = 1.1f
+                                        scaleY = scale
+                                        scaleX = scale
+                                        translationY = scrollState.value * 0.15f
+                                    }
                             )
                             PexAnimatedHeart(
                                 state = wallpaper.isFavorite,
