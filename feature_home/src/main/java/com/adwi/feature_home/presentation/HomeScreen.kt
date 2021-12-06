@@ -77,7 +77,7 @@ fun HomeScreen(
                     .fillMaxSize()
                     .verticalScroll(state = homeListState)
                     .padding(
-                        bottom = BottomNavHeight + paddingValues
+                        bottom = BottomNavHeight
                     )
             ) {
                 Header(

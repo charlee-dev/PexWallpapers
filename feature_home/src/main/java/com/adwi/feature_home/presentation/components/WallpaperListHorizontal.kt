@@ -52,7 +52,7 @@ fun WallpaperListVerticalPanel(
             StaggeredVerticalGrid(
                 modifier = Modifier.padding(paddingValues / 2)
             ) {
-                val heights = listOf(415, 460, 375, 213, 515, 290)
+                val heights = listOf(415, 315, 375, 213, 275, 290)
                 list.forEach { wallpaper ->
                     val height by remember { mutableStateOf(heights.random().dp) }
                     WallpaperItem(
