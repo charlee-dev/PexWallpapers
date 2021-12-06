@@ -97,21 +97,17 @@ fun HomeScreen(
                         lowRes = lowRes
                     )
                 }
-                colors?.let { list ->
-                    CategoryListHorizontalPanel(
-                        panelTitle = stringResource(id = R.string.colors),
-                        verticalScrollState = homeListState,
-                        listState = colorsListState,
-                        colors = list,
-                        onCategoryClick = { onCategoryClick(it) }
-                    )
-                }
+                CategoryListHorizontalPanel(
+                    panelTitle = stringResource(id = R.string.colors),
+                    verticalScrollState = homeListState,
+                    listState = colorsListState,
+                    colors = colors,
+                    onCategoryClick = { onCategoryClick(it) }
+                )
                 curated?.let { list ->
-                    val categoryName = stringResource(id = R.string.curated)
                     WallpaperListHorizontalPanel(
-                        panelName = categoryName,
+                        panelName = stringResource(id = R.string.curated),
                         verticalScrollState = homeListState,
-                        horizontalScrollState = curatedListState,
                         wallpapers = list,
                         listState = curatedListState,
                         onWallpaperClick = { id -> onWallpaperClick(id) },

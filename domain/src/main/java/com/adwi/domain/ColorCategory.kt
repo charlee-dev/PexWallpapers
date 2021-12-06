@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.domain.model
+package com.adwi.domain
 
 data class ColorCategory(
     val name: String = "",

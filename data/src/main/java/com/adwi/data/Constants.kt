@@ -11,7 +11,7 @@ object Constants {
     const val AUTHORIZATION = "Authorization"
 
     const val DAILY_PAGE_SIZE = 31
-    const val COLORS_PAGE_SIZE = 4
+    const val COLORS_PAGE_SIZE = 1
     const val CURATED_PAGE_SIZE = 20
     const val PAGING_PAGE_SIZE = 20
 

@@ -6,11 +6,8 @@ import com.adwi.core.networkBoundResource
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.database.domain.*
 import com.adwi.data.network.PexService
-import com.adwi.data.network.domain.toEntity
 import com.adwi.data.util.keepFavorites
 import com.adwi.data.util.shouldFetch
-import com.adwi.data.util.shouldFetchColors
-import com.adwi.pexwallpapers.domain.model.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +25,6 @@ class HomeRepositoryImpl @Inject constructor(
 
     private val wallpapersDao = database.wallpaperDao()
     private val dailyDao = database.dailyDao()
-    private val categoryDao = database.categoryDao()
 
     override fun getCurated(
         forceRefresh: Boolean,
@@ -107,57 +103,6 @@ class HomeRepositoryImpl @Inject constructor(
         }
     )
 
-
-    override fun getColors(
-        forceRefresh: Boolean,
-        onFetchSuccess: () -> Unit,
-        onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<DataState<List<ColorCategory>>> = networkBoundResource(
-        query = {
-            val entities = categoryDao.getAllColors()
-            val categories = entities.map { it.toDomainList() }
-            categories
-        },
-        fetch = {
-            val colorList = mutableListOf<ColorCategoryEntity>()
-            val wallpaperList = mutableListOf<WallpaperEntity>()
-
-            colorNameList.forEach { color ->
-                val response = service.getColor(color)
-                val wallpapers = response.wallpaperList
-
-                wallpapers.forEach {
-                    val wallpaper = it.toEntity(color)
-                    wallpaperList.add(wallpaper)
-                }
-
-                colorList += ColorCategoryEntity(
-                    name = color,
-                    firstImage = wallpapers[0].src.tiny,
-                    secondImage = wallpapers[1].src.tiny,
-                    thirdImage = wallpapers[2].src.tiny,
-                    forthImage = wallpapers[3].src.tiny,
-                    timeStamp = System.currentTimeMillis()
-                )
-            }
-
-            wallpapersDao.insertWallpapers(wallpaperList)
-
-            colorList.toList()
-        },
-        saveFetchResult = { categoryDao.insertColors(it) },
-        shouldFetch = { list ->
-            if (forceRefresh) true else list.shouldFetchColors()
-        },
-        onFetchSuccess = onFetchSuccess,
-        onFetchFailed = { t ->
-            if (t !is HttpException && t !is IOException) {
-                throw t
-            }
-            onFetchRemoteFailed(t)
-        }
-    )
-
     override fun getWallpapersOfCategory(
         categoryName: String,
         forceRefresh: Boolean,
@@ -198,18 +143,4 @@ class HomeRepositoryImpl @Inject constructor(
 
     override suspend fun deleteNonFavoriteWallpapersOlderThan(timestampInMillis: Long) =
         wallpapersDao.deleteNonFavoriteWallpapersOlderThan(timestampInMillis)
-
-    private val colorNameList = listOf(
-        "Purple",
-        "Orange",
-        "White",
-        "Black and White",
-        "Violet",
-        "Pink",
-        "Yellow",
-        "Blue",
-        "Green",
-        "White",
-        "Black"
-    )
 }

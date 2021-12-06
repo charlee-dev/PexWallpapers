@@ -2,7 +2,7 @@ package com.adwi.data.database.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.adwi.pexwallpapers.domain.model.ColorCategory
+import com.adwi.domain.ColorCategory
 
 @Entity(tableName = "colors_table")
 data class ColorCategoryEntity(

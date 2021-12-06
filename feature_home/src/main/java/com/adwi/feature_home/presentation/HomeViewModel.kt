@@ -6,11 +6,14 @@ import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.base.Refresh
 import com.adwi.components.ext.onDispatcher
+import com.adwi.core.DataState
 import com.adwi.feature_home.data.HomeRepository
+import com.adwi.feature_home.data.category.colorCategoryList
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
@@ -29,9 +32,7 @@ class HomeViewModel @Inject constructor(
         getDaily(refresh == Refresh.FORCE)
     }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val colors = refreshTrigger.flatMapLatest { refresh ->
-        getColors(refresh == Refresh.FORCE)
-    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+    val colors = MutableStateFlow(colorCategoryList)
 
     val curated = refreshTrigger.flatMapLatest { refresh ->
         getCurated(refresh == Refresh.FORCE)
@@ -48,14 +49,6 @@ class HomeViewModel @Inject constructor(
             onFetchRemoteFailed = { onFetchFailed(it) }
         )
 
-    private fun getColors(refresh: Boolean = true) =
-        repository.getColors(
-            forceRefresh = refresh,
-            onFetchSuccess = { onFetchSuccess() },
-            onFetchRemoteFailed = { onFetchFailed(it) }
-        )
-
-
     private fun getCurated(refresh: Boolean = true) =
         repository.getCurated(
             forceRefresh = refresh,
@@ -63,15 +56,11 @@ class HomeViewModel @Inject constructor(
             onFetchRemoteFailed = { onFetchFailed(it) }
         )
 
-
     private fun setRefreshTriggerIfCurrentlyNotLoading(refresh: Refresh) {
-        if (curated.value !is com.adwi.core.DataState.Loading) {
+        if (curated.value !is DataState.Loading) {
             setRefreshTriggerChannel(refresh)
         }
-        if (daily.value !is com.adwi.core.DataState.Loading) {
-            setRefreshTriggerChannel(refresh)
-        }
-        if (colors.value !is com.adwi.core.DataState.Loading) {
+        if (daily.value !is DataState.Loading) {
             setRefreshTriggerChannel(refresh)
         }
     }

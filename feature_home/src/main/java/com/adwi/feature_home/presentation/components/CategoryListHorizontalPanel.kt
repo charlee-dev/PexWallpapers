@@ -35,7 +35,8 @@ import com.adwi.components.PexCoilImage
 import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
-import com.adwi.pexwallpapers.domain.model.ColorCategory
+import com.adwi.domain.ColorCategory
+import com.adwi.pexwallpapers.domain.model.Wallpaper
 
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
@@ -43,7 +44,7 @@ import com.adwi.pexwallpapers.domain.model.ColorCategory
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
     verticalScrollState: ScrollState,
-    colors: com.adwi.core.DataState<List<ColorCategory>>,
+    colors: List<Wallpaper>,
     listState: LazyListState = rememberLazyListState(),
     panelTitle: String,
     onCategoryClick: (String) -> Unit
@@ -55,21 +56,19 @@ fun CategoryListHorizontalPanel(
         )
         Box {
             ShimmerRow(
-                visible = colors.data.isNullOrEmpty() && colors.error == null
+                visible = colors.isEmpty()
             )
             ShimmerErrorMessage(
-                visible = colors.data.isNullOrEmpty() && colors.error != null,
-                message = colors.error?.localizedMessage ?: "Unknown error",
+                visible = colors.isEmpty(),
+                message = "Something bad just happened.. :/",
                 modifier = Modifier.padding(horizontal = paddingValues)
             )
-            colors.data?.let { list ->
-                CategoryListHorizontal(
-                    categoryList = list,
-                    verticalScrollState = verticalScrollState,
-                    onCategoryClick = onCategoryClick,
-                    listState = listState,
-                )
-            }
+            CategoryListHorizontal(
+                categoryList = colors,
+                verticalScrollState = verticalScrollState,
+                onCategoryClick = onCategoryClick,
+                listState = listState,
+            )
         }
     }
 }
@@ -81,7 +80,7 @@ fun CategoryListHorizontal(
     modifier: Modifier = Modifier,
     verticalScrollState: ScrollState,
     listState: LazyListState = rememberLazyListState(),
-    categoryList: List<ColorCategory>,
+    categoryList: List<Wallpaper>,
     onCategoryClick: (String) -> Unit
 ) {
     LazyRow(
@@ -95,10 +94,10 @@ fun CategoryListHorizontal(
     ) {
         items(items = categoryList, itemContent = { category ->
             CategoryItem(
-                categoryName = category.name,
+                categoryName = category.categoryName,
                 verticalScrollState = verticalScrollState,
-                image = category.firstImage,
-                onCategoryClick = { onCategoryClick(category.name) }
+                image = category.imageUrlTiny,
+                onCategoryClick = { onCategoryClick(category.categoryName) }
             )
         })
     }
@@ -135,17 +134,17 @@ private fun CategoryItem(
                 ),
             interactionSource = interactionSource
         ) {
-                PexCoilImage(
-                    imageUrl = image,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer {
-                            val scale = 1.6f
-                            scaleY = scale
-                            scaleX = scale
-                            translationY = (-verticalScrollState.value) * 0.1f
-                        }
-                )
+            PexCoilImage(
+                imageUrl = image,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        val scale = 1.6f
+                        scaleY = scale
+                        scaleX = scale
+                        translationY = (-verticalScrollState.value) * 0.1f
+                    }
+            )
         }
         Spacer(modifier = Modifier.size(paddingValues / 4))
         Text(

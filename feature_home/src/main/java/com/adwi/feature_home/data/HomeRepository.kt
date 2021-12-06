@@ -2,7 +2,6 @@ package com.adwi.feature_home.data
 
 import com.adwi.core.DataState
 import com.adwi.data.Constants.DEFAULT_DAILY_CATEGORY
-import com.adwi.pexwallpapers.domain.model.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.flow.Flow
 
@@ -20,12 +19,6 @@ interface HomeRepository {
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit
     ): Flow<DataState<List<Wallpaper>>>
-
-    fun getColors(
-        forceRefresh: Boolean,
-        onFetchSuccess: () -> Unit,
-        onFetchRemoteFailed: (Throwable) -> Unit
-    ): Flow<DataState<List<ColorCategory>>>
 
     fun getWallpapersOfCategory(
         categoryName: String,
