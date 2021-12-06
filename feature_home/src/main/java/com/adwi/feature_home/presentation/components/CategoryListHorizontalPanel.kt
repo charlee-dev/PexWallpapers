@@ -35,7 +35,6 @@ import com.adwi.components.PexCoilImage
 import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
-import com.adwi.domain.ColorCategory
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 
 @ExperimentalCoilApi
@@ -208,9 +207,9 @@ private fun CategoryItemPreviewLight() {
                 .padding(paddingValues)
         ) {
             CategoryItem(
-                categoryName = ColorCategory.mock.name,
+                categoryName = Wallpaper.defaultDaily.categoryName,
                 verticalScrollState = rememberScrollState(),
-                image = ColorCategory.mock.firstImage,
+                image = Wallpaper.defaultDaily.imageUrlTiny,
                 onCategoryClick = {}
             )
         }
@@ -229,9 +228,9 @@ private fun CategoryItemPreviewDark() {
                 .padding(paddingValues)
         ) {
             CategoryItem(
-                categoryName = ColorCategory.mock.name,
+                categoryName = Wallpaper.defaultDaily.categoryName,
                 verticalScrollState = rememberScrollState(),
-                image = ColorCategory.mock.firstImage,
+                image = Wallpaper.defaultDaily.imageUrlTiny,
                 onCategoryClick = {}
             )
         }

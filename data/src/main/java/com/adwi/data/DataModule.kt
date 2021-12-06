@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.adwi.data.Constants.WALLPAPER_DATABASE
 import com.adwi.data.database.WallpaperDatabase
-import com.adwi.data.database.dao.CategoryDao
 import com.adwi.data.database.dao.DailyDao
 import com.adwi.data.database.dao.SearchDao
 import com.adwi.data.database.dao.WallpapersDao
@@ -21,7 +20,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -47,11 +45,6 @@ object DataModule {
     @Singleton
     fun provideDailyDao(wallpaperDatabase: WallpaperDatabase): DailyDao =
         wallpaperDatabase.dailyDao()
-
-    @Provides
-    @Singleton
-    fun provideCategoryDao(wallpaperDatabase: WallpaperDatabase): CategoryDao =
-        wallpaperDatabase.categoryDao()
 
     @Provides
     @Singleton
