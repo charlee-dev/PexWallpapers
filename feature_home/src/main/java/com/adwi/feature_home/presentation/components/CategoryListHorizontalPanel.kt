@@ -1,10 +1,11 @@
 package com.adwi.feature_home.presentation.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,12 +16,12 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -101,25 +102,39 @@ private fun CategoryItem(
     image: String,
     onCategoryClick: () -> Unit
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
+    var isPressed by remember { mutableStateOf(false) }
+    val pressed = updateTransition(targetState = isPressed, label = "Press")
+    val scale by pressed.animateFloat(label = "Scale") {
+        if (it) .98f else 1f
+    }
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            onClick = onCategoryClick,
             shape = shape,
             backgroundColor = MaterialTheme.colors.primary,
             modifier = modifier
                 .size(100.dp)
                 .neumorphicShadow(
-                    isPressed = isPressed,
                     cornerRadius = 10.dp,
-                    offset = (-5).dp
-                ),
-            interactionSource = interactionSource
+                    offset = (-7).dp
+                )
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { onCategoryClick() },
+                        onPress = {
+                            isPressed = true
+                            this.tryAwaitRelease()
+                            isPressed = false
+                        }
+                    )
+                }
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                }
         ) {
             PexCoilImage(
                 imageUrl = image,

@@ -1,21 +1,22 @@
 package com.adwi.feature_home.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateInt
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +24,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,7 +32,6 @@ import androidx.compose.ui.util.lerp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.R
-import com.adwi.components.theme.Neutral2
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.domain.model.Wallpaper
@@ -52,9 +53,6 @@ fun DailyWallpaper(
     onLongPress: (Wallpaper) -> Unit,
     lowRes: Boolean = false
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-
     BoxWithConstraints(
         modifier = modifier
     ) {
@@ -80,7 +78,27 @@ fun DailyWallpaper(
                     contentPadding = PaddingValues(horizontal = paddingValues),
                     itemSpacing = paddingValues
                 ) { page ->
+
                     val wallpaper = list[page]
+
+                    var isPressed by remember { mutableStateOf(false) }
+                    val pressed = updateTransition(targetState = isPressed, label = "Press")
+
+                    val pressedScale by pressed.animateFloat(label = "Scale") {
+                        if (it) .98f else 1f
+                    }
+                    val textWeight by pressed.animateInt(
+                        label = "Weight",
+                        transitionSpec = { tween(durationMillis = 1000) }
+                    ) { state ->
+                        if (state) 650 else 450
+                    }
+                    val textSpacing by pressed.animateFloat(
+                        label = "Letter spacing",
+                        transitionSpec = { tween(durationMillis = 500) }
+                    ) { state ->
+                        if (state) 1f else 1.2f
+                    }
 
                     AnimatedVisibility(
                         visible = list.isNotEmpty()
@@ -94,6 +112,11 @@ fun DailyWallpaper(
                                     detectTapGestures(
                                         onLongPress = { onLongPress(wallpaper) },
                                         onTap = { onWallpaperClick(wallpaper.id) },
+                                        onPress = {
+                                            isPressed = true
+                                            this.tryAwaitRelease()
+                                            isPressed = false
+                                        }
                                     )
                                 }
                                 .graphicsLayer {
@@ -105,8 +128,10 @@ fun DailyWallpaper(
                                         stop = 1f,
                                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                     ).also { scale ->
-                                        scaleX = scale
-                                        scaleY = scale
+                                        scaleX =
+                                            if (pagerState.isScrollInProgress) scale else pressedScale
+                                        scaleY =
+                                            if (pagerState.isScrollInProgress) scale else pressedScale
                                     }
                                     alpha = lerp(
                                         start = 0.5f,
@@ -114,7 +139,7 @@ fun DailyWallpaper(
                                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                     )
                                 }
-                                .neumorphicShadow(isPressed = isPressed)
+                                .neumorphicShadow()
                         ) {
                             Box {
                                 PexCoilImage(
@@ -155,12 +180,15 @@ fun DailyWallpaper(
                                             Text(
                                                 text = stringResource(R.string.daily),
                                                 fontSize = 24.sp,
-                                                color = MaterialTheme.colors.onBackground
+                                                color = MaterialTheme.colors.onBackground,
+                                                fontWeight = FontWeight(textWeight)
                                             )
                                             Text(
                                                 text = stringResource(R.string.wallpaper),
                                                 fontSize = 24.sp,
-                                                color = MaterialTheme.colors.onBackground
+                                                color = MaterialTheme.colors.onBackground,
+                                                fontWeight = FontWeight(textWeight),
+                                                letterSpacing = textSpacing.sp
                                             )
                                         }
                                     }
@@ -174,8 +202,9 @@ fun DailyWallpaper(
                     modifier = Modifier
                         .padding(top = paddingValues)
                         .padding(horizontal = paddingValues),
-                    activeColor = MaterialTheme.colors.primary,
-                    inactiveColor = Neutral2
+                    activeColor = if (!isSystemInDarkTheme())
+                        MaterialTheme.colors.primary else MaterialTheme.colors.primaryVariant,
+                    inactiveColor = MaterialTheme.colors.secondary
                 )
             }
         }

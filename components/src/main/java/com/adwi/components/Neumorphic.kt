@@ -40,7 +40,7 @@ fun Modifier.neumorphicShadow(
     topShadowDark: Color = Neutral3,
     bottomShadowLight: Color = PrimaryShadowDark,
     bottomShadowDark: Color = Neutral5,
-    alpha: Float = .9f,
+    alpha: Float = .99f,
     cornerRadius: Dp = 30.dp,
     shadowRadius: Dp = 10.dp,
     offset: Dp = (-10).dp,
