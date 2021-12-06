@@ -1,8 +1,6 @@
 package com.adwi.feature_home.presentation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.components.CategoryTitle
 import com.adwi.components.Header
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
@@ -19,7 +18,7 @@ import com.adwi.components.theme.paddingValues
 import com.adwi.feature_home.R
 import com.adwi.feature_home.presentation.components.CategoryListHorizontalPanel
 import com.adwi.feature_home.presentation.components.DailyWallpaper
-import com.adwi.feature_home.presentation.components.WallpaperListHorizontalPanel
+import com.adwi.feature_home.presentation.components.WallpaperListVerticalPanel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -90,29 +89,33 @@ fun HomeScreen(
                         scrollState = homeListState,
                         pagerState = pagerState,
                         modifier = Modifier
-                            .padding(vertical = paddingValues / 2),
+                            .padding(top = paddingValues / 2),
                         dailyList = list,
                         onWallpaperClick = { id -> onWallpaperClick(id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         lowRes = lowRes
                     )
                 }
+                Spacer(modifier = Modifier.size(paddingValues))
+                CategoryTitle(
+                    name = stringResource(id = R.string.colors),
+                    modifier = Modifier.padding(horizontal = paddingValues)
+                )
                 CategoryListHorizontalPanel(
-                    panelTitle = stringResource(id = R.string.colors),
-                    verticalScrollState = homeListState,
                     listState = colorsListState,
                     colors = colors,
-                    onCategoryClick = { onCategoryClick(it) }
+                    onCategoryClick = { onCategoryClick(it) },
                 )
-                curated?.let { list ->
-                    WallpaperListHorizontalPanel(
-                        panelName = stringResource(id = R.string.curated),
-                        verticalScrollState = homeListState,
-                        wallpapers = list,
-                        listState = curatedListState,
-                        onWallpaperClick = { id -> onWallpaperClick(id) },
-                        onLongPress = { viewModel.onFavoriteClick(it) },
-                        onShowMoreClick = navigateToSearch
+                Spacer(modifier = Modifier.size(paddingValues / 2))
+                curated?.let { curatedState ->
+                    CategoryTitle(
+                        name = stringResource(id = R.string.curated),
+                        modifier = Modifier.padding(horizontal = paddingValues)
+                    )
+                    WallpaperListVerticalPanel(
+                        wallpapers = curatedState,
+                        onWallpaperClick = onWallpaperClick,
+                        onLongPress = { viewModel.onFavoriteClick(it) }
                     )
                 }
             }

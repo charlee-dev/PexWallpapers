@@ -30,6 +30,7 @@ import androidx.compose.ui.util.lerp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.R
+import com.adwi.components.theme.Neutral2
 import com.adwi.components.theme.PrimaryDark
 import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.domain.model.Wallpaper
@@ -71,101 +72,111 @@ fun DailyWallpaper(
         )
 
         dailyList.data?.let { list ->
-            HorizontalPager(
-                state = pagerState,
-                count = list.size,
-                modifier = Modifier.align(Alignment.Center),
-                contentPadding = PaddingValues(horizontal = paddingValues),
-                itemSpacing = paddingValues
-            ) { page ->
-                val wallpaper = list[page]
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                HorizontalPager(
+                    state = pagerState,
+                    count = list.size,
+                    modifier = Modifier,
+                    contentPadding = PaddingValues(horizontal = paddingValues),
+                    itemSpacing = paddingValues
+                ) { page ->
+                    val wallpaper = list[page]
 
-                AnimatedVisibility(
-                    visible = list.isNotEmpty()
-                ) {
-                    Card(
-                        shape = shape,
-                        backgroundColor = MaterialTheme.colors.primary,
-                        modifier = Modifier
-                            .height(width)
-                            .pointerInput(Unit) {
-                                detectTapGestures(
-                                    onLongPress = { onLongPress(wallpaper) },
-                                    onTap = { onWallpaperClick(wallpaper.id) },
-                                )
-                            }
-                            .graphicsLayer {
-                                val pageOffset =
-                                    calculateCurrentOffsetForPage(page).absoluteValue
-
-                                lerp(
-                                    start = 0.85f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                ).also { scale ->
-                                    scaleX = scale
-                                    scaleY = scale
-                                }
-                                alpha = lerp(
-                                    start = 0.5f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            }
-                            .neumorphicShadow(isPressed = isPressed)
+                    AnimatedVisibility(
+                        visible = list.isNotEmpty()
                     ) {
-                        Box {
-                            PexCoilImage(
-                                imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlLandscape,
-                                wallpaperId = wallpaper.id,
-                                isSquare = true,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .graphicsLayer {
-                                        val scale = 1.1f
-                                        scaleY = scale
+                        Card(
+                            shape = shape,
+                            backgroundColor = MaterialTheme.colors.primary,
+                            modifier = Modifier
+                                .height(width)
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onLongPress = { onLongPress(wallpaper) },
+                                        onTap = { onWallpaperClick(wallpaper.id) },
+                                    )
+                                }
+                                .graphicsLayer {
+                                    val pageOffset =
+                                        calculateCurrentOffsetForPage(page).absoluteValue
+
+                                    lerp(
+                                        start = 0.85f,
+                                        stop = 1f,
+                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                    ).also { scale ->
                                         scaleX = scale
-                                        translationY = scrollState.value * 0.15f
+                                        scaleY = scale
                                     }
-                            )
-                            PexAnimatedHeart(
-                                state = wallpaper.isFavorite,
-                                size = 128.dp,
-                                speed = 1.5f,
-                                modifier = Modifier.align(Alignment.TopEnd)
-                            )
-                            Card(
-                                modifier = Modifier
-                                    .padding(all = paddingValues)
-                                    .fillMaxSize(.5f)
-                                    .align(Alignment.BottomStart),
-                                shape = shape
-                            ) {
-                                Box(
+                                    alpha = lerp(
+                                        start = 0.5f,
+                                        stop = 1f,
+                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                    )
+                                }
+                                .neumorphicShadow(isPressed = isPressed)
+                        ) {
+                            Box {
+                                PexCoilImage(
+                                    imageUrl = if (lowRes) wallpaper.imageUrlTiny else wallpaper.imageUrlLandscape,
+                                    wallpaperId = wallpaper.id,
+                                    isSquare = true,
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .background(MaterialTheme.colors.secondary)
+                                        .graphicsLayer {
+                                            val scale = 1.1f
+                                            scaleY = scale
+                                            scaleX = scale
+                                            translationY = scrollState.value * 0.15f
+                                        }
+                                )
+                                PexAnimatedHeart(
+                                    state = wallpaper.isFavorite,
+                                    size = 128.dp,
+                                    speed = 1.5f,
+                                    modifier = Modifier.align(Alignment.TopEnd)
+                                )
+                                Card(
+                                    modifier = Modifier
+                                        .padding(all = paddingValues)
+                                        .fillMaxSize(.5f)
+                                        .align(Alignment.BottomStart),
+                                    shape = shape
                                 ) {
-                                    Column(
+                                    Box(
                                         modifier = Modifier
-                                            .align(Alignment.Center)
+                                            .fillMaxSize()
+                                            .background(MaterialTheme.colors.secondary)
                                     ) {
-                                        Text(
-                                            text = stringResource(R.string.daily),
-                                            fontSize = 24.sp,
-                                            color = MaterialTheme.colors.onBackground
-                                        )
-                                        Text(
-                                            text = stringResource(R.string.wallpaper),
-                                            fontSize = 24.sp,
-                                            color = MaterialTheme.colors.onBackground
-                                        )
+                                        Column(
+                                            modifier = Modifier
+                                                .align(Alignment.Center)
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.daily),
+                                                fontSize = 24.sp,
+                                                color = MaterialTheme.colors.onBackground
+                                            )
+                                            Text(
+                                                text = stringResource(R.string.wallpaper),
+                                                fontSize = 24.sp,
+                                                color = MaterialTheme.colors.onBackground
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                HorizontalPagerIndicator(
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .padding(top = paddingValues)
+                        .padding(horizontal = paddingValues),
+                    activeColor = MaterialTheme.colors.primary,
+                    inactiveColor = Neutral2
+                )
             }
         }
     }

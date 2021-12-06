@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.components.CategoryPanel
+import com.adwi.components.CategoryTitle
 import com.adwi.components.Header
 import com.adwi.components.PexExpandableCard
 import com.adwi.components.PexScaffold
@@ -50,7 +50,10 @@ fun PrivacyPolicyScreen(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues),
                 ) {
-                    CategoryPanel(categoryName = category.name)
+                    CategoryTitle(
+                        name = category.name,
+                        modifier = Modifier.padding(bottom = paddingValues)
+                    )
                     category.items.forEach { item ->
                         PexExpandableCard(
                             modifier = Modifier,

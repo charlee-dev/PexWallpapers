@@ -1,7 +1,6 @@
 package com.adwi.feature_home.presentation.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,14 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.CategoryPanel
 import com.adwi.components.CategoryTitle
 import com.adwi.components.PexCoilImage
 import com.adwi.components.neumorphicShadow
@@ -42,17 +39,11 @@ import com.adwi.pexwallpapers.domain.model.Wallpaper
 @Composable
 fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
     colors: List<Wallpaper>,
     listState: LazyListState = rememberLazyListState(),
-    panelTitle: String,
     onCategoryClick: (String) -> Unit
 ) {
     Column(modifier = modifier.animateContentSize()) {
-        CategoryPanel(
-            categoryName = panelTitle,
-            modifier = Modifier.padding(horizontal = paddingValues)
-        )
         Box {
             ShimmerRow(
                 visible = colors.isEmpty()
@@ -64,7 +55,6 @@ fun CategoryListHorizontalPanel(
             )
             CategoryListHorizontal(
                 categoryList = colors,
-                verticalScrollState = verticalScrollState,
                 onCategoryClick = onCategoryClick,
                 listState = listState,
             )
@@ -77,7 +67,6 @@ fun CategoryListHorizontalPanel(
 @Composable
 fun CategoryListHorizontal(
     modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
     listState: LazyListState = rememberLazyListState(),
     categoryList: List<Wallpaper>,
     onCategoryClick: (String) -> Unit
@@ -94,9 +83,9 @@ fun CategoryListHorizontal(
         items(items = categoryList, itemContent = { category ->
             CategoryItem(
                 categoryName = category.categoryName,
-                verticalScrollState = verticalScrollState,
                 image = category.imageUrlTiny,
-                onCategoryClick = { onCategoryClick(category.categoryName) }
+                onCategoryClick = { onCategoryClick(category.categoryName) },
+                modifier = Modifier.padding(top = paddingValues / 2)
             )
         })
     }
@@ -107,7 +96,6 @@ fun CategoryListHorizontal(
 @Composable
 private fun CategoryItem(
     modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
     shape: Shape = MaterialTheme.shapes.small,
     categoryName: String,
     image: String,
@@ -135,14 +123,7 @@ private fun CategoryItem(
         ) {
             PexCoilImage(
                 imageUrl = image,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer {
-                        val scale = 1.6f
-                        scaleY = scale
-                        scaleX = scale
-                        translationY = (-verticalScrollState.value) * 0.1f
-                    }
+                modifier = Modifier.fillMaxSize()
             )
         }
         Spacer(modifier = Modifier.size(paddingValues / 4))
@@ -208,7 +189,6 @@ private fun CategoryItemPreviewLight() {
         ) {
             CategoryItem(
                 categoryName = Wallpaper.defaultDaily.categoryName,
-                verticalScrollState = rememberScrollState(),
                 image = Wallpaper.defaultDaily.imageUrlTiny,
                 onCategoryClick = {}
             )
@@ -229,7 +209,6 @@ private fun CategoryItemPreviewDark() {
         ) {
             CategoryItem(
                 categoryName = Wallpaper.defaultDaily.categoryName,
-                verticalScrollState = rememberScrollState(),
                 image = Wallpaper.defaultDaily.imageUrlTiny,
                 onCategoryClick = {}
             )

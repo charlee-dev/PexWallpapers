@@ -51,16 +51,7 @@ fun FavoritesScreen(
     val scrollState = rememberScrollState()
 
     PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-        ) {
-            Header(
-                title = stringResource(id = R.string.favorites),
-                onActionClick = onSearchClick,
-                icon = Icons.Outlined.Favorite,
-            )
+        Box(modifier = Modifier.fillMaxSize()) {
             AnimatedVisibility(
                 visible = wallpapers.isEmpty(),
                 enter = fadeIn(),
@@ -73,19 +64,30 @@ fun FavoritesScreen(
                     )
                 }
             }
-            wallpapers.forEachIndexed { index, wallpaper ->
-                Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))
-                WallpaperItemVertical(
-                    wallpaper = wallpaper,
-                    verticalScrollState = scrollState.value - (index * 800),
-                    onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                    onLongPress = { viewModel.onFavoriteClick(it) },
-                    isHeartEnabled = wallpaper.isFavorite,
-                    modifier = Modifier.padding(horizontal = paddingValues),
-                    lowRes = lowRes
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+            ) {
+                Header(
+                    title = stringResource(id = R.string.favorites),
+                    onActionClick = onSearchClick,
+                    icon = Icons.Outlined.Favorite,
                 )
+                wallpapers.forEachIndexed { index, wallpaper ->
+                    Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))
+                    WallpaperItemVertical(
+                        wallpaper = wallpaper,
+                        verticalScrollState = scrollState.value - (index * 800),
+                        onWallpaperClick = { onWallpaperClick(wallpaper.id) },
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        isHeartEnabled = wallpaper.isFavorite,
+                        modifier = Modifier.padding(horizontal = paddingValues),
+                        lowRes = lowRes
+                    )
+                }
+                Spacer(modifier = Modifier.size(BottomNavHeight + paddingValues))
             }
-            Spacer(modifier = Modifier.size(BottomNavHeight + paddingValues))
         }
     }
 }

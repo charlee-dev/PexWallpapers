@@ -1,34 +1,28 @@
 package com.adwi.feature_home.presentation.components
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.CategoryPanel
 import com.adwi.components.PexAnimatedHeart
 import com.adwi.components.PexCoilImage
+import com.adwi.components.StaggeredVerticalGrid
 import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
@@ -38,23 +32,13 @@ import com.adwi.pexwallpapers.domain.model.Wallpaper
 @ExperimentalCoilApi
 @ExperimentalMaterialApi
 @Composable
-fun WallpaperListHorizontalPanel(
+fun WallpaperListVerticalPanel(
     modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
     wallpapers: DataState<List<Wallpaper>>,
-    listState: LazyListState = rememberLazyListState(),
-    panelName: String = "",
     onWallpaperClick: (Int) -> Unit,
-    onShowMoreClick: () -> Unit,
     onLongPress: (Wallpaper) -> Unit
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        CategoryPanel(
-            categoryName = panelName,
-            onShowMoreClick = onShowMoreClick,
-            showMore = true,
-            modifier = Modifier.padding(horizontal = paddingValues)
-        )
         ShimmerRow(
             visible = wallpapers.data.isNullOrEmpty() && wallpapers.error == null
         )
@@ -65,57 +49,33 @@ fun WallpaperListHorizontalPanel(
             modifier = Modifier.padding(horizontal = paddingValues)
         )
         wallpapers.data?.let { list ->
-            WallpaperListHorizontal(
-                listState = listState,
-                verticalScrollState = verticalScrollState,
-                onWallpaperClick = onWallpaperClick,
-                onLongPress = onLongPress,
-                wallpapers = list
-            )
+            StaggeredVerticalGrid(
+                modifier = Modifier.padding(paddingValues / 2)
+            ) {
+                val heights = listOf(415, 460, 375, 213, 515, 290)
+                list.forEach { wallpaper ->
+                    val height by remember { mutableStateOf(heights.random().dp) }
+                    WallpaperItem(
+                        wallpaper = wallpaper,
+                        onWallpaperClick = { onWallpaperClick(wallpaper.id) },
+                        onLongPress = { onLongPress(wallpaper) },
+                        isHeartEnabled = wallpaper.isFavorite,
+                        modifier = Modifier
+                            .height(height)
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                    )
+                }
+            }
         }
     }
 }
 
-@ExperimentalCoilApi
-@ExperimentalMaterialApi
-@Composable
-private fun WallpaperListHorizontal(
-    modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
-    listState: LazyListState = rememberLazyListState(),
-    wallpapers: List<Wallpaper>,
-    onWallpaperClick: (Int) -> Unit,
-    onLongPress: (Wallpaper) -> Unit
-) {
-    LazyRow(
-        state = listState,
-        modifier = modifier
-            .fillMaxWidth(),
-        contentPadding = PaddingValues(
-            start = paddingValues,
-            end = paddingValues
-        ),
-        horizontalArrangement = Arrangement.spacedBy(paddingValues)
-    ) {
-        itemsIndexed(items = wallpapers, itemContent = { _, wallpaper ->
-            WallpaperItem(
-                wallpaper = wallpaper,
-                verticalScrollState = verticalScrollState,
-                onWallpaperClick = { onWallpaperClick(wallpaper.id) },
-                onLongPress = { onLongPress(wallpaper) },
-                isHeartEnabled = wallpaper.isFavorite,
-                modifier = Modifier
-            )
-        })
-    }
-}
-
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 @Composable
-private fun WallpaperItem(
+fun WallpaperItem(
     modifier: Modifier = Modifier,
-    verticalScrollState: ScrollState,
     shape: Shape = MaterialTheme.shapes.small,
     wallpaper: Wallpaper,
     onWallpaperClick: () -> Unit,
@@ -127,8 +87,7 @@ private fun WallpaperItem(
 
     Column(
         modifier = modifier.neumorphicShadow(
-            cornerRadius = 10.dp,
-            offset = (-5).dp,
+            offset = (-3).dp,
             isPressed = isPressed
         ),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -141,24 +100,17 @@ private fun WallpaperItem(
                 .size(100.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
-                        onLongPress = { onLongPress() },
-//                        onTap = { onWallpaperClick() },
+                        onLongPress = { onLongPress() }
                     )
                 },
             interactionSource = interactionSource
         ) {
             Box {
                 PexCoilImage(
-                    imageUrl = wallpaper.imageUrlTiny,
+                    imageUrl = wallpaper.imageUrlPortrait,
                     modifier = Modifier
                         .fillMaxSize()
-                        .align(Alignment.Center)
-                        .graphicsLayer {
-                            val scale = 1.6f
-                            scaleY = scale
-                            scaleX = scale
-                            translationY = (-verticalScrollState.value) * 0.1f
-                        },
+                        .align(Alignment.Center),
                     wallpaperId = wallpaper.id,
                     contentScale = ContentScale.Crop
                 )
@@ -187,7 +139,6 @@ private fun WallpaperListPanelPreviewLight() {
         ) {
             WallpaperItem(
                 onLongPress = {},
-                verticalScrollState = rememberScrollState(),
                 onWallpaperClick = {},
                 wallpaper = Wallpaper.defaultDaily,
                 isHeartEnabled = true
@@ -209,7 +160,6 @@ private fun WallpaperListPanelPreviewDark() {
         ) {
             WallpaperItem(
                 onLongPress = {},
-                verticalScrollState = rememberScrollState(),
                 onWallpaperClick = {},
                 wallpaper = Wallpaper.defaultDaily,
                 isHeartEnabled = true

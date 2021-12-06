@@ -58,6 +58,7 @@ dependencies {
     implementation(Dependencies.timber)
     implementation(Dependencies.coil)
     implementation(Dependencies.accompanistPager)
+    implementation(Dependencies.accompanistPagerIndicators)
     implementation(Dependencies.accompanistSwipeRefresh)
     implementation(Dependencies.shimmer)
 

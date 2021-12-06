@@ -79,7 +79,10 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                 ) {
-                    CategoryPanel(categoryName = stringResource(id = R.string.notifications))
+                    CategoryTitle(
+                        name = stringResource(id = R.string.notifications),
+                        modifier = Modifier.padding(bottom = paddingValues)
+                    )
                     PexExpandableCard(
                         modifier = Modifier,
                         headerText = stringResource(id = R.string.push_notifications)
@@ -105,7 +108,10 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                 ) {
-                    CategoryPanel(categoryName = stringResource(id = R.string.automation))
+                    CategoryTitle(
+                        name = stringResource(id = R.string.automation),
+                        modifier = Modifier.padding(top = paddingValues / 2, bottom = paddingValues)
+                    )
                     PexExpandableCard(
                         modifier = Modifier,
                         headerText = stringResource(id = R.string.auto_change_wallpaper)
@@ -170,7 +176,10 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = paddingValues)
                 ) {
-                    CategoryPanel(categoryName = stringResource(id = R.string.data_usage))
+                    CategoryTitle(
+                        name = stringResource(id = R.string.data_usage),
+                        modifier = Modifier.padding(top = paddingValues / 2, bottom = paddingValues)
+                    )
                     PexExpandableCard(
                         modifier = Modifier,
                         headerText = stringResource(id = R.string.activate_data_saver)
