@@ -35,17 +35,20 @@ fun WallpaperListVerticalPanel(
     modifier: Modifier = Modifier,
     wallpapers: DataState<List<Wallpaper>>,
     onWallpaperClick: (Int) -> Unit,
-    onLongPress: (Wallpaper) -> Unit
+    onLongPress: (Wallpaper) -> Unit,
+    showShadows: Boolean
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         ShimmerRow(
-            visible = wallpapers.data.isNullOrEmpty() && wallpapers.error == null
+            visible = wallpapers.data.isNullOrEmpty() && wallpapers.error == null,
+            showShadows = showShadows
         )
         ShimmerErrorMessage(
             visible = wallpapers.data.isNullOrEmpty() && wallpapers.error != null,
             message = wallpapers.error?.localizedMessage
                 ?: "Unknown error occurred",
-            modifier = Modifier.padding(horizontal = paddingValues)
+            modifier = Modifier.padding(horizontal = paddingValues),
+            showShadows = showShadows
         )
         wallpapers.data?.let { list ->
             StaggeredVerticalGrid(
@@ -59,6 +62,7 @@ fun WallpaperListVerticalPanel(
                         onWallpaperClick = { onWallpaperClick(wallpaper.id) },
                         onLongPress = { onLongPress(wallpaper) },
                         isHeartEnabled = wallpaper.isFavorite,
+                        showShadows = showShadows,
                         modifier = Modifier
                             .height(height)
                             .fillMaxWidth()
@@ -80,6 +84,7 @@ fun WallpaperItem(
     onWallpaperClick: () -> Unit,
     onLongPress: () -> Unit,
     isHeartEnabled: Boolean,
+    showShadows: Boolean = true
 ) {
     var isPressed by remember { mutableStateOf(false) }
     val pressed = updateTransition(targetState = isPressed, label = "Press")
@@ -93,6 +98,7 @@ fun WallpaperItem(
 
     Column(
         modifier = modifier.neumorphicShadow(
+            enabled = showShadows,
             offset = (-5).dp
         ),
         horizontalAlignment = Alignment.CenterHorizontally,

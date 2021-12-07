@@ -41,7 +41,8 @@ fun PrivacyPolicyScreen(
                     modifier = Modifier,
                     title = "Privacy policy",
                     icon = Icons.Outlined.PrivacyTip,
-                    actionIcon = null
+                    actionIcon = null,
+                    showShadows = viewModel.showShadows
                 )
             }
             items(items = privacyCategoryList) { category ->
@@ -57,7 +58,8 @@ fun PrivacyPolicyScreen(
                     category.items.forEach { item ->
                         PexExpandableCard(
                             modifier = Modifier,
-                            headerText = item.title
+                            headerText = item.title,
+                            showShadows = viewModel.showShadows
                         ) {
                             PrivacyItemDescription(
                                 text = item.description,

@@ -57,4 +57,10 @@ interface SettingsDao {
 
     @Query("UPDATE settings_table SET autoChangeOverWiFi = :enabled")
     suspend fun updateAutoChangeOverWiFi(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET showShadows = :enabled")
+    suspend fun updateDisableShadows(enabled: Boolean)
+
+    @Query("UPDATE settings_table SET showParallax = :enabled")
+    suspend fun updateDisableParallax(enabled: Boolean)
 }

@@ -37,7 +37,7 @@ fun ImageActionButtons(
     val favoriteTransition = updateTransition(targetState = isFavorite, label = "Card")
 
     val tintColor by favoriteTransition.animateColor(label = "Favorite icon color") { state ->
-        if (state) Color.Red else MaterialTheme.colors.primary
+        if (state) Color.Red else MaterialTheme.colors.onBackground
     }
 
     Row(

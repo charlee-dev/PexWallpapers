@@ -23,12 +23,13 @@ fun PreviewCard(
     modifier: Modifier = Modifier,
     wallpaper: Wallpaper,
     shape: Shape = MaterialTheme.shapes.large,
+    showShadows: Boolean
 ) {
     Card(
         shape = shape,
         modifier = modifier
             .fillMaxSize()
-            .neumorphicShadow()
+            .neumorphicShadow(enabled = showShadows)
     ) {
         PexCoilImage(
             imageUrl = wallpaper.imageUrlPortrait,
@@ -49,7 +50,10 @@ private fun PreviewCardPreviewLight() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            PreviewCard(wallpaper = Wallpaper.defaultDaily)
+            PreviewCard(
+                wallpaper = Wallpaper.defaultDaily,
+                showShadows = true
+            )
         }
     }
 }
@@ -65,7 +69,10 @@ private fun PreviewCardPreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            PreviewCard(wallpaper = Wallpaper.defaultDaily)
+            PreviewCard(
+                wallpaper = Wallpaper.defaultDaily,
+                showShadows = true
+            )
         }
     }
 }

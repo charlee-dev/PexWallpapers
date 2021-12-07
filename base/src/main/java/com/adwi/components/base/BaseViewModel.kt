@@ -3,6 +3,7 @@ package com.adwi.components.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adwi.components.ext.exhaustive
+import com.adwi.core.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,19 +27,22 @@ abstract class BaseViewModel : ViewModel() {
     val snackBarMessage = _snackBarMessage.asStateFlow()
     val toastMessage = _toastMessage.asStateFlow()
 
-    private val eventChannel = Channel<com.adwi.core.Event>()
+    private val eventChannel = Channel<Event>()
     private val refreshTriggerChannel = Channel<Refresh>()
 
     private val events = eventChannel.receiveAsFlow()
     val refreshTrigger = refreshTriggerChannel.receiveAsFlow()
 
+    // Settings
     var lowRes = false
+    var showShadows = true
+    var showParallax = true
 
     init {
         getEvents()
     }
 
-    fun setEvent(event: com.adwi.core.Event) {
+    fun setEvent(event: Event) {
         viewModelScope.launch(Dispatchers.IO) {
             eventChannel.send(event)
         }
@@ -48,13 +52,13 @@ abstract class BaseViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             events.collect { event ->
                 when (event) {
-                    is com.adwi.core.Event.ShowErrorMessage -> {
+                    is Event.ShowErrorMessage -> {
                         Timber.tag(tag).d(
                             event.error.localizedMessage ?: "Something went wrong.. :/"
                         )
                     }
-                    is com.adwi.core.Event.ShowSnackBar -> setSnackBar(event.message)
-                    is com.adwi.core.Event.ShowToast -> setToast(event.message)
+                    is Event.ShowSnackBar -> setSnackBar(event.message)
+                    is Event.ShowToast -> setToast(event.message)
                 }.exhaustive
             }
         }
@@ -93,7 +97,7 @@ abstract class BaseViewModel : ViewModel() {
     protected fun onFetchFailed(throwable: Throwable) {
         Timber.tag(tag).d("onFetchFailed")
         setIsRefreshing(false)
-        setEvent(com.adwi.core.Event.ShowErrorMessage(throwable))
+        setEvent(Event.ShowErrorMessage(throwable))
     }
 }
 

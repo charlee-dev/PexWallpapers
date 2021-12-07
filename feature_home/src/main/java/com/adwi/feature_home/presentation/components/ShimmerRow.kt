@@ -27,7 +27,8 @@ fun ShimmerRow(
     visible: Boolean,
     elevation: Dp = Dimensions.small,
     shape: Shape = MaterialTheme.shapes.small,
-    backgroundColor: Color = MaterialTheme.colors.secondaryVariant
+    backgroundColor: Color = MaterialTheme.colors.secondaryVariant,
+    showShadows: Boolean
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -49,7 +50,7 @@ fun ShimmerRow(
                             .padding(paddingValues / 2)
                             .size(100.dp)
                             .shimmer()
-                            .neumorphicShadow(),
+                            .neumorphicShadow(enabled = showShadows),
                         shape = shape,
                         backgroundColor = backgroundColor,
                         content = {}
@@ -69,7 +70,10 @@ private fun ShimmerRowPreviewLight() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            ShimmerRow(visible = true)
+            ShimmerRow(
+                visible = true,
+                showShadows = true
+            )
         }
     }
 }
@@ -83,7 +87,10 @@ private fun ShimmerRowPreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            ShimmerRow(visible = true)
+            ShimmerRow(
+                visible = true,
+                showShadows = true
+            )
         }
     }
 }

@@ -34,6 +34,7 @@ fun ShimmerErrorMessage(
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.primary,
     textColor: Color = MaterialTheme.colors.onPrimary,
+    showShadows: Boolean
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -49,7 +50,7 @@ fun ShimmerErrorMessage(
                     .align(Alignment.Center)
                     .shimmer()
                     .padding(bottom = paddingValues)
-                    .neumorphicShadow()
+                    .neumorphicShadow(enabled = showShadows)
             ) {
                 Box(modifier = Modifier.background(backgroundColor)) {
                     LoadingErrorText(
@@ -77,7 +78,10 @@ private fun ShimmerErrorMessagePreviewLight() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            ShimmerErrorMessage(visible = true)
+            ShimmerErrorMessage(
+                visible = true,
+                showShadows = true
+            )
         }
     }
 }
@@ -92,7 +96,10 @@ private fun ShimmerErrorMessagePreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            ShimmerErrorMessage(visible = true)
+            ShimmerErrorMessage(
+                visible = true,
+                showShadows = true
+            )
         }
     }
 }

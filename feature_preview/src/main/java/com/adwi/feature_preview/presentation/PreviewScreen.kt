@@ -59,7 +59,8 @@ fun PreviewScreen(
                 modifier = Modifier,
                 title = stringResource(id = R.string.preview),
                 icon = Icons.Outlined.Image,
-                actionIcon = null
+                actionIcon = null,
+                showShadows = viewModel.showShadows
             )
             wallpaper?.let {
                 val infiniteTransition = rememberInfiniteTransition()
@@ -78,6 +79,7 @@ fun PreviewScreen(
                 Box(modifier = Modifier.weight(1f)) {
                     PreviewCard(
                         wallpaper = it,
+                        showShadows = viewModel.showShadows,
                         modifier = Modifier
                             .padding(horizontal = paddingValues)
                             .padding(vertical = paddingValues / 2)
@@ -134,6 +136,7 @@ fun PreviewScreen(
                         topStartPercent = 100,
                         topEndPercent = 100
                     ),
+                    showShadows = viewModel.showShadows,
                     modifier = Modifier
                         .padding(top = paddingValues)
                         .fillMaxWidth()

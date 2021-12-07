@@ -31,7 +31,8 @@ fun SaveButton(
     modifier: Modifier = Modifier,
     state: com.adwi.core.Resource = com.adwi.core.Resource.Idle,
     enabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    showShadows: Boolean
 ) {
     var doNotShowRationale by rememberSaveable {
         mutableStateOf(false)
@@ -51,6 +52,7 @@ fun SaveButton(
                 text = stringResource(id = R.string.save),
                 successText = stringResource(id = R.string.automation_saved),
                 modifier = modifier,
+                showShadows = showShadows
             )
 
         }
@@ -74,7 +76,8 @@ fun SaveButton(
                         text = stringResource(R.string.request_permission),
                         backgroundColor = Color.Green,
                         textColor = Color.Black,
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(40.dp),
+                        showShadows = true
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     PexButton(
@@ -82,7 +85,8 @@ fun SaveButton(
                         text = stringResource(R.string.dont_show_rationale_again),
                         backgroundColor = Color.Red,
                         textColor = Color.White,
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(40.dp),
+                        showShadows = true
                     )
                 }
             }

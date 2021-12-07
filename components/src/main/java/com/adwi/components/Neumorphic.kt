@@ -35,6 +35,7 @@ import com.adwi.components.theme.*
 
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicShadow(
+    enabled: Boolean = true,
     isPressed: Boolean = false,
     topShadowLight: Color = PrimaryShadowLight,
     topShadowDark: Color = Neutral3,
@@ -66,8 +67,8 @@ fun Modifier.neumorphicShadow(
         if (state) cornerRadius / 2 else cornerRadius
     }
 
-    this.drawBehind {
 
+    this.drawBehind {
         // Getting colors
         val transparentColor =
             android.graphics.Color.toArgb(colorTop.copy(alpha = 0.0f).value.toLong())
@@ -81,21 +82,24 @@ fun Modifier.neumorphicShadow(
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()
             frameworkPaint.color = transparentColor
-            frameworkPaint.setShadowLayer(
-                shadowRadiusAnimated.toPx(),
-                elevation.toPx(),
-                elevation.toPx(),
-                shadowColorTop
-            )
-            it.drawRoundRect(
-                0f,
-                0f,
-                this.size.width,
-                this.size.height,
-                cornerRadiusAnimated.toPx(),
-                cornerRadiusAnimated.toPx(),
-                paint
-            )
+
+            if (enabled) {
+                frameworkPaint.setShadowLayer(
+                    shadowRadiusAnimated.toPx(),
+                    elevation.toPx(),
+                    elevation.toPx(),
+                    shadowColorTop
+                )
+                it.drawRoundRect(
+                    0f,
+                    0f,
+                    this.size.width,
+                    this.size.height,
+                    cornerRadiusAnimated.toPx(),
+                    cornerRadiusAnimated.toPx(),
+                    paint
+                )
+            }
         }
 
         // Bottom right shadow
@@ -103,21 +107,24 @@ fun Modifier.neumorphicShadow(
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()
             frameworkPaint.color = transparentColor
-            frameworkPaint.setShadowLayer(
-                shadowRadiusAnimated.toPx(),
-                (-elevation).toPx(),
-                (-elevation).toPx(),
-                shadowColorBottom
-            )
-            it.drawRoundRect(
-                0f,
-                0f,
-                this.size.width,
-                this.size.height,
-                cornerRadiusAnimated.toPx(),
-                cornerRadiusAnimated.toPx(),
-                paint
-            )
+
+            if (enabled) {
+                frameworkPaint.setShadowLayer(
+                    shadowRadiusAnimated.toPx(),
+                    (-elevation).toPx(),
+                    (-elevation).toPx(),
+                    shadowColorBottom
+                )
+                it.drawRoundRect(
+                    0f,
+                    0f,
+                    this.size.width,
+                    this.size.height,
+                    cornerRadiusAnimated.toPx(),
+                    cornerRadiusAnimated.toPx(),
+                    paint
+                )
+            }
         }
     }
 }

@@ -49,7 +49,10 @@ class MainViewModel @ExperimentalCoroutinesApi
     private fun getSettings() {
         onDispatcher(ioDispatcher) {
             settingsDao.getSettings().collect {
-
+                _settings.value = it
+                lowRes = it.lowResMiniatures
+                showShadows = it.showShadows
+                showParallax = it.showParallax
             }
         }
     }
@@ -60,10 +63,6 @@ class MainViewModel @ExperimentalCoroutinesApi
 
     fun aboutUs() {
         setSnackBar("about us")
-    }
-
-    fun privacyPolicy() {
-        setSnackBar("Privacy policy")
     }
 
     fun saveAutomation() {

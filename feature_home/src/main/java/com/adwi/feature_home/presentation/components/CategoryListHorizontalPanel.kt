@@ -42,22 +42,26 @@ fun CategoryListHorizontalPanel(
     modifier: Modifier = Modifier,
     colors: List<Wallpaper>,
     listState: LazyListState = rememberLazyListState(),
-    onCategoryClick: (String) -> Unit
+    onCategoryClick: (String) -> Unit,
+    showShadows: Boolean
 ) {
     Column(modifier = modifier.animateContentSize()) {
         Box {
             ShimmerRow(
-                visible = colors.isEmpty()
+                visible = colors.isEmpty(),
+                showShadows = showShadows
             )
             ShimmerErrorMessage(
                 visible = colors.isEmpty(),
                 message = "Something bad just happened.. :/",
-                modifier = Modifier.padding(horizontal = paddingValues)
+                modifier = Modifier.padding(horizontal = paddingValues),
+                showShadows = showShadows
             )
             CategoryListHorizontal(
                 categoryList = colors,
                 onCategoryClick = onCategoryClick,
                 listState = listState,
+                showShadows = showShadows
             )
         }
     }
@@ -70,7 +74,8 @@ fun CategoryListHorizontal(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     categoryList: List<Wallpaper>,
-    onCategoryClick: (String) -> Unit
+    onCategoryClick: (String) -> Unit,
+    showShadows: Boolean = true
 ) {
     LazyRow(
         state = listState,
@@ -86,7 +91,8 @@ fun CategoryListHorizontal(
                 categoryName = category.categoryName,
                 image = category.imageUrlTiny,
                 onCategoryClick = { onCategoryClick(category.categoryName) },
-                modifier = Modifier.padding(top = paddingValues / 2)
+                modifier = Modifier.padding(top = paddingValues / 2),
+                showShadows = showShadows
             )
         })
     }
@@ -100,7 +106,8 @@ private fun CategoryItem(
     shape: Shape = MaterialTheme.shapes.small,
     categoryName: String,
     image: String,
-    onCategoryClick: () -> Unit
+    onCategoryClick: () -> Unit,
+    showShadows: Boolean = true
 ) {
     var isPressed by remember { mutableStateOf(false) }
     val pressed = updateTransition(targetState = isPressed, label = "Press")
@@ -118,6 +125,7 @@ private fun CategoryItem(
             modifier = modifier
                 .size(100.dp)
                 .neumorphicShadow(
+                    enabled = showShadows,
                     cornerRadius = 10.dp,
                     offset = (-7).dp
                 )

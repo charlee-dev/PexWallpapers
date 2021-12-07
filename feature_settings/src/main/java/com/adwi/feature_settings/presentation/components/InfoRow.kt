@@ -29,7 +29,8 @@ fun InfoRow(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     title: String,
-    icon: ImageVector
+    icon: ImageVector,
+    showShadows: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -49,6 +50,7 @@ fun InfoRow(
                 modifier = Modifier
                     .padding(paddingValues / 2)
                     .neumorphicShadow(
+                        enabled = showShadows,
                         isPressed = isPressed,
                         cornerRadius = 10.dp,
                         offset = (-5).dp
@@ -91,7 +93,8 @@ private fun InfoRowPreviewLight() {
             InfoRow(
                 onClick = { /*TODO*/ },
                 title = "About Us",
-                icon = Icons.Outlined.Message
+                icon = Icons.Outlined.Message,
+                showShadows = true
             )
         }
     }
@@ -110,7 +113,8 @@ private fun InfoRowPreviewDark() {
             InfoRow(
                 onClick = { /*TODO*/ },
                 title = "About Us",
-                icon = Icons.Outlined.Message
+                icon = Icons.Outlined.Message,
+                showShadows = true
             )
         }
     }

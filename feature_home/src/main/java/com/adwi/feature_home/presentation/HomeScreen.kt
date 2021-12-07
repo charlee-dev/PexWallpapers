@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 @ExperimentalPagingApi
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: HomeViewModel,
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: (String) -> Unit,
     navigateToSearch: () -> Unit
@@ -82,7 +82,8 @@ fun HomeScreen(
             ) {
                 Header(
                     title = stringResource(id = R.string.home),
-                    onActionClick = navigateToSearch
+                    onActionClick = navigateToSearch,
+                    showShadows = viewModel.showShadows
                 )
                 daily?.let { list ->
                     DailyWallpaper(
@@ -93,7 +94,9 @@ fun HomeScreen(
                         dailyList = list,
                         onWallpaperClick = { id -> onWallpaperClick(id) },
                         onLongPress = { viewModel.onFavoriteClick(it) },
-                        lowRes = lowRes
+                        lowRes = viewModel.lowRes,
+                        showShadows = viewModel.showShadows,
+                        showParallax = viewModel.showParallax
                     )
                 }
                 Spacer(modifier = Modifier.size(paddingValues))
@@ -105,6 +108,7 @@ fun HomeScreen(
                     listState = colorsListState,
                     colors = colors,
                     onCategoryClick = { onCategoryClick(it) },
+                    showShadows = viewModel.showShadows
                 )
                 Spacer(modifier = Modifier.size(paddingValues / 2))
                 curated?.let { curatedState ->
@@ -115,7 +119,8 @@ fun HomeScreen(
                     WallpaperListVerticalPanel(
                         wallpapers = curatedState,
                         onWallpaperClick = onWallpaperClick,
-                        onLongPress = { viewModel.onFavoriteClick(it) }
+                        onLongPress = { viewModel.onFavoriteClick(it) },
+                        showShadows = viewModel.showShadows
                     )
                 }
             }

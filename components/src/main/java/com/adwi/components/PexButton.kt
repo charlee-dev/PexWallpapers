@@ -38,7 +38,8 @@ fun PexButton(
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.primary,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    showShadows: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -72,6 +73,7 @@ fun PexButton(
         enabled = state is Resource.Idle && enabled,
         shape = shape,
         modifier = modifier.neumorphicShadow(
+            enabled = showShadows,
             offset = 0.dp,
             isPressed = isPressed
         ),
@@ -121,36 +123,28 @@ private fun PexButtonPreviewLight() {
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Idle,
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Loading(),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Success(),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Error("Unknown error"),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
         }
     }
@@ -171,36 +165,28 @@ private fun PexButtonPreviewDark() {
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Idle,
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Loading(),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Success(),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexButton(
                 text = "Save",
                 modifier = Modifier.height(42.dp),
                 state = Resource.Error("Unknown error"),
-                loadingText = "Loading",
-                errorText = "Error",
-                successText = "Success"
+                showShadows = true
             )
         }
     }

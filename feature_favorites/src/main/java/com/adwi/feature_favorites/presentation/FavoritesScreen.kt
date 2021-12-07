@@ -45,7 +45,6 @@ fun FavoritesScreen(
     onWallpaperClick: (Int) -> Unit,
 ) {
     val wallpapers by viewModel.wallpapers.collectAsState()
-    val lowRes = viewModel.lowRes
 
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState()
@@ -73,6 +72,7 @@ fun FavoritesScreen(
                     title = stringResource(id = R.string.favorites),
                     onActionClick = onSearchClick,
                     icon = Icons.Outlined.Favorite,
+                    showShadows = viewModel.showShadows
                 )
                 wallpapers.forEachIndexed { index, wallpaper ->
                     Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))
@@ -83,7 +83,8 @@ fun FavoritesScreen(
                         onLongPress = { viewModel.onFavoriteClick(it) },
                         isHeartEnabled = wallpaper.isFavorite,
                         modifier = Modifier.padding(horizontal = paddingValues),
-                        lowRes = lowRes
+                        lowRes = viewModel.lowRes,
+                        showShadows = viewModel.showShadows
                     )
                 }
                 Spacer(modifier = Modifier.size(BottomNavHeight + paddingValues))
@@ -104,7 +105,8 @@ private fun WallpaperItemVertical(
     onWallpaperClick: (Int) -> Unit = {},
     onLongPress: (Wallpaper) -> Unit,
     isHeartEnabled: Boolean,
-    lowRes: Boolean
+    lowRes: Boolean,
+    showShadows: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -115,7 +117,7 @@ private fun WallpaperItemVertical(
         modifier = modifier
             .fillMaxWidth()
             .height(200.dp)
-            .neumorphicShadow(isPressed = isPressed)
+            .neumorphicShadow(enabled = showShadows, isPressed = isPressed)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = { onWallpaperClick(wallpaper.id) },

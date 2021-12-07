@@ -30,7 +30,8 @@ fun Header(
     onActionClick: () -> Unit = {},
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.surface,
-    contentColor: Color = MaterialTheme.colors.onBackground
+    contentColor: Color = MaterialTheme.colors.onBackground,
+    showShadows: Boolean
 ) {
     Card(
         shape = shape,
@@ -38,7 +39,7 @@ fun Header(
         modifier = Modifier
             .padding(paddingValues)
             .height(70.dp)
-            .neumorphicShadow(offset = (-5).dp)
+            .neumorphicShadow(enabled = showShadows, offset = (-5).dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -98,13 +99,25 @@ fun HeaderPreviewLight() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            Header(hasUpPress = false, onActionClick = {})
+            Header(
+                hasUpPress = false, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = true, onActionClick = {})
+            Header(
+                hasUpPress = true, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = false, onActionClick = {})
+            Header(
+                hasUpPress = false, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = true, onActionClick = {})
+            Header(
+                hasUpPress = true, onActionClick = {},
+                showShadows = true
+            )
         }
     }
 }
@@ -118,13 +131,25 @@ fun HeaderPreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            Header(hasUpPress = false, onActionClick = {})
+            Header(
+                hasUpPress = false, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = true, onActionClick = {})
+            Header(
+                hasUpPress = true, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = false, onActionClick = {})
+            Header(
+                hasUpPress = false, onActionClick = {},
+                showShadows = true
+            )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(hasUpPress = true, onActionClick = {})
+            Header(
+                hasUpPress = true, onActionClick = {},
+                showShadows = true
+            )
         }
     }
 }

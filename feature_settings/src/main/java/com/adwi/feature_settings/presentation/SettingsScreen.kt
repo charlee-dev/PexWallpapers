@@ -70,7 +70,8 @@ fun SettingsScreen(
                     onActionClick = {
                         viewModel.resetSettings()
                         viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
-                    }
+                    },
+                    showShadows = settings.showShadows
                 )
             }
             item {
@@ -85,7 +86,8 @@ fun SettingsScreen(
                     )
                     PexExpandableCard(
                         modifier = Modifier,
-                        headerText = stringResource(id = R.string.push_notifications)
+                        headerText = stringResource(id = R.string.push_notifications),
+                        showShadows = settings.showShadows
                     ) {
                         SwitchRow(
                             name = stringResource(id = R.string.new_wallpaper_set),
@@ -114,7 +116,8 @@ fun SettingsScreen(
                     )
                     PexExpandableCard(
                         modifier = Modifier,
-                        headerText = stringResource(id = R.string.auto_change_wallpaper)
+                        headerText = stringResource(id = R.string.auto_change_wallpaper),
+                        showShadows = settings.showShadows
                     ) {
                         Spacer(modifier = Modifier.size(paddingValues / 2))
                         Text(
@@ -155,7 +158,8 @@ fun SettingsScreen(
                             minutes = settings.minutes,
                             onDaysChange = { viewModel.updateDays(it) },
                             onHourChange = { viewModel.updateHours(it) },
-                            onMinutesChange = { viewModel.updateMinutes(it) }
+                            onMinutesChange = { viewModel.updateMinutes(it) },
+                            showShadows = viewModel.showShadows
                         )
                         Spacer(modifier = Modifier.size(paddingValues / 2))
                         OptionTip(text = stringResource(R.string.change_wallpaper_every_description))
@@ -166,6 +170,7 @@ fun SettingsScreen(
                                 .fillMaxWidth()
                                 .height(56.dp),
                             onClick = { onSaveAutomationClick() },
+                            showShadows = settings.showShadows
                         )
                     }
                 }
@@ -182,7 +187,8 @@ fun SettingsScreen(
                     )
                     PexExpandableCard(
                         modifier = Modifier,
-                        headerText = stringResource(id = R.string.activate_data_saver)
+                        headerText = stringResource(id = R.string.activate_data_saver),
+                        showShadows = settings.showShadows
                     ) {
                         SwitchRow(
                             name = stringResource(id = R.string.download_wallpapers_only_over_wi_fi),
@@ -208,23 +214,57 @@ fun SettingsScreen(
             item {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = paddingValues)
+                ) {
+                    CategoryTitle(
+                        name = stringResource(id = R.string.performance),
+                        modifier = Modifier.padding(top = paddingValues / 2, bottom = paddingValues)
+                    )
+                    PexExpandableCard(
+                        modifier = Modifier,
+                        headerText = stringResource(id = R.string.gain_on_performance),
+                        showShadows = settings.showShadows
+                    ) {
+                        SwitchRow(
+                            name = stringResource(id = R.string.show_shadows),
+                            checked = settings.showShadows,
+                            onCheckedChange = { viewModel.updateDisableShadows(it) }
+                        )
+                        OptionTip(text = stringResource(R.string.show_shadows_tip))
+                        SwitchRow(
+                            name = stringResource(id = R.string.show_parallax_effect),
+                            checked = settings.showParallax,
+                            onCheckedChange = { viewModel.updateDisableParallax(it) }
+                        )
+                        OptionTip(text = stringResource(R.string.show_parallax_effect_tip))
+                        Spacer(modifier = Modifier.size(paddingValues / 2))
+                    }
+                }
+            }
+            item {
+                Column(
+                    modifier = Modifier
                         .padding(top = paddingValues)
                         .padding(horizontal = paddingValues)
                 ) {
                     InfoRow(
                         onClick = onAboutUsClick,
                         title = stringResource(id = R.string.about_us),
-                        icon = Icons.Outlined.QuestionAnswer
+                        icon = Icons.Outlined.QuestionAnswer,
+                        showShadows = viewModel.showShadows
                     )
                     InfoRow(
                         onClick = onPrivacyPolicyClick,
                         title = stringResource(id = R.string.privacy_policy),
-                        icon = Icons.Outlined.Security
+                        icon = Icons.Outlined.Security,
+                        showShadows = viewModel.showShadows
                     )
                     InfoRow(
                         onClick = onContactSupportClick,
                         title = stringResource(id = R.string.support),
-                        icon = Icons.Outlined.Mail
+                        icon = Icons.Outlined.Mail,
+                        showShadows = viewModel.showShadows
                     )
                 }
             }

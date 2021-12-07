@@ -22,7 +22,10 @@ data class Settings(
     val activateDataSaver: Boolean = false,
     val downloadWallpapersOverWiFi: Boolean = false,
     val lowResMiniatures: Boolean = false,
-    val autoChangeOverWiFi: Boolean = false
+    val autoChangeOverWiFi: Boolean = false,
+
+    val showShadows: Boolean = true,
+    val showParallax: Boolean = true
 ) {
     companion object {
         val default = Settings(
@@ -42,7 +45,9 @@ data class Settings(
             activateDataSaver = false,
             downloadWallpapersOverWiFi = false,
             lowResMiniatures = false,
-            autoChangeOverWiFi = false
+            autoChangeOverWiFi = false,
+            showShadows = true,
+            showParallax = true
         )
     }
 }

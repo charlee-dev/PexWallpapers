@@ -99,6 +99,14 @@ class SettingsViewModel
         onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeOverWiFi(checked) }
     }
 
+    fun updateDisableShadows(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateDisableShadows(checked) }
+    }
+
+    fun updateDisableParallax(checked: Boolean) {
+        onDispatcher(ioDispatcher) { settingsDao.updateDisableParallax(checked) }
+    }
+
     fun resetSettings() {
         onDispatcher(ioDispatcher) { settingsDao.insertSettings(Settings.default) }
     }

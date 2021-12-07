@@ -8,11 +8,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.PexBottomBar
 import com.adwi.components.PexScaffold
 import com.adwi.components.PexSnackBarHost
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.pexwallpapers.presentation.components.PexBottomBar
 import com.adwi.pexwallpapers.presentation.main.MainViewModel
 import com.adwi.pexwallpapers.presentation.navigation.HomeSections
 import com.adwi.pexwallpapers.presentation.navigation.MainDestinations
@@ -57,7 +57,8 @@ fun PexApp(
                         PexBottomBar(
                             tabs = appState.bottomBarTabs,
                             currentRoute = appState.currentRoute!!,
-                            navigateToRoute = appState::navigateToBottomBarRoute
+                            navigateToRoute = appState::navigateToBottomBarRoute,
+                            showShadows = viewModel.showShadows
                         )
                     }
                 },
@@ -80,13 +81,9 @@ fun PexApp(
                         onWallpaperClick = appState::navigateToPreview,
                         onCategoryClick = appState::navigateToCategory,
                         navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) },
-                        onAboutUsClick = {
-                            viewModel.aboutUs()
-                        },
+                        onAboutUsClick = { viewModel.aboutUs() },
                         onPrivacyPolicyClick = appState::navigateToPrivacyPolicy,
-                        onContactSupportClick = {
-                            viewModel.contactSupport()
-                        },
+                        onContactSupportClick = { viewModel.contactSupport() },
                         onSaveAutomationClick = onSaveAutomationClick,
                         cancelWorks = cancelWorks,
                         onShareClick = onShareClick,

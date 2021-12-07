@@ -31,6 +31,7 @@ fun PexExpandableCard(
     modifier: Modifier = Modifier,
     headerText: String,
     shape: Shape = MaterialTheme.shapes.large,
+    showShadows: Boolean,
     content: @Composable () -> Unit
 ) {
     // Pressed state
@@ -65,7 +66,7 @@ fun PexExpandableCard(
         shape = shape,
         modifier = Modifier
             .scale(cardScale)
-            .neumorphicShadow()
+            .neumorphicShadow(enabled = showShadows)
     ) {
         Column(
             Modifier
@@ -127,7 +128,10 @@ private fun PexExpandableCardPreviewLight() {
                     .background(MaterialTheme.colors.background)
                     .padding(paddingValues)
             ) {
-                PexExpandableCard(headerText = "Push notifications") {
+                PexExpandableCard(
+                    headerText = "Push notifications",
+                    showShadows = true
+                ) {
                     SwitchRow(name = "test row", checked = true, onCheckedChange = {})
                     SwitchRow(name = "test row", checked = false, onCheckedChange = {})
                 }
@@ -146,7 +150,10 @@ private fun PexExpandableCardPreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            PexExpandableCard(headerText = "Push notifications") {
+            PexExpandableCard(
+                headerText = "Push notifications",
+                showShadows = true
+            ) {
                 SwitchRow(name = "test row", checked = true, onCheckedChange = {})
                 SwitchRow(name = "test row", checked = false, onCheckedChange = {})
             }

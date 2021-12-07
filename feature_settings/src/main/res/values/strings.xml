@@ -43,4 +43,10 @@
     <string name="feature_not_available">Feature not available</string>
     <string name="wallpaper_will_change_in">Wallpaper will change every %1$s %2$s</string>
     <string name="automation_saved">Automation saved</string>
+    <string name="performance">Performance</string>
+    <string name="gain_on_performance">Improve App performance</string>
+    <string name="show_shadows">Show shadows</string>
+    <string name="show_parallax_effect">Show parallax scrolling effect</string>
+    <string name="show_parallax_effect_tip">Parallax scrolling effect is a technique where the background of a website scrolls at a slower pace than the foreground.</string>
+    <string name="show_shadows_tip">If disabled shadow behind images and buttons will be shown.</string>
 </resources>

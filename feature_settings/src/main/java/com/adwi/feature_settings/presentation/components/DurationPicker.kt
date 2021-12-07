@@ -32,6 +32,7 @@ fun DurationPicker(
     onDaysChange: (Int) -> Unit,
     onHourChange: (Int) -> Unit,
     onMinutesChange: (Int) -> Unit,
+    showShadows: Boolean
 ) {
     val dayMax = 31
     val hoursMax = 23
@@ -84,8 +85,8 @@ fun DurationPicker(
                 range = minutesMax,
                 onUpClick = { onMinutesChange(minutes + 15) },
                 onDownClick = { onMinutesChange(minutes - 15) },
-                modifier = Modifier.align(Alignment.Center)
-
+                modifier = Modifier.align(Alignment.Center),
+                showShadows = showShadows
             )
         }
     }
@@ -99,7 +100,8 @@ private fun TimeUnitItem(
     count: Int,
     range: Int,
     onUpClick: () -> Unit,
-    onDownClick: () -> Unit
+    onDownClick: () -> Unit,
+    showShadows: Boolean = true
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -117,7 +119,7 @@ private fun TimeUnitItem(
                 tint = MaterialTheme.colors.onBackground
             )
         }
-        AnimatedCounter(count = count)
+        AnimatedCounter(count = count, showShadows = showShadows)
         IconButton(
             onClick = onUpClick,
             enabled = count < range
@@ -135,7 +137,8 @@ private fun TimeUnitItem(
 @Composable
 private fun AnimatedCounter(
     modifier: Modifier = Modifier,
-    count: Int
+    count: Int,
+    showShadows: Boolean = true
 ) {
     Surface(
         border = BorderStroke(
@@ -146,6 +149,7 @@ private fun AnimatedCounter(
         modifier = modifier
             .size(40.dp)
             .neumorphicShadow(
+                enabled = showShadows,
                 cornerRadius = 10.dp,
                 offset = (-5).dp
             ),
@@ -198,7 +202,8 @@ private fun DurationPickerPreviewLight() {
                 minutes = 21,
                 onDaysChange = {},
                 onHourChange = {},
-                onMinutesChange = {}
+                onMinutesChange = {},
+                showShadows = true
             )
         }
     }
@@ -221,7 +226,8 @@ private fun DurationPickerPreviewDark() {
                 minutes = 21,
                 onDaysChange = {},
                 onHourChange = {},
-                onMinutesChange = {}
+                onMinutesChange = {},
+                showShadows = true
             )
         }
     }

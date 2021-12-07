@@ -35,7 +35,8 @@ fun PexSearchToolbar(
     onShowFilterDialog: () -> Unit,
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.surface,
-    contentColor: Color = MaterialTheme.colors.primary
+    contentColor: Color = MaterialTheme.colors.primary,
+    showShadows: Boolean
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -45,7 +46,7 @@ fun PexSearchToolbar(
         modifier = modifier
             .padding(paddingValues)
             .height(70.dp)
-            .neumorphicShadow()
+            .neumorphicShadow(enabled = showShadows)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -112,7 +113,8 @@ private fun SearchToolbarPreviewLight() {
             PexSearchToolbar(
                 query = "Pex Wallpapers",
                 onQueryChanged = { },
-                onShowFilterDialog = {}
+                onShowFilterDialog = {},
+                showShadows = true
             )
         }
     }
@@ -131,7 +133,8 @@ private fun SearchToolbarPreviewDark() {
             PexSearchToolbar(
                 query = "Pex Wallpapers",
                 onQueryChanged = { },
-                onShowFilterDialog = {}
+                onShowFilterDialog = {},
+                showShadows = true
             )
         }
     }

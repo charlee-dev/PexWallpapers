@@ -1,4 +1,4 @@
-package com.adwi.components
+package com.adwi.pexwallpapers.presentation.components
 
 import androidx.annotation.FloatRange
 import androidx.compose.animation.animateColorAsState
@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
+import com.adwi.components.PexSurface
+import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavIndicatorShape
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavLabelTransformOrigin
@@ -51,7 +53,8 @@ fun PexBottomBar(
     selectedColor: Color = MaterialTheme.colors.primary,
     notSelectedColor: Color = MaterialTheme.colors.primary,
     indicatorColor: Color = MaterialTheme.colors.primary,
-    buttonTextStyle: TextStyle = MaterialTheme.typography.button
+    buttonTextStyle: TextStyle = MaterialTheme.typography.button,
+    showShadows: Boolean = true
 ) {
     val routes = remember { tabs.map { it.route } }
     val currentSection = tabs.first { it.route == currentRoute }
@@ -59,7 +62,11 @@ fun PexBottomBar(
     PexSurface(
         color = backgroundColor,
         contentColor = animationColor,
-        modifier = Modifier.neumorphicShadow(offset = 0.dp, cornerRadius = 0.dp)
+        modifier = Modifier.neumorphicShadow(
+            enabled = showShadows,
+            offset = 0.dp,
+            cornerRadius = 0.dp
+        )
     ) {
         val springSpec = SpringSpec<Float>(
             stiffness = 800f,

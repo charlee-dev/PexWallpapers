@@ -51,7 +51,9 @@ fun DailyWallpaper(
     shape: Shape = MaterialTheme.shapes.large,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit,
-    lowRes: Boolean = false
+    lowRes: Boolean,
+    showShadows: Boolean,
+    showParallax: Boolean
 ) {
     BoxWithConstraints(
         modifier = modifier
@@ -139,7 +141,7 @@ fun DailyWallpaper(
                                         fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                     )
                                 }
-                                .neumorphicShadow()
+                                .neumorphicShadow(enabled = showShadows)
                         ) {
                             Box {
                                 PexCoilImage(
@@ -149,10 +151,12 @@ fun DailyWallpaper(
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .graphicsLayer {
+//                                            if (showParallax) {
                                             val scale = 1.1f
                                             scaleY = scale
                                             scaleX = scale
                                             translationY = scrollState.value * 0.15f
+//                                            }
                                         }
                                 )
                                 PexAnimatedHeart(
