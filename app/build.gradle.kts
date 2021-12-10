@@ -1,5 +1,6 @@
 import commons.*
 import dependencies.Dependencies
+import dependencies.Versions
 import dependencies.TestDependencies
 import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.kapt

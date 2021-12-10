@@ -1,3 +1,5 @@
+import dependencies.Versions
+
 object Build {
     const val gradle = "com.android.tools.build:gradle:${Versions.gradleBuildTool}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"

@@ -1,7 +1,9 @@
+package dependencies
+
 object Versions {
 
     // Gradle
-    const val gradleBuildTool = "7.0.3"
+    const val gradleBuildTool = "7.0.4"
     const val junit5Plugin = "1.7.1.1"
 
     // Kotlin

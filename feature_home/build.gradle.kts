@@ -1,6 +1,7 @@
 import commons.*
 import dependencies.Dependencies
 import dependencies.TestDependencies
+import dependencies.Versions
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)

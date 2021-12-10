@@ -2,6 +2,7 @@ import commons.addComposeDependencies
 import commons.addDefaultComposeDependencies
 import commons.implementation
 import dependencies.Dependencies
+import dependencies.Versions
 
 plugins {
     id(Plugins.ANDROID_LIBRARY)
