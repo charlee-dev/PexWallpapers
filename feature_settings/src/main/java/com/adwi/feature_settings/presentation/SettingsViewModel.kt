@@ -40,28 +40,40 @@ class SettingsViewModel
 
     // Notifications
     fun updatePushNotifications(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updatePushNotifications(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updatePushNotifications(checked)
+        }
     }
 
     fun updateNewWallpaperSet(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateNewWallpaperSet(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateNewWallpaperSet(checked)
+        }
     }
 
     fun updateWallpaperRecommendations(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateWallpaperRecommendations(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateWallpaperRecommendations(checked)
+        }
     }
 
     // Automation
     fun updateAutoChangeWallpaper(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeWallpaper(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateAutoChangeWallpaper(checked)
+        }
     }
 
     fun updateAutoHome(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateAutoHome(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateAutoHome(checked)
+        }
     }
 
     fun updateAutoLock(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateAutoLock(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateAutoLock(checked)
+        }
     }
 
     fun updateMinutes(value: Int) {
@@ -84,30 +96,45 @@ class SettingsViewModel
 
     // Data saver
     fun updateActivateDataSaver(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateActivateDataSaver(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateActivateDataSaver(checked)
+        }
     }
 
     fun updateDownloadWallpapersOverWiFi(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateDownloadWallpapersOverWiFi(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateDownloadWallpapersOverWiFi(checked)
+        }
     }
 
     fun updateDownloadMiniaturesLowQuality(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateDownloadMiniaturesLowQuality(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateDownloadMiniaturesLowQuality(checked)
+        }
     }
 
     fun updateAutoChangeOverWiFi(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateAutoChangeOverWiFi(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateAutoChangeOverWiFi(checked)
+        }
     }
 
+    // Performance
     fun updateDisableShadows(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateDisableShadows(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateDisableShadows(checked)
+        }
     }
 
     fun updateDisableParallax(checked: Boolean) {
-        onDispatcher(ioDispatcher) { settingsDao.updateDisableParallax(checked) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.updateDisableParallax(checked)
+        }
     }
 
     fun resetSettings() {
-        onDispatcher(ioDispatcher) { settingsDao.insertSettings(Settings.default) }
+        onDispatcher(ioDispatcher) {
+            settingsDao.insertSettings(Settings.default)
+        }
     }
 }

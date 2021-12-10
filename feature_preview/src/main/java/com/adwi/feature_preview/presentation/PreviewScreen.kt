@@ -5,15 +5,18 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -91,9 +94,10 @@ fun PreviewScreen(
                     androidx.compose.animation.AnimatedVisibility(
                         saveState is Resource.Success
                     ) {
-                        PexLottieAnimatedView(
-                            res = R.raw.completed,
-                            modifier = Modifier.align(Alignment.Center)
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = "Done",
+                            tint = Color.Green
                         )
                     }
                 }
