@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberScaffoldState
@@ -25,6 +26,7 @@ import com.adwi.feature_search.presentation.components.PexSearchToolbar
 import com.adwi.feature_search.presentation.components.WallpaperListPaged
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import dagger.Lazy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalComposeUiApi
@@ -42,7 +44,6 @@ fun SearchScreen(
     val currentQuery by viewModel.currentQuery.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
-    val lowRes = viewModel.lowRes
 
     if (wallpapers.loadState.refresh == LoadState.Loading) {
         viewModel.setIsRefreshing(true)
@@ -50,6 +51,9 @@ fun SearchScreen(
 
     val listState = rememberLazyListState()
     val scaffoldState = rememberScaffoldState()
+
+    val swipeRefreshState =
+        rememberSwipeRefreshState(isRefreshing && wallpapers.itemCount == 0)
 
     LaunchedEffect(pendingScrollToTopAfterRefresh && wallpapers.loadState.refresh != LoadState.Loading) {
         listState.animateScrollToItem(0)
@@ -60,37 +64,38 @@ fun SearchScreen(
         viewModel = viewModel,
         scaffoldState = scaffoldState
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            val swipeRefreshState =
-                rememberSwipeRefreshState(isRefreshing && wallpapers.itemCount == 0)
-
-            PexSearchToolbar(
-                query = currentQuery,
-                onQueryChanged = { viewModel.onSearchQuerySubmit(it) },
-                onShowFilterDialog = {},
-                showShadows = viewModel.showShadows
-            )
-            SwipeRefresh(
-                state = swipeRefreshState,
-                onRefresh = { viewModel.onSearchQuerySubmit(currentQuery) },
-            ) {
-                AnimatedVisibility(
-                    visible = wallpapers.itemCount > 0,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                PexSearchToolbar(
+                    query = currentQuery,
+                    onQueryChanged = { viewModel.onSearchQuerySubmit(it) },
+                    onShowFilterDialog = {},
+                    showShadows = viewModel.showShadows
+                )
+            }
+            item {
+                SwipeRefresh(
+                    state = swipeRefreshState,
+                    onRefresh = { viewModel.onSearchQuerySubmit(currentQuery) },
                 ) {
-                    WallpaperListPaged(
-                        modifier = Modifier.fillMaxSize(),
-                        wallpapers = wallpapers,
-                        listState = listState,
-                        onWallpaperClick = onWallpaperClick,
-                        onLongPress = { viewModel.onFavoriteClick(it) },
-                        lowRes = viewModel.lowRes,
-                        showShadows = viewModel.showShadows
-                    )
+                    AnimatedVisibility(
+                        visible = wallpapers.itemCount > 0,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        WallpaperListPaged(
+                            modifier = Modifier.fillMaxSize(),
+                            wallpapers = wallpapers,
+                            listState = listState,
+                            onWallpaperClick = onWallpaperClick,
+                            onLongPress = { viewModel.onFavoriteClick(it) },
+                            lowRes = viewModel.lowRes,
+                            showShadows = viewModel.showShadows
+                        )
+                    }
                 }
             }
-            NothingHereYetMessage(visible = currentQuery.isEmpty())
+            item { NothingHereYetMessage(visible = currentQuery.isEmpty()) }
         }
     }
 }

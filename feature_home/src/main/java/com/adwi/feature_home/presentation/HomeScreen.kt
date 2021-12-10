@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.CategoryTitle
-import com.adwi.components.Header
+import com.adwi.components.PexAppBar
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.paddingValues
@@ -41,7 +41,6 @@ fun HomeScreen(
     val daily by viewModel.daily.collectAsState()
     val colors by viewModel.colors.collectAsState()
     val curated by viewModel.curated.collectAsState()
-    val lowRes = viewModel.lowRes
 
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
@@ -80,9 +79,9 @@ fun HomeScreen(
                         bottom = BottomNavHeight
                     )
             ) {
-                Header(
+                PexAppBar(
                     title = stringResource(id = R.string.home),
-                    onActionClick = navigateToSearch,
+                    onMoreClick = { viewModel.setSnackBar("Not implemented yet") },
                     showShadows = viewModel.showShadows
                 )
                 daily?.let { list ->

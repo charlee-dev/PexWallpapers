@@ -93,7 +93,7 @@ fun PexSearchToolbar(
                     modifier = Modifier,
                     imageVector = Icons.Filled.MoreVert,
                     tint = contentColor,
-                    contentDescription = stringResource(id = R.string.filter)
+                    contentDescription = stringResource(id = com.adwi.components.R.string.menu)
                 )
             }
         }

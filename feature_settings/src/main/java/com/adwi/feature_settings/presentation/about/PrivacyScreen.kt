@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.components.CategoryTitle
-import com.adwi.components.Header
+import com.adwi.components.PexAppBar
 import com.adwi.components.PexExpandableCard
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.paddingValues
@@ -35,13 +35,13 @@ fun PrivacyPolicyScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                Header(
+                PexAppBar(
                     hasUpPress = true,
                     onUpPress = upPress,
                     modifier = Modifier,
                     title = "Privacy policy",
                     icon = Icons.Outlined.PrivacyTip,
-                    actionIcon = null,
+                    onMoreClick = { viewModel.setSnackBar("Not implemented yet") },
                     showShadows = viewModel.showShadows
                 )
             }

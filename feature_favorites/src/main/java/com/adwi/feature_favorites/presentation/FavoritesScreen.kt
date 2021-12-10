@@ -68,11 +68,11 @@ fun FavoritesScreen(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
             ) {
-                Header(
+                PexAppBar(
                     title = stringResource(id = R.string.favorites),
-                    onActionClick = onSearchClick,
                     icon = Icons.Outlined.Favorite,
-                    showShadows = viewModel.showShadows
+                    showShadows = viewModel.showShadows,
+                    onMoreClick = { viewModel.setSnackBar("Not implemented yet") }
                 )
                 wallpapers.forEachIndexed { index, wallpaper ->
                     Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))

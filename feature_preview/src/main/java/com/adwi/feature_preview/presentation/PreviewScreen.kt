@@ -56,13 +56,13 @@ fun PreviewScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Header(
+            PexAppBar(
                 hasUpPress = true,
                 onUpPress = upPress,
                 modifier = Modifier,
                 title = stringResource(id = R.string.preview),
                 icon = Icons.Outlined.Image,
-                actionIcon = null,
+                onMoreClick = { viewModel.setSnackBar("Not implemented yet") },
                 showShadows = viewModel.showShadows
             )
             wallpaper?.let {

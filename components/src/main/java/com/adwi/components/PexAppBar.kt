@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIos
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,28 +14,29 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.adwi.components.theme.PexWallpapersTheme
-import com.adwi.components.theme.paddingValues
+import com.adwi.components.theme.*
 
 @Composable
-fun Header(
+fun PexAppBar(
     modifier: Modifier = Modifier,
     hasUpPress: Boolean = false,
     onUpPress: () -> Unit = {},
     title: String = stringResource(id = R.string.app_name),
     icon: ImageVector = Icons.Outlined.Home,
-    actionIcon: ImageVector? = Icons.Outlined.Search,
-    onActionClick: () -> Unit = {},
+    hasMoreButton: Boolean = true,
+    onMoreClick: () -> Unit = {},
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.onBackground,
+    buttonsColor: Color = MaterialTheme.colors.primary,
     showShadows: Boolean
 ) {
     Card(
         shape = shape,
         backgroundColor = backgroundColor,
         modifier = Modifier
-            .padding(paddingValues)
+            .padding(horizontal = paddingValues)
+            .padding(bottom = paddingValues / 2, top = paddingValues)
             .height(70.dp)
             .neumorphicShadow(enabled = showShadows, offset = (-5).dp)
     ) {
@@ -45,45 +44,54 @@ fun Header(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxSize()
-                .padding(paddingValues / 2)
         ) {
             if (hasUpPress) {
                 IconButton(
                     onClick = onUpPress,
                     modifier = Modifier
+                        .background(MaterialTheme.colors.primaryVariant)
+                        .fillMaxHeight()
+                        .padding(start = paddingValues / 2, end = 6.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.ArrowBackIos,
                         contentDescription = stringResource(R.string.back),
-                        tint = contentColor
+                        tint = buttonsColor
                     )
                 }
             }
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = MaterialTheme.colors.onBackground,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(
-                        start = paddingValues / 2,
-                        end = paddingValues / 2
-                    )
-            )
-            Text(
-                text = title,
-                color = contentColor
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            actionIcon?.let {
-                IconButton(
-                    onClick = onActionClick
-                ) {
-                    Icon(
-                        imageVector = actionIcon,
-                        contentDescription = stringResource(id = R.string.search),
-                        tint = MaterialTheme.colors.primary,
-                        modifier = Modifier
-                    )
+                    .fillMaxSize()
+                    .padding(horizontal = paddingValues / 2)
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .padding(
+                            start = paddingValues / 2,
+                            end = paddingValues / 2
+                        )
+                )
+                Text(
+                    text = title,
+                    color = contentColor
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                if (hasMoreButton) {
+                    IconButton(
+                        onClick = onMoreClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreVert,
+                            contentDescription = stringResource(id = R.string.menu),
+                            tint = buttonsColor,
+                            modifier = Modifier
+                        )
+                    }
                 }
             }
         }
@@ -99,24 +107,28 @@ fun HeaderPreviewLight() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            Header(
-                hasUpPress = false, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = false,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = true, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = true,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = false, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = false,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = true, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = true,
+                showShadows = true,
+                hasMoreButton = true,
             )
         }
     }
@@ -131,24 +143,28 @@ fun HeaderPreviewDark() {
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
         ) {
-            Header(
-                hasUpPress = false, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = false,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = true, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = true,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = false, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = false,
+                showShadows = true,
+                hasMoreButton = true,
             )
             Spacer(modifier = Modifier.size(paddingValues))
-            Header(
-                hasUpPress = true, onActionClick = {},
-                showShadows = true
+            PexAppBar(
+                hasUpPress = true,
+                showShadows = true,
+                hasMoreButton = true,
             )
         }
     }

@@ -63,11 +63,10 @@ fun SettingsScreen(
             )
         ) {
             item {
-                Header(
+                PexAppBar(
                     title = stringResource(id = R.string.settings),
                     icon = Icons.Outlined.Settings,
-                    actionIcon = Icons.Outlined.Refresh,
-                    onActionClick = {
+                    onMoreClick = {
                         viewModel.resetSettings()
                         viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
                     },
