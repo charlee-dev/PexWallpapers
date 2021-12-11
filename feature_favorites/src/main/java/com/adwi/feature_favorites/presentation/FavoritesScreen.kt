@@ -12,10 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -29,6 +26,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_favorites.R
 import com.adwi.pexwallpapers.domain.model.Wallpaper
@@ -49,6 +47,8 @@ fun FavoritesScreen(
     val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState()
 
+    var headerExpanded by remember { mutableStateOf(false) }
+
     PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
         Box(modifier = Modifier.fillMaxSize()) {
             AnimatedVisibility(
@@ -68,12 +68,30 @@ fun FavoritesScreen(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
             ) {
-                PexAppBar(
+                PexExpandableAppBar(
                     title = stringResource(id = R.string.favorites),
                     icon = Icons.Outlined.Favorite,
                     showShadows = viewModel.showShadows,
-                    onMoreClick = { viewModel.setSnackBar("Not implemented yet") }
-                )
+                    onMoreClick = { headerExpanded = !headerExpanded },
+                    expanded = headerExpanded
+                ) {
+                    MenuListItem(
+                        action = { viewModel.resetFavorites() },
+                        item = MenuItems.DeleteAllFavorites
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.GiveFeedback
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.RequestFeature
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.ShowTips
+                    )
+                }
                 wallpapers.forEachIndexed { index, wallpaper ->
                     Spacer(modifier = Modifier.size(if (index == 0) paddingValues / 2 else paddingValues))
                     WallpaperItemVertical(

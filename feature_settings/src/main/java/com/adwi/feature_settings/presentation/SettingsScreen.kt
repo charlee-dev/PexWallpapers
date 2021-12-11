@@ -24,6 +24,8 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.components.theme.MenuItem
+import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_settings.R
 import com.adwi.feature_settings.presentation.components.CheckBoxRow
@@ -63,7 +65,7 @@ fun SettingsScreen(
             )
         ) {
             item {
-                PexAppBar(
+                PexExpandableAppBar(
                     title = stringResource(id = R.string.settings),
                     icon = Icons.Outlined.Settings,
                     onMoreClick = {
@@ -71,7 +73,24 @@ fun SettingsScreen(
                         viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
                     },
                     showShadows = settings.showShadows
-                )
+                ) {
+                    MenuListItem(
+                        action = { viewModel.resetSettings() },
+                        item = MenuItems.ResetSettings
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.GiveFeedback
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.RequestFeature
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.ShowTips
+                    )
+                }
             }
             item {
                 Column(

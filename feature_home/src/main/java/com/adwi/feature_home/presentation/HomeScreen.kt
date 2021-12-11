@@ -11,9 +11,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.CategoryTitle
-import com.adwi.components.PexAppBar
+import com.adwi.components.MenuListItem
+import com.adwi.components.PexExpandableAppBar
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
+import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_home.R
 import com.adwi.feature_home.presentation.components.CategoryListHorizontalPanel
@@ -79,11 +81,31 @@ fun HomeScreen(
                         bottom = BottomNavHeight
                     )
             ) {
-                PexAppBar(
+                var expanded by remember { mutableStateOf(true) }
+
+                PexExpandableAppBar(
                     title = stringResource(id = R.string.home),
-                    onMoreClick = { viewModel.setSnackBar("Not implemented yet") },
-                    showShadows = viewModel.showShadows
-                )
+                    showShadows = viewModel.showShadows,
+                    onMoreClick = { expanded = !expanded },
+                    expanded = expanded
+                ) {
+                    MenuListItem(
+                        action = navigateToSearch,
+                        item = MenuItems.Search
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.GiveFeedback
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.RequestFeature
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.ShowTips
+                    )
+                }
                 daily?.let { list ->
                     DailyWallpaper(
                         scrollState = homeListState,

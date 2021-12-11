@@ -80,6 +80,10 @@
     <string name="picture_by" formatted="true">Picture by %photographer</string>
     <string name="choose_an_app">Choose an App</string>
     <string name="back">Back</string>
+    <string name="give_feedback">Give feedback</string>
+    <string name="request_feature">Request feature</string>
+    <string name="show_tips">Show tips</string>
+    <string name="reset_settings">Reset settings</string>
 
 
 </resources>

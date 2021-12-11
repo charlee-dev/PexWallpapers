@@ -11,9 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Image
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +23,7 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.Dimensions
+import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.core.Resource
 import com.adwi.feature_preview.R
@@ -49,6 +48,8 @@ fun PreviewScreen(
 
     val uriHandler = LocalUriHandler.current
 
+    var headerExpanded by remember { mutableStateOf(false)}
+
     PexScaffold(
         viewModel = viewModel
     ) {
@@ -56,15 +57,29 @@ fun PreviewScreen(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            PexAppBar(
+            PexExpandableAppBar(
                 hasUpPress = true,
                 onUpPress = upPress,
                 modifier = Modifier,
                 title = stringResource(id = R.string.preview),
                 icon = Icons.Outlined.Image,
-                onMoreClick = { viewModel.setSnackBar("Not implemented yet") },
-                showShadows = viewModel.showShadows
-            )
+                showShadows = viewModel.showShadows,
+                onMoreClick = { headerExpanded = !headerExpanded },
+                expanded = headerExpanded
+            ) {
+                MenuListItem(
+                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    item = MenuItems.GiveFeedback
+                )
+                MenuListItem(
+                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    item = MenuItems.RequestFeature
+                )
+                MenuListItem(
+                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    item = MenuItems.ShowTips
+                )
+            }
             wallpaper?.let {
                 val infiniteTransition = rememberInfiniteTransition()
 
