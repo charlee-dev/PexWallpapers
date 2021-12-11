@@ -84,6 +84,9 @@
     <string name="request_feature">Request feature</string>
     <string name="show_tips">Show tips</string>
     <string name="reset_settings">Reset settings</string>
+    <string name="report_bug">Report bug</string>
+    <string name="show_menu">Show menu</string>
+    <string name="hide_menu">Hide menu</string>
 
 
 </resources>

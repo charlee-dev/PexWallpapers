@@ -1,16 +1,17 @@
 package com.adwi.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -31,11 +32,21 @@ fun PexExpandableAppBar(
     contentColor: Color = MaterialTheme.colors.onBackground,
     buttonsColor: Color = MaterialTheme.colors.primary,
     showShadows: Boolean,
-    hasMoreButton: Boolean = true,
-    onMoreClick: () -> Unit = {},
-    expanded: Boolean = true,
     menuItems: @Composable () -> Unit
 ) {
+    var expanded by remember { mutableStateOf(false) }
+    val transition = updateTransition(targetState = expanded, label = "Header")
+
+    val backgroundColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.primary else backgroundColor
+    }
+    val contentColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.secondary else contentColor
+    }
+    val buttonColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.primaryVariant else contentColor
+    }
+
     Card(
         shape = shape,
         backgroundColor = backgroundColor,
@@ -50,15 +61,17 @@ fun PexExpandableAppBar(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier.fillMaxSize()
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(backgroundColorState)
             ) {
                 if (hasUpPress) {
                     IconButton(
                         onClick = onUpPress,
                         modifier = Modifier
                             .background(MaterialTheme.colors.primaryVariant)
-                            .fillMaxHeight()
-                            .padding(start = 4.dp, end = 6.dp)
+                            .size(Dimensions.Button)
+                            .padding(start = 4.dp, end = 4.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.ArrowBackIos,
@@ -67,57 +80,54 @@ fun PexExpandableAppBar(
                         )
                     }
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                Icon(
+                    imageVector = icon,
+                    contentDescription = title,
+                    tint = contentColorState,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = paddingValues / 2)
-                        .padding(top = paddingValues / 2)
+                        .padding(
+                            start = if (hasUpPress) paddingValues / 2 else paddingValues,
+                            end = paddingValues / 2
+                        )
+                )
+                Text(
+                    text = title,
+                    color = contentColorState,
+                    style = MaterialTheme.typography.h6.copy(contentColor)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.size(Dimensions.Button)
                 ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = title,
-                        tint = MaterialTheme.colors.onBackground,
-                        modifier = Modifier
-                            .padding(
-                                start = paddingValues / 2,
-                                end = paddingValues / 2
-                            )
-                    )
-                    Text(
-                        text = title,
-                        color = contentColor
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    if (hasMoreButton) {
-                        IconButton(
-                            onClick = onMoreClick
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.MoreVert,
-                                contentDescription = stringResource(id = R.string.menu),
-                                tint = buttonsColor,
-                                modifier = Modifier
-                            )
-                        }
+                    if (expanded) {
+                        Icon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = stringResource(id = R.string.hide_menu),
+                            tint = buttonColorState,
+                            modifier = Modifier
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreVert,
+                            contentDescription = stringResource(id = R.string.show_menu),
+                            tint = buttonColorState,
+                            modifier = Modifier
+                        )
                     }
                 }
             }
             AnimatedVisibility(expanded) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.surface),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth(.8f)
-                            .height((1).dp)
-                            .background(MaterialTheme.colors.secondary)
-                    )
                     Box(modifier = Modifier.fillMaxWidth()) {
                         Column(
                             modifier = Modifier
-                                .padding(paddingValues)
+                                .padding(paddingValues / 2)
                                 .align(Alignment.Center)
                         ) {
                             menuItems()
@@ -125,7 +135,6 @@ fun PexExpandableAppBar(
                     }
                 }
             }
-            Spacer(modifier = Modifier.size(paddingValues / 2))
         }
     }
 }
@@ -142,28 +151,24 @@ fun HeaderPreviewLight() {
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
         }
@@ -182,28 +187,24 @@ fun HeaderPreviewDark() {
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                hasMoreButton = true,
                 menuItems = {}
             )
         }

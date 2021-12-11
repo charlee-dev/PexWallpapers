@@ -63,9 +63,7 @@ fun PreviewScreen(
                 modifier = Modifier,
                 title = stringResource(id = R.string.preview),
                 icon = Icons.Outlined.Image,
-                showShadows = viewModel.showShadows,
-                onMoreClick = { headerExpanded = !headerExpanded },
-                expanded = headerExpanded
+                showShadows = viewModel.showShadows
             ) {
                 MenuListItem(
                     action = { viewModel.setSnackBar("Not implemented yet") },
@@ -74,6 +72,10 @@ fun PreviewScreen(
                 MenuListItem(
                     action = { viewModel.setSnackBar("Not implemented yet") },
                     item = MenuItems.RequestFeature
+                )
+                MenuListItem(
+                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    item = MenuItems.ReportBug
                 )
                 MenuListItem(
                     action = { viewModel.setSnackBar("Not implemented yet") },

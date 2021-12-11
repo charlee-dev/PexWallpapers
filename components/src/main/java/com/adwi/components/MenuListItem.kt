@@ -19,13 +19,20 @@ fun MenuListItem(
     action: () -> Unit,
     item: MenuItem
 ) {
-    Surface(onClick = action, modifier = modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start) {
-            Icon(imageVector = item.icon, contentDescription = stringResource(id = item.name))
+    Surface(onClick = action) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = item.icon,
+                contentDescription = stringResource(id = item.name),
+                tint = MaterialTheme.colors.primary
+            )
             Spacer(modifier = Modifier.size(paddingValues))
             Text(
                 text = stringResource(id = item.name),
-                style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.onSurface)
+                style = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.primary)
             )
         }
     }

@@ -28,8 +28,6 @@ fun PrivacyPolicyScreen(
     viewModel: SettingsViewModel,
     upPress: () -> Unit
 ) {
-    var headerExpanded by remember { mutableStateOf(false) }
-
     PexScaffold(viewModel = viewModel) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -41,9 +39,7 @@ fun PrivacyPolicyScreen(
                     modifier = Modifier,
                     title = "Privacy policy",
                     icon = Icons.Outlined.PrivacyTip,
-                    showShadows = viewModel.showShadows,
-                    onMoreClick = { headerExpanded = !headerExpanded },
-                    expanded = headerExpanded
+                    showShadows = viewModel.showShadows
                 ) {
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },
@@ -55,7 +51,7 @@ fun PrivacyPolicyScreen(
                     )
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },
-                        item = MenuItems.ShowTips
+                        item = MenuItems.ReportBug
                     )
                 }
             }

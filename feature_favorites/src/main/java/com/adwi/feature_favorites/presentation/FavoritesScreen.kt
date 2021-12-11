@@ -71,9 +71,7 @@ fun FavoritesScreen(
                 PexExpandableAppBar(
                     title = stringResource(id = R.string.favorites),
                     icon = Icons.Outlined.Favorite,
-                    showShadows = viewModel.showShadows,
-                    onMoreClick = { headerExpanded = !headerExpanded },
-                    expanded = headerExpanded
+                    showShadows = viewModel.showShadows
                 ) {
                     MenuListItem(
                         action = { viewModel.resetFavorites() },
@@ -86,6 +84,10 @@ fun FavoritesScreen(
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },
                         item = MenuItems.RequestFeature
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.ReportBug
                     )
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },

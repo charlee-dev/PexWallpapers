@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
@@ -16,6 +17,7 @@ import com.adwi.components.PexExpandableAppBar
 import com.adwi.components.PexScaffold
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
 import com.adwi.components.theme.MenuItems
+import com.adwi.components.theme.TransparentColor
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_home.R
 import com.adwi.feature_home.presentation.components.CategoryListHorizontalPanel
@@ -27,6 +29,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalPagerApi
 @ExperimentalCoroutinesApi
@@ -43,7 +46,6 @@ fun HomeScreen(
     val daily by viewModel.daily.collectAsState()
     val colors by viewModel.colors.collectAsState()
     val curated by viewModel.curated.collectAsState()
-
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pendingScrollToTopAfterRefresh by viewModel.pendingScrollToTopAfterRefresh.collectAsState()
 
@@ -81,18 +83,10 @@ fun HomeScreen(
                         bottom = BottomNavHeight
                     )
             ) {
-                var expanded by remember { mutableStateOf(true) }
-
                 PexExpandableAppBar(
                     title = stringResource(id = R.string.home),
-                    showShadows = viewModel.showShadows,
-                    onMoreClick = { expanded = !expanded },
-                    expanded = expanded
+                    showShadows = viewModel.showShadows
                 ) {
-                    MenuListItem(
-                        action = navigateToSearch,
-                        item = MenuItems.Search
-                    )
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },
                         item = MenuItems.GiveFeedback
@@ -100,6 +94,10 @@ fun HomeScreen(
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },
                         item = MenuItems.RequestFeature
+                    )
+                    MenuListItem(
+                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        item = MenuItems.ReportBug
                     )
                     MenuListItem(
                         action = { viewModel.setSnackBar("Not implemented yet") },

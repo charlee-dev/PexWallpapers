@@ -17,6 +17,8 @@ object Dimensions {
     val extraLarge = 16.dp
     val extraExtraLarge = 24.dp
 
+    val Button = 72.dp
+
     object BottomBar {
         val TextIconSpacing = 2.dp
         val BottomNavHeight = 64.dp

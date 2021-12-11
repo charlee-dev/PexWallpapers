@@ -11,9 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,7 +50,6 @@ fun SettingsScreen(
     cancelWorks: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
-
     val context = LocalContext.current
 
     PexScaffold(
@@ -68,14 +65,13 @@ fun SettingsScreen(
                 PexExpandableAppBar(
                     title = stringResource(id = R.string.settings),
                     icon = Icons.Outlined.Settings,
-                    onMoreClick = {
-                        viewModel.resetSettings()
-                        viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
-                    },
                     showShadows = settings.showShadows
                 ) {
                     MenuListItem(
-                        action = { viewModel.resetSettings() },
+                        action = {
+                            viewModel.resetSettings()
+                            viewModel.setSnackBar(context.getString(R.string.default_settings_restored))
+                        },
                         item = MenuItems.ResetSettings
                     )
                     MenuListItem(

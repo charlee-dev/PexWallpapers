@@ -19,11 +19,16 @@ object MenuItems {
 
     val GiveFeedback = MenuItem(
         name = R.string.give_feedback,
-        icon = Icons.Outlined.Feedback
+        icon = Icons.Outlined.RateReview
     )
 
     val RequestFeature = MenuItem(
         name = R.string.request_feature,
+        icon = Icons.Outlined.Try
+    )
+
+    val ReportBug = MenuItem(
+        name = R.string.report_bug,
         icon = Icons.Outlined.Feedback
     )
 
