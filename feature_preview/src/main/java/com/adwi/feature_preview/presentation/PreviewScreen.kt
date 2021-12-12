@@ -53,6 +53,7 @@ fun PreviewScreen(
     val uriHandler = LocalUriHandler.current
 
     val infiniteTransition = rememberInfiniteTransition()
+
     var inPreview by rememberSaveable { mutableStateOf(false) }
     val transition = updateTransition(targetState = inPreview, label = "Preview")
 
