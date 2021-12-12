@@ -159,7 +159,7 @@ private fun WallpaperItemVertical(
             )
             PexAnimatedHeart(
                 state = isHeartEnabled,
-                size = 64.dp,
+                size = 32.dp,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(paddingValues / 2)
