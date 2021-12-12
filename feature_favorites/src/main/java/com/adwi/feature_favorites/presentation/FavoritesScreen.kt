@@ -41,15 +41,15 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel,
     onSearchClick: () -> Unit,
     onWallpaperClick: (Int) -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     val wallpapers by viewModel.wallpapers.collectAsState()
 
-    val scaffoldState = rememberScaffoldState()
     val scrollState = rememberScrollState()
 
-    var headerExpanded by remember { mutableStateOf(false) }
-
-    PexScaffold(viewModel = viewModel, scaffoldState = scaffoldState) {
+    PexScaffold(viewModel = viewModel) {
         Box(modifier = Modifier.fillMaxSize()) {
             AnimatedVisibility(
                 visible = wallpapers.isEmpty(),
@@ -78,15 +78,15 @@ fun FavoritesScreen(
                         item = MenuItems.DeleteAllFavorites
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onGiveFeedbackClick,
                         item = MenuItems.GiveFeedback
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onRequestFeature,
                         item = MenuItems.RequestFeature
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onReportBugClick,
                         item = MenuItems.ReportBug
                     )
                     MenuListItem(
@@ -160,8 +160,9 @@ private fun WallpaperItemVertical(
             PexAnimatedHeart(
                 state = isHeartEnabled,
                 size = 64.dp,
-                speed = 1.5f,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(paddingValues / 2)
             )
         }
     }

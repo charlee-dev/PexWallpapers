@@ -161,9 +161,10 @@ fun DailyWallpaper(
                                 )
                                 PexAnimatedHeart(
                                     state = wallpaper.isFavorite,
-                                    size = 128.dp,
-                                    speed = 1.5f,
-                                    modifier = Modifier.align(Alignment.TopEnd)
+                                    size = 32.dp,
+                                    modifier = Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(paddingValues)
                                 )
                                 Card(
                                     modifier = Modifier

@@ -52,7 +52,10 @@ fun NavGraphBuilder.myNavGraph(
     cancelWorks: () -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit
+    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -67,7 +70,10 @@ fun NavGraphBuilder.myNavGraph(
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onContactSupportClick = onContactSupportClick,
             onSaveAutomationClick = onSaveAutomationClick,
-            cancelWorks = cancelWorks
+            cancelWorks = cancelWorks,
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     // PREVIEW
@@ -86,7 +92,10 @@ fun NavGraphBuilder.myNavGraph(
             upPress = upPress,
             onShareClick = onShareClick,
             onDownloadClick = onDownloadClick,
-            onSetWallpaperClick = onSetWallpaperClick
+            onSetWallpaperClick = onSetWallpaperClick,
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     // SEARCH
@@ -103,7 +112,10 @@ fun NavGraphBuilder.myNavGraph(
 
         SearchScreen(
             viewModel = viewModel,
-            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     // PRIVACY POLICY
@@ -116,7 +128,10 @@ fun NavGraphBuilder.myNavGraph(
 
         PrivacyPolicyScreen(
             viewModel = viewModel,
-            upPress = upPress
+            upPress = upPress,
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     // ABOUT
@@ -127,7 +142,7 @@ fun NavGraphBuilder.myNavGraph(
 
         refreshCurrentSettings(viewModel, settings)
 
-//        PrivacyPolicyScreen(
+//        AboutUsScreen(
 //            viewModel = viewModel,
 //            upPress = upPress
 //        ) TODO(add About us screen)
@@ -152,7 +167,10 @@ fun NavGraphBuilder.addHomeGraph(
     onPrivacyPolicyClick: (NavBackStackEntry) -> Unit,
     onContactSupportClick: () -> Unit,
     onSaveAutomationClick: () -> Unit,
-    cancelWorks: () -> Unit
+    cancelWorks: () -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     composable(HomeSections.HOME.route) { backStackEntry ->
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
@@ -164,7 +182,10 @@ fun NavGraphBuilder.addHomeGraph(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onCategoryClick = { query -> onCategoryClick(query, backStackEntry) },
-            navigateToSearch = { navigateToSearch(backStackEntry) }
+            navigateToSearch = { navigateToSearch(backStackEntry) },
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     composable(HomeSections.SEARCH.route) { backStackEntry ->
@@ -175,7 +196,10 @@ fun NavGraphBuilder.addHomeGraph(
 
         SearchScreen(
             viewModel = viewModel,
-            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     composable(HomeSections.FAVORITES.route) { backStackEntry ->
@@ -187,7 +211,10 @@ fun NavGraphBuilder.addHomeGraph(
         FavoritesScreen(
             viewModel = viewModel,
             onSearchClick = { navigateToSearch(backStackEntry) },
-            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) }
+            onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
     composable(HomeSections.SETTINGS.route) { backStackEntry ->
@@ -201,7 +228,10 @@ fun NavGraphBuilder.addHomeGraph(
             onPrivacyPolicyClick = { onPrivacyPolicyClick(backStackEntry) },
             onContactSupportClick = onContactSupportClick,
             onSaveAutomationClick = onSaveAutomationClick,
-            cancelWorks = cancelWorks
+            cancelWorks = cancelWorks,
+            onGiveFeedbackClick = onGiveFeedbackClick,
+            onRequestFeature = onRequestFeature,
+            onReportBugClick = onReportBugClick
         )
     }
 }

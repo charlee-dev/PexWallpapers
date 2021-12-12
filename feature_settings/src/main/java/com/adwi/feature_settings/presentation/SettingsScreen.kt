@@ -10,8 +10,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.outlined.Mail
+import androidx.compose.material.icons.outlined.QuestionAnswer
+import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +27,6 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.Dimensions.BottomBar.BottomNavHeight
-import com.adwi.components.theme.MenuItem
 import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_settings.R
@@ -47,7 +51,10 @@ fun SettingsScreen(
     onPrivacyPolicyClick: () -> Unit,
     onContactSupportClick: () -> Unit,
     onSaveAutomationClick: () -> Unit,
-    cancelWorks: () -> Unit
+    cancelWorks: () -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     val settings by viewModel.settings.collectAsState()
     val context = LocalContext.current
@@ -75,16 +82,16 @@ fun SettingsScreen(
                         item = MenuItems.ResetSettings
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onGiveFeedbackClick,
                         item = MenuItems.GiveFeedback
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onRequestFeature,
                         item = MenuItems.RequestFeature
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
-                        item = MenuItems.ShowTips
+                        action = onReportBugClick,
+                        item = MenuItems.ReportBug
                     )
                 }
             }

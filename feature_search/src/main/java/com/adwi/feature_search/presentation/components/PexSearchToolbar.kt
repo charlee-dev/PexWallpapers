@@ -1,14 +1,17 @@
 package com.adwi.feature_search.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -21,7 +24,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.adwi.components.ShowMenuButton
 import com.adwi.components.neumorphicShadow
+import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_search.R
@@ -32,69 +37,107 @@ fun PexSearchToolbar(
     modifier: Modifier = Modifier,
     query: String,
     onQueryChanged: (String) -> Unit,
-    onShowFilterDialog: () -> Unit,
     shape: Shape = MaterialTheme.shapes.large,
     backgroundColor: Color = MaterialTheme.colors.surface,
     contentColor: Color = MaterialTheme.colors.primary,
-    showShadows: Boolean
+    showShadows: Boolean,
+    menuItems: @Composable () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    var expanded by remember { mutableStateOf(false) }
+    val transition = updateTransition(targetState = expanded, label = "Header")
+
+    val backgroundColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.primary else backgroundColor
+    }
+    val contentColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.secondary else contentColor
+    }
+    val buttonColorState by transition.animateColor(label = "Color") { state ->
+        if (state) MaterialTheme.colors.primaryVariant else contentColor
+    }
 
     Card(
         shape = shape,
         backgroundColor = backgroundColor,
         modifier = modifier
             .padding(paddingValues)
-            .height(70.dp)
-            .neumorphicShadow(enabled = showShadows)
+            .neumorphicShadow(enabled = showShadows, offset = (-5).dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = paddingValues / 2)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.animateContentSize()
         ) {
-            TextField(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .weight(1f),
-                leadingIcon = {
-                    Icon(
-                        Icons.Filled.Search,
-                        contentDescription = stringResource(id = R.string.search),
-                        tint = contentColor
-                    )
-                },
-                value = query,
-                onValueChange = { onQueryChanged(it) },
-                label = { Text(text = stringResource(id = R.string.search)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                    autoCorrect = true
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                ),
-                textStyle = TextStyle(color = contentColor),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                maxLines = 1,
-                singleLine = true
-            )
-            IconButton(
-                onClick = onShowFilterDialog
+                    .fillMaxWidth()
+                    .height(Dimensions.Button)
+                    .background(backgroundColorState)
+                    .padding(start = paddingValues / 2)
             ) {
-                Icon(
-                    modifier = Modifier,
-                    imageVector = Icons.Filled.MoreVert,
-                    tint = contentColor,
-                    contentDescription = stringResource(id = com.adwi.components.R.string.menu)
+                TextField(
+                    modifier = Modifier
+                        .weight(1f),
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = stringResource(id = R.string.search),
+                            tint = contentColorState
+                        )
+                    },
+                    value = query,
+                    onValueChange = { onQueryChanged(it) },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.search),
+                            color = contentColorState,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done,
+                        autoCorrect = true
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    textStyle = TextStyle(color = contentColorState),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = buttonColorState
+                    ),
+                    maxLines = 1,
+                    singleLine = true
                 )
+                ShowMenuButton(
+                    onClick = { expanded = !expanded },
+                    expanded = expanded,
+                    buttonColor = buttonColorState
+                )
+            }
+            AnimatedVisibility(expanded) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.surface),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            modifier = Modifier
+                                .padding(paddingValues / 2)
+                                .align(Alignment.Center)
+                        ) {
+                            menuItems()
+                        }
+                    }
+                }
             }
         }
     }
@@ -113,9 +156,8 @@ private fun SearchToolbarPreviewLight() {
             PexSearchToolbar(
                 query = "Pex Wallpapers",
                 onQueryChanged = { },
-                onShowFilterDialog = {},
                 showShadows = true
-            )
+            ) {}
         }
     }
 }
@@ -133,9 +175,8 @@ private fun SearchToolbarPreviewDark() {
             PexSearchToolbar(
                 query = "Pex Wallpapers",
                 onQueryChanged = { },
-                onShowFilterDialog = {},
                 showShadows = true
-            )
+            ) {}
         }
     }
 }

@@ -92,30 +92,14 @@ fun PexExpandableAppBar(
                 )
                 Text(
                     text = title,
-                    color = contentColorState,
-                    style = MaterialTheme.typography.h6.copy(contentColor)
+                    style = MaterialTheme.typography.h6.copy(contentColorState)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(
+                ShowMenuButton(
                     onClick = { expanded = !expanded },
-                    modifier = Modifier.size(Dimensions.Button)
-                ) {
-                    if (expanded) {
-                        Icon(
-                            imageVector = Icons.Outlined.Close,
-                            contentDescription = stringResource(id = R.string.hide_menu),
-                            tint = buttonColorState,
-                            modifier = Modifier
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Outlined.MoreVert,
-                            contentDescription = stringResource(id = R.string.show_menu),
-                            tint = buttonColorState,
-                            modifier = Modifier
-                        )
-                    }
-                }
+                    expanded = expanded,
+                    buttonColor = buttonColorState
+                )
             }
             AnimatedVisibility(expanded) {
                 Column(
@@ -139,6 +123,35 @@ fun PexExpandableAppBar(
     }
 }
 
+@Composable
+fun ShowMenuButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    expanded: Boolean,
+    buttonColor: Color
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(Dimensions.Button)
+    ) {
+        if (expanded) {
+            Icon(
+                imageVector = Icons.Outlined.Close,
+                contentDescription = stringResource(id = R.string.hide_menu),
+                tint = buttonColor,
+                modifier = Modifier
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Outlined.MoreVert,
+                contentDescription = stringResource(id = R.string.show_menu),
+                tint = buttonColor,
+                modifier = Modifier
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "Header Light")
 @Composable
 fun HeaderPreviewLight() {
@@ -151,25 +164,25 @@ fun HeaderPreviewLight() {
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
         }
     }
@@ -187,25 +200,25 @@ fun HeaderPreviewDark() {
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = false,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
             Spacer(modifier = Modifier.size(paddingValues))
             PexExpandableAppBar(
                 hasUpPress = true,
                 showShadows = true,
-                menuItems = {}
+                menuItems = {},
             )
         }
     }

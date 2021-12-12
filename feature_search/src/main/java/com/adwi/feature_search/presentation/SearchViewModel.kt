@@ -37,7 +37,6 @@ class SearchViewModel @Inject constructor(
     fun onSearchQuerySubmit(query: String) {
         _currentQuery.value = query
         setPendingScrollToTopAfterRefresh(true)
-        setIsRefreshing(true)
         setQuery(currentQuery.value)
     }
 
@@ -51,7 +50,6 @@ class SearchViewModel @Inject constructor(
         query?.let {
             _currentQuery.value = query
             setPendingScrollToTopAfterRefresh(true)
-            setIsRefreshing(false)
         }
         Timber.tag(tag).d("restore currentQuery = $query")
     }

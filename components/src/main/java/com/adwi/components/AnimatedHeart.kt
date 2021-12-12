@@ -17,8 +17,7 @@ import androidx.compose.ui.unit.dp
 fun PexAnimatedHeart(
     modifier: Modifier = Modifier,
     state: Boolean = false,
-    size: Dp = 64.dp,
-    speed: Float = 1.5f
+    size: Dp = 32.dp,
 ) {
     AnimatedVisibility(
         visible = state,
@@ -32,11 +31,5 @@ fun PexAnimatedHeart(
             tint = Color.Red,
             modifier = Modifier.size(size)
         )
-//        PexLottieAnimatedView(
-//            res = R.raw.heart,
-//            modifier = Modifier.size(size),
-//            restartOnPlay = false,
-//            speed = speed
-//        )
     }
 }

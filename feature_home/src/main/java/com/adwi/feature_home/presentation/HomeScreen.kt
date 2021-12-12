@@ -41,7 +41,10 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onWallpaperClick: (Int) -> Unit,
     onCategoryClick: (String) -> Unit,
-    navigateToSearch: () -> Unit
+    navigateToSearch: () -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     val daily by viewModel.daily.collectAsState()
     val colors by viewModel.colors.collectAsState()
@@ -88,15 +91,15 @@ fun HomeScreen(
                     showShadows = viewModel.showShadows
                 ) {
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onGiveFeedbackClick,
                         item = MenuItems.GiveFeedback
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onRequestFeature,
                         item = MenuItems.RequestFeature
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onReportBugClick,
                         item = MenuItems.ReportBug
                     )
                     MenuListItem(

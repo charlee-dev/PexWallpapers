@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.screens
+package com.adwi.pexwallpapers.presentation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -49,7 +49,6 @@ fun PexApp(
 
             val appState = rememberMyAppState()
 
-
             PexScaffold(
                 viewModel = viewModel,
                 bottomBar = {
@@ -88,7 +87,20 @@ fun PexApp(
                         cancelWorks = cancelWorks,
                         onShareClick = onShareClick,
                         onDownloadClick = onDownloadClick,
-                        onSetWallpaperClick = onSetWallpaperClick
+                        onSetWallpaperClick = onSetWallpaperClick,
+                        onGiveFeedbackClick = {
+//                            TODO("implement give feedback")
+                            viewModel.setSnackBar("Coming soon")
+                        },
+                        onRequestFeature = {
+//                            TODO("implement request feature")
+                            viewModel.setSnackBar("Coming soon")
+                        },
+                        onReportBugClick = {
+//                            TODO("implement report bug")
+                            viewModel.setSnackBar("Coming soon")
+                        }
+
                     )
                 }
             }

@@ -134,9 +134,9 @@ fun WallpaperItem(
                 )
                 PexAnimatedHeart(
                     state = isHeartEnabled,
-                    size = 64.dp,
-                    speed = 1.5f,
-                    modifier = Modifier.align(Alignment.TopEnd)
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(paddingValues / 2)
                 )
             }
         }

@@ -16,16 +16,17 @@ import com.adwi.components.theme.paddingValues
 
 @Composable
 fun NothingHereYetMessage(
+    modifier: Modifier = Modifier,
     visible: Boolean
 ) {
-    AnimatedVisibility(
+    AnimatedVisibility (
         visible = visible,
         enter = fadeIn(),
         exit = fadeOut()
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = modifier.align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(

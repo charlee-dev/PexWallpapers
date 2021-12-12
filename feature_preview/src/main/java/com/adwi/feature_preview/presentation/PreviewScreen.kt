@@ -41,14 +41,15 @@ fun PreviewScreen(
     upPress: () -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit
+    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
     val saveState by viewModel.saveState.collectAsState()
 
     val uriHandler = LocalUriHandler.current
-
-    var headerExpanded by remember { mutableStateOf(false)}
 
     PexScaffold(
         viewModel = viewModel
@@ -66,15 +67,15 @@ fun PreviewScreen(
                 showShadows = viewModel.showShadows
             ) {
                 MenuListItem(
-                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    action = onGiveFeedbackClick,
                     item = MenuItems.GiveFeedback
                 )
                 MenuListItem(
-                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    action = onRequestFeature,
                     item = MenuItems.RequestFeature
                 )
                 MenuListItem(
-                    action = { viewModel.setSnackBar("Not implemented yet") },
+                    action = onReportBugClick,
                     item = MenuItems.ReportBug
                 )
                 MenuListItem(
@@ -100,6 +101,7 @@ fun PreviewScreen(
                     PreviewCard(
                         wallpaper = it,
                         showShadows = viewModel.showShadows,
+                        onLongPress = { viewModel.onFavoriteClick(it) },
                         modifier = Modifier
                             .padding(horizontal = paddingValues)
                             .padding(vertical = paddingValues / 2)

@@ -26,7 +26,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun PrivacyPolicyScreen(
     viewModel: SettingsViewModel,
-    upPress: () -> Unit
+    upPress: () -> Unit,
+    onGiveFeedbackClick: () -> Unit,
+    onRequestFeature: () -> Unit,
+    onReportBugClick: () -> Unit
 ) {
     PexScaffold(viewModel = viewModel) {
         LazyColumn(
@@ -42,15 +45,15 @@ fun PrivacyPolicyScreen(
                     showShadows = viewModel.showShadows
                 ) {
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onGiveFeedbackClick,
                         item = MenuItems.GiveFeedback
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onRequestFeature,
                         item = MenuItems.RequestFeature
                     )
                     MenuListItem(
-                        action = { viewModel.setSnackBar("Not implemented yet") },
+                        action = onReportBugClick,
                         item = MenuItems.ReportBug
                     )
                 }
