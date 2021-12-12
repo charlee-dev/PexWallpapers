@@ -54,6 +54,7 @@ fun PexAnimatedHeart(
             modifier = modifier
                 .size(size)
                 .scale(scaleState)
+                .neumorphicShadow(offset = 0.dp, alpha = .1f)
         )
 }
 
