@@ -36,7 +36,8 @@ fun WallpaperListVerticalPanel(
     wallpapers: DataState<List<Wallpaper>>,
     onWallpaperClick: (Int) -> Unit,
     onLongPress: (Wallpaper) -> Unit,
-    showShadows: Boolean
+    showShadows: Boolean,
+    lowRes: Boolean
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         ShimmerRow(
@@ -63,6 +64,7 @@ fun WallpaperListVerticalPanel(
                         onLongPress = { onLongPress(wallpaper) },
                         isHeartEnabled = wallpaper.isFavorite,
                         showShadows = showShadows,
+                        lowRes = lowRes,
                         modifier = Modifier
                             .height(height)
                             .fillMaxWidth()
@@ -84,7 +86,8 @@ fun WallpaperItem(
     onWallpaperClick: () -> Unit,
     onLongPress: () -> Unit,
     isHeartEnabled: Boolean,
-    showShadows: Boolean = true
+    showShadows: Boolean = true,
+    lowRes: Boolean = false
 ) {
     var isPressed by remember { mutableStateOf(false) }
     val pressed = updateTransition(targetState = isPressed, label = "Press")
@@ -125,7 +128,8 @@ fun WallpaperItem(
         ) {
             Box {
                 PexCoilImage(
-                    imageUrl = wallpaper.imageUrlPortrait,
+                    imageUrl = if (lowRes)
+                        wallpaper.imageUrlTiny else wallpaper.imageUrlPortrait,
                     modifier = Modifier
                         .fillMaxSize()
                         .align(Alignment.Center),

@@ -142,7 +142,8 @@ fun HomeScreen(
                         wallpapers = curatedState,
                         onWallpaperClick = onWallpaperClick,
                         onLongPress = { viewModel.onFavoriteClick(it) },
-                        showShadows = viewModel.showShadows
+                        showShadows = viewModel.showShadows,
+                        lowRes = viewModel.lowRes
                     )
                 }
             }

@@ -1,5 +1,8 @@
 package com.adwi.feature_search.presentation
 
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
@@ -106,28 +110,44 @@ fun SearchScreen(
                 items(wallpapers.itemCount) { index ->
                     wallpapers[index]?.let {
 
-                        val interactionSource = remember { MutableInteractionSource() }
-                        val isPressed by interactionSource.collectIsPressedAsState()
+                        var isPressed by remember { mutableStateOf(false) }
+                        val pressed = updateTransition(targetState = isPressed, label = "Press")
+
+                        val scale by pressed.animateFloat(
+                            label = "Scale",
+                            transitionSpec = { tween(400) }
+                        ) {
+                            if (it) .98f else 1f
+                        }
                         val wallpaper = it.toDomain()
 
                         Card(
+                            shape = MaterialTheme.shapes.large,
+                            backgroundColor = MaterialTheme.colors.primary,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = paddingValues)
                                 .height((wallpaper.height / 2.5).dp)
                                 .neumorphicShadow(
-                                    enabled = viewModel.showShadows,
-                                    isPressed = isPressed
+                                    enabled = viewModel.showShadows
                                 )
                                 .pointerInput(Unit) {
                                     detectTapGestures(
                                         onTap = { onWallpaperClick(wallpaper.id) },
                                         onLongPress = {
                                             viewModel.onFavoriteClick(wallpaper)
+                                        },
+                                        onPress = {
+                                            isPressed = true
+                                            this.tryAwaitRelease()
+                                            isPressed = false
                                         }
                                     )
-                                },
-                            shape = MaterialTheme.shapes.large
+                                }
+                                .graphicsLayer {
+                                    scaleX = scale
+                                    scaleY = scale
+                                }
                         ) {
                             Box {
                                 PexCoilImage(
