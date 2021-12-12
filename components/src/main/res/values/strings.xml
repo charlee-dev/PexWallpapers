@@ -52,6 +52,8 @@
     <string name="wallpaper_thumbnail">Wallpaper thumbnail</string>
     <string name="photo_by">Photo by:</string>
     <string name="add_to_favorites">Add to favorites</string>
+    <string name="show_bigger">Show bigger</string>
+    <string name="show_smaller">Show smaller</string>
 
     <string name="rationale_title">We need permission to read external storage</string>
     <string name="rationale_desc">We require access to read external storage permission to be able to backup your previous wallpaper

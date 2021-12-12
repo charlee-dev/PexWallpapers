@@ -5,8 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -108,7 +106,7 @@ fun SearchScreen(
                     }
                 }
                 items(wallpapers.itemCount) { index ->
-                    wallpapers[index]?.let {
+                    wallpapers[index]?.let { wallpaperEntity ->
 
                         var isPressed by remember { mutableStateOf(false) }
                         val pressed = updateTransition(targetState = isPressed, label = "Press")
@@ -116,10 +114,10 @@ fun SearchScreen(
                         val scale by pressed.animateFloat(
                             label = "Scale",
                             transitionSpec = { tween(400) }
-                        ) {
-                            if (it) .98f else 1f
+                        ) { scale ->
+                            if (scale) .98f else 1f
                         }
-                        val wallpaper = it.toDomain()
+                        val wallpaper = wallpaperEntity.toDomain()
 
                         Card(
                             shape = MaterialTheme.shapes.large,

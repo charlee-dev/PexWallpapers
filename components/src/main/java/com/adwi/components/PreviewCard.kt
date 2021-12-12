@@ -10,14 +10,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CloseFullscreen
+import androidx.compose.material.icons.outlined.ZoomIn
+import androidx.compose.material.icons.outlined.ZoomOut
+import androidx.compose.material.icons.outlined.ZoomOutMap
+import androidx.compose.material.icons.rounded.OpenInFull
+import androidx.compose.material.icons.rounded.ZoomIn
+import androidx.compose.material.icons.rounded.ZoomOut
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
@@ -31,7 +42,9 @@ fun PreviewCard(
     wallpaper: Wallpaper,
     shape: Shape = MaterialTheme.shapes.large,
     onLongPress: () -> Unit,
-    showShadows: Boolean
+    showShadows: Boolean,
+    onWallpaperClick: () -> Unit,
+    inPreview: Boolean
 ) {
     var isPressed by remember { mutableStateOf(false) }
     val pressed = updateTransition(targetState = isPressed, label = "Press")
@@ -50,7 +63,7 @@ fun PreviewCard(
             .neumorphicShadow(enabled = showShadows)
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onTap = { },
+                    onTap = { onWallpaperClick() },
                     onLongPress = { onLongPress() },
                     onPress = {
                         isPressed = true
@@ -74,7 +87,16 @@ fun PreviewCard(
                 isFavorite = wallpaper.isFavorite,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(paddingValues / 2)
+                    .padding(paddingValues)
+            )
+            Icon(
+                imageVector = if (inPreview) Icons.Outlined.CloseFullscreen else Icons.Rounded.OpenInFull,
+                contentDescription = stringResource(R.string.show_bigger),
+                tint = MaterialTheme.colors.background,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(paddingValues)
+                    .neumorphicShadow(offset = 0.dp, alpha = .1f)
             )
         }
     }
@@ -94,7 +116,9 @@ private fun PreviewCardPreviewLight() {
             PreviewCard(
                 wallpaper = Wallpaper.defaultDaily,
                 showShadows = true,
-                onLongPress = {}
+                onLongPress = {},
+                onWallpaperClick = {},
+                inPreview = true
             )
         }
     }
@@ -114,7 +138,9 @@ private fun PreviewCardPreviewDark() {
             PreviewCard(
                 wallpaper = Wallpaper.defaultDaily,
                 showShadows = true,
-                onLongPress = {}
+                onLongPress = {},
+                onWallpaperClick = {},
+                inPreview = true
             )
         }
     }
