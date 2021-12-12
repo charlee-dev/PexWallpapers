@@ -24,5 +24,5 @@ interface ImageManager {
 
     fun setWallpaper(bitmap: Bitmap, home: Boolean, lock: Boolean): Resource
 
-    fun getCurrentWallpaper(): DataState<Bitmap>
+    fun getCurrentWallpaper(): Bitmap
 }

@@ -27,11 +27,9 @@ class BackupCurrentWallpaperWork @AssistedInject constructor(
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
 
             val bitmap = imageManager.getCurrentWallpaper()
+            imageManager.saveWallpaperLocally(wallpaperId, bitmap)
 
-            bitmap.data?.let {
-                imageManager.saveWallpaperLocally(wallpaperId, it)
-                success()
-            } ?: failure()
+            success()
         } catch (e: Exception) {
             Timber.tag(TAG).d(e.toString())
             failure()

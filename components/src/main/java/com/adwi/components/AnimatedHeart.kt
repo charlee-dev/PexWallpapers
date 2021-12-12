@@ -40,8 +40,7 @@ fun PexAnimatedHeart(
                         dampingRatio = Spring.DampingRatioHighBouncy,
                         visibilityThreshold = .5f
                     )
-                else ->
-                    tween(durationMillis = 300)
+                else -> tween(durationMillis = 300)
             }
         }
     ) { state ->

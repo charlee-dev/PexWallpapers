@@ -124,14 +124,7 @@ class ImageManagerImpl @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getCurrentWallpaper(): DataState<Bitmap> {
-        return try {
-            val currentWallpaper = wallpaperManager
-                .drawable
-                .toBitmap()
-            DataState.Success(currentWallpaper)
-        } catch (t: Throwable) {
-            DataState.Error(t)
-        }
-    }
+    override fun getCurrentWallpaper() = wallpaperManager
+        .drawable
+        .toBitmap()
 }

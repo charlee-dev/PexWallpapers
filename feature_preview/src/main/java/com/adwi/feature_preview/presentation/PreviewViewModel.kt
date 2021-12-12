@@ -1,7 +1,9 @@
 package com.adwi.feature_preview.presentation
 
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
+import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
@@ -25,14 +27,13 @@ class PreviewViewModel
 @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val wallpapersDao: WallpapersDao,
+    private val imageManager: ImageManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
     private val _wallpaper: MutableStateFlow<Wallpaper?> = MutableStateFlow(null)
-    private val _saveState: MutableStateFlow<Resource> = MutableStateFlow(Resource.Idle)
 
     val wallpaper = _wallpaper.asStateFlow()
-    val saveState = _saveState.asStateFlow()
 
     init {
         savedStateHandle.get<Int>("wallpaperId")?.let { wallpaperId ->
@@ -54,4 +55,6 @@ class PreviewViewModel
             Timber.d("${!wallpaper.isFavorite}")
         }
     }
+
+    fun getCurrentWallpaper() = imageManager.getCurrentWallpaper().asImageBitmap()
 }

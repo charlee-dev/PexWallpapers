@@ -142,7 +142,6 @@ class MainViewModel @ExperimentalCoroutinesApi
                     Timber.tag(tag).d(message)
                 }
             }
-            setSnackBar("Wallpaper set")
         }
     }
 

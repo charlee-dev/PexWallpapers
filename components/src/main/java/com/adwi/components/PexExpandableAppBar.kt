@@ -3,8 +3,11 @@ package com.adwi.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,14 +15,17 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.adwi.components.theme.*
 
+@ExperimentalMaterialApi
 @Composable
 fun PexExpandableAppBar(
     modifier: Modifier = Modifier,
@@ -66,17 +72,21 @@ fun PexExpandableAppBar(
                     .background(backgroundColorState)
             ) {
                 if (hasUpPress) {
-                    IconButton(
-                        onClick = onUpPress,
+                    Surface(
                         modifier = Modifier
                             .background(MaterialTheme.colors.primaryVariant)
                             .size(Dimensions.Button)
                             .padding(start = 4.dp, end = 4.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Outlined.ArrowBackIos,
+                        ActionButton(
+                            onClick = onUpPress,
+                            icon = Icons.Outlined.ArrowBackIos,
+                            tint = buttonsColor,
                             contentDescription = stringResource(R.string.back),
-                            tint = buttonsColor
+                            modifier = Modifier
+                                .background(MaterialTheme.colors.primaryVariant)
+                                .padding(start = 4.dp, end = 4.dp)
+                                .scale(.8f)
                         )
                     }
                 }
@@ -152,6 +162,7 @@ fun ShowMenuButton(
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = true, name = "Header Light")
 @Composable
 fun HeaderPreviewLight() {
@@ -188,6 +199,7 @@ fun HeaderPreviewLight() {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview(showBackground = true, name = "Header Dark")
 @Composable
 fun HeaderPreviewDark() {

@@ -51,6 +51,7 @@ dependencies {
     implementation(project(Modules.DATA))
     implementation(project(Modules.BASE))
     implementation(project(Modules.COMPONENTS))
+    implementation(project(Modules.FEATURE_IMAGE))
 
     addDefaultComposeDependencies()
     addComposeDependencies()

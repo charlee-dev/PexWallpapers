@@ -2,34 +2,38 @@ package com.adwi.feature_preview.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.ZoomOutMap
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.*
 import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
-import com.adwi.core.Resource
 import com.adwi.feature_preview.R
+import com.adwi.feature_preview.presentation.components.SetWallpaperButton
+import com.adwi.feature_preview.presentation.components.TRANSITION_DURATION
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import timber.log.Timber
+
+enum class SetWallpaperAnimationState { Idle, Preview, Flash, Wipe }
 
 @ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
@@ -42,21 +46,18 @@ fun PreviewScreen(
     upPress: () -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
+    onHomeClick: (String) -> Unit,
+    onLockClick: (String) -> Unit,
     onGiveFeedbackClick: () -> Unit,
     onRequestFeature: () -> Unit,
     onReportBugClick: () -> Unit
 ) {
     val wallpaper by viewModel.wallpaper.collectAsState()
-    val saveState by viewModel.saveState.collectAsState()
 
     val uriHandler = LocalUriHandler.current
 
-    val infiniteTransition = rememberInfiniteTransition()
-
     var inPreview by rememberSaveable { mutableStateOf(false) }
     val transition = updateTransition(targetState = inPreview, label = "Preview")
-
     val translationY by transition.animateFloat(label = "TranslationY") { state ->
         if (state) 1.3f else 1f
     }
@@ -67,16 +68,50 @@ fun PreviewScreen(
         if (state) paddingValues / 2 else paddingValues
     }
 
-    val scaleLoading by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.02f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(500, easing = LinearOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
+    var setWallpaperAnimationState by remember { mutableStateOf(SetWallpaperAnimationState.Idle) }
 
-    val scale = if (saveState == Resource.Loading()) scaleLoading else 1f
+    // Set wallpaper animation
+    var flash by remember { mutableStateOf(false) }
+    var wipe by remember { mutableStateOf(true) }
+    var showCurrent by remember { mutableStateOf(false) }
+    var showCheck by remember { mutableStateOf(false) }
+    var bitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+
+    LaunchedEffect(setWallpaperAnimationState) {
+        when (setWallpaperAnimationState) {
+            SetWallpaperAnimationState.Idle -> {
+                bitmap = viewModel.getCurrentWallpaper()
+                Timber.d("State = Idle ${bitmap?.height}")
+            }
+            SetWallpaperAnimationState.Preview -> {
+                Timber.d("State = Preview")
+                inPreview = true
+                delay(TRANSITION_DURATION.toLong())
+                setWallpaperAnimationState = SetWallpaperAnimationState.Flash
+            }
+            SetWallpaperAnimationState.Flash -> {
+                Timber.d("State = Flash")
+                flash = true
+                showCurrent = true
+                showCheck = true
+                wipe = true
+                delay(FLASH_DURATION.toLong())
+                flash = false
+                setWallpaperAnimationState = SetWallpaperAnimationState.Wipe
+            }
+            SetWallpaperAnimationState.Wipe -> {
+                Timber.d("State = Wipe")
+                inPreview = false
+                delay(1000)
+                wipe = false
+                delay(WIPE_DURATION.toLong())
+                showCurrent = false
+                showCheck = false
+                bitmap = null
+                setWallpaperAnimationState = SetWallpaperAnimationState.Idle
+            }
+        }
+    }
 
     PexScaffold(
         viewModel = viewModel
@@ -113,7 +148,6 @@ fun PreviewScreen(
                 }
             }
             wallpaper?.let {
-
                 PreviewCard(
                     wallpaper = it,
                     showShadows = viewModel.showShadows,
@@ -121,13 +155,14 @@ fun PreviewScreen(
                     onLongPress = { viewModel.onFavoriteClick(it) },
                     modifier = Modifier
                         .padding(horizontal = paddingState)
-                        .padding(vertical = paddingState)
-                        .weight(1f)
-                        .graphicsLayer(
-                            scaleX = scale,
-                            scaleY = scale
-                        ),
-                    inPreview = inPreview
+                        .padding(top = paddingValues / 2, bottom = paddingState / 2)
+                        .weight(1f),
+                    inPreview = inPreview,
+                    isFlash = flash,
+                    imageBitmap = bitmap,
+                    isWipe = wipe,
+                    showCurrent = showCurrent,
+                    showCheck = showCheck
                 )
 
                 AnimatedVisibility(!inPreview) {
@@ -169,22 +204,20 @@ fun PreviewScreen(
                         )
                     }
                 }
-                PexButton(
-                    state = saveState,
-                    onClick = { onSetWallpaperClick(it.imageUrlPortrait, true, false) },
-                    text = stringResource(id = R.string.set_wallpaper),
-                    loadingText = stringResource(R.string.loading),
-                    errorText = stringResource(R.string.error),
-                    successText = stringResource(R.string.wallpaper_has_been_set),
-                    shape = RoundedCornerShape(
-                        topStartPercent = 100,
-                        topEndPercent = 100
-                    ),
+                SetWallpaperButton(
+                    onHomeClick = {
+                        onHomeClick(it.imageUrlPortrait)
+                        setWallpaperAnimationState = SetWallpaperAnimationState.Preview
+                    },
+                    onLockClick = {
+                        onLockClick(it.imageUrlPortrait)
+                        setWallpaperAnimationState = SetWallpaperAnimationState.Preview
+                                  },
                     showShadows = viewModel.showShadows,
                     modifier = Modifier
-                        .padding(top = paddingState)
+                        .padding(paddingValues)
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(Dimensions.Button)
                 )
             }
         }

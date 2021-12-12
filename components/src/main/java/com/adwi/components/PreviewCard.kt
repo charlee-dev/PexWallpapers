@@ -1,9 +1,13 @@
 package com.adwi.components
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,18 +18,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CloseFullscreen
-import androidx.compose.material.icons.outlined.ZoomIn
-import androidx.compose.material.icons.outlined.ZoomOut
-import androidx.compose.material.icons.outlined.ZoomOutMap
 import androidx.compose.material.icons.rounded.OpenInFull
-import androidx.compose.material.icons.rounded.ZoomIn
-import androidx.compose.material.icons.rounded.ZoomOut
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +33,9 @@ import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+
+const val FLASH_DURATION = 200
+const val WIPE_DURATION = 1500
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -44,16 +47,69 @@ fun PreviewCard(
     onLongPress: () -> Unit,
     showShadows: Boolean,
     onWallpaperClick: () -> Unit,
-    inPreview: Boolean
+    inPreview: Boolean,
+    isFlash: Boolean = false,
+    imageBitmap: ImageBitmap? = null,
+    isWipe: Boolean = false,
+    showCurrent: Boolean = false,
+    showCheck: Boolean = false
 ) {
+    // Pressed
     var isPressed by remember { mutableStateOf(false) }
     val pressed = updateTransition(targetState = isPressed, label = "Press")
-
     val scale by pressed.animateFloat(
         label = "Scale",
         transitionSpec = { tween(400) }
     ) {
         if (it) .99f else 1f
+    }
+
+    // Flash
+    val flashTransition = updateTransition(targetState = isFlash, label = "Flash")
+    val alphaFlash by flashTransition.animateFloat(
+        label = "Alpha",
+        transitionSpec = { tween(FLASH_DURATION / 2) }
+    ) { state ->
+        if (state) 1f else 0f
+    }
+
+    // Wipe
+    val wipeTransition = updateTransition(targetState = isWipe, label = "Wipe")
+    val alphaWipe by wipeTransition.animateFloat(
+        label = "Alpha",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) 1f else 0f
+    }
+    val colorWipe by wipeTransition.animateFloat(
+        label = "Alpha",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) 0f else 1f
+    }
+    val translationYWipe by wipeTransition.animateFloat(
+        label = "TranslationY",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) 0f else 1500f
+    }
+    val borderWipe by wipeTransition.animateDp(
+        label = "TranslationY",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) 10.dp else 0.dp
+    }
+    val scaleWipe by wipeTransition.animateFloat(
+        label = "TranslationY",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) .95f else 1f
+    }
+    val borderColorWipe by wipeTransition.animateColor(
+        label = "TranslationY",
+        transitionSpec = { tween(WIPE_DURATION) }
+    ) { state ->
+        if (state) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
     }
 
     Card(
@@ -97,6 +153,35 @@ fun PreviewCard(
                     .align(Alignment.BottomEnd)
                     .padding(paddingValues)
                     .neumorphicShadow(offset = 0.dp, alpha = .1f)
+            )
+            if (showCurrent) {
+                imageBitmap?.let {
+                    Image(
+                        bitmap = it,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer(
+                                scaleX = scaleWipe,
+                                scaleY = scaleWipe,
+                                alpha = alphaWipe,
+                                translationY = translationYWipe
+                            )
+                            .border(width = borderWipe, color = borderColorWipe),
+                        contentScale = ContentScale.Crop,
+                        colorFilter = ColorFilter.colorMatrix(
+                            colorMatrix = ColorMatrix().apply {
+                                setToSaturation(colorWipe)
+                            }
+                        )
+                    )
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(alphaFlash)
+                    .background(Color.White)
             )
         }
     }

@@ -52,10 +52,11 @@ fun NavGraphBuilder.myNavGraph(
     cancelWorks: () -> Unit,
     onShareClick: (Wallpaper) -> Unit,
     onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit,
     onGiveFeedbackClick: () -> Unit,
     onRequestFeature: () -> Unit,
-    onReportBugClick: () -> Unit
+    onReportBugClick: () -> Unit,
+    onHomeClick: (url: String) -> Unit,
+    onLockClick: (url: String) -> Unit,
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -92,10 +93,11 @@ fun NavGraphBuilder.myNavGraph(
             upPress = upPress,
             onShareClick = onShareClick,
             onDownloadClick = onDownloadClick,
-            onSetWallpaperClick = onSetWallpaperClick,
             onGiveFeedbackClick = onGiveFeedbackClick,
             onRequestFeature = onRequestFeature,
-            onReportBugClick = onReportBugClick
+            onReportBugClick = onReportBugClick,
+            onHomeClick = onHomeClick,
+            onLockClick = onLockClick
         )
     }
     // SEARCH

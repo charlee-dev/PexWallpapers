@@ -7,10 +7,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -98,7 +95,7 @@ fun ActionButton(
         onClick = onClick,
         interactionSource = interactionSource,
         indication = null,
-        color = MaterialTheme.colors.background,
+        color = Color.Transparent,
         modifier = Modifier
     ) {
         Icon(
@@ -120,7 +117,7 @@ fun ActionButton(
 @Composable
 private fun ImageActionButtonsPreviewLight() {
     PexWallpapersTheme(darkTheme = false) {
-        Box(
+        Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)
@@ -141,7 +138,7 @@ private fun ImageActionButtonsPreviewLight() {
 @Composable
 private fun ImageActionButtonsPreviewDark() {
     PexWallpapersTheme(darkTheme = true) {
-        Box(
+        Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.background)
                 .padding(paddingValues)

@@ -6,12 +6,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.PexScaffold
 import com.adwi.components.PexSnackBarHost
 import com.adwi.components.theme.PexWallpapersTheme
-import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.core.Event
+import com.adwi.pexwallpapers.R
 import com.adwi.pexwallpapers.presentation.components.PexBottomBar
 import com.adwi.pexwallpapers.presentation.main.MainViewModel
 import com.adwi.pexwallpapers.presentation.navigation.HomeSections
@@ -37,17 +39,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
 fun PexApp(
-    viewModel: MainViewModel,
-    onSaveAutomationClick: () -> Unit,
-    cancelWorks: () -> Unit,
-    onShareClick: (Wallpaper) -> Unit,
-    onDownloadClick: (Wallpaper) -> Unit,
-    onSetWallpaperClick: (url: String, home: Boolean, lock: Boolean) -> Unit
+    viewModel: MainViewModel
 ) {
     ProvideWindowInsets {
         PexWallpapersTheme {
 
             val appState = rememberMyAppState()
+            val context = LocalContext.current
 
             PexScaffold(
                 viewModel = viewModel,
@@ -83,11 +81,10 @@ fun PexApp(
                         onAboutUsClick = { viewModel.aboutUs() },
                         onPrivacyPolicyClick = appState::navigateToPrivacyPolicy,
                         onContactSupportClick = { viewModel.contactSupport() },
-                        onSaveAutomationClick = onSaveAutomationClick,
-                        cancelWorks = cancelWorks,
-                        onShareClick = onShareClick,
-                        onDownloadClick = onDownloadClick,
-                        onSetWallpaperClick = onSetWallpaperClick,
+                        onSaveAutomationClick = { viewModel.saveAutomation() },
+                        cancelWorks = { viewModel.cancelAutoChangeWorks() },
+                        onShareClick = { viewModel.shareWallpaper(context, it) },
+                        onDownloadClick = { viewModel.downloadWallpaper(it) },
                         onGiveFeedbackClick = {
 //                            TODO("implement give feedback")
                             viewModel.setSnackBar("Coming soon")
@@ -99,8 +96,31 @@ fun PexApp(
                         onReportBugClick = {
 //                            TODO("implement report bug")
                             viewModel.setSnackBar("Coming soon")
+                        },
+                        onHomeClick = { url ->
+                            viewModel.setWallpaper(
+                                imageUrl = url,
+                                setHomeScreen = true,
+                                setLockScreen = false
+                            )
+                            viewModel.setEvent(
+                                Event.ShowToast(
+                                    context.getString(R.string.home_wallpaper_set)
+                                )
+                            )
+                        },
+                        onLockClick = { url ->
+                            viewModel.setWallpaper(
+                                imageUrl = url,
+                                setHomeScreen = false,
+                                setLockScreen = true
+                            )
+                            viewModel.setEvent(
+                                Event.ShowToast(
+                                    context.getString(R.string.lock_wallpaper_set)
+                                )
+                            )
                         }
-
                     )
                 }
             }
