@@ -158,7 +158,7 @@ private fun WallpaperItemVertical(
                     }
             )
             PexAnimatedHeart(
-                state = isHeartEnabled,
+                isFavorite = isHeartEnabled,
                 size = 32.dp,
                 modifier = Modifier
                     .align(Alignment.TopEnd)

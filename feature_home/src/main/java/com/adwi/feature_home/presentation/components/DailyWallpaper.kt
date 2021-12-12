@@ -160,7 +160,7 @@ fun DailyWallpaper(
                                         }
                                 )
                                 PexAnimatedHeart(
-                                    state = wallpaper.isFavorite,
+                                    isFavorite = wallpaper.isFavorite,
                                     size = 32.dp,
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)

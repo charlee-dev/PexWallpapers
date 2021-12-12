@@ -133,7 +133,7 @@ fun WallpaperItem(
                     contentScale = ContentScale.Crop
                 )
                 PexAnimatedHeart(
-                    state = isHeartEnabled,
+                    isFavorite = isHeartEnabled,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(paddingValues / 2)

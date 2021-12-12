@@ -1,8 +1,5 @@
 package com.adwi.feature_search.presentation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -139,7 +136,7 @@ fun SearchScreen(
                                     modifier = Modifier.fillMaxSize()
                                 )
                                 PexAnimatedHeart(
-                                    state = wallpaper.isFavorite,
+                                    isFavorite = wallpaper.isFavorite,
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
                                         .padding(paddingValues)

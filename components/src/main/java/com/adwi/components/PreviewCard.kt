@@ -71,7 +71,7 @@ fun PreviewCard(
                 modifier = Modifier.fillMaxSize()
             )
             PexAnimatedHeart(
-                state = wallpaper.isFavorite,
+                isFavorite = wallpaper.isFavorite,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(paddingValues / 2)
