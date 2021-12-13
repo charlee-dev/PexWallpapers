@@ -1,13 +1,11 @@
-package com.adwi.components
+package com.adwi.feature_preview.presentation.components
 
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,12 +28,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
+import com.adwi.components.PexAnimatedHeart
+import com.adwi.components.PexCoilImage
+import com.adwi.components.R
+import com.adwi.components.neumorphicShadow
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.components.theme.paddingValues
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 
 const val FLASH_DURATION = 200
-const val WIPE_DURATION = 1500
+const val WIPE_DURATION = 1000
 
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
@@ -52,7 +54,6 @@ fun PreviewCard(
     imageBitmap: ImageBitmap? = null,
     isWipe: Boolean = false,
     showCurrent: Boolean = false,
-    showCheck: Boolean = false
 ) {
     // Pressed
     var isPressed by remember { mutableStateOf(false) }
@@ -93,25 +94,12 @@ fun PreviewCard(
     ) { state ->
         if (state) 0f else 1500f
     }
-    val borderWipe by wipeTransition.animateDp(
-        label = "TranslationY",
-        transitionSpec = { tween(WIPE_DURATION) }
-    ) { state ->
-        if (state) 10.dp else 0.dp
-    }
     val scaleWipe by wipeTransition.animateFloat(
         label = "TranslationY",
         transitionSpec = { tween(WIPE_DURATION) }
     ) { state ->
         if (state) .95f else 1f
     }
-    val borderColorWipe by wipeTransition.animateColor(
-        label = "TranslationY",
-        transitionSpec = { tween(WIPE_DURATION) }
-    ) { state ->
-        if (state) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
-    }
-
     Card(
         shape = shape,
         modifier = modifier
@@ -156,25 +144,28 @@ fun PreviewCard(
             )
             if (showCurrent) {
                 imageBitmap?.let {
-                    Image(
-                        bitmap = it,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
+                    Card(
+                        shape = shape,
+                        modifier = modifier
                             .graphicsLayer(
                                 scaleX = scaleWipe,
                                 scaleY = scaleWipe,
                                 alpha = alphaWipe,
                                 translationY = translationYWipe
                             )
-                            .border(width = borderWipe, color = borderColorWipe),
-                        contentScale = ContentScale.Crop,
-                        colorFilter = ColorFilter.colorMatrix(
-                            colorMatrix = ColorMatrix().apply {
-                                setToSaturation(colorWipe)
-                            }
+                    ) {
+                        Image(
+                            bitmap = it,
+                            contentDescription = null,
+                            modifier = Modifier,
+                            contentScale = ContentScale.Crop,
+                            colorFilter = ColorFilter.colorMatrix(
+                                colorMatrix = ColorMatrix().apply {
+                                    setToSaturation(colorWipe)
+                                }
+                            )
                         )
-                    )
+                    }
                 }
             }
             Box(

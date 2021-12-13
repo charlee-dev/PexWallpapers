@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.provider.MediaStore
@@ -124,7 +125,18 @@ class ImageManagerImpl @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getCurrentWallpaper() = wallpaperManager
-        .drawable
-        .toBitmap()
+    override fun getCurrentWallpaper(home: Boolean): Bitmap {
+        return if (home) {
+            wallpaperManager
+                .drawable
+                .toBitmap()
+        }
+        else {
+            val parcel = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM)
+            val bitmap = BitmapFactory.decodeFileDescriptor(parcel.fileDescriptor)
+            parcel.close()
+            bitmap
+        }
+    }
+
 }

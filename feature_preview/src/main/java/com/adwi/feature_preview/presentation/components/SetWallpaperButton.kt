@@ -2,11 +2,10 @@ package com.adwi.feature_preview.presentation.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.*
@@ -22,7 +21,7 @@ import com.adwi.components.HalfButton
 import com.adwi.components.R
 import com.adwi.components.Side
 
- const val TRANSITION_DURATION = 300
+const val TRANSITION_DURATION = 300
 private const val TRANSLATION_Y = 1.2f
 
 @ExperimentalMaterialApi
@@ -36,6 +35,7 @@ fun SetWallpaperButton(
     cornerRadius: Dp = 30.dp,
     backgroundColor: Color = MaterialTheme.colors.primaryVariant,
     textColor: Color = MaterialTheme.colors.primary,
+    enabled: Boolean = true
 ) {
     var isSplit by remember { mutableStateOf(false) }
     val transition = updateTransition(targetState = isSplit, label = "Split")
@@ -87,7 +87,7 @@ fun SetWallpaperButton(
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             HalfButton(
-                onClick = onHomeClick,
+                onClick = { if (enabled) onHomeClick() },
                 text = stringResource(id = R.string.home_screen),
                 halfSide = Side.Left,
                 cornerRadius = cornerRadius,
@@ -104,11 +104,12 @@ fun SetWallpaperButton(
                     onClick = { isSplit = false },
                     icon = Icons.Outlined.Close,
                     contentDescription = "Close",
-                    modifier = Modifier.scale(scaleState)
+                    modifier = Modifier
+                        .scale(scaleState)
                 )
             }
             HalfButton(
-                onClick = onLockClick,
+                onClick = { if (enabled) onLockClick() },
                 text = stringResource(id = R.string.lock_screen),
                 halfSide = Side.Right,
                 cornerRadius = cornerRadius,

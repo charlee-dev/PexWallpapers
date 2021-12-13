@@ -7,7 +7,6 @@ import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
-import com.adwi.core.Resource
 import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.database.domain.toDomain
 import com.adwi.pexwallpapers.domain.model.Wallpaper
@@ -56,5 +55,5 @@ class PreviewViewModel
         }
     }
 
-    fun getCurrentWallpaper() = imageManager.getCurrentWallpaper().asImageBitmap()
+    fun getCurrentWallpaper(home: Boolean) = imageManager.getCurrentWallpaper(home).asImageBitmap()
 }

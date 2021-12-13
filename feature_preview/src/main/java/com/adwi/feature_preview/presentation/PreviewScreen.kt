@@ -26,8 +26,7 @@ import com.adwi.components.theme.Dimensions
 import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
 import com.adwi.feature_preview.R
-import com.adwi.feature_preview.presentation.components.SetWallpaperButton
-import com.adwi.feature_preview.presentation.components.TRANSITION_DURATION
+import com.adwi.feature_preview.presentation.components.*
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -56,6 +55,7 @@ fun PreviewScreen(
 
     val uriHandler = LocalUriHandler.current
 
+    // Preview
     var inPreview by rememberSaveable { mutableStateOf(false) }
     val transition = updateTransition(targetState = inPreview, label = "Preview")
     val translationY by transition.animateFloat(label = "TranslationY") { state ->
@@ -68,19 +68,17 @@ fun PreviewScreen(
         if (state) paddingValues / 2 else paddingValues
     }
 
+    // Set wallpaper
     var setWallpaperAnimationState by remember { mutableStateOf(SetWallpaperAnimationState.Idle) }
 
-    // Set wallpaper animation
     var flash by remember { mutableStateOf(false) }
     var wipe by remember { mutableStateOf(true) }
     var showCurrent by remember { mutableStateOf(false) }
-    var showCheck by remember { mutableStateOf(false) }
     var bitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
     LaunchedEffect(setWallpaperAnimationState) {
         when (setWallpaperAnimationState) {
             SetWallpaperAnimationState.Idle -> {
-                bitmap = viewModel.getCurrentWallpaper()
                 Timber.d("State = Idle ${bitmap?.height}")
             }
             SetWallpaperAnimationState.Preview -> {
@@ -93,8 +91,7 @@ fun PreviewScreen(
                 Timber.d("State = Flash")
                 flash = true
                 showCurrent = true
-                showCheck = true
-                wipe = true
+
                 delay(FLASH_DURATION.toLong())
                 flash = false
                 setWallpaperAnimationState = SetWallpaperAnimationState.Wipe
@@ -106,8 +103,10 @@ fun PreviewScreen(
                 wipe = false
                 delay(WIPE_DURATION.toLong())
                 showCurrent = false
-                showCheck = false
                 bitmap = null
+                wipe = true
+                onHomeClick(wallpaper!!.imageUrlPortrait)
+                delay(WIPE_DURATION.toLong())
                 setWallpaperAnimationState = SetWallpaperAnimationState.Idle
             }
         }
@@ -162,7 +161,6 @@ fun PreviewScreen(
                     imageBitmap = bitmap,
                     isWipe = wipe,
                     showCurrent = showCurrent,
-                    showCheck = showCheck
                 )
 
                 AnimatedVisibility(!inPreview) {
@@ -206,14 +204,17 @@ fun PreviewScreen(
                 }
                 SetWallpaperButton(
                     onHomeClick = {
-                        onHomeClick(it.imageUrlPortrait)
+                        bitmap = viewModel.getCurrentWallpaper(true)
                         setWallpaperAnimationState = SetWallpaperAnimationState.Preview
+//                        onHomeClick(it.imageUrlPortrait)
                     },
                     onLockClick = {
-                        onLockClick(it.imageUrlPortrait)
+                        bitmap = viewModel.getCurrentWallpaper(false)
                         setWallpaperAnimationState = SetWallpaperAnimationState.Preview
+                        onLockClick(it.imageUrlPortrait)
                                   },
                     showShadows = viewModel.showShadows,
+                    enabled = setWallpaperAnimationState == SetWallpaperAnimationState.Idle,
                     modifier = Modifier
                         .padding(paddingValues)
                         .fillMaxWidth()
