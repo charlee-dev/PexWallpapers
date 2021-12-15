@@ -6,6 +6,8 @@ import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.data.network.domain.WallpaperDto
 import com.adwi.data.network.domain.toDomain
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import retrofit2.HttpException
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 fun List<WallpaperDto>.keepFavorites(
@@ -27,4 +29,10 @@ fun List<Wallpaper>.shouldFetch(): Boolean {
     return oldestTimestamp == null ||
             oldestTimestamp < System.currentTimeMillis() -
             TimeUnit.DAYS.toMillis(REFRESH_DATA_EVERY)
+}
+
+fun Throwable.throwIfException() {
+    if (this !is HttpException && this !is IOException) {
+        throw this
+    }
 }

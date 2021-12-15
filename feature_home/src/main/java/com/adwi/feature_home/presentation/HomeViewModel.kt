@@ -7,7 +7,7 @@ import com.adwi.components.base.BaseViewModel
 import com.adwi.components.base.Refresh
 import com.adwi.components.ext.onDispatcher
 import com.adwi.core.DataState
-import com.adwi.feature_home.data.HomeRepository
+import com.adwi.feature_home.domain.repository.HomeRepository
 import com.adwi.feature_home.data.category.colorCategoryList
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel

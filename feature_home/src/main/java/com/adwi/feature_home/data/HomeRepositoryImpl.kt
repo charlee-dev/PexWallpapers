@@ -8,6 +8,8 @@ import com.adwi.data.database.domain.*
 import com.adwi.data.network.PexService
 import com.adwi.data.util.keepFavorites
 import com.adwi.data.util.shouldFetch
+import com.adwi.data.util.throwIfException
+import com.adwi.feature_home.domain.repository.HomeRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +20,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class HomeRepositoryImpl @Inject constructor(
+internal class HomeRepositoryImpl @Inject constructor(
     private val service: PexService,
     private val database: WallpaperDatabase
 ) : HomeRepository {
@@ -56,11 +58,9 @@ class HomeRepositoryImpl @Inject constructor(
             if (forceRefresh) true else list.shouldFetch()
         },
         onFetchSuccess = onFetchSuccess,
-        onFetchFailed = { t ->
-            if (t !is HttpException && t !is IOException) {
-                throw t
-            }
-            onFetchRemoteFailed(t)
+        onFetchFailed = { throwable ->
+            throwable.throwIfException()
+            onFetchRemoteFailed(throwable)
         }
     )
 
@@ -95,11 +95,9 @@ class HomeRepositoryImpl @Inject constructor(
             if (forceRefresh) true else list.shouldFetch()
         },
         onFetchSuccess = onFetchSuccess,
-        onFetchFailed = { t ->
-            if (t !is HttpException && t !is IOException) {
-                throw t
-            }
-            onFetchRemoteFailed(t)
+        onFetchFailed = { throwable ->
+            throwable.throwIfException()
+            onFetchRemoteFailed(throwable)
         }
     )
 
@@ -129,11 +127,9 @@ class HomeRepositoryImpl @Inject constructor(
             if (forceRefresh) true else list.shouldFetch()
         },
         onFetchSuccess = onFetchSuccess,
-        onFetchFailed = { t ->
-            if (t !is HttpException && t !is IOException) {
-                throw t
-            }
-            onFetchRemoteFailed(t)
+        onFetchFailed = { throwable ->
+            throwable.throwIfException()
+            onFetchRemoteFailed(throwable)
         }
     )
 

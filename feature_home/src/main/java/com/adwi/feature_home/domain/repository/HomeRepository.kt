@@ -1,7 +1,7 @@
-package com.adwi.feature_home.data
+package com.adwi.feature_home.domain.repository
 
 import com.adwi.core.DataState
-import com.adwi.data.Constants.DEFAULT_DAILY_CATEGORY
+import com.adwi.data.Constants
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.flow.Flow
 
@@ -14,7 +14,7 @@ interface HomeRepository {
     ): Flow<DataState<List<Wallpaper>>>
 
     fun getDaily(
-        categoryName: String = DEFAULT_DAILY_CATEGORY,
+        categoryName: String = Constants.DEFAULT_DAILY_CATEGORY,
         forceRefresh: Boolean,
         onFetchSuccess: () -> Unit,
         onFetchRemoteFailed: (Throwable) -> Unit

@@ -2,6 +2,7 @@ package com.adwi.feature_home.data
 
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.network.PexService
+import com.adwi.feature_home.domain.repository.HomeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object HomeModule {
+object HomeDataModule {
 
     @ExperimentalCoroutinesApi
     @Provides
