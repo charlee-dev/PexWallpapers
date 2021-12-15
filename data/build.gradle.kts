@@ -9,7 +9,6 @@ plugins {
     id(Plugins.DAGGER_HILT)
 }
 
-val pex_base_url: String by project
 val pex_api_access_key: String by project
 
 android {
@@ -23,7 +22,6 @@ android {
     }
 
     buildTypes.forEach {
-        it.buildConfigField("String", "PEX_BASE_URL", pex_base_url)
         it.buildConfigField("String", "PEX_API_ACCESS_KEY", pex_api_access_key)
     }
 

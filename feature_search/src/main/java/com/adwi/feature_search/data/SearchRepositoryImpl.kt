@@ -4,7 +4,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.adwi.data.Constants
+import com.adwi.data.util.Constants
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.data.database.domain.toEntity

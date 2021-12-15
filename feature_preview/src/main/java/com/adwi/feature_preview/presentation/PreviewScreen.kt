@@ -204,12 +204,12 @@ fun PreviewScreen(
                 }
                 SetWallpaperButton(
                     onHomeClick = {
-                        bitmap = viewModel.getCurrentWallpaper(true)
+                        bitmap = viewModel.getHomeScreenWallpaper()
                         setWallpaperAnimationState = SetWallpaperAnimationState.Preview
 //                        onHomeClick(it.imageUrlPortrait)
                     },
                     onLockClick = {
-                        bitmap = viewModel.getCurrentWallpaper(false)
+                        bitmap = viewModel.getLockScreenWallpaper()
                         setWallpaperAnimationState = SetWallpaperAnimationState.Preview
                         onLockClick(it.imageUrlPortrait)
                                   },

@@ -1,7 +1,7 @@
 package com.adwi.data.util
 
-import com.adwi.data.Constants.DEFAULT_CATEGORY
-import com.adwi.data.Constants.REFRESH_DATA_EVERY
+import com.adwi.data.util.Constants.DEFAULT_CATEGORY
+import com.adwi.data.util.Constants.REFRESH_DATA_EVERY
 import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.data.network.domain.WallpaperDto
 import com.adwi.data.network.domain.toDomain

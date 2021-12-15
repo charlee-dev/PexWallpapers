@@ -28,7 +28,7 @@ class BackupCurrentWallpaperWork @AssistedInject constructor(
             // Get wallpaperId
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
 
-            val bitmap = wallpaperSetter.getCurrentWallpaper(true)
+            val bitmap = wallpaperSetter.getHomeScreenWallpaper()
             imageManager.saveWallpaperLocally(wallpaperId, bitmap)
 
             success()

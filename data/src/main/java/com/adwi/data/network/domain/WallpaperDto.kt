@@ -1,6 +1,6 @@
 package com.adwi.data.network.domain
 
-import com.adwi.data.Constants.DEFAULT_CATEGORY
+import com.adwi.data.util.Constants.DEFAULT_CATEGORY
 import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,6 @@
-package com.adwi.data
+package com.adwi.data.util
+
+import com.adwi.data.BuildConfig
 
 object Constants {
 
@@ -6,16 +8,14 @@ object Constants {
     const val WALLPAPER_DATABASE = "wallpaper_database"
 
     // PexApi
-    const val BASE_URL = BuildConfig.PEX_BASE_URL
+    const val BASE_URL = "https://api.pexels.com/v1/"
     const val API_KEY = BuildConfig.PEX_API_ACCESS_KEY
     const val AUTHORIZATION = "Authorization"
 
     const val DAILY_PAGE_SIZE = 31
-    const val COLORS_PAGE_SIZE = 1
     const val CURATED_PAGE_SIZE = 20
     const val PAGING_PAGE_SIZE = 20
 
-    const val DEFAULT_QUERY = "Flowers"
     const val DEFAULT_CATEGORY = "Curated"
     const val DEFAULT_DAILY_CATEGORY = "Purple Orange"
 

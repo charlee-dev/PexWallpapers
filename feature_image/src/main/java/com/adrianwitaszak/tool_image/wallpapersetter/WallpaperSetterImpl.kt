@@ -25,16 +25,16 @@ class WallpaperSetterImpl @Inject constructor(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getCurrentWallpaper(home: Boolean): Bitmap {
-        return if (home) {
-            wallpaperManager
-                .drawable
-                .toBitmap()
-        } else {
-            val parcel = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM)
-            val bitmap = BitmapFactory.decodeFileDescriptor(parcel.fileDescriptor)
-            parcel.close()
-            bitmap
-        }
+    override fun getHomeScreenWallpaper(): Bitmap =
+        wallpaperManager
+            .drawable
+            .toBitmap()
+
+    @SuppressLint("MissingPermission")
+    override fun getLockScreenWallpaper(): Bitmap {
+        val parcel = wallpaperManager.getWallpaperFile(WallpaperManager.FLAG_SYSTEM)
+        val bitmap = BitmapFactory.decodeFileDescriptor(parcel.fileDescriptor)
+        parcel.close()
+        return bitmap
     }
 }

@@ -1,7 +1,7 @@
 package com.adwi.feature_home.domain.repository
 
 import com.adwi.core.DataState
-import com.adwi.data.Constants
+import com.adwi.data.util.Constants
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.flow.Flow
 

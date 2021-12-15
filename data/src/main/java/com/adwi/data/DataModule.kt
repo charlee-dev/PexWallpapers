@@ -2,12 +2,13 @@ package com.adwi.data
 
 import android.content.Context
 import androidx.room.Room
-import com.adwi.data.Constants.WALLPAPER_DATABASE
+import com.adwi.data.util.Constants.WALLPAPER_DATABASE
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.database.dao.DailyDao
 import com.adwi.data.database.dao.SearchDao
 import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.network.PexService
+import com.adwi.data.util.Constants
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides

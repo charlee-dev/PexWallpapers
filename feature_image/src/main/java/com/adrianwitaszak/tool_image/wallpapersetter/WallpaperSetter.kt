@@ -7,5 +7,6 @@ interface WallpaperSetter {
 
     fun setWallpaper(bitmap: Bitmap, home: Boolean, lock: Boolean)
 
-    fun getCurrentWallpaper(home: Boolean): Bitmap
+    fun getHomeScreenWallpaper(): Bitmap
+    fun getLockScreenWallpaper(): Bitmap
 }
