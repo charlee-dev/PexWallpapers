@@ -21,7 +21,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     private val savedStateHandle: SavedStateHandle,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher

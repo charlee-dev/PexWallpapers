@@ -159,9 +159,9 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
-    fun downloadWallpaper(wallpaper: Wallpaper): UUID {
+    fun downloadWallpaper(wallpaper: Wallpaper) {
         setSnackBar("Wallpaper downloaded")
-        return automationManager.createDownloadWallpaperWork(
+        automationManager.createDownloadWallpaperWork(
             wallpaper,
             settings.value.downloadWallpapersOverWiFi
         )

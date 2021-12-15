@@ -7,14 +7,14 @@ import java.util.*
 
 interface AutomationManager {
 
-    fun startAutoChangeWallpaperWork(delay: Long, favorites: List<Wallpaper>): Resource
+    fun startAutoChangeWallpaperWork(delay: Long, favorites: List<Wallpaper>)
 
     fun workCreateAutoChangeWallpaperWork(
         workName: String,
         wallpaper: Wallpaper,
         repeatInterval: Long,
         initialDelay: Long
-    ): Resource
+    )
 
     fun cancelAutoChangeWorks()
 
@@ -23,7 +23,7 @@ interface AutomationManager {
     fun createDownloadWallpaperWork(
         wallpaper: Wallpaper,
         downloadWallpaperOverWiFi: Boolean
-    ): UUID
+    )
 
     fun createWorkData(wallpaperId: Int): Data
 }
