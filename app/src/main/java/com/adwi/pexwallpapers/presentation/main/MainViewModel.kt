@@ -2,7 +2,8 @@ package com.adwi.pexwallpapers.presentation.main
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -32,6 +32,7 @@ class MainViewModel @ExperimentalCoroutinesApi
     private val wallpapersDao: WallpapersDao,
     private val settingsDao: SettingsDao,
     private val imageManager: ImageManager,
+    private val wallpaperSetter: WallpaperSetter,
     private val automationManager: AutomationManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
@@ -133,14 +134,12 @@ class MainViewModel @ExperimentalCoroutinesApi
         onDispatcher(ioDispatcher) {
             val bitmap = imageManager.getBitmapFromRemote(imageUrl)
 
-            bitmap.data?.let {
-                imageManager.setWallpaper(
+            bitmap?.let {
+                wallpaperSetter.setWallpaper(
                     bitmap = it,
                     home = setHomeScreen,
                     lock = setLockScreen
-                ).message?.let { message ->
-                    Timber.tag(tag).d(message)
-                }
+                )
             }
         }
     }
@@ -150,7 +149,7 @@ class MainViewModel @ExperimentalCoroutinesApi
             // Fetch
             val bitmap = imageManager.getBitmapFromRemote(wallpaper.imageUrlPortrait)
             // Save
-            bitmap.data?.let {
+            bitmap?.let {
                 val uri = imageManager.saveWallpaperLocally(wallpaper.id, it)
                 uri?.let { uri2 ->
                     context.shareImage(uri2, wallpaper.photographer)

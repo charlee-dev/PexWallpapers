@@ -6,7 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
 import com.adwi.tool_automation.util.Constants.WALLPAPER_IMAGE_URL
 import dagger.assisted.Assisted
@@ -37,7 +37,7 @@ class DownloadAndSaveWallpaperWork @AssistedInject constructor(
                 Timber.tag(tag).d("DownloadAndSaveWallpaperWork - wallpaperImageUrl not null")
                 val bitmap = imageManager.getBitmapFromRemote(wallpaperImageUrl)
 
-                bitmap.data?.let {
+                bitmap?.let {
                     imageManager.saveWallpaperToGallery(wallpaperId, it)
                 }
             }

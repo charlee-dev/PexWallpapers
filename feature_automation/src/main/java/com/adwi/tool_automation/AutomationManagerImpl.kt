@@ -2,7 +2,7 @@ package com.adwi.tool_automation
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.*
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
 import com.adwi.tool_automation.util.Constants.WALLPAPER_IMAGE_URL
@@ -44,90 +44,90 @@ class AutomationManagerImpl @Inject constructor(
         }
     }
 
-override fun workCreateAutoChangeWallpaperWork(
-    workName: String,
-    wallpaper: Wallpaper,
-    repeatInterval: Long,
-    initialDelay: Long
-) {
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .build()
+    override fun workCreateAutoChangeWallpaperWork(
+        workName: String,
+        wallpaper: Wallpaper,
+        repeatInterval: Long,
+        initialDelay: Long
+    ) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-    val work = PeriodicWorkRequestBuilder<AutoChangeWallpaperWork>(
-        repeatInterval = repeatInterval,
-        repeatIntervalTimeUnit = TimeUnit.MINUTES
-    )
-        .setInputData(createWorkData(wallpaper.id))
-        .setInitialDelay(initialDelay, TimeUnit.MINUTES)
-        .setConstraints(constraints)
-        .addTag(WORK_AUTO_WALLPAPER)
-        .build()
+        val work = PeriodicWorkRequestBuilder<AutoChangeWallpaperWork>(
+            repeatInterval = repeatInterval,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES
+        )
+            .setInputData(createWorkData(wallpaper.id))
+            .setInitialDelay(initialDelay, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .addTag(WORK_AUTO_WALLPAPER)
+            .build()
 
-    workManager.enqueueUniquePeriodicWork(
-        workName,
-        ExistingPeriodicWorkPolicy.REPLACE,
-        work
-    )
-}
+        workManager.enqueueUniquePeriodicWork(
+            workName,
+            ExistingPeriodicWorkPolicy.REPLACE,
+            work
+        )
+    }
 
-override fun cancelAutoChangeWorks() {
-    workManager.cancelAllWorkByTag(WORK_AUTO_WALLPAPER)
-    imageManager.deleteAllBackups()
-    Timber.tag(tag).d("cancelAutoChangeWorks")
-}
+    override fun cancelAutoChangeWorks() {
+        workManager.cancelAllWorkByTag(WORK_AUTO_WALLPAPER)
+        imageManager.deleteAllBackups()
+        Timber.tag(tag).d("cancelAutoChangeWorks")
+    }
 
-override fun backupCurrentWallpaper(wallpaperId: Int) {
-    val backup = OneTimeWorkRequestBuilder<BackupCurrentWallpaperWork>()
-        .setInputData(createWorkData(wallpaperId))
-        .addTag("$WORK_BACKUP_WALLPAPER${wallpaperId}")
-        .build()
+    override fun backupCurrentWallpaper(wallpaperId: Int) {
+        val backup = OneTimeWorkRequestBuilder<BackupCurrentWallpaperWork>()
+            .setInputData(createWorkData(wallpaperId))
+            .addTag("$WORK_BACKUP_WALLPAPER${wallpaperId}")
+            .build()
 
-    workManager.enqueueUniqueWork(
-        WORK_RESTORE_WALLPAPER + wallpaperId,
-        ExistingWorkPolicy.KEEP,
-        backup
-    )
+        workManager.enqueueUniqueWork(
+            WORK_RESTORE_WALLPAPER + wallpaperId,
+            ExistingWorkPolicy.KEEP,
+            backup
+        )
 
-    Timber.tag(tag).d("Created work: \nwallpaperId = $wallpaperId")
-}
+        Timber.tag(tag).d("Created work: \nwallpaperId = $wallpaperId")
+    }
 
-override fun createDownloadWallpaperWork(
-    wallpaper: Wallpaper,
-    downloadWallpaperOverWiFi: Boolean
-) {
-    val networkType = if (downloadWallpaperOverWiFi)
-        NetworkType.UNMETERED else NetworkType.CONNECTED
+    override fun createDownloadWallpaperWork(
+        wallpaper: Wallpaper,
+        downloadWallpaperOverWiFi: Boolean
+    ) {
+        val networkType = if (downloadWallpaperOverWiFi)
+            NetworkType.UNMETERED else NetworkType.CONNECTED
 
-    Timber.tag(tag).d("Network type - $networkType")
+        Timber.tag(tag).d("Network type - $networkType")
 
-    val data = Data.Builder()
-        .putInt(WALLPAPER_ID, wallpaper.id)
-        .putString(WALLPAPER_IMAGE_URL, wallpaper.imageUrlPortrait)
-        .build()
+        val data = Data.Builder()
+            .putInt(WALLPAPER_ID, wallpaper.id)
+            .putString(WALLPAPER_IMAGE_URL, wallpaper.imageUrlPortrait)
+            .build()
 
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(networkType)
-        .build()
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(networkType)
+            .build()
 
-    val downloadAndSave = OneTimeWorkRequestBuilder<DownloadAndSaveWallpaperWork>()
-        .setInputData(data)
-        .setConstraints(constraints)
-        .addTag("$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}")
-        .build()
+        val downloadAndSave = OneTimeWorkRequestBuilder<DownloadAndSaveWallpaperWork>()
+            .setInputData(data)
+            .setConstraints(constraints)
+            .addTag("$WORK_DOWNLOAD_WALLPAPER${wallpaper.id}")
+            .build()
 
-    workManager.enqueueUniqueWork(
-        WORK_DOWNLOAD_WALLPAPER + wallpaper.id,
-        ExistingWorkPolicy.KEEP,
-        downloadAndSave
-    )
+        workManager.enqueueUniqueWork(
+            WORK_DOWNLOAD_WALLPAPER + wallpaper.id,
+            ExistingWorkPolicy.KEEP,
+            downloadAndSave
+        )
 
-    Timber.tag(tag)
-        .d("createDownloadWallpaperWork: \nwallpaperId - ${wallpaper.id} \nuuid - ${downloadAndSave.id}")
-}
+        Timber.tag(tag)
+            .d("createDownloadWallpaperWork: \nwallpaperId - ${wallpaper.id} \nuuid - ${downloadAndSave.id}")
+    }
 
-override fun createWorkData(wallpaperId: Int): Data =
-    Data.Builder()
-        .putInt(WALLPAPER_ID, wallpaperId)
-        .build()
+    override fun createWorkData(wallpaperId: Int): Data =
+        Data.Builder()
+            .putInt(WALLPAPER_ID, wallpaperId)
+            .build()
 }

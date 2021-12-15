@@ -8,7 +8,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.tool_automation.AutomationManager
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
@@ -30,6 +31,7 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
     @Assisted params: WorkerParameters,
     private val automationManager: AutomationManager,
     private val imageManager: ImageManager,
+    private val wallpaperSetter: WallpaperSetter,
     private val settingsDao: SettingsDao,
     private val notificationManager: NotificationManager
 ) : CoroutineWorker(context, params) {
@@ -57,8 +59,8 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
                 }
 
                 // Set wallpaper
-                bitmap?.data?.let {
-                    imageManager.setWallpaper(
+                bitmap?.let {
+                    wallpaperSetter.setWallpaper(
                         bitmap = it,
                         home = settings.autoHome,
                         lock = settings.autoLock

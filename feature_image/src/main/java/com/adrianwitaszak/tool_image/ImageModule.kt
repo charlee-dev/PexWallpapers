@@ -2,6 +2,10 @@ package com.adrianwitaszak.tool_image
 
 import android.app.WallpaperManager
 import android.content.Context
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManagerImpl
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetterImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +20,14 @@ object ImageModule {
     @Provides
     @Singleton
     fun provideImageManager(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
+    ): ImageManager = ImageManagerImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideWallpaperSetter(
         wallpaperManager: WallpaperManager
-    ): ImageManager = ImageManagerImpl(context, wallpaperManager)
+    ): WallpaperSetter = WallpaperSetterImpl(wallpaperManager)
 
     @Provides
     @Singleton

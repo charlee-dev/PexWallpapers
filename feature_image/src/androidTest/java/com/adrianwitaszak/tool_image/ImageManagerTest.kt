@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.adrianwitaszak.tool_image.imagemanager.ImageManagerImpl
 import com.adrianwitaszak.tool_image.util.Constants
 import com.adrianwitaszak.tool_image.util.compressStream
 import org.junit.After

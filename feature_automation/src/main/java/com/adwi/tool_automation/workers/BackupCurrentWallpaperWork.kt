@@ -6,7 +6,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker.Result.failure
 import androidx.work.ListenableWorker.Result.success
 import androidx.work.WorkerParameters
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -18,7 +19,8 @@ private const val TAG = "AutoChangeWallpaperWork"
 class BackupCurrentWallpaperWork @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted params: WorkerParameters,
-    private val imageManager: ImageManager
+    private val imageManager: ImageManager,
+    private val wallpaperSetter: WallpaperSetter
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
@@ -26,7 +28,7 @@ class BackupCurrentWallpaperWork @AssistedInject constructor(
             // Get wallpaperId
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
 
-            val bitmap = imageManager.getCurrentWallpaper(true)
+            val bitmap = wallpaperSetter.getCurrentWallpaper(true)
             imageManager.saveWallpaperLocally(wallpaperId, bitmap)
 
             success()

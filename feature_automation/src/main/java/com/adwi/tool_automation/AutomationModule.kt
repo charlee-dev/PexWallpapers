@@ -4,7 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.WorkManager
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

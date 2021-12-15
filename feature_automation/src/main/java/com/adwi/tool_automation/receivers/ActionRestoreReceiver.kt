@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.paging.ExperimentalPagingApi
-import com.adrianwitaszak.tool_image.ImageManager
-import com.adwi.core.Resource
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.tool_automation.R
 import com.adwi.tool_automation.util.Constants.ACTION_AUTO
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +22,10 @@ class ActionRestoreReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var imageManager: ImageManager
+
+    @Inject
+    lateinit var wallpaperSetter: WallpaperSetter
+
     @Inject
     lateinit var notificationManager: NotificationManager
 
@@ -31,28 +35,26 @@ class ActionRestoreReceiver : BroadcastReceiver() {
         wallpaperId?.let {
             context?.run {
                 // Get wallpaper backed up earlier
-                val bitmap = imageManager.restoreBackup(wallpaperId)
+                val bitmap = imageManager.getBackup(wallpaperId)
                 // try to set wallpaper
-                val result = bitmap?.let {
-                    imageManager.setWallpaper(
+                bitmap?.let {
+                    wallpaperSetter.setWallpaper(
                         bitmap = bitmap,
                         home = true,
                         lock = false
                     )
                 }
-                // if success delete backup and notify user
-                if (result == Resource.Success()) {
-                    imageManager.deleteBackupBitmap(wallpaperId)
-                    notificationManager.cancel(wallpaperId.toInt())
 
-                    Timber.tag("OnDismissReceiver")
-                        .d(context.getString(R.string.previous_wallpaper_has_been_restored))
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.previous_wallpaper_has_been_restored),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                imageManager.deleteBackup(wallpaperId)
+                notificationManager.cancel(wallpaperId.toInt())
+
+                Timber.tag("OnDismissReceiver")
+                    .d(context.getString(R.string.previous_wallpaper_has_been_restored))
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.previous_wallpaper_has_been_restored),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

@@ -3,7 +3,8 @@ package com.adwi.feature_preview.presentation
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
@@ -27,6 +28,7 @@ class PreviewViewModel
     savedStateHandle: SavedStateHandle,
     private val wallpapersDao: WallpapersDao,
     private val imageManager: ImageManager,
+    private val wallpaperSetter: WallpaperSetter,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
 
@@ -55,5 +57,6 @@ class PreviewViewModel
         }
     }
 
-    fun getCurrentWallpaper(home: Boolean) = imageManager.getCurrentWallpaper(home).asImageBitmap()
+    fun getCurrentWallpaper(home: Boolean) =
+        wallpaperSetter.getCurrentWallpaper(home).asImageBitmap()
 }
