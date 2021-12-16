@@ -36,21 +36,12 @@ class PexAppState(
     val scaffoldState: ScaffoldState,
     val navController: NavHostController,
 ) {
-    // ----------------------------------------------------------
-    // BottomBar state source of truth
-    // ----------------------------------------------------------
-
     val bottomBarTabs = HomeSections.values()
     private val bottomBarRoutes = bottomBarTabs.map { it.route }
 
-    // Reading this attribute will cause recompositions when the bottom bar needs shown, or not.
-    // Not all routes need to show the bottom bar.
     val shouldShowBottomBar: Boolean
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
-    // ----------------------------------------------------------
-    // Navigation state source of truth
-    // ----------------------------------------------------------
 
     val currentRoute: String?
         get() = navController.currentDestination?.route

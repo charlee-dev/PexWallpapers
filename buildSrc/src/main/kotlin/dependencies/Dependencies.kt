@@ -92,6 +92,8 @@ object Dependencies {
         "com.google.accompanist:accompanist-navigation-animation:${Versions.accompanist}"
     const val accompanistPermissions =
         "com.google.accompanist:accompanist-permissions:${Versions.accompanist}"
+    const val systemUiController =
+        "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanist}"
 }
 
 object TestDependencies {

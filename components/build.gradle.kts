@@ -60,4 +60,5 @@ dependencies {
     implementation(Dependencies.lottie)
     implementation(Dependencies.accompanistPermissions)
     implementation(Dependencies.accompanistInsets)
+    implementation(Dependencies.systemUiController)
 }

@@ -6,6 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = PrimaryDarker,
@@ -32,6 +33,17 @@ fun PexWallpapersTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    systemUiController.apply {
+        setSystemBarsColor(
+            color = MaterialTheme.colors.surface
+        )
+        setNavigationBarColor(
+            color = MaterialTheme.colors.primary
+        )
+    }
+
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

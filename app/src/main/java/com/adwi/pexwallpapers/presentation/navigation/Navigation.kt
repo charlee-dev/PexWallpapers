@@ -86,7 +86,7 @@ fun NavGraphBuilder.myNavGraph(
     ) { backStackEntry ->
         val viewModel = hiltViewModel<PreviewViewModel>(backStackEntry)
 
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         PreviewScreen(
             viewModel = viewModel,
@@ -110,7 +110,7 @@ fun NavGraphBuilder.myNavGraph(
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
         viewModel.restoreSavedQuery()
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         SearchScreen(
             viewModel = viewModel,
@@ -120,13 +120,12 @@ fun NavGraphBuilder.myNavGraph(
             onReportBugClick = onReportBugClick
         )
     }
-    // PRIVACY POLICY
     composable(
         route = MainDestinations.PRIVACY_POLICY
     ) { backStackEntry ->
         val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
 
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         PrivacyPolicyScreen(
             viewModel = viewModel,
@@ -136,13 +135,12 @@ fun NavGraphBuilder.myNavGraph(
             onReportBugClick = onReportBugClick
         )
     }
-    // ABOUT
     composable(
         route = MainDestinations.ABOUT_US
     ) { backStackEntry ->
         val viewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
 
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
 //        AboutUsScreen(
 //            viewModel = viewModel,
@@ -178,7 +176,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
 
         viewModel.onStart()
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         HomeScreen(
             viewModel = viewModel,
@@ -194,7 +192,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<SearchViewModel>(backStackEntry)
 
         viewModel.restoreSavedQuery()
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         SearchScreen(
             viewModel = viewModel,
@@ -208,7 +206,7 @@ fun NavGraphBuilder.addHomeGraph(
         val viewModel = hiltViewModel<FavoritesViewModel>(backStackEntry)
 
         viewModel.getFavorites()
-        refreshCurrentSettings(viewModel, settings)
+        getCurrentSettings(viewModel, settings)
 
         FavoritesScreen(
             viewModel = viewModel,
@@ -248,7 +246,7 @@ tailrec fun findStartDestination(graph: NavDestination): NavDestination {
     return if (graph is NavGraph) findStartDestination(graph.startDestination!!) else graph
 }
 
-private fun refreshCurrentSettings(viewModel: BaseViewModel, settings: Settings) {
+private fun getCurrentSettings(viewModel: BaseViewModel, settings: Settings) {
     viewModel.lowRes = settings.lowResMiniatures
     viewModel.showShadows = settings.showShadows
     viewModel.showParallax = settings.showParallax

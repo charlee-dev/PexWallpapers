@@ -76,7 +76,7 @@ class MainViewModel @ExperimentalCoroutinesApi
             ) { list ->
 
                 automationManager.startAutoChangeWallpaperWork(
-                    delay = getTotalMinutesFromPeriods(
+                    delay = getTotalMinutesFromTimePeriods(
                         settings.value.minutes,
                         settings.value.hours,
                         settings.value.days
@@ -107,7 +107,7 @@ class MainViewModel @ExperimentalCoroutinesApi
         }
     }
 
-    private fun getTotalMinutesFromPeriods(
+    private fun getTotalMinutesFromTimePeriods(
         minutes: Int,
         hours: Int,
         days: Int

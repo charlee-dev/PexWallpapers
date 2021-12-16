@@ -9,6 +9,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
