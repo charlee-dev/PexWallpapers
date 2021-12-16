@@ -17,7 +17,7 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
-# Setup
+# Getting started
 
 To run app:
 
@@ -29,9 +29,10 @@ To run app:
 
 4. And run in emulator or on physical device
 
-## Stack
+## Tech Stack
 
-- ***MVVM*** architecture
+- 100% ![Kotlin](https://kotlinlang.org/)
+- ![MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture
 - ***Retrofit*** for pulling data from network
 - ***Room*** for persistence
 - ***Coroutines*** for threading
