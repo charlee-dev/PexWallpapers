@@ -17,18 +17,6 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
-# Getting started
-
-To run app:
-
-1. git clone repo to Android studio
-2. Get your own Api Key from [Pexels.com](https://www.pexels.com/api/)
-3. Add your own Api Key to gradle.properties in this format
-
-   pex_api_access_key="234f9170000324234012343d044b1a3482ba588"
-
-4. And run in emulator or on physical device
-
 * Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
   *  [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - for background operations
@@ -61,3 +49,15 @@ To run app:
 
 * Gradle
   * [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
+
+# Getting started
+
+To run app:
+
+1. git clone repo to Android studio
+2. Get your own Api Key from [Pexels.com](https://www.pexels.com/api/)
+3. Add your own Api Key to gradle.properties in this format
+
+   pex_api_access_key="234f9170000324234012343d044b1a3482ba588"
+
+4. And run in emulator or on physical device
