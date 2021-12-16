@@ -33,16 +33,14 @@ To run app:
 
 - 100% [Kotlin](https://kotlinlang.org/)
 - [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture
-- ***Retrofit*** for pulling data from network
-- ***Room*** for persistence
-- ***Coroutines*** for threading
-- All *Retrofit* and *Room* logic handled in *Repository*
-- *ViewModel* handles logic between UI and *Repository* using **Flows** and **Coroutines**
-- Using ****Coil**** for fetching images from web
-- **Hilt** for dependency injection
-- **Paging 3** for displaying long Wallpaper lists from web
-- **Navigation Component**  for navigation in an app ofc
-- Data Binding
-- **Lottie** is used in a SwipeRefreshLayout
-- **Shimmer** effect for while loading Wallpapers
+- [Retrofit](https://github.com/square/retrofit) for pulling data from network
+- [Room](https://developer.android.com/training/data-storage/room) for persistence
+- [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for threading
+- [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) handles logic between UI and *Repository* using **Flows** and **Coroutines**
+- [Coil](https://github.com/coil-kt/coil) for fetching images from web
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependency injection
+- [Jetpack Compose](https://developer.android.com/jetpack/compose) latest reactive ui by Google
+- [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview) for displaying long Wallpaper lists from web
+- [Accompanist](https://github.com/google/accompanist) is used in a SwipeRefreshLayout
+- [Shimmer](https://github.com/valentinilk/compose-shimmer) effect for while loading Wallpapers
 - **UI testing** and **Unit testing** (in progress)
