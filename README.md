@@ -31,8 +31,8 @@ To run app:
 
 ## Tech Stack
 
-- 100% ![Kotlin](https://kotlinlang.org/)
-- ![MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture
+- 100% [Kotlin](https://kotlinlang.org/)
+- [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture
 - ***Retrofit*** for pulling data from network
 - ***Room*** for persistence
 - ***Coroutines*** for threading
