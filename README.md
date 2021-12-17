@@ -28,12 +28,11 @@ to have your phone wallpaper changed every specific periodof time.
 * 100% [Kotlin](https://kotlinlang.org/)
 *  [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - for background operations
 *  [Retrofit](https://github.com/square/retrofit) - networking
-*  [Jetpack](https://developer.android.com/jetpack)
-  * [Room](https://developer.android.com/training/data-storage/room) - for persistence
-  * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - handles logic between UI and *Repository* using **Flows**
-  * [Jetpack Compose](https://developer.android.com/jetpack/compose) - latest reactive ui toolkit by Google
-  * [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview) - for displaying long Wallpaper lists from web
-  * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - automation wallpaper change and downloading images
+* [Room](https://developer.android.com/training/data-storage/room) - for persistence
+* [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - handles logic between UI and *Repository* using **Flows**
+* [Jetpack Compose](https://developer.android.com/jetpack/compose) - latest reactive ui toolkit by Google
+* [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview) - for displaying long Wallpaper lists from web
+* [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - automation wallpaper change and downloading images
 * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) - for dependency injection
 * [Coil](https://github.com/coil-kt/coil) - for fetching images from web
 * [Accompanist](https://github.com/google/accompanist) is used in a SwipeRefreshLayout
