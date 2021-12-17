@@ -63,6 +63,8 @@ You can download and share wallpapers to and add them to favorites.
 
 ## Architecture
 
+* App module - this is the main module. It contains code that wires multiple modules together. Contains navigation class.
+
 <img src="media/git-architecture.png" align="center">
 
 
