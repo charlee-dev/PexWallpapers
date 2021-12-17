@@ -21,9 +21,10 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
+# Tech Stack
+
 <img src="media/pex_ui.gif" width="336" align="right" hspace="20">
 
-* Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
   *  [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - for background operations
   *  [Retrofit](https://github.com/square/retrofit) - networking
