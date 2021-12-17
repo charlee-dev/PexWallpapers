@@ -56,6 +56,8 @@ to have your phone wallpaper changed every specific periodof time.
 * Gradle
   * [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 
+<img src="media/git-architecture.png" align="center">
+
 # Getting started
 
 To run app:
