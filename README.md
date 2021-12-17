@@ -9,6 +9,8 @@
 ![](https://img.shields.io/github/languages/count/adrianwitaszak/pexwallpapers)
 ![](https://img.shields.io/github/languages/top/adrianwitaszak/pexwallpapers)
 
+<img src="media/main-banner.png" align="center">
+
 # Welcome to PexWallpapers!
 
 Hi! PexWallpapers is one of my current projects in Jetpack Compose. 
@@ -16,8 +18,6 @@ The app use Pexels.com image library to showpictures/wallpapers in the app.
 You can browse different categories or just use **Search** to findsome beautiful wallpapers for your phone. 
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
-
-<img src="media/main-banner.png" align="center" hspace="20">
 
 * Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
