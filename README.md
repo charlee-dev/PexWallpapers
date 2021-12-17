@@ -21,6 +21,11 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
+This is my portfolio app. App is still in development. Main features are working.
+You can set wallpapers, both home screen and lock screen.
+Auto wallpapere change works great. If app gets released in the future i may adjust time periods a bit better.
+You can download and share wallpapers to and add them to favorites.
+
 # Tech Stack
 
 <img src="media/pex_ui.gif" width="336" align="right" hspace="20">
