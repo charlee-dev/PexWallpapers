@@ -23,6 +23,7 @@ to have your phone wallpaper changed every specific periodof time.
 
 #
 
+<img src="misc/image/pex_ui.gif" width="336" align="right" hspace="20">
 * Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
   *  [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - for background operations
