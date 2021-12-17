@@ -19,6 +19,8 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
+#
+
 * Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
   *  [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) - for background operations
