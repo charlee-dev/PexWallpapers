@@ -11,7 +11,9 @@
 
 <img src="media/main-banner.png" align="center">
 
+
 # Welcome to PexWallpapers!
+
 
 Hi! PexWallpapers is one of my current projects in Jetpack Compose. 
 The app use Pexels.com image library to showpictures/wallpapers in the app. 
