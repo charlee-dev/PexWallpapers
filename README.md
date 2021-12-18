@@ -73,6 +73,22 @@ You can download and share wallpapers to and add them to favorites.
   * ImageManager - responsible for: downloading, saving, reading and backing up wallpaper
   * WallpaperSetter - responsible for setting home and lock screen wallpaper
 * feature_automation - keeps logic for all WorkManager works like: auto wallpaper change, downloading image
+* feature_home:
+  * data - HomeRepository's implementation which talks to DataModule
+  * domain - contains HomeRepository
+  * presentation - with HomeScreen and HomeScreenViewModel
+* feature_search:
+  * data - contains SearchRepositoryImpl and RemoteMediator
+  * domain - SearchRepository
+  * presentation - SearchScreen, SearchViewModel and composables used only in Search module
+* feature_favorites - presentation only with sceen, composables and viewModel
+* feature_preview - presentation only with sceen, composables and viewModel
+* feature_settings:
+  * data - Settings database with Dao 
+  * domain - Settings data model
+  * presentation - Settings screen with viewModiel + placeholder for PrivacyScreen
+  
+#
 
 The modularized code-base approach provides few benefits:
 
