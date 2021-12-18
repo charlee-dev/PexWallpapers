@@ -74,6 +74,14 @@ You can download and share wallpapers to and add them to favorites.
   * WallpaperSetter - responsible for setting home and lock screen wallpaper
 * feature_automation - keeps logic for all WorkManager works like: auto wallpaper change, downloading image
 
+The modularized code-base approach provides few benefits:
+
+* better separation of concerns. Each module has a clear API., Feature related classes live in different modules and can't be referenced without explicit module   dependency.
+* features can be developed in parallel eg. by different teams
+* each feature can be developed in isolation, independently from other features
+* faster compile time
+
+
 <img src="media/git-architecture.png" align="center">
 
 
