@@ -74,7 +74,7 @@ You can download and share wallpapers to and add them to favorites.
   * WallpaperSetter - responsible for setting home and lock screen wallpaper
 * feature_automation - keeps logic for all WorkManager works like: auto wallpaper change, downloading image
 
-<img src="media/git-architecture.png" align="center" height="800px">
+<img src="media/git-architecture.png" align="center">
 
 
 # Getting started
