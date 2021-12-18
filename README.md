@@ -63,7 +63,16 @@ You can download and share wallpapers to and add them to favorites.
 
 ## Architecture
 
-* App module - this is the main module. It contains code that wires multiple modules together. Contains navigation class.
+* App - this is the main module. It contains code that wires multiple modules together. Contains navigation class.
+* Core - pure kotlin library.
+* Domain - contains domain model of Wallpaper used across the app
+* Data - this is where WallpaperDatabase is kept and network interface. Both are provided by Hilt in DataModule.
+* Base - contains shared elements like BaseViewModiel and Extensions
+* Components - contains app theme and collection of composabled shared across screens.
+* feature_images - this feature has two main classes. 
+  * ImageManager - responsible for: downloading, saving, reading and backing up wallpaper
+  * WallpaperSetter - responsible for setting home and lock screen wallpaper
+* feature_automation - keeps logic for all WorkManager works like: auto wallpaper change, downloading image
 
 <img src="media/git-architecture.png" align="center">
 
