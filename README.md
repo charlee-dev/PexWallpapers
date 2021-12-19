@@ -14,10 +14,10 @@
 # Welcome to PexWallpapers!
 
 Hi! PexWallpapers is one of my current projects in Jetpack Compose. 
-The app use Pexels.com image library to showpictures/wallpapers in the app. 
-You can browse different categories or just use **Search** to findsome beautiful wallpapers for your phone. 
+The app use Pexels.com image library to show pictures/wallpapers in the app. 
+You can browse different categories or just use **Search** to find some beautiful wallpapers for your phone. 
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
-to have your phone wallpaper changed every specific periodof time.
+to have your phone wallpaper changed every specific period of time.
 
 <img src="media/pex_ui.gif" width="336" align="right" hspace="20">
 
