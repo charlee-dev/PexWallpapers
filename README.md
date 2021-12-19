@@ -9,6 +9,8 @@
 ![](https://img.shields.io/github/languages/count/adrianwitaszak/pexwallpapers)
 ![](https://img.shields.io/github/languages/top/adrianwitaszak/pexwallpapers)
 
+<img src="media/git-main-banner.png">
+
 # Welcome to PexWallpapers!
 
 Hi! PexWallpapers is one of my current projects in Jetpack Compose. 
@@ -17,7 +19,7 @@ You can browse different categories or just use **Search** to findsome beautiful
 If you add wallpapers to favourites than you can turn on **Auto Wallpaper Setter** in Settings, 
 to have your phone wallpaper changed every specific periodof time.
 
-<img src="media/git-main-banner.png" width="336" align="right" hspace="20">
+<img src="media/pex_ui.gif" width="336" align="right" hspace="20">
 
 * Tech Stack
   * 100% [Kotlin](https://kotlinlang.org/)
@@ -52,7 +54,7 @@ to have your phone wallpaper changed every specific periodof time.
 * Gradle
   * [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 
-<img src="media/git-architecture.png" width="336" align="right" hspace="20">
+<img src="media/git-architecture.png" align="center">
 
 ## Getting started
 
