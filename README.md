@@ -1,3 +1,5 @@
+# \[ 🚧 Work in progress 👷‍♀️⛏👷🔧️👷🔧 🚧 \]
+
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=adrianwitaszak)
 ![](https://img.shields.io/github/stars/adrianwitaszak/pexwallpapers)
 ![](https://img.shields.io/github/forks/adrianwitaszak/pexwallpapers)
@@ -10,8 +12,6 @@
 ![](https://img.shields.io/github/languages/top/adrianwitaszak/pexwallpapers)
 
 <img src="media/git-main-banner.png">
-
-# \[ 🚧 Work in progress 👷‍♀️⛏👷🔧️👷🔧 🚧 \] 
 
 # Welcome to PexWallpapers!
 
