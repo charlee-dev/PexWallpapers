@@ -11,6 +11,8 @@
 
 <img src="media/git-main-banner.png">
 
+# \[ 🚧 Work in progress 👷‍♀️⛏👷🔧️👷🔧 🚧 \] 
+
 # Welcome to PexWallpapers!
 
 Hi! PexWallpapers is one of my current projects in Jetpack Compose. 
