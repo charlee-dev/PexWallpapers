@@ -80,7 +80,7 @@ There are a few ways to open this project.
 
 4. And run in emulator or on physical device
 
-## Contribute
+## Contributors WANTED
 
 Want to contribute? Check our [Contributing](CONTRIBUTING.md) docs.
 
