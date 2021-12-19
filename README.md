@@ -52,9 +52,22 @@ to have your phone wallpaper changed every specific periodof time.
 * Gradle
   * [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
 
-# Getting started
 
-To run app:
+## Getting started
+
+There are a few ways to open this project.
+
+### Android Studio
+
+1. `Android Studio` -> `File` -> `New` -> `From Version control` -> `Git`
+2. Enter `https://github.com/adrianwitaszak/PexWallpapers.git` into URL field an press `Clone` button
+
+### Command-line + Android Studio
+
+1. Run `git clone https://github.com/adrianwitaszak/PexWallpapers.git` command to clone project
+2. Open `Android Studio` and select `File | Open...` from the menu. Select cloned directory and press `Open` button
+
+# Add API key
 
 1. git clone repo to Android studio
 2. Get your own Api Key from [Pexels.com](https://www.pexels.com/api/)
