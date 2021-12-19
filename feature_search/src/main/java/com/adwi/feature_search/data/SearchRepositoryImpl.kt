@@ -9,6 +9,7 @@ import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.database.domain.WallpaperEntity
 import com.adwi.data.database.domain.toEntity
 import com.adwi.data.network.PexService
+import com.adwi.feature_search.domain.repository.SearchRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

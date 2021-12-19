@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.adwi.components.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.ext.onDispatcher
-import com.adwi.feature_search.data.SearchRepository
+import com.adwi.feature_search.domain.repository.SearchRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

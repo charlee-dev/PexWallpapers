@@ -1,8 +1,10 @@
-package com.adwi.feature_search.data
+package com.adwi.feature_search
 
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.network.PexService
+import com.adwi.feature_search.data.SearchRepositoryImpl
+import com.adwi.feature_search.domain.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,9 @@
 package com.adwi.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -26,32 +28,22 @@ fun CategoryTitle(
     )
 }
 
-@ExperimentalMaterialApi
-@Preview(showBackground = true, name = "CategoryHeader Light")
+@Preview(showBackground = true, name = "Light")
 @Composable
-private fun CategoryHeaderPreviewLight() {
+fun CategoryTitlePreviewLight() {
     PexWallpapersTheme(darkTheme = false) {
-        Box(
+        Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.background)
-                .padding(paddingValues)
+                .padding(horizontal = paddingValues),
+            verticalArrangement = Arrangement.spacedBy(paddingValues)
         ) {
             CategoryTitle(name = "Colors")
-        }
-    }
-}
+            CategoryTitle(name = "Colors")
+            CategoryTitle(name = "Colors")
+            CategoryTitle(name = "Colors")
+            CategoryTitle(name = "Colors")
 
-@ExperimentalMaterialApi
-@Preview(showBackground = true, name = "CategoryHeader Dark")
-@Composable
-private fun CategoryHeaderPreviewDark() {
-    PexWallpapersTheme(darkTheme = true) {
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colors.background)
-                .padding(paddingValues)
-        ) {
-            CategoryTitle(name = "Colors")
         }
     }
 }

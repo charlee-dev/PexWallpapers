@@ -1,4 +1,4 @@
-package com.adwi.feature_search.data
+package com.adwi.feature_search.domain.repository
 
 import androidx.paging.PagingData
 import com.adwi.data.database.domain.WallpaperEntity
