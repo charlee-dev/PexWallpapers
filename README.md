@@ -1,4 +1,3 @@
-# \[ 🚧 Work in progress 👷‍♀️⛏👷🔧️👷🔧 🚧 \]
 
 ![visitors](https://visitor-badge.laobi.icu/badge?page_id=adrianwitaszak)
 ![](https://img.shields.io/github/stars/adrianwitaszak/pexwallpapers)
