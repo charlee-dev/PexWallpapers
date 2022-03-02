@@ -81,19 +81,34 @@ There are a few ways to open this project.
 
 4. And run in emulator or on physical device
 
-## Contributors WANTED
+## Contributing 🤝
 
-Want to contribute? Check our [Contributing](CONTRIBUTING.md) docs.
 
-## Author
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[![Follow me](https://img.shields.io/twitter/follow/adrianwita?style=social)](https://twitter.com/adrianwita)
+Read our [contributing guide](doc/CONTRIBUTING.md) and let's build a better antd together.
 
-## License
+We welcome all contributions. Please read our [CONTRIBUTING.md](doc/CONTRIBUTING.md) first. You can submit any ideas
+as [pull requests](https://github.com/adrianwitaszak/neumorph-ui/pulls) or
+as [GitHub issues](https://github.com/adrianwitaszak/neumorph-ui/issues). If you'd like to improve code, check out the
+Development Instructions and have a good time! :)
+
+## Author ⭐
+
+[<img width="20" src="https://emojis.slackmojis.com/emojis/images/1643514782/7926/twitter.png?1643514782">](https://twitter.com/adrianwita)
+@adrianwita
+
+[<img width="20" src="https://emojis.slackmojis.com/emojis/images/1643514111/711/linkedin.png?1643514111">](https://www.linkedin.com/in/adrian-witaszak)
+@adrian-witaszak
+
+[<img width="400" src="https://helloimjessa.files.wordpress.com/2021/06/bmc-button.png">](https://www.buymeacoffee.com/adrianwitay)
+
+## License <img width="40" src="https://emojis.slackmojis.com/emojis/images/1643517461/34922/read-the-rules.gif?1643517461">
+
 ```
 MIT License
 
-Copyright (c) 2021 Adrian Witaszak
+Copyright (c) 2022 Adrian Witaszak
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction, including
