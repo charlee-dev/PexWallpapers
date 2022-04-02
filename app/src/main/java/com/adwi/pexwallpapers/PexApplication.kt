@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.domain.app
+package com.adwi.pexwallpapers
 
 import android.app.Application
 import android.app.NotificationManager

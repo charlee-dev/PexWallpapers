@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.main
+package com.adwi.pexwallpapers.ui.main
 
 import android.os.Bundle
 import android.widget.Toast
@@ -9,12 +9,11 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.theme.PexWallpapersTheme
-import com.adwi.pexwallpapers.presentation.PexApp
+import com.adwi.pexwallpapers.ui.PexApp
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi

@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.main
+package com.adwi.pexwallpapers.ui.main
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
@@ -12,7 +12,7 @@ import com.adwi.data.database.domain.toDomain
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import com.adwi.pexwallpapers.domain.model.Wallpaper
-import com.adwi.pexwallpapers.domain.util.shareImage
+import com.adwi.pexwallpapers.util.shareImage
 import com.adwi.tool_automation.AutomationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

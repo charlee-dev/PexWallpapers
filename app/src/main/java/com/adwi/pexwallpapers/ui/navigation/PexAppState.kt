@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation.navigation
+package com.adwi.pexwallpapers.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ScaffoldState

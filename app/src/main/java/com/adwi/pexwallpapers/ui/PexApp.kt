@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.presentation
+package com.adwi.pexwallpapers.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,12 +14,12 @@ import com.adwi.components.PexSnackBarHost
 import com.adwi.components.theme.PexWallpapersTheme
 import com.adwi.core.Event
 import com.adwi.pexwallpapers.R
-import com.adwi.pexwallpapers.presentation.components.PexBottomBar
-import com.adwi.pexwallpapers.presentation.main.MainViewModel
-import com.adwi.pexwallpapers.presentation.navigation.HomeSections
-import com.adwi.pexwallpapers.presentation.navigation.MainDestinations
-import com.adwi.pexwallpapers.presentation.navigation.myNavGraph
-import com.adwi.pexwallpapers.presentation.navigation.rememberMyAppState
+import com.adwi.pexwallpapers.ui.components.PexBottomBar
+import com.adwi.pexwallpapers.ui.main.MainViewModel
+import com.adwi.pexwallpapers.ui.navigation.HomeSections
+import com.adwi.pexwallpapers.ui.navigation.MainDestinations
+import com.adwi.pexwallpapers.ui.navigation.myNavGraph
+import com.adwi.pexwallpapers.ui.navigation.rememberMyAppState
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.pager.ExperimentalPagerApi

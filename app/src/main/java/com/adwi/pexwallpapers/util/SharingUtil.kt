@@ -1,4 +1,4 @@
-package com.adwi.pexwallpapers.domain.util
+package com.adwi.pexwallpapers.util
 
 import android.content.Context
 import android.content.Intent
