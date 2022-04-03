@@ -11,7 +11,7 @@ import androidx.work.WorkerParameters
 import com.adrianwitaszak.tool_image.imagemanager.ImageManager
 import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
 import com.adwi.feature_settings.data.database.SettingsDao
-import com.adwi.tool_automation.AutomationManager
+import com.adwi.tool_automation.automation.AutomationManager
 import com.adwi.tool_automation.util.Constants.WALLPAPER_ID
 import com.adwi.tool_automation.util.Constants.WALLPAPER_IMAGE_URL
 import com.adwi.tool_automation.util.sendAutoChangeWallpaperNotification

@@ -5,6 +5,8 @@ import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.work.WorkManager
 import com.adrianwitaszak.tool_image.imagemanager.ImageManager
+import com.adwi.tool_automation.automation.AutomationManager
+import com.adwi.tool_automation.automation.AutomationManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

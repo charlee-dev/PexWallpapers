@@ -10,18 +10,18 @@ import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import com.adwi.components.base.BaseViewModel
-import com.adwi.feature_favorites.presentation.FavoritesScreen
-import com.adwi.feature_favorites.presentation.FavoritesViewModel
-import com.adwi.feature_home.presentation.HomeScreen
-import com.adwi.feature_home.presentation.HomeViewModel
-import com.adwi.feature_preview.presentation.PreviewScreen
-import com.adwi.feature_preview.presentation.PreviewViewModel
-import com.adwi.feature_search.presentation.SearchScreen
-import com.adwi.feature_search.presentation.SearchViewModel
+import com.adwi.feature_favorites.ui.FavoritesScreen
+import com.adwi.feature_favorites.ui.FavoritesViewModel
+import com.adwi.feature_home.ui.HomeScreen
+import com.adwi.feature_home.ui.HomeViewModel
+import com.adwi.feature_preview.ui.PreviewScreen
+import com.adwi.feature_preview.ui.PreviewViewModel
+import com.adwi.feature_search.ui.SearchScreen
+import com.adwi.feature_search.ui.SearchViewModel
 import com.adwi.feature_settings.data.database.model.Settings
-import com.adwi.feature_settings.presentation.SettingsScreen
-import com.adwi.feature_settings.presentation.SettingsViewModel
-import com.adwi.feature_settings.presentation.about.PrivacyPolicyScreen
+import com.adwi.feature_settings.ui.SettingsScreen
+import com.adwi.feature_settings.ui.SettingsViewModel
+import com.adwi.feature_settings.ui.about.PrivacyPolicyScreen
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -182,7 +182,6 @@ fun NavGraphBuilder.addHomeGraph(
             viewModel = viewModel,
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onCategoryClick = { query -> onCategoryClick(query, backStackEntry) },
-            navigateToSearch = { navigateToSearch(backStackEntry) },
             onGiveFeedbackClick = onGiveFeedbackClick,
             onRequestFeature = onRequestFeature,
             onReportBugClick = onReportBugClick

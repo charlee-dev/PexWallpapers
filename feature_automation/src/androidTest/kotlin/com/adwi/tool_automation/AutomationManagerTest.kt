@@ -12,6 +12,8 @@ import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.adrianwitaszak.tool_image.ImageManager
 import com.adwi.pexwallpapers.domain.model.Wallpaper
+import com.adwi.tool_automation.automation.AutomationManager
+import com.adwi.tool_automation.automation.AutomationManagerImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat

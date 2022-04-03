@@ -1,10 +1,9 @@
-package com.adwi.feature_search
+package com.adwi.feature_home
 
-import androidx.paging.ExperimentalPagingApi
 import com.adwi.data.database.WallpaperDatabase
 import com.adwi.data.network.PexService
-import com.adwi.feature_search.repository.SearchRepository
-import com.adwi.feature_search.repository.SearchRepositoryImpl
+import com.adwi.feature_home.repository.HomeRepositoryImpl
+import com.adwi.feature_home.repository.HomeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,14 +13,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object SearchModule {
+object HomeModule {
 
-    @ExperimentalPagingApi
     @ExperimentalCoroutinesApi
     @Provides
     @ViewModelScoped
     fun provideHomeRepository(
         service: PexService,
         database: WallpaperDatabase
-    ): SearchRepository = SearchRepositoryImpl(service, database)
+    ): HomeRepository = HomeRepositoryImpl(service, database)
 }

@@ -48,8 +48,7 @@ fun PexSnackBarHost(
         modifier = modifier
             .systemBarsPadding()
             .wrapContentWidth(align = Alignment.Start)
-            .widthIn(max = 550.dp)
-            .padding(bottom = Dimensions.BottomBar.BottomNavHeight),
+            .widthIn(max = 550.dp),
         snackbar = { snackbarData -> PexSnackBar(snackbarData) }
     )
 }

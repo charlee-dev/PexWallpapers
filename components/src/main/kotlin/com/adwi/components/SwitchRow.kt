@@ -21,6 +21,7 @@ fun SwitchRow(
     switchEnabledColor: Color = MaterialTheme.colors.primary,
     switchDisabledColor: Color = MaterialTheme.colors.secondary,
     backgroundColor: Color = MaterialTheme.colors.surface,
+    enabled: Boolean = true,
 ) {
     Surface(
         onClick = {
@@ -38,7 +39,7 @@ fun SwitchRow(
             Text(
                 text = name,
                 modifier = Modifier.weight(1f),
-                color = textColor
+                color = if (enabled) textColor else textColor.copy(alpha = .5f)
             )
             Switch(
                 checked = checked,
@@ -48,7 +49,8 @@ fun SwitchRow(
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = switchEnabledColor,
                     uncheckedThumbColor = switchDisabledColor
-                )
+                ),
+                enabled = enabled
             )
         }
     }

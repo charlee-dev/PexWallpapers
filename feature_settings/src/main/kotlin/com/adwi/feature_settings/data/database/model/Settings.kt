@@ -30,18 +30,15 @@ data class Settings(
     companion object {
         val default = Settings(
             id = 0,
-
             pushNotifications = true,
             newWallpaperSet = true,
             wallpaperRecommendations = true,
-
             autoChangeWallpaper = false,
             autoHome = true,
             autoLock = false,
             minutes = 15,
             hours = 3,
             days = 0,
-
             activateDataSaver = false,
             downloadWallpapersOverWiFi = false,
             lowResMiniatures = false,

@@ -4,17 +4,19 @@
     <!--   Notifications  -->
     <string name="notifications">Notifications</string>
     <string name="push_notifications">Push notifications</string>
+    <string name="push_notifications_tip">Turns off all app notifications</string>
     <string name="new_wallpaper_set">New wallpaper set</string>
     <string name="wallpaper_recommendations">Wallpaper recommendations</string>
 
     <!--    Automation  -->
     <string name="automation">Automation</string>
     <string name="auto_change_wallpaper">Auto change wallpaper</string>
+    <string name="enable_auto_change_wallpaper">Enable auto change wallpaper</string>
     <string name="screen_to_change">Screen to change</string>
     <string name="home_screen">Home Screen</string>
     <string name="lock_screen">Lock screen</string>
     <string name="change_wallpaper_every">Change wallpaper every:</string>
-    <string name="change_wallpaper_every_description">WARNING: Frequent wallpaper change may cause device\'s battery drain</string>
+    <string name="change_wallpaper_every_description">WARNING: Too frequent wallpaper change may cause device\'s battery drain</string>
     <string name="up">Up</string>
     <string name="down">Down</string>
     <string name="new_wallpaper_set_description">Shows only if automation is set</string>

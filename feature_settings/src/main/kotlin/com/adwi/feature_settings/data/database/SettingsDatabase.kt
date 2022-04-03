@@ -11,6 +11,5 @@ import com.adwi.feature_settings.data.database.model.Settings
     exportSchema = false
 )
 abstract class SettingsDatabase : RoomDatabase() {
-
     abstract fun settingsDao(): SettingsDao
 }
