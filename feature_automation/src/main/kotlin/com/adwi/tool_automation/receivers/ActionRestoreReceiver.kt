@@ -34,9 +34,8 @@ class ActionRestoreReceiver : BroadcastReceiver() {
 
         wallpaperId?.let {
             context?.run {
-                // Get wallpaper backed up earlier
                 val bitmap = imageManager.getBackup(wallpaperId)
-                // try to set wallpaper
+
                 bitmap?.let {
                     wallpaperSetter.setWallpaper(
                         bitmap = bitmap,

@@ -26,13 +26,11 @@ class DownloadAndSaveWallpaperWork @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            // Get arguments
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
             val wallpaperImageUrl = inputData.getString(WALLPAPER_IMAGE_URL)
             Timber.tag(tag)
                 .d("DownloadAndSaveWallpaperWork - arguments: \nwallpaperId $wallpaperId \nimageUrl $wallpaperImageUrl")
 
-            // Save to gallery
             wallpaperImageUrl?.let {
                 Timber.tag(tag).d("DownloadAndSaveWallpaperWork - wallpaperImageUrl not null")
                 val bitmap = imageManager.getBitmapFromRemote(wallpaperImageUrl)

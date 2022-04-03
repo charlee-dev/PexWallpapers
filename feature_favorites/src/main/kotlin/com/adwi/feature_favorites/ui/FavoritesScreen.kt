@@ -39,7 +39,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,
-    onSearchClick: () -> Unit,
     onWallpaperClick: (Int) -> Unit,
     onGiveFeedbackClick: () -> Unit,
     onRequestFeature: () -> Unit,

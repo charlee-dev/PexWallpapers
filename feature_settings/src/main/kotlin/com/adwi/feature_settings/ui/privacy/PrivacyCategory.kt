@@ -1,4 +1,4 @@
-package com.adwi.feature_settings.domain.privacy
+package com.adwi.feature_settings.ui.privacy
 
 data class PrivacyCategory(
     val name: String,

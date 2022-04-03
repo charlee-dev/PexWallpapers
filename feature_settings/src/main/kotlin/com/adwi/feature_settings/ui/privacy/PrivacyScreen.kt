@@ -1,4 +1,4 @@
-package com.adwi.feature_settings.ui.about
+package com.adwi.feature_settings.ui.privacy
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +16,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.adwi.components.*
 import com.adwi.components.theme.MenuItems
 import com.adwi.components.theme.paddingValues
-import com.adwi.feature_settings.domain.privacy.privacyCategoryList
-import com.adwi.feature_settings.ui.SettingsViewModel
+import com.adwi.feature_settings.ui.settings.SettingsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalMaterialApi

@@ -77,7 +77,6 @@ fun PexApp(
                         upPress = appState::upPress,
                         onWallpaperClick = appState::navigateToPreview,
                         onCategoryClick = appState::navigateToCategory,
-                        navigateToSearch = { appState.navigateToBottomBarRoute(HomeSections.SEARCH.route) },
                         onAboutUsClick = { viewModel.aboutUs() },
                         onPrivacyPolicyClick = appState::navigateToPrivacyPolicy,
                         onContactSupportClick = { viewModel.contactSupport() },

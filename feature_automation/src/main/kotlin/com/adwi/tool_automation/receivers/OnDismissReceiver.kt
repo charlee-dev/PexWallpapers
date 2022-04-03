@@ -18,8 +18,8 @@ class OnDismissReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val tag: String = javaClass.simpleName
         val wallpaperId = intent?.getStringExtra(ACTION_AUTO)
+
         wallpaperId?.let {
-            // Delete backup wallpaper if notification dismissed
             imageManager.deleteBackup(wallpaperId)
             Timber.tag(tag)
         }

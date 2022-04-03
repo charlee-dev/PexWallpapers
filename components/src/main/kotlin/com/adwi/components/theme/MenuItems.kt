@@ -46,9 +46,4 @@ object MenuItems {
         name = R.string.delete_all_favorites,
         icon = Icons.Outlined.Delete
     )
-
-    val Refresh = MenuItem(
-        name = R.string.refresh,
-        icon = Icons.Outlined.Refresh
-    )
 }

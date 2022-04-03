@@ -23,16 +23,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.adwi.components.theme.*
 
-/*
-* to capture pressed state add:
-*
-* val interactionSource = remember { MutableInteractionSource() }
-*   val isPressed by interactionSource.collectIsPressedAsState()
-*
-* add pass pressed to modifier's constructor
-*
-* */
-
 @SuppressLint("UnnecessaryComposedModifier")
 fun Modifier.neumorphicShadow(
     enabled: Boolean = true,
@@ -47,15 +37,12 @@ fun Modifier.neumorphicShadow(
     offset: Dp = (-10).dp,
 ) = composed {
 
-    // Check if dark or light system theme
     val isLightTheme = MaterialTheme.colors.isLight
 
-    // Colors
     val colorTop = if (isLightTheme) topShadowLight else topShadowDark
     val colorBottom = if (isLightTheme) bottomShadowLight else bottomShadowDark
     val darkAlpha = if (isLightTheme) alpha else 0.1f
 
-    // Pressed transition
     val pressed = updateTransition(targetState = isPressed, label = "Shadow")
     val elevation by pressed.animateDp(label = "Offset") { state ->
         if (state) offset / 2 else offset
@@ -69,7 +56,6 @@ fun Modifier.neumorphicShadow(
 
 
     this.drawBehind {
-        // Getting colors
         val transparentColor =
             android.graphics.Color.toArgb(colorTop.copy(alpha = 0.0f).value.toLong())
         val shadowColorTop =
@@ -77,7 +63,6 @@ fun Modifier.neumorphicShadow(
         val shadowColorBottom =
             android.graphics.Color.toArgb(colorBottom.copy(alpha = alpha).value.toLong())
 
-        // Top left light shadow
         this.drawIntoCanvas {
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()
@@ -102,7 +87,6 @@ fun Modifier.neumorphicShadow(
             }
         }
 
-        // Bottom right shadow
         this.drawIntoCanvas {
             val paint = Paint()
             val frameworkPaint = paint.asFrameworkPaint()

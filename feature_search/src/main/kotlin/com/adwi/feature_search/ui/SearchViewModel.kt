@@ -6,7 +6,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.cachedIn
 import com.adwi.base.IoDispatcher
 import com.adwi.base.ext.onDispatcher
-import com.adwi.components.base.BaseViewModel
+import com.adwi.base.BaseViewModel
 import com.adwi.feature_search.repository.SearchRepository
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import dagger.hilt.android.lifecycle.HiltViewModel

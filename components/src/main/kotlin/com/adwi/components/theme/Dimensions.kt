@@ -6,16 +6,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.dp
 
-val paddingValues = Dimensions.extraExtraLarge
+val paddingValues = Dimensions.extraLarge
 
 object Dimensions {
 
-    val extraSmall = 2.dp
     val small = 4.dp
     val medium = 8.dp
     val large = 12.dp
-    val extraLarge = 16.dp
-    val extraExtraLarge = 24.dp
+    val extraLarge = 24.dp
 
     val Button = 72.dp
 

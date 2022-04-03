@@ -9,7 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
-import com.adwi.components.base.BaseViewModel
+import com.adwi.base.BaseViewModel
 import com.adwi.feature_favorites.ui.FavoritesScreen
 import com.adwi.feature_favorites.ui.FavoritesViewModel
 import com.adwi.feature_home.ui.HomeScreen
@@ -19,9 +19,9 @@ import com.adwi.feature_preview.ui.PreviewViewModel
 import com.adwi.feature_search.ui.SearchScreen
 import com.adwi.feature_search.ui.SearchViewModel
 import com.adwi.feature_settings.data.database.model.Settings
-import com.adwi.feature_settings.ui.SettingsScreen
-import com.adwi.feature_settings.ui.SettingsViewModel
-import com.adwi.feature_settings.ui.about.PrivacyPolicyScreen
+import com.adwi.feature_settings.ui.settings.SettingsScreen
+import com.adwi.feature_settings.ui.settings.SettingsViewModel
+import com.adwi.feature_settings.ui.privacy.PrivacyPolicyScreen
 import com.adwi.pexwallpapers.domain.model.Wallpaper
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -43,7 +43,6 @@ fun NavGraphBuilder.myNavGraph(
     settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    navigateToSearch: (NavBackStackEntry) -> Unit,
     upPress: () -> Unit,
     onAboutUsClick: (NavBackStackEntry) -> Unit,
     onPrivacyPolicyClick: (NavBackStackEntry) -> Unit,
@@ -66,7 +65,6 @@ fun NavGraphBuilder.myNavGraph(
             settings = settings,
             onWallpaperClick = onWallpaperClick,
             onCategoryClick = onCategoryClick,
-            navigateToSearch = navigateToSearch,
             onAboutUsClick = onAboutUsClick,
             onPrivacyPolicyClick = onPrivacyPolicyClick,
             onContactSupportClick = onContactSupportClick,
@@ -162,7 +160,6 @@ fun NavGraphBuilder.addHomeGraph(
     settings: Settings,
     onWallpaperClick: (Int, NavBackStackEntry) -> Unit,
     onCategoryClick: (String, NavBackStackEntry) -> Unit,
-    navigateToSearch: (NavBackStackEntry) -> Unit,
     onAboutUsClick: (NavBackStackEntry) -> Unit,
     onPrivacyPolicyClick: (NavBackStackEntry) -> Unit,
     onContactSupportClick: () -> Unit,
@@ -209,7 +206,6 @@ fun NavGraphBuilder.addHomeGraph(
 
         FavoritesScreen(
             viewModel = viewModel,
-            onSearchClick = { navigateToSearch(backStackEntry) },
             onWallpaperClick = { id -> onWallpaperClick(id, backStackEntry) },
             onGiveFeedbackClick = onGiveFeedbackClick,
             onRequestFeature = onRequestFeature,

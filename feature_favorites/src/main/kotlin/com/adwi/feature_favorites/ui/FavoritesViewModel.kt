@@ -3,7 +3,7 @@ package com.adwi.feature_favorites.ui
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.base.IoDispatcher
-import com.adwi.components.base.BaseViewModel
+import com.adwi.base.BaseViewModel
 import com.adwi.base.ext.onDispatcher
 import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.database.domain.toDomainList

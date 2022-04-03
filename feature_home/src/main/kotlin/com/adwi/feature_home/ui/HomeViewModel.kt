@@ -3,8 +3,8 @@ package com.adwi.feature_home.ui
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.base.IoDispatcher
-import com.adwi.components.base.BaseViewModel
-import com.adwi.components.base.Refresh
+import com.adwi.base.BaseViewModel
+import com.adwi.base.Refresh
 import com.adwi.base.ext.onDispatcher
 import com.adwi.core.DataState
 import com.adwi.feature_home.repository.HomeRepository

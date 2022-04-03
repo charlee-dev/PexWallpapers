@@ -39,26 +39,17 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
     override suspend fun doWork(): Result {
         Timber.tag(TAG).d("doWork")
         return try {
-
-            // Get arguments
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
             val wallpaperImageUrl = inputData.getString(WALLPAPER_IMAGE_URL)
-
-            //Get settings
             val settings = settingsDao.getSettings().first()
 
-            //Check autoChangeOverWiFi setting
             if (!settings.autoChangeOverWiFi) {
-
-                // Backup current wallpaper
                 automationManager.backupCurrentWallpaper(wallpaperId)
 
-                // Fetch bitmap using Coil
                 val bitmap = wallpaperImageUrl?.let { imageUrl ->
                     imageManager.getBitmapFromRemote(imageUrl)
                 }
 
-                // Set wallpaper
                 bitmap?.let {
                     wallpaperSetter.setWallpaper(
                         bitmap = it,
@@ -66,7 +57,6 @@ class AutoChangeWallpaperWork @AssistedInject constructor(
                         lock = settings.autoLock
                     )
 
-                    // Check autoChangeWallpaper setting
                     if (settings.autoChangeWallpaper) {
                         context.sendAutoChangeWallpaperNotification(
                             notificationManager = notificationManager,

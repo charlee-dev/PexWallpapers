@@ -1,4 +1,4 @@
-package com.adwi.feature_settings.ui
+package com.adwi.feature_settings.ui.settings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

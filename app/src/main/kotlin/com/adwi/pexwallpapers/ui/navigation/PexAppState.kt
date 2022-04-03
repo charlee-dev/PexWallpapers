@@ -79,10 +79,4 @@ class PexAppState(
             navController.navigate(MainDestinations.PRIVACY_POLICY)
         }
     }
-
-    fun navigateToAboutUs(from: NavBackStackEntry) {
-        if (from.lifecycleIsResumed()) {
-            navController.navigate(MainDestinations.ABOUT_US)
-        }
-    }
 }

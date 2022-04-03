@@ -32,11 +32,12 @@ class AutomationManagerImpl @Inject constructor(
         favorites.forEachIndexed { index, wallpaper ->
             Timber.tag(tag).d("createAutoWork - setting $index")
 
+            val workName = "${index}_${WORK_AUTO_WALLPAPER}_${wallpaper.id}"
             val repeatInterval = delay * favorites.size
             val initialDelay = (index + 1) * delay
 
             workCreateAutoChangeWallpaperWork(
-                workName = "${index}_${WORK_AUTO_WALLPAPER}_${wallpaper.id}",
+                workName = workName,
                 wallpaper = wallpaper,
                 repeatInterval = repeatInterval,
                 initialDelay = initialDelay
@@ -78,13 +79,14 @@ class AutomationManagerImpl @Inject constructor(
     }
 
     override fun backupCurrentWallpaper(wallpaperId: Int) {
+        val workName = WORK_RESTORE_WALLPAPER + wallpaperId
         val backup = OneTimeWorkRequestBuilder<BackupCurrentWallpaperWork>()
             .setInputData(createWorkData(wallpaperId))
             .addTag("$WORK_BACKUP_WALLPAPER${wallpaperId}")
             .build()
 
         workManager.enqueueUniqueWork(
-            WORK_RESTORE_WALLPAPER + wallpaperId,
+            workName,
             ExistingWorkPolicy.KEEP,
             backup
         )
@@ -96,6 +98,7 @@ class AutomationManagerImpl @Inject constructor(
         wallpaper: Wallpaper,
         downloadWallpaperOverWiFi: Boolean
     ) {
+        val workName = WORK_DOWNLOAD_WALLPAPER + wallpaper.id
         val networkType = if (downloadWallpaperOverWiFi)
             NetworkType.UNMETERED else NetworkType.CONNECTED
 
@@ -117,7 +120,7 @@ class AutomationManagerImpl @Inject constructor(
             .build()
 
         workManager.enqueueUniqueWork(
-            WORK_DOWNLOAD_WALLPAPER + wallpaper.id,
+            workName,
             ExistingWorkPolicy.KEEP,
             downloadAndSave
         )

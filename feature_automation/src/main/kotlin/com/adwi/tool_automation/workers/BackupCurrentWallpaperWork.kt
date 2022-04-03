@@ -25,7 +25,6 @@ class BackupCurrentWallpaperWork @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            // Get wallpaperId
             val wallpaperId = inputData.getInt(WALLPAPER_ID, 0)
 
             val bitmap = wallpaperSetter.getHomeScreenWallpaper()

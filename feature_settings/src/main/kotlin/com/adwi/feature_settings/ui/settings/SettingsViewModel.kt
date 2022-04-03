@@ -1,8 +1,8 @@
-package com.adwi.feature_settings.ui
+package com.adwi.feature_settings.ui.settings
 
 import androidx.paging.ExperimentalPagingApi
 import com.adwi.base.IoDispatcher
-import com.adwi.components.base.BaseViewModel
+import com.adwi.base.BaseViewModel
 import com.adwi.base.ext.onDispatcher
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings

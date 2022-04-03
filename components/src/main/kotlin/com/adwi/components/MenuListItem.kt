@@ -15,7 +15,6 @@ import com.adwi.components.theme.paddingValues
 @ExperimentalMaterialApi
 @Composable
 fun MenuListItem(
-    modifier: Modifier = Modifier,
     action: () -> Unit,
     item: MenuItem
 ) {

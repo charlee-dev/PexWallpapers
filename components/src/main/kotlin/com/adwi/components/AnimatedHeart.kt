@@ -5,7 +5,6 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
@@ -46,15 +45,15 @@ fun PexAnimatedHeart(
     ) { state ->
         if (state) 1f else 0f
     }
-        Icon(
-            imageVector = Icons.Outlined.Favorite,
-            contentDescription = "Favorite icon",
-            tint = colorState,
-            modifier = modifier
-                .size(size)
-                .scale(scaleState)
-                .neumorphicShadow(offset = 0.dp, alpha = .1f)
-        )
+    Icon(
+        imageVector = Icons.Outlined.Favorite,
+        contentDescription = "Favorite icon",
+        tint = colorState,
+        modifier = modifier
+            .size(size)
+            .scale(scaleState)
+            .neumorphicShadow(offset = 0.dp, alpha = .1f)
+    )
 }
 
 @Preview(showBackground = true, name = "AnimatedHeart - Light")
