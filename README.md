@@ -111,12 +111,10 @@ to have your phone wallpaper changed every specific period of time.
     - About us page
     - Privacy policy
     - Support
-
-
+    
+<img src="media/automation-flow.png"  height="800" align="right" hspace="20">
 
 ## Automation flow
-
-<img src="media/automation-flow.png"  height="800" align="right" hspace="20">
 
 ### Automation
   - min time to select is 15 min
