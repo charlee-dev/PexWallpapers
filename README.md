@@ -57,16 +57,102 @@ to have your phone wallpaper changed every specific period of time.
 
 <img src="media/git-architecture.png" align="center">
 
-## Getting started
+# Features ✨
+
+### Home Screen
+  - displays daily wallpapers in ViewPager
+  - color categories in scrollable horizontal column LazyRow, click take you to Search screen, and starts search of color
+  - curated images from Pexels.com in scrollable vertical column
+  - every image can be added to favorites by long click
+  - clickable elements has pressed effect
+  - top bar expands and lets user leave feedback
+  
+### Search Screen
+  - search feature
+  - every image can be added to favorites by long click
+  - clickable elements has pressed effect
+  - top bar expands and lets user leave feedback
+
+### Favorites Screen
+  - displays favorites in scrollable vertical column
+  - long click removes image from favorites
+  - top bar expands and lets user leave feedback
+
+### Preview Screen
+  - displays image preview
+  - uses image cache form previous screen to speed up image loading
+  - long click adds/removes image from favorites
+  - top bar expands and lets user leave feedback
+  - action buttons:
+    - link to pexels.com
+    - download image - uses worManager task
+    - share image
+    - add to/remove from favorites
+  - set wallpaper button - lets user choose home or lock screen 
+
+### Settings Screen
+  - Notification settings 
+    - push notifications
+    - new wallpaper set
+    - wallpaper recommendations
+  - Automation settings
+    - enable disable automation
+    - screen to change wallpaper
+    - animated time picker - days, hours, minutes
+  - save button - clears any previous automations, creates automation task for every favorite wallpaper
+  - Data saver settings
+    - download wallpapers only on Wi-Fi - part of workManager constraints
+    - Download miniatures in lower resolution - every screen checks this setting on launch
+    - Auto change only on Wi-Fi - every automation task checks this setting before launch
+  - Performance settings
+    - Shadows - every screen checks this setting on launch
+    - Parallax effect - home screen checks this setting on launch
+  - links (not fully implemented):
+    - About us page
+    - Privacy policy
+    - Support
+
+
+
+## Automation flow
+
+<img src="media/automation-flow.png"  height="800" align="right" hspace="20">
+
+### Automation
+  - min time to select is 15 min
+  - minimum one screen has to be chosen
+
+### WorkManager
+  - creates task for every wallpaper
+  - constraints - low battery, no network, low storage
+
+### Backup
+  - backs up currently set wallpaper
+  - getting removed if notification is dismissed
+
+### Set wallpaper
+  - home screen
+  - lock screen
+  - or both
+
+### Notification
+  - BigPicture style
+  - Grouped notifications if more than one
+  - Interaction:
+    - Restore - restores previous wallpaper, and deletes backup
+    - Preview - click take you to preview
+    - Swipe off-screen - delete backup and cancels current task
+
+## Getting started 📦
 
 There are a few ways to open this project.
 
-### Android Studio
+### Android Studio <img width="30" align="center" src="https://slackmojis.com/emojis/4696-android_studio/download">
 
 1. `Android Studio` -> `File` -> `New` -> `From Version control` -> `Git`
 2. Enter `https://github.com/adrianwitaszak/PexWallpapers.git` into URL field an press `Clone` button
 
-### Command-line + Android Studio
+### Command-line + Android Studio <img width="30" align="center" src="https://slackmojis.com/emojis/1263-terminal/download">
 
 1. Run `git clone https://github.com/adrianwitaszak/PexWallpapers.git` command to clone project
 2. Open `Android Studio` and select `File | Open...` from the menu. Select cloned directory and press `Open` button
