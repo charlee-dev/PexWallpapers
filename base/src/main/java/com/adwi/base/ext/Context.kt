@@ -1,4 +1,4 @@
-package com.adwi.components.ext
+package com.adwi.base.ext
 
 import android.content.Context
 import android.widget.Toast

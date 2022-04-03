@@ -2,7 +2,7 @@ package com.adwi.components.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.adwi.components.ext.exhaustive
+import com.adwi.base.ext.exhaustive
 import com.adwi.core.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

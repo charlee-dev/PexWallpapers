@@ -1,4 +1,4 @@
-package com.adwi.components.ext
+package com.adwi.base.ext
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

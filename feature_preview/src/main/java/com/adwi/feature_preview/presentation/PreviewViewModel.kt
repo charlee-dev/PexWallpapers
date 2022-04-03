@@ -4,9 +4,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.paging.ExperimentalPagingApi
 import com.adrianwitaszak.tool_image.wallpapersetter.WallpaperSetter
-import com.adwi.components.IoDispatcher
+import com.adwi.base.IoDispatcher
 import com.adwi.components.base.BaseViewModel
-import com.adwi.components.ext.onDispatcher
+import com.adwi.base.ext.onDispatcher
 import com.adwi.data.database.dao.WallpapersDao
 import com.adwi.data.database.domain.toDomain
 import com.adwi.pexwallpapers.domain.model.Wallpaper

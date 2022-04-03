@@ -1,9 +1,9 @@
 package com.adwi.feature_settings.presentation
 
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.components.IoDispatcher
+import com.adwi.base.IoDispatcher
 import com.adwi.components.base.BaseViewModel
-import com.adwi.components.ext.onDispatcher
+import com.adwi.base.ext.onDispatcher
 import com.adwi.feature_settings.data.database.SettingsDao
 import com.adwi.feature_settings.data.database.model.Settings
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -2,10 +2,10 @@ package com.adwi.feature_home.presentation
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
-import com.adwi.components.IoDispatcher
+import com.adwi.base.IoDispatcher
 import com.adwi.components.base.BaseViewModel
 import com.adwi.components.base.Refresh
-import com.adwi.components.ext.onDispatcher
+import com.adwi.base.ext.onDispatcher
 import com.adwi.core.DataState
 import com.adwi.feature_home.domain.repository.HomeRepository
 import com.adwi.feature_home.data.category.colorCategoryList
