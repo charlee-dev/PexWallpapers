@@ -2,7 +2,7 @@ package com.adwi.tool_automation
 
 import android.graphics.Bitmap
 import android.net.Uri
-import com.adrianwitaszak.tool_image.ImageManager
+import com.adrianwitaszak.tool_image.imagemanager.ImageManager
 import com.adwi.core.DataState
 import com.adwi.core.Resource
 import java.io.File
@@ -19,30 +19,22 @@ class FakeImageManager : ImageManager {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getBitmapFromRemote(imageUrl: String): DataState<Bitmap?> =
-        DataState.Success(bitmap)
+    override suspend fun getBitmapFromRemote(imageUrl: String): Bitmap? =
+        bitmap
 
     override fun getFileByWallpaperId(wallpaperId: String): File {
         TODO("Not yet implemented")
     }
 
-    override fun restoreBackup(wallpaperId: String): Bitmap? {
+    override fun getBackup(wallpaperId: String): Bitmap? {
         TODO("Not yet implemented")
     }
 
-    override fun deleteBackupBitmap(wallpaperId: String) {
+    override fun deleteBackup(wallpaperId: String) {
         TODO("Not yet implemented")
     }
 
     override fun deleteAllBackups() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setWallpaper(bitmap: Bitmap, home: Boolean, lock: Boolean): Resource {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCurrentWallpaper(): DataState<Bitmap> {
         TODO("Not yet implemented")
     }
 }

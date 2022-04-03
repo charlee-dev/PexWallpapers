@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import androidx.core.graphics.drawable.toBitmap
 import javax.inject.Inject
 
-private const val tag = "WallpaperSetter"
 
 class WallpaperSetterImpl @Inject constructor(
     private val wallpaperManager: WallpaperManager
