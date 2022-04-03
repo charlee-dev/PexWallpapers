@@ -153,7 +153,12 @@ fun SettingsScreen(
                         SwitchRow(
                             name = stringResource(id = R.string.enable_auto_change_wallpaper),
                             checked = settings.autoChangeWallpaper,
-                            onCheckedChange = { viewModel.updateAutoChangeWallpaper(it) }
+                            onCheckedChange = {
+                                viewModel.updateAutoChangeWallpaper(it)
+                                if (!settings.autoChangeWallpaper) {
+                                    cancelWorks()
+                                }
+                            }
                         )
                         Text(
                             text = stringResource(id = R.string.screen_to_change) + ":",
