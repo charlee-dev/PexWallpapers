@@ -1,5 +1,3 @@
-import dependencies.Dependencies
-
 plugins {
     java
     id(Plugins.KOTLIN)
@@ -8,8 +6,4 @@ plugins {
 java {
     sourceCompatibility = AndroidConfig.javaVersionName
     targetCompatibility = AndroidConfig.javaVersionName
-}
-
-dependencies {
-    implementation(Dependencies.coroutinesCore)
 }

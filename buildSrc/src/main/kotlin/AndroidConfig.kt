@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion
+
 object AndroidConfig {
     const val id = "com.adwi.pexwallpapers"
     const val minSdk = 26
@@ -8,6 +10,9 @@ object AndroidConfig {
     const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
     const val HILT_TEST_INSTRUMENTATION_RUNNER = "com.adwi.pexwallpapers.HiltTestRunner"
     const val ROBOELECTRIC_TEST_RUNNER = "org.robolectric.RobolectricTestRunner"
+
+    const val javaVersion = "1.8"
+    val javaVersionName = JavaVersion.VERSION_1_8
 }
 
 interface BuildType {
